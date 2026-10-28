@@ -4,7 +4,7 @@ This repo is for discussion first, so there are three ways in.
 
 ## 1. Ask or argue: Discussions
 
-Use [Discussions](../../discussions) for anything that is a conversation rather
+Use [Discussions](https://github.com/Chipwwwwww/einstein-equations/discussions) for anything that is a conversation rather
 than a fix:
 
 - **Q&A**: "Why is the Einstein tensor divergence-free?", "Where does the 8πG come from?"
@@ -16,7 +16,7 @@ When you reference a formula, link to the line in the note
 
 ## 2. Report a mistake: Issues
 
-Open an [Issue](../../issues) for a sign error, a wrong factor, an unclear step,
+Open an [Issue](https://github.com/Chipwwwwww/einstein-equations/issues) for a sign error, a wrong factor, an unclear step,
 or a failing test. Say which note and which equation, and what you expected.
 
 ## 3. Add something: pull requests

@@ -49,10 +49,10 @@ st.einstein  # G_{mu nu} as a SymPy matrix
 
 ## How to take part
 
-- **Questions and ideas** go in [Discussions](../../discussions): Q&A for "why does…",
+- **Questions and ideas** go in [Discussions](https://github.com/Chipwwwwww/einstein-equations/discussions): Q&A for "why does…",
   Ideas for new notes or topics, General for open-ended debate.
   [`notes/06-open-questions.md`](notes/06-open-questions.md) has starters.
-- **Mistakes** in a note or the code go in [Issues](../../issues).
+- **Mistakes** in a note or the code go in [Issues](https://github.com/Chipwwwwww/einstein-equations/issues).
 - **New notes or derivations** come in as pull requests. See
   [CONTRIBUTING.md](CONTRIBUTING.md).
 
