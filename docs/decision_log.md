@@ -2,6 +2,12 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-29 — Repository made public
+
+**Decision:** switched visibility from private to public so anyone can read
+the notes and take part in Discussions. Discussions stay enabled; Issues and
+pull requests are open to all GitHub users.
+
 ## 2026-10-29 — Repository created
 
 **Decisions**
@@ -22,9 +28,8 @@ Newest first. Each entry: what was decided, why, and where things stand.
 - **Every exact solution in `notes/04` gets a test.** Keeps the notes honest.
 - **Kerr is in the notes but not yet in the code.** Simplifying the Kerr Ricci
   tensor in SymPy is slow; left as a first contribution (mark the test slow).
-- **GitHub repo is private, with Discussions enabled.** Switch to public with
-  `gh repo edit --visibility public --accept-visibility-change-consequences`
-  when it is ready for outside readers.
+- **GitHub repo starts private, with Discussions enabled.** (Made public the
+  same day; see the entry above.)
 
 **Progress**
 
