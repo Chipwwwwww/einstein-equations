@@ -162,10 +162,11 @@ Proposed route:
 1. Reparametrize with $ds = \rho\,d\sigma$ and
    $(u, v) = \rho(\cos\alpha, \sin\alpha)$. The system is then regular, and
    the axis becomes a line of hyperbolic fixed points (eigenvalues $\pm1$).
-2. Handle the passage near $(0, z_{\rm bot})$ with an isolating block and
-   cone conditions (Shilnikov / covering-relation style), so that curves
-   leaving the neck are shown to follow the unstable manifold, the shooting
-   curve from the axis point $z_{\rm bot}$.
+2. Handle the passages near $(0, z_{\rm bot})$ and $(0, z_{\rm top})$ with
+   isolating blocks and cone conditions (Shilnikov / covering-relation
+   style). The individual horizon's profile, read in both directions, is a
+   heteroclinic cycle between these two saddles. Curves near it can wind
+   several times, giving multi-layer necked spheres.
 3. Do a validated sweep on the rest of the window.
 
 This is multi-session work.

@@ -646,9 +646,13 @@ Then (N) holds.
 
 1. **Where the final metric is explicit.** In the proof of its Theorem 13.1
    (Steps 2–3), the final metric on $\{t_* < 1\}$ is the boosted exterior
-   solution $\phi^*g_{b_0} + h'$. This is because the Nash–Moser correction
-   $\Phi(U)$ is supported in $\{t_* \ge 1\}$, and the cut-off $\chi_K$
-   vanishes for $t_* \le 10$. Here $\phi$ is the small asymptotic boost, and
+   solution $\phi^*g_{b_0} + h'$. Two facts give this:
+   - the Nash–Moser correction $\Phi(U)$ is supported in $\{t_* \ge 1\}$.
+     Its Definition 12.1 places the unknowns on $\Omega^* = \mathrm{cl}\{t_* \ge 1\}$,
+     and Theorem 12.3 maps into spaces of distributions supported there
+     (the superscript $\bullet$);
+   - the cut-off $\chi_K$ vanishes for $t_* \le 10$ (preamble of Theorem
+     13.1). Here $\phi$ is the small asymptotic boost, and
    $h'$ lies in the space of its Definition 5.3, with small norm (its
    (5.56) and Step 2).
 2. **The outgoing null component $g(\partial_0, \partial_0)$**, term by term:
@@ -692,8 +696,8 @@ Then (N) holds.
 **What Lemma 6 rests on.** We read these statements but did not verify them
 independently:
 
-- the support properties in step 1, taken from the structure of the proof
-  of Theorem 13.1;
+- the support properties in step 1, from Definition 12.1, the target
+  spaces of Theorem 12.3, and the proof of Theorem 13.1 (session 6: read);
 - that Definition 5.3 describes $h'$ uniformly up to $\mathscr I^+$ near
   its corner with spatial infinity. Definition 5.3 is stated on the exterior
   domain, which contains that corner.

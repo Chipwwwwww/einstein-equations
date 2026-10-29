@@ -113,9 +113,20 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
   - **The Penrose bound $A \le 16\pi$.** The part of the surface before the
     neck has area of order $2A(S_+) \approx 26 < 16\pi$, so it is not
     violated.
-- **Route.** In $\sigma$-time ($ds = \rho\,d\sigma$) the system is regular;
-  use an isolating block at the axis fixed point plus a validated sweep
-  elsewhere.
+- **Refined picture.** The individual horizon's profile joins the two axis
+  fixed points $(0, z_{\rm top})$ and $(0, z_{\rm bot} = 0.2126)$, and read
+  backwards it is again a solution. So there is a heteroclinic cycle between
+  two saddles, with eigenvalues $\pm1$ in $\sigma$-time.
+  - Curves just above $z_{\rm top}$ go down along it and neck near the
+    bottom. They come back up outside it ($z_0 - z_{\rm top} = 10^{-4}$:
+    the curve rises to $z \approx 0.57$ near the top), and may neck again:
+    multi-layer, onion-like embedded spheres.
+  - Crossing parity with rays from $p_+$ does not shortcut this: the parity
+    changes only after a neck.
+- **Route.** In $\sigma$-time ($ds = \rho\,d\sigma$) the system is regular.
+  Use isolating blocks at both saddles, validated transport along the two
+  connecting orbits, and a validated sweep elsewhere: a
+  heteroclinic-cycle (Shilnikov-type) argument.
 
 ## Ideas considered and not pursued (this session)
 
