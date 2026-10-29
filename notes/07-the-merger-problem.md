@@ -96,13 +96,16 @@ only meaningful when $\mathscr I^+$ is complete (Christodoulou's notion: the
 affine length of its generators is infinite). The horizon is *teleological*:
 whether a point is inside depends on what happens later.
 
-**Definition (event-horizon merger).** An asymptotically flat vacuum spacetime
-with complete $\mathscr I^+$ *describes the merger of two black holes* if there
-are Cauchy surfaces $\Sigma_1 \prec \Sigma_2$ (both reaching spatial infinity)
-such that $\mathcal B \cap \Sigma_1$ has two connected components and
-$\mathcal B \cap \Sigma_2$ is connected. *Initially distinct* means
-$\mathcal B \cap \Sigma_t$ has two components for all $\Sigma_t \preceq \Sigma_1$
-in some Cauchy foliation.
+**Definition (event-horizon merger).** Let an asymptotically flat vacuum
+spacetime with complete $\mathscr I^+$ contain two black holes, i.e. two
+families of closed trapped surfaces $T_1(t)$, $T_2(t)$ along a Cauchy foliation
+$\Sigma_t$ (each reaching spatial infinity). It *describes their merger* if
+there are times $t_1 < t_2$ such that $T_1(t_1)$ and $T_2(t_1)$ lie in
+**different** connected components of $\mathcal B \cap \Sigma_{t_1}$, while
+$T_1(t_2)$ and $T_2(t_2)$ lie in the **same** component of
+$\mathcal B \cap \Sigma_{t_2}$. *Initially distinct* means the components differ
+for all $t \le t_1$. (Asking for $\mathcal B \cap \Sigma_{t_2}$ to be connected
+would be stronger. Stray components elsewhere would not change the physics.)
 
 The number of components of $\mathcal B \cap \Sigma$ depends on the slice (the
 transient toroidal horizons of Emparan–Martínez–Zilhão 2018 are a reminder),
