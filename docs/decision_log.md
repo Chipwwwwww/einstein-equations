@@ -2,6 +2,39 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-29 (session 3) — The fold hypothesis (F), proved by computer
+
+**Decisions**
+
+- **Piecewise step schedule** for the validated integrator (`MU_SCHEDULE` in
+  `research/calc/fold_proof.py`): low order with small $h/s$ near the axis,
+  high order beyond. This replaced session 2's diagnosis of a structural
+  barrier, which measurement showed to be wrong. Both the error and its
+  correction are recorded in the module docstring, notes/09 and the idea log.
+- **Acceptance criteria for a computer-assisted claim**, all met before
+  claiming Theorem C:
+  - known-solution tests;
+  - jets checked against SymPy;
+  - agreement with the independent floating-point code;
+  - overlap of enclosures under a second step schedule;
+  - literature agreement.
+- **The certificate test is `slow`-marked** (about 5 minutes); everything else
+  stays in CI.
+
+**Progress**
+
+- Theorem C (notes/09): unique fold point,
+  $d_c = 0.766197428240 \pm 1.1\times10^{-13}\,M$; signs of $F_{zz}$, $F_d$,
+  $F_t$; positive Jacobi field; embedded critical surface. Proposition B now
+  depends only on standard analytic steps, written as sketches. The onset
+  slope for geodesic slicing is rigorously in $[2.3768, 2.3936]$.
+
+**Next**
+
+- Write out the analytic steps of Proposition B. Then certify the
+  $N = \psi^{-2}$ slope, and attempt a rigorous proof that no common MOTS
+  exists at $t = 0$ (see `research/status.md`).
+
 ## 2026-10-29 (later) — Session 2: attempted computer-assisted proof of the fold
 
 **Decisions**

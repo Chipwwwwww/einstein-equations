@@ -1,38 +1,59 @@
-"""Toward a computer-assisted proof of the fold hypothesis (F) (notes/09, H4). INCOMPLETE.
+"""Computer-assisted verification of the fold hypothesis (F) (notes/09, H4).
 
-STATUS (2026-10-29): this does NOT yet prove (F). What works and what does not:
+RESULT (session 3, 2026-10-29). With F(z0, d, t) the shooting function described below:
 
-- The validated Taylor integrator (Moore's method with a Picard a-priori enclosure and a
-  Lagrange remainder, in Arb ball arithmetic via python-flint) is correct on ODEs with known
-  solutions (tests/test_fold_proof.py), and so are the parameter jets.
-- On the shooting problem it fails: near the axis singularity the ball radii grow like s^4
-  (even from an exact initial state), although the true dynamics there are neutral. That
-  is overestimation (the dependency / wrapping effect) of the naive method. Starting from
-  the rigorous axis enclosure at s1 = 2^-26 the radii exceed O(1) before s = 0.25.
-- An earlier run reported a successful Krawczyk test. It was INVALID: python-flint caps
-  power series at length 10 by default (ctx.cap), so higher Taylor terms and the remainder
-  were silently dropped. The cap is now raised below, and the known-solution tests catch it.
+  (1) Krawczyk: F = dF/dz0 = 0 (t = 0) has exactly one solution in the box
+      X = FOLD_CENTRE +- 1e-12, with z0_c = 0.632659552806 +- 3e-13 and
+      d_c = 0.766197428240 +- 1.1e-13 (ADM mass M = 1), i.e. 1.532394856480 +- 2e-13 in
+      units of the bare mass.
+  (2) At the fold point: d^2F/dz0^2 in [240.87, 242.70] > 0, dF/dd in [1.2315, 1.2364] > 0,
+      dF/dt in [-0.51816, -0.51655] < 0 (lapse N = 1), so the onset slope dF/dd / (-dF/dt)
+      lies in [2.3768, 2.3936].
+  (3) Along the curve: the variation field dX/dz0 has positive normal component (so the
+      Jacobi field phi_0 > 0), sin(alpha) < 0 and rho > 0 after the axis, and z > 0 where the
+      height becomes the independent variable: the critical surface is an embedded sphere
+      enclosing both punctures.
 
-What is needed: a Lohner-type step (carry the linear part of the flow with point matrices
-and QR preconditioning), or Taylor-model arithmetic for a high-order rigorous expansion
-about the axis, s in [0, ~0.05], after which the regular part is benign.
+Rigour rests on Arb's ball arithmetic and on this implementation, which is checked against
+ODEs with exact solutions at several orders, jets against SymPy derivatives, F and its jets
+against the independent floating-point code research/calc/bl_fold.py, and the whole
+evaluation against a second, finer step schedule (all enclosures overlap). Run main() or the
+slow test tests/test_fold_proof.py::test_fold_certificate (~5 min).
 
-Design, for whoever continues. F(z0, d, t) is the shooting function of
-research/calc/bl_fold.py (lapse N = 1, theta_+ = H_S + t p to first order in t). A
-symmetric common MOTS is a zero of F, and (F) in shooting form says: F = dF/dz0 = 0 has a
-nondegenerate solution (d^2F/dz0^2 != 0, dF/dd != 0), with a positive Jacobi field. The
-pieces:
-  * axis segment [0, s1]: alpha = s A, rho = s + s^3 Q, z = z0 + s^2 Z, and A, Q, Z are
-    weighted averages, e.g. A(s) = s^-2 Int_0^s sigma Phi, so a box X with T(X) inside
-    int(X) encloses them (verified; tight);
-  * (rho, z, mu = rho sin alpha) away from the axis: (rho sin alpha)' = rho cos(alpha) G
-    removes the 1/rho term analytically, but not the ball overestimation;
-  * (rho, z, alpha), then z as independent variable, so the end condition z = 0 is fixed;
-  * jets in (z0, d, t) with monomials 1, z, d, t, z^2, zd give dF/dz0, dF/dd, dF/dt,
-    d^2F/dz0^2, d^2F/dz0 dd, enough for a Krawczyk test on (F, dF/dz0) = 0
-    (krawczyk(), certify_fold()).
+History, kept because it matters for trust:
+- Session 2: a first "verified" run was INVALID. python-flint caps power series at length 10
+  by default (ctx.cap), silently dropping Taylor terms and the remainder. The cap is now set
+  explicitly and the known-solution tests catch any recurrence.
+- Session 2 also blamed a "structural barrier" at the axis for the failure that followed.
+  That diagnosis was WRONG. The blow-up came from low-order Taylor steps once the step size
+  grew. The fix was the piecewise step schedule MU_SCHEDULE: order 8 near the axis with
+  h <= s/64, order 18 further out with h <= min(s/32, 2^-9).
 
-Run: python -m research.calc.fold_proof   (prints the radius-growth diagnostic)
+Shooting function. Start the meridian curve of an axisymmetric surface at the axis point
+(0, z0) with horizontal tangent, solve theta_+ = H_S + t p = 0 (first order in t, lapse 1)
+until the curve meets z = 0, and record F = alpha + pi/2 there. A reflection-symmetric common
+MOTS is a zero of F.
+
+Method. The ODE alpha' = -sin(alpha)/rho + G has a singular point on the axis.
+  * Axis segment [0, s1], s1 = 2^-26: with alpha = s A, rho = s + s^3 Q, z = z0 + s^2 Z,
+    A(s) = s^-2 Int_0^s sigma Phi,  Q(s) = -s^-3 Int_0^s sigma^2 (A^2/2) sinc^2(sigma A/2),
+    Z(s) = s^-2 Int_0^s sigma A sinc(sigma A),  Phi = G + A (1 - sinc(s A) / (1 + s^2 Q)).
+    These are weighted averages, so A, Q, Z lie in (1/2) hull Phi, -(1/6) hull(..),
+    (1/2) hull(..). A box X with T(X) in int(X) encloses them, by continuation from s = 0.
+  * mu = rho sin(alpha), for which (rho sin alpha)' = rho cos(alpha) G: the singular term
+    cancels exactly. cos(alpha) = +sqrt(1 - (mu/rho)^2) is justified because the enclosure
+    keeps |mu/rho| < 1.
+  * then (rho, z, alpha); finally z itself as the independent variable (tau in [0, 1],
+    z = z_switch (1 - tau)), so the end condition z = 0 is at a fixed point.
+  * Each step uses Moore's method: a Taylor polynomial of the solution, a Picard a-priori
+    enclosure B (y0 + [0,h] f(B) inside B), and a Lagrange remainder from the Taylor
+    coefficient of order p+1 evaluated on B.
+  * Jets in (z0, d, t) with monomials 1, z, d, t, z^2, zd (a quotient ring) carry F_z, F_d,
+    F_t, F_zz, F_zd.
+  * The Krawczyk test runs on Psi = (F, F_z): Psi at the centre comes from a point run, and
+    the enclosure of D Psi over the box from a run with ball-valued parameters.
+
+Run: python -m research.calc.fold_proof   (~10 min: Newton refinement, then the certificate)
 """
 
 import math
@@ -274,7 +295,7 @@ def step(rhs, y, h, L):
     return out, B
 
 
-def integrate(rhs, y, t0, t1, h, L, check=None, geometric=False):
+def integrate(rhs, y, t0, t1, h, L, check=None, geometric=False, ratio=None):
     """Integrate from t0 to t1 (state component 0 is the independent variable) with dyadic
     steps of at most h (last step shortened). With geometric=True the step is also at most
     the largest power of 2 not exceeding t/GEOMETRIC_RATIO, as needed near the axis. `check(B)` is called
@@ -284,7 +305,7 @@ def integrate(rhs, y, t0, t1, h, L, check=None, geometric=False):
     while t < t1:
         hh = min(h, t1 - t)
         if geometric:
-            hh = min(hh, 2.0 ** math.floor(math.log2(t / GEOMETRIC_RATIO)))
+            hh = min(hh, 2.0 ** math.floor(math.log2(t / (ratio or GEOMETRIC_RATIO))))
         while True:
             try:
                 y_new, B = step(rhs, y, hh, L)
@@ -381,6 +402,7 @@ class Checks:
 
     def __init__(self):
         self.axis_A_max = math.nan
+        self.z_switch_min = math.nan
         self.jacobi_min = math.inf
         self.sin_max = -math.inf
         self.rho_min = math.inf
@@ -415,8 +437,21 @@ S_A = 0.25
 S_SW = 0.375
 
 
-def shoot(z0, d, L=12, h=2.0**-6, checks=None, L_axis=8):
-    """Validated shooting. z0, d: arb balls. Returns the jet of F = alpha_end + pi/2."""
+# Step schedule. Near the axis the Taylor coefficients of the near-singular field carry
+# radii growing like (C/s)^k, so steps must stay small relative to s; further out, low order
+# with large steps lets the per-step remainder dominate. Each entry is
+# (end of piece, Taylor length L = order + 2, step <= s / ratio, maximal step).
+MU_SCHEDULE = [(2.0**-9, 10, 64, 1.0), (S_A, 20, 32, 2.0**-9)]
+ALPHA_SCHEDULE = (20, 2.0**-9)   # (L, step) on [S_A, S_SW]
+TAU_SCHEDULE = (20, 2.0**-7)     # (L, step) in tau on [0, 1]
+
+
+def shoot(z0, d, checks=None, mu_schedule=None, alpha_schedule=None, tau_schedule=None):
+    """Validated shooting. z0, d: arb balls. Returns the jet of F = alpha_end + pi/2 and the
+    number of steps per segment."""
+    mu_schedule = mu_schedule or MU_SCHEDULE
+    La, ha = alpha_schedule or ALPHA_SCHEDULE
+    Lt, ht = tau_schedule or TAU_SCHEDULE
     zj = J([z0, arb(1), arb(0), arb(0), arb(0), arb(0)])
     dj = J([d, arb(0), arb(1), arb(0), arb(0), arb(0)])
     A, Q, Z = axis_enclosure(zj, dj, S1)
@@ -436,15 +471,23 @@ def shoot(z0, d, L=12, h=2.0**-6, checks=None, L_axis=8):
         aa = (A * sig).c[0]
         n_dot = -aa.sin() * Q.c[1] * sig**3 + aa.cos() * (1 + Z.c[1] * sig**2)
         checks.jacobi_min = min(checks.jacobi_min, float(n_dot.lower()))
-    y, n1 = integrate(make_rhs_mu(dj), y, S1, S_A, h, L_axis, checks.mu if checks else None,
-                      geometric=True)
+    t, n1 = S1, 0
+    rhs = make_rhs_mu(dj)
+    for s_end, L, ratio, hmax in mu_schedule:
+        y, n = integrate(rhs, y, t, s_end, hmax, L, checks.mu if checks else None,
+                         geometric=True, ratio=ratio)
+        t, n1 = s_end, n1 + n
     s, rho, z, mu = y
     y = [s, rho, z, asin(mu / rho)]
-    y, n2 = integrate(make_rhs_alpha(dj), y, S_A, S_SW, h, L, checks.alpha if checks else None)
+    y, n2 = integrate(make_rhs_alpha(dj), y, S_A, S_SW, ha, La, checks.alpha if checks else None)
     s, rho, z, a = y
     zsw = z
+    if checks is not None:
+        # z decreases along the whole curve (sin(alpha) < 0), so it first meets z = 0 in the
+        # tau segment provided z > 0 at the switch.
+        checks.z_switch_min = float(zsw.c[0].lower())
     y = [J([arb(0)] + [arb(0)] * 5), rho, a]
-    y, n3 = integrate(make_rhs_tau(dj, zsw), y, 0.0, 1.0, h * 2, L,
+    y, n3 = integrate(make_rhs_tau(dj, zsw), y, 0.0, 1.0, ht, Lt,
                       checks.tau(zsw) if checks else None)
     F = y[2] + arb.pi() / 2
     return F, (n1, n2, n3)
@@ -492,8 +535,8 @@ def krawczyk(z, d, r):
 
 
 # Newton-refined centre (from main(); recorded so the certificate can be re-run quickly).
-FOLD_CENTRE = (0.6326595528058453, 0.7661974282400333)
-BOX_RADIUS = 1e-13
+FOLD_CENTRE = (0.6326595528058354, 0.766197428240025)
+BOX_RADIUS = 1e-12
 
 
 def certify_fold(z=FOLD_CENTRE[0], d=FOLD_CENTRE[1], r=BOX_RADIUS):
@@ -536,11 +579,32 @@ def radius_growth_diagnostic(z=0.62, d=0.7662, s_end=0.05, L=8):
 
 
 def main():
-    print("Near-axis radius growth from an exact start (order", 8, "steps <= s /",
-          GEOMETRIC_RATIO, "):")
-    radius_growth_diagnostic()
-    print("Radii grow like s^4 although the true flow is neutral here: the naive enclosure")
-    print("overestimates. (F) is NOT certified by this module; see the docstring.")
+    z, d = 0.6326595577095465, 0.7661974282424348  # floating-point fold from bl_fold
+    print("Newton refinement with validated point evaluations ...", flush=True)
+    z, d = newton_refine(z, d)
+    print(f"   centre z0 = {z!r}, d = {d!r}", flush=True)
+    res = certify_fold(z, d, BOX_RADIUS)
+    K = res["K"]
+    print(f"\nKrawczyk on X = centre +- {BOX_RADIUS:g} (steps per segment {res['steps']}): "
+          f"verified = {res['verified']}")
+    print(f"   the unique fold point lies in K: z0_c = {K[0].str(15, radius=True)}, "
+          f"d_c = {K[1].str(15, radius=True)}")
+    print("   jet at the centre of X (point evaluation):")
+    for nm, c in zip(NAMES, res["point"].c):
+        print(f"      {nm:7s} {c.str(14, radius=True)}")
+    print("   enclosures over all of X:")
+    for nm, c in zip(NAMES, res["box"].c):
+        print(f"      {nm:7s} [{float(c.lower()):+.10e}, {float(c.upper()):+.10e}]")
+    chk = res["checks_X"]
+    print(f"   over X: Jacobi field >= {chk.jacobi_min:.6f}; sin(alpha) <= {chk.sin_max:.3e} "
+          f"after the axis segment (A <= {chk.axis_A_max:.6f} on it); rho >= {chk.rho_min:.3e}; "
+          f"z at the switch >= {chk.z_switch_min:.4f}")
+    print("\nenclosures at the fold point (box run on a ball containing K):")
+    for nm, c in zip(NAMES, res["at_fold"].c):
+        print(f"      {nm:7s} [{float(c.lower()):+.12e}, {float(c.upper()):+.12e}]")
+    sl = res["slope"]
+    print(f"   onset slope F_d / (-F_t) in [{float(sl.lower()):.8f}, {float(sl.upper()):.8f}]")
+    print(f"   d_c in bare-mass units: {(2 * K[1]).str(15, radius=True)}")
 
 
 if __name__ == "__main__":

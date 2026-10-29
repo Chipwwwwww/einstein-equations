@@ -17,7 +17,7 @@ $K_{ij} = \nabla_i n_j$ and $\theta_\pm = \mathrm{tr}_S K \pm H_S$.
 | H1 | explicit metric | Kastor–Traschen's umbilic, zero-shift slicing at Λ = 0 | **fails**: Lemma A, slices freeze |
 | H2 | explicit metric (unconventional) | same, with hyperboloidal (Milne) slices, which escape Lemma A | **fails**: curvature of the slices forbids centres |
 | H3 | existence | event horizons of Hintz's extreme-mass-ratio mergers via causal stability | **designed**; two inputs unverifiable this session |
-| H4 | existence + controlled expansion | unfolding of the fold at which a common horizon is born | **survives**: Proposition B, checked two ways |
+| H4 | existence + controlled expansion | unfolding of the fold at which a common horizon is born | **survives**: Proposition B, with the fold proved by computer (Theorem C) |
 
 ## H1 · The Kastor–Traschen mechanism at Λ = 0
 
@@ -196,8 +196,8 @@ E_{ij} = -\left(2WW_{tt} + 3W_t^2 - \Lambda - W^{-2}\right) g_{ij} .
    **potentially new**, and small.
 4. **Assumptions.** Vacuum, Λ = 0, asymptotically flat, time-symmetric data:
    the primary target, near its threshold. The fold hypotheses (F) below are
-   verified numerically, not proved. The result is local in time and about
-   apparent horizons, **not** event horizons.
+   verified by a computer-assisted proof (Theorem C). The result is local in
+   time and about apparent horizons, **not** event horizons.
 5. **Calculation** ([`research/calc/bl_fold.py`](../research/calc/bl_fold.py),
    [`tests/test_bl_fold.py`](../tests/test_bl_fold.py)). Brill–Lindquist data
    with bare masses $\frac12$ (ADM mass $M = 1$), punctures at $z = \pm d/2$.
@@ -227,77 +227,125 @@ E_{ij} = -\left(2WW_{tt} + 3W_t^2 - \Lambda - W^{-2}\right) g_{ij} .
    $[-0.576, +0.106]$, so $\theta_- > 0$ on part of the surface. That is
    another reminder that quasi-local horizons depend on the slicing.
 
-**Proposition B (conditional on (F)).** Let $(\gamma_d, K = 0)$ be the
-Brill–Lindquist family above and assume:
+**The fold, verified by computer.** Let $F(z_0, d, t)$ be the *shooting
+function* for lapse $N = 1$. Start the meridian curve of an axisymmetric surface
+at the axis point $(0, z_0)$ with horizontal tangent. Solve
+$\theta_+ = H_S + t\,p = 0$ until the curve meets $z = 0$, and record
+$F = \alpha + \pi/2$ there, where $\alpha$ is the tangent angle. A
+reflection-symmetric common MOTS is exactly a zero of $F$.
 
-> **(F)** At $d = d_c$ the $t = 0$ slice contains a closed, embedded,
-> axisymmetric minimal surface $S_c$, symmetric under $z \to -z$ and enclosing
-> both punctures. Its Jacobi operator has a simple eigenvalue $0$ with
-> eigenfunction $\phi_0 > 0$, with $\beta \ne 0$ and $\alpha = \langle\phi_0, D^2H[\phi_0,\phi_0]\rangle \ne 0$.
-> The fold opens toward $d < d_c$.
+**Theorem C (computer-assisted).** In the box
+$X = (0.6326595528058354, 0.766197428240025) \pm 10^{-12}$, the system
+$F = \partial_{z_0}F = 0$ at $t = 0$ has exactly one solution $(z_{0,c}, d_c)$, with
 
-Take the vacuum development, foliated near $S_c$ by slices $\Sigma_t$ with
-zero shift and a lapse $N_d > 0$ depending smoothly on $(d, t, x)$. Then there
-are $\delta_0, t_0 > 0$ and a neighbourhood $\mathcal U$ of $S_c$ such that, for
+```math
+d_c = 0.766197428240 \pm 1.1\times10^{-13}\,M \quad (= 1.532394856480 \pm 2\times10^{-13} \text{ bare masses}).
+```
+
+At that point
+
+```math
+\partial^2_{z_0}F \in [240.87, 242.70], \qquad
+\partial_dF \in [1.2315, 1.2364], \qquad
+\partial_tF \in [-0.51816, -0.51655] .
+```
+
+Along the critical curve, three things hold. The normal component of
+$\partial X/\partial z_0$ is positive. After the axis, $\sin\alpha < 0$ and
+$\rho > 0$. And $z > 0$ at the point where the height becomes the independent
+variable.
+
+*How.* [`research/calc/fold_proof.py`](../research/calc/fold_proof.py) uses
+Arb ball arithmetic throughout, in four stages:
+
+- **Off the axis:** a fixed-point enclosure of the first segment, where
+  $\alpha = sA$ and $A = s^{-2}\int_0^s\sigma\Phi$ is a weighted average.
+- **Validated Taylor steps:** a Picard a-priori enclosure and a Lagrange
+  remainder on each step, using the substitution $\mu = \rho\sin\alpha$. That
+  substitution removes the $1/\rho$ singularity exactly, since
+  $(\rho\sin\alpha)' = \rho\cos\alpha\,G$.
+- **Derivatives:** jets in $(z_0, d, t)$ carry $\partial_{z_0}F$, $\partial_dF$,
+  $\partial_tF$, $\partial^2_{z_0}F$ and $\partial_{z_0}\partial_dF$.
+- **The fold itself:** a Krawczyk test on $(F, \partial_{z_0}F)$.
+
+The implementation is checked four ways:
+
+1. against ODEs with exact solutions, at several orders;
+2. jets against SymPy derivatives;
+3. $F$ and its derivatives against the independent floating-point code
+   `bl_fold.py`, and against finite differences;
+4. against a second, finer step schedule: every enclosure overlaps.
+
+It reproduces Hui & Lin's $d_c$ (1.5323948, and 1.5323949 from their ref.)
+as an interval of width $4\times10^{-13}$.
+
+> **History, for trust.** A first "verified" Krawczyk run (session 2) was
+> invalid. python-flint truncates power series at length 10 unless told
+> otherwise, so Taylor terms and remainders were dropped. The known-solution
+> tests exposed it. Session 2 then attributed the next failure to a structural
+> barrier at the axis. That diagnosis was **wrong**. The blow-up came from
+> low-order Taylor steps once steps grew. The fix was a piecewise schedule:
+> order 8 with $h \le s/64$ near the axis, order 18 with
+> $h \le \min(s/32, 2^{-9})$ beyond.
+
+**Corollary (the fold hypothesis (F) holds).** (F) asserts four things: a
+degenerate common minimal surface $S_c$ exists at $d = d_c$; its Jacobi
+operator has a simple zero eigenvalue with positive eigenfunction; the fold is
+nondegenerate; and it opens toward $d < d_c$. Indeed, $S_c$ is an embedded,
+axisymmetric, reflection-symmetric minimal sphere enclosing both punctures. The field
+$\phi_0 = \psi^2\, n\cdot\partial X/\partial z_0$ solves the Jacobi equation on
+the half-surface. Because $\partial_{z_0}F = 0$, it meets $z = 0$ with the
+symmetric boundary condition, so it extends to a Jacobi field on $S_c$. It is
+positive, hence the principal eigenfunction, so $0$ is a simple eigenvalue.
+The fold is nondegenerate ($\partial^2_{z_0}F > 0$, $\partial_dF > 0$) and
+opens toward $d < d_c$.
+
+**Proposition B.** Take the vacuum development of the Brill–Lindquist data
+above, foliated near $S_c$ by slices $\Sigma_t$ with zero shift and a lapse
+$N_d > 0$ depending smoothly on $(d, t, x)$. Then there are $\delta_0, t_0 > 0$
+and a neighbourhood $\mathcal U$ of $S_c$ such that, for
 $d_c < d < d_c + \delta_0$ and $0 \le t \le t_0$:
 
 1. $\Sigma_0$ contains two disjoint minimal surfaces, each enclosing one
    puncture (certified for $d \in [0.76, 0.78]$), and no MOTS in $\mathcal U$;
 2. $\Sigma_t$ contains a MOTS in $\mathcal U$ enclosing both punctures **if and
-   only if** $t \ge t_*(d)$, with $t_*$ given by (*). For the data above,
-   $t_* = 2.3852\,(d - d_c)$ in geodesic slicing and $10.644\,(d - d_c)$ for
-   $N = \psi^{-2}$, in units $G = c = M = 1$.
+   only if** $t \ge t_*(d)$, where
 
-*Proof sketch.* (1) By Cauchy stability, the development and the slicing
-depend smoothly on $(d, t)$ near $(d_c, 0)$. The expansion of normal graphs
-$u\nu$ over $S_c$ then defines a smooth map $\Theta(u; d, t)$ from $C^{2,\alpha}$
-to $C^{0,\alpha}$, with $\Theta(0; d_c, 0) = 0$. (2) $D_u\Theta(0; d_c, 0) = L$
-is self-adjoint and Fredholm of index 0, with kernel and cokernel spanned by
-$\phi_0$. (3) Write $u = s\phi_0 + w$ with $w \perp \phi_0$, solve the
-projected equation for $w(s, d, t)$ by the implicit function theorem, and
-expand the bifurcation function
-$f = \langle\phi_0, \Theta\rangle = \alpha s^2 + \beta(d - d_c) + \gamma t + O(|s|^3 + |s|(|d - d_c| + t) + (d - d_c)^2 + t^2)$.
-Here $\partial_t f = \langle\phi_0, p\rangle = \gamma$, because
-$\partial_t\gamma_{ij} = 0$ at $t = 0$, and $\gamma < 0$ by the identity above.
-(4) The fold orientation means $\alpha, \beta > 0$. Numerically
-$\beta > 0$ (it is 314.45 for the normalisation of $\phi_0$ in the code; only
-the sign matters, since $\phi_0$ cancels in (*)). So $f = 0$ has solutions with small $s$ exactly when
-$\beta(d - d_c) + \gamma t \le$ higher-order terms, i.e. $t \ge t_*(d)$. ∎
+```math
+t_*(d) = c_N\,(d - d_c) + O\big((d - d_c)^2\big), \qquad
+c_N = \frac{\langle\phi_0, \partial_dH\rangle}{\int_{S_c} N\phi_0|A|^2\,dA} .
+```
 
-The sketch is standard nonlinear analysis, but it is a sketch: steps (1)–(3)
-are not written out with function spaces and estimates. (F) rests on
-numerics, which a computer-assisted proof could replace (see
-[`research/status.md`](../research/status.md)).
+For geodesic slicing, $c_1 = \partial_dF/(-\partial_tF) \in [2.3768, 2.3936]$
+(**rigorous**, Theorem C). Numerically $c_1 = 2.385183$ and
+$c_{\psi^{-2}} = 10.644372$. Units are $G = c = M = 1$.
 
-**Attempted computer-assisted proof of (F) (session 2): not achieved.**
-[`research/calc/fold_proof.py`](../research/calc/fold_proof.py) implements the
-following, in Arb ball arithmetic:
+*Proof.* (a) *Smooth dependence.* By Cauchy stability the development and the
+slicing depend smoothly on $(d, t)$ near $(d_c, 0)$. So does the shooting
+function $\tilde F(z_0, d, t)$ of the true slices. At $t = 0$ it equals $F$,
+and $\partial_t\tilde F = \partial_tF$ there, because
+$\gamma(t) = \gamma + O(t^2)$ and $K(t) = t\dot K + O(t^2)$. (b) *Fold
+analysis* (elementary, given Theorem C). Since $\partial^2_{z_0}\tilde F > 0$,
+the implicit function theorem solves $\partial_{z_0}\tilde F = 0$ by
+$z_0 = \zeta(d, t)$. Set $m(d, t) = \tilde F(\zeta, d, t)$. Then $m(d_c, 0) = 0$,
+$\partial_d m = \partial_d F > 0$ and $\partial_t m = \partial_t F < 0$.
+Because $\tilde F$ is convex in $z_0$ near $z_{0,c}$, it has zeros there exactly
+when $m \le 0$. That gives item 2 for symmetric MOTSs, with slope
+$\partial_dF/(-\partial_tF)$. The same slope also equals the
+Lyapunov–Schmidt form (*): both describe the same set. Numerically the two
+agree to six digits. (c) *Every MOTS in $\mathcal U$ is symmetric.* By the
+Corollary the kernel of the stability operator is one-dimensional and
+symmetric. In the Lyapunov–Schmidt reduction (normal graphs
+$u = s\phi_0 + w$, with $w$ solved by the implicit function theorem), the
+solution for given $(s, d, t)$ is unique. The reflected and rotated solutions
+are solutions too, so they coincide with it. (d) Item 1 follows from (b) at
+$t = 0$, together with the individual-horizon certificates. ∎
 
-- the shooting function in validated form, with jets in $(z_0, d, t)$;
-- a rigorous fixed-point enclosure of the first segment off the axis, where
-  $\alpha = sA$ and $A(s) = s^{-2}\int_0^s\sigma\Phi$ is a weighted average;
-- the substitution $\mu = \rho\sin\alpha$, which removes the $1/\rho$ term
-  exactly;
-- a Krawczyk test for $(F, \partial_{z_0}F) = 0$.
-
-A first run reported a successful Krawczyk test. **It was invalid.** python-flint
-truncates power series at length 10 by default, so Taylor terms and remainders
-were dropped silently. Tests against ODEs with known solutions exposed this
-([`tests/test_fold_proof.py`](../tests/test_fold_proof.py)).
-
-With the truncation fixed, the naive (Moore-type) enclosure cannot close.
-The zeroth-order axis enclosure has relative width $\propto s_1^2$. After that,
-ball radii grow like $(s/s_1)^2$, although the true flow is neutral there. So
-the final relative width is about $C s_{\rm end}^2 = O(1)$, whatever $s_1$ is.
-(F) therefore remains numerical. The remedy is known: a higher-order rigorous
-(Taylor-model) expansion about the axis, and probably Lohner-type steps.
-
-As numerics only: the Arb integrator at the Newton-refined fold (effectively
-order 9, before the fix) gave $\partial_dF/(-\partial_tF) = 1.2339894/0.5173564 = 2.385183$.
-That is a third method agreeing with (*), and it gives
-$d_c = 0.766197428240\,M$. That $\Sigma_0$ has **no**
-common MOTS anywhere, not just in $\mathcal U$, is numerical evidence
-(shooting, and agreement with Hui–Lin's $d_c$).
+What is rigorous: Theorem C and step (b). What is a standard argument written
+as a sketch: steps (a) and (c), i.e. function spaces, smooth dependence of the
+zero-shift slicing, and equivariance in the Lyapunov–Schmidt reduction. That
+$\Sigma_0$ has **no** common MOTS anywhere, not just in $\mathcal U$, is still
+numerical evidence (shooting, and agreement with Hui–Lin's $d_c$).
 
 **What H4 adds to the primary target.** It is an existence statement inside
 the target class: vacuum, Λ = 0, asymptotically flat developments in which
@@ -334,6 +382,7 @@ changed. Light rays notice the infall before rulers do.
 | H2 obstruction | a negative result within one ansatz; not found stated; not important by itself |
 | AMMS identity in the time-symmetric case | **known** (AMMS 2009 Prop. 5.1 with $W = \lvert A\rvert^2$); re-derived and checked numerically |
 | onset law (*) and Proposition B | **potentially new**; bounded search found no equivalent |
+| computer-assisted fold (Theorem C): rigorous $d_c$ to $10^{-13}$ | **potentially new as a rigorous statement**; the value of $d_c$ itself is known numerically |
 | BL numbers $d_c$, area | **known**; reproduced to all quoted digits |
 
 ## Discussion prompts

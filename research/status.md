@@ -1,8 +1,8 @@
 # Status
 
-*Updated 2026-10-29 (sessions 1 and 2). Start here.*
+*Updated 2026-10-29 (sessions 1–3). Start here.*
 
-## Established this session
+## Established so far
 
 **Tools.** The SymPy curvature code passes independent checks: an
 all-lower-index Riemann formula written from scratch, the algebraic
@@ -35,28 +35,39 @@ t_* = (d - d_c)\,\frac{\langle\phi_0, \partial_dH\rangle}{\int N\phi_0|A|^2\,dA}
 with $d_c = 0.7661974282\,M$. The formula is verified against direct
 solutions to 6 significant figures, and $d_c$ and the critical area match the
 literature to all quoted digits. Proposition B in notes/09 turns this into an
-apparent-horizon merger statement, conditional on the fold hypotheses (F).
+apparent-horizon merger statement.
 
-**Session 2.** A computer-assisted proof of (F) was attempted
-(`research/calc/fold_proof.py`) and **not** achieved. A first "verified"
-Krawczyk run was invalid: python-flint silently truncates power series at
-length 10. Once that was fixed, the naive validated integrator overestimates
-near the axis (see gap 1). The integrator pieces are tested on ODEs with known
-solutions.
+**Session 3: the fold hypothesis (F) is proved by computer (Theorem C,
+notes/09).** A Krawczyk test in Arb ball arithmetic
+(`research/calc/fold_proof.py`) gives three things:
+
+- a unique fold point of the shooting function, with
+  $d_c = 0.766197428240 \pm 1.1\times10^{-13}\,M$;
+- the signs $\partial^2_{z_0}F \in [240.87, 242.70]$, $\partial_dF \in [1.2315, 1.2364]$
+  and $\partial_tF \in [-0.51816, -0.51655]$;
+- a positive Jacobi field and an embedded critical surface.
+
+Consequently the onset slope for geodesic slicing is **rigorously** in
+$[2.3768, 2.3936]$. The implementation is checked against exact ODE solutions,
+SymPy jets, the independent floating-point code, and a second step schedule.
+
+Two corrections to session 2. Its first "verified" run was invalid (the
+python-flint series cap). Its diagnosis of an axis "barrier" was wrong: the
+real cause was low-order steps at large step sizes, fixed by a piecewise
+schedule.
 
 ## Unresolved gaps
 
-1. **(F) is numerical.** The nondegenerate fold at $d_c$ (simple zero
-   eigenvalue, $\phi_0 > 0$, $\alpha, \beta \ne 0$) has no proof yet. The
-   session-2 attempt is blocked by a precisely identified bottleneck. The
-   zeroth-order axis enclosure has relative width $\propto s_1^2$, and ball
-   radii then grow like $(s/s_1)^2$, so the final width is about
-   $C s_{\rm end}^2$, independent of $s_1$.
-2. **Proposition B's proof is a sketch.** The Lyapunov–Schmidt argument needs
-   function spaces, smooth dependence of the zero-shift slicing on $(d, t)$,
-   and remainder estimates written out.
+1. **Proposition B's analytic steps are sketches.** These are the smooth
+   dependence of the zero-shift slicing (and of the shooting function of the
+   true slices) on $(d, t)$, and the equivariance step showing that every MOTS
+   near $S_c$ is axisymmetric and reflection symmetric. Both are standard;
+   neither is written out with function spaces.
+2. **The certificate's trust base.** It rests on Arb and on about 600 lines of
+   our own code. Tests and cross-checks are listed in notes/09, but no
+   independent person has reviewed the code.
 3. **Global absence of a common MOTS on $\Sigma_0$ for $d > d_c$** is
-   numerical only.
+   numerical only. Theorem C is local, near $S_c$.
 4. **Nothing about event horizons in vacuum.** H3's inputs (A2), (A3) are
    unchecked. Proposition B says nothing about $\mathscr I^+$, global
    existence or Kerr asymptotics.
@@ -64,26 +75,30 @@ solutions.
    horizons are taken from BHKT.
 6. **Literature items marked *not re-checked*** in `literature.md` (Hawking–Ellis
    and Wald propositions, Penrose 1965, Wald–Iyer 1991, Bartnik 1986).
+7. **Only geodesic slicing is certified.** The slope for $N = \psi^{-2}$
+   (10.644) is numerical; certifying it needs only the corresponding
+   $\dot K_{ij}$ in `t_coefficient`.
 
 ## Next concrete calculation
 
-**Finish the computer-assisted proof of (F)** in `research/calc/fold_proof.py`.
-Already in place: the jets, the Krawczyk test, the segment structure and the
-checks (Jacobi-field positivity, embeddedness), all exercised on the
-problem. Missing is one ingredient: a **high-order rigorous expansion about
-the axis**. Write $A(s) = \sum_{k \le n} a_k s^{2k} + s^{2n+2}\tilde A(s)$ (and
-likewise $Q$, $Z$). Compute the $a_k$ by the series fixed point
-$A_{\rm new} = \sum_k \Phi_k s^k/(k + 2)$ in `arb_series`. Enclose the
-remainders by the same weighted-average argument with weight
-$\sigma^{2n+3}$; that needs Taylor-model arithmetic for $\Phi$ along the
-solution. This makes the axis width $\propto s_1^{2n+2}$ and breaks the
-$C s_{\rm end}^2$ barrier. If the regular part then still wraps too much, add
-Lohner (QR) steps. Expected payoff: (F) with rigorous enclosures of $d_c$
-(about $10^{-14}$) and of the onset slope.
+**Write out the analytic part of Proposition B** (gap 1) as a short proof
+note. It needs three steps:
 
-After that: unequal masses (to test (*) off reflection symmetry), and
-boosted Bowen–York data, where the fold happens in time on one slice (AMMS
-directly) rather than in a family.
+- (i) A gauge in which the vacuum development depends smoothly on $(d, t)$,
+  e.g. harmonic coordinates for the development, then the zero-shift slicing
+  obtained by solving $\partial_t x = N n$, which is smooth for small $t$.
+- (ii) The expansion map $\Theta(u; d, t)$ on $C^{2,\alpha}$ normal graphs over
+  $S_c$, smooth, with $D_u\Theta = L$ at the fold.
+- (iii) The Lyapunov–Schmidt reduction, equivariant under rotations and
+  $z \to -z$, using that the kernel (spanned by $\phi_0$, Corollary to
+  Theorem C) is invariant.
+
+Then add the $N = \psi^{-2}$ certificate (gap 7). After that, the most
+interesting open direction is gap 3: a rigorous proof that no common MOTS
+exists on $\Sigma_0$ for $d > d_c$. One route is a sweep-out by surfaces with
+$H > 0$, verified by interval arithmetic as in notes/08 §6. That would make
+"two black holes at $t = 0$, a common horizon at $t_*$" a fully rigorous
+statement about the vacuum development.
 
 ## Reproduce
 

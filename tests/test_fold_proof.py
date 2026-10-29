@@ -63,3 +63,18 @@ def test_axis_enclosure_contains_the_regular_start():
     zero = fp.J([arb(0)] * 6)
     A0 = fp.G(zero + 0, zj, zero + 0, zero + 1, dj) * 0.5
     assert all(a.overlaps(b) for a, b in zip(A.c, A0.c))
+
+
+@pytest.mark.slow
+def test_fold_certificate():
+    """The computer-assisted part of (F) (notes/09, H4): Krawczyk verifies a unique fold point
+    of the shooting function in the box FOLD_CENTRE +- BOX_RADIUS, with d^2F/dz0^2 > 0,
+    dF/dd > 0, dF/dt < 0 there, a positive Jacobi field and an embedded curve. ~10 min."""
+    res = fp.certify_fold()
+    assert res["verified"]
+    F = res["at_fold"]
+    assert F.c[4] > 0 and F.c[2] > 0 and F.c[3] < 0  # F_zz/2, F_d, F_t
+    for chk in (res["checks_X"], res["checks_K"]):
+        assert chk.jacobi_min > 0 and chk.sin_max < 0 and chk.rho_min > 0 and chk.axis_A_max < 0
+        assert chk.z_switch_min > 0
+    assert res["slope"].overlaps(arb("2.385183", "1e-6"))  # (*) and the direct solve

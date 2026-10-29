@@ -66,7 +66,8 @@ python -m pytest -m "not slow"
 python -m pytest -m slow
 ```
 
-The second command runs the symbolic Kerr check (about three minutes). The
+The second command runs the slow checks: the symbolic Kerr check (about three
+minutes) and the computer-assisted fold certificate (about five minutes). The
 calculations in `calc/` each run as `python -m research.calc.<name>` from the
 repository root; each module's docstring says what it computes and what it
 prints. The expected outputs are recorded in [`status.md`](status.md).
