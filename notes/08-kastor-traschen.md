@@ -157,14 +157,84 @@ which we could not access; we claim no novelty for it.
 | one centre is RNdS with $Q = m$ | **verified** (scalar identity) |
 | horizons merge at $M_{\rm ext} = 1/(4\lvert H\rvert)$ | **verified** (discriminant) |
 | MOTSs on slices are CMC surfaces, $H_S = 2\lvert H\rvert$ | **verified** (exact) |
-| two-centre MOTSs merge in time | numerical, §6 |
+| two-centre MOTSs merge in time (on τ-slices) | numerical fold at $\tau_c = -0.01288$; existence before/after **computer-assisted**, §6 |
 | the coordinates extend through the horizons; extension non-unique; metric $C^2$ at the de Sitter horizon, $C^1$ at inner horizons | BHKT 1994, **not re-derived** |
 | for equal masses, the *event* horizon encloses each hole separately at early times and both at late times ("these results prove that the black holes coalesce") | BHKT 1994, analytic bounds on radial null geodesics, **not re-derived** |
 | for $M > M_{\rm ext}$: a naked singularity forms to the future of a Cauchy horizon | BHKT 1994, **not re-derived** |
 
 So the coalescence of event horizons in Kastor–Traschen rests on BHKT's
 null-geodesic estimates. We reproduce the local field equations and the
-apparent-horizon picture.
+apparent-horizon picture (§6).
+
+## 6. The apparent horizons merge: numerics and a computer-assisted proof
+
+Two equal masses $m = 0.05$ at $z = \pm d$, $d = 0.5$, with $H = -1$ (any
+$H < 0$ reduces to this by the homothety). Total mass $0.1 < M_{\rm ext} = 0.25$.
+On the slice $\tau$ the conformal factor is $U = |\tau| + m/r_1 + m/r_2$. Code:
+[`research/calc/kt_horizons.py`](../research/calc/kt_horizons.py); tests:
+[`tests/test_kt_horizons.py`](../tests/test_kt_horizons.py).
+
+**Numerical (evidence).** By §4 a MOTS is a closed surface with mean
+curvature $2$ in $U^2\delta$. For axisymmetric surfaces this is an ODE for the
+generating curve. A common MOTS is symmetric under $z \to -z$, so we shoot from
+the top of the axis and require a perpendicular crossing of $z = 0$.
+
+| $\tau$ | common MOTSs (height on the axis) |
+| --- | --- |
+| −0.05, −0.02, −0.015 | none with axis height in $(0.6, 3)$ |
+| −0.0125 | 0.906 (inner), 1.050 (outer) |
+| −0.01 | 0.843, 1.347 |
+| −0.008 | 0.823, 1.664 |
+
+The common horizon is born at
+
+```math
+\tau_c = -0.012884047 \quad(\text{change under a } 10^3\text{-fold looser tolerance: } 2\times10^{-10}),
+```
+
+as a **fold**: an inner and an outer common MOTS appear together, and the
+outer one then grows outward. This is the same picture numerical relativity
+finds for vacuum head-on collisions (Pook-Kolb et al. 2019). BHKT's
+order-of-magnitude estimate for the event-horizon topology change,
+$|\tau| \sim R_{bh}/(2a|H|) = 0.0127$ in these units, happens to lie within
+1.5 % of $|\tau_c|$. They are different objects, so this is not a test of
+either. As an independent check, the polar formula used for the certificates
+below, applied to accurate fits of the shooting solutions, gives
+$|\theta_+| \le 2\times10^{-8}$ on the outer and $2\times10^{-5}$ on the inner
+common MOTS.
+
+**Computer-assisted (rigorous, given two inputs).** Andersson–Metzger (2009,
+Theorem 3.1): if a smooth compact initial-data region has an inner boundary
+with $\theta_+ < 0$ (normal pointing into the region) and an outer boundary
+with $\theta_+ > 0$ (normal pointing out), it contains a smooth embedded MOTS
+homologous to the outer boundary. No energy condition is needed. We bound
+$\theta_+$ on explicit surfaces with interval arithmetic (mpmath `iv`,
+4000 subintervals of the polar angle, parameters taken as exact decimals):
+
+| slice | region | inner boundary | outer boundary | conclusion |
+| --- | --- | --- | --- | --- |
+| $\tau = -0.05$ | $0.001 \le \lvert\vec x - \vec x_1\rvert \le 0.2$ | $\theta_+ \le -1.83$ | $\theta_+ \ge 5.25$ | a MOTS enclosing $\vec x_1$ only |
+| $\tau = -0.05$ | mirror image about $z = 0$ | same | same | a MOTS enclosing $\vec x_2$ only; the two are disjoint |
+| $\tau = -0.009$ | between the surface `COMMON_BARRIER` and $\lvert\vec x\rvert = 3$ | $\theta_+ \le -0.126$ | $\theta_+ \ge 0.504$ | a MOTS enclosing **both** centres |
+
+`COMMON_BARRIER` is $r = \sum_{k=0}^{7} a_k\cos 2k\theta$ with eight given
+decimals (in the code). It is the outer common MOTS of the $\tau = -0.01$
+slice, which on the later slice lies in the outer-trapped band. It encloses
+both centres because $r(0) = 1.35 > d$. The MOTS found lies inside
+$|\vec x| = 3$, far from the cosmological apparent horizon at
+$|\vec x| \approx 90$, so it is a black-hole horizon.
+
+**Proposition (computer-assisted).** In this Kastor–Traschen spacetime the
+slice $\tau = -0.05$ contains two disjoint MOTSs, each enclosing one hole, and
+the slice $\tau = -0.009$ contains a MOTS enclosing both holes (with the
+individual ones still present inside it). *Rigour rests on* mpmath's
+outward-rounded interval arithmetic and on Andersson–Metzger's Theorem 3.1.
+
+**What this does not show.** It does not show that the $\tau = -0.05$ slice
+has *no* common black-hole MOTS: that is numerical evidence from shooting,
+restricted to axisymmetric symmetric surfaces. It is a statement about the
+$\tau$-foliation, not about the event horizon (see
+[07](07-the-merger-problem.md), §2).
 
 ## 5a. Why Λ → 0 does not give the target
 

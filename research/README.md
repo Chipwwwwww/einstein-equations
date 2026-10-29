@@ -46,15 +46,15 @@ $(-,+,+,+)$, Riemann tensor of MTW/Carroll, $G = c = 1$. In addition:
 
 ## Dependencies
 
-Python ≥ 3.12, SymPy ≥ 1.12, pytest ≥ 8 (`requirements.txt`). The numerical
-calculations in `calc/` also use NumPy, SciPy and mpmath (mpmath ships with
-SymPy). Tested with Python 3.13, SymPy 1.14, NumPy 2.5, SciPy 1.18,
+Python ≥ 3.12 and `requirements.txt`: SymPy ≥ 1.12, pytest ≥ 8, NumPy, SciPy
+(numerical calculations in `calc/`). mpmath, used for interval arithmetic,
+ships with SymPy. Tested with Python 3.13, SymPy 1.14, NumPy 2.5, SciPy 1.18,
 mpmath 1.3.
 
 ## Reproduce
 
 ```bash
-pip install -r requirements.txt scipy
+pip install -r requirements.txt
 ```
 
 ```bash
