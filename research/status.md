@@ -58,11 +58,11 @@ schedule.
 
 ## Unresolved gaps
 
-1. **Proposition B's analytic steps are sketches.** These are the smooth
-   dependence of the zero-shift slicing (and of the shooting function of the
-   true slices) on $(d, t)$, and the equivariance step showing that every MOTS
-   near $S_c$ is axisymmetric and reflection symmetric. Both are standard;
-   neither is written out with function spaces.
+1. **Proposition B: now written out in notes/10**, except for the standard
+   ingredients, which are cited but not re-checked. These are smooth
+   dependence of the development on parameters (harmonic gauge), and
+   smoothness of the expansion map on $C^{2,\alpha}$ graphs. The equivariant
+   Lyapunov–Schmidt step and the fold argument are written out.
 2. **The certificate's trust base.** It rests on Arb and on about 600 lines of
    our own code. Tests and cross-checks are listed in notes/09, but no
    independent person has reviewed the code.
@@ -75,30 +75,24 @@ schedule.
    horizons are taken from BHKT.
 6. **Literature items marked *not re-checked*** in `literature.md` (Hawking–Ellis
    and Wald propositions, Penrose 1965, Wald–Iyer 1991, Bartnik 1986).
-7. **Only geodesic slicing is certified.** The slope for $N = \psi^{-2}$
-   (10.644) is numerical; certifying it needs only the corresponding
-   $\dot K_{ij}$ in `t_coefficient`.
+7. *(Closed in session 3.)* The slope for $N = \psi^{-2}$ is certified as well:
+   $[10.606, 10.682]$.
 
 ## Next concrete calculation
 
-**Write out the analytic part of Proposition B** (gap 1) as a short proof
-note. It needs three steps:
-
-- (i) A gauge in which the vacuum development depends smoothly on $(d, t)$,
-  e.g. harmonic coordinates for the development, then the zero-shift slicing
-  obtained by solving $\partial_t x = N n$, which is smooth for small $t$.
-- (ii) The expansion map $\Theta(u; d, t)$ on $C^{2,\alpha}$ normal graphs over
-  $S_c$, smooth, with $D_u\Theta = L$ at the fold.
-- (iii) The Lyapunov–Schmidt reduction, equivariant under rotations and
-  $z \to -z$, using that the kernel (spanned by $\phi_0$, Corollary to
-  Theorem C) is invariant.
-
-Then add the $N = \psi^{-2}$ certificate (gap 7). After that, the most
-interesting open direction is gap 3: a rigorous proof that no common MOTS
-exists on $\Sigma_0$ for $d > d_c$. One route is a sweep-out by surfaces with
-$H > 0$, verified by interval arithmetic as in notes/08 §6. That would make
-"two black holes at $t = 0$, a common horizon at $t_*$" a fully rigorous
-statement about the vacuum development.
+**Gap 3: prove that no common MOTS exists on $\Sigma_0$ for $d > d_c$.**
+On the time-symmetric slice a common MOTS is a minimal surface enclosing both
+punctures. One route: build a continuous sweep-out of the region outside the
+two individual horizons by surfaces with $H > 0$, ending in two disjoint
+spheres around the individual horizons. By the comparison (maximum)
+principle, an enclosing minimal surface would have to touch some leaf from
+inside, which is a contradiction. The leaves can be explicit polar surfaces,
+with $H > 0$ certified by interval arithmetic as in notes/08 §6. Near $d_c$
+the margins vanish at $S_c$ itself, so this works at a definite $d > d_c$
+(e.g. $d = 0.78$), not uniformly down to $d_c$. Combined with Theorem C,
+that would make "two separate apparent horizons at $t = 0$, a common one at
+$t_*$" a fully rigorous statement about the vacuum development, for those
+separations.
 
 ## Reproduce
 

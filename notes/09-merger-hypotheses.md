@@ -316,9 +316,11 @@ t_*(d) = c_N\,(d - d_c) + O\big((d - d_c)^2\big), \qquad
 c_N = \frac{\langle\phi_0, \partial_dH\rangle}{\int_{S_c} N\phi_0|A|^2\,dA} .
 ```
 
-For geodesic slicing, $c_1 = \partial_dF/(-\partial_tF) \in [2.3768, 2.3936]$
-(**rigorous**, Theorem C). Numerically $c_1 = 2.385183$ and
-$c_{\psi^{-2}} = 10.644372$. Units are $G = c = M = 1$.
+Rigorously (Theorem C), $c_1 = \partial_dF/(-\partial_tF) \in [2.3768, 2.3936]$
+for geodesic slicing and $c_{\psi^{-2}} \in [10.606, 10.682]$ for $N = \psi^{-2}$
+(`certify_slopes()`). Numerically $c_1 = 2.385183$ and $c_{\psi^{-2}} = 10.644372$.
+Units are $G = c = M = 1$. The full proof is in
+[10](10-onset-theorem-proof.md).
 
 *Proof.* (a) *Smooth dependence.* By Cauchy stability the development and the
 slicing depend smoothly on $(d, t)$ near $(d_c, 0)$. So does the shooting

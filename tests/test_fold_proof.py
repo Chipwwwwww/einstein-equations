@@ -78,3 +78,32 @@ def test_fold_certificate():
         assert chk.jacobi_min > 0 and chk.sin_max < 0 and chk.rho_min > 0 and chk.axis_A_max < 0
         assert chk.z_switch_min > 0
     assert res["slope"].overlaps(arb("2.385183", "1e-6"))  # (*) and the direct solve
+
+
+@pytest.mark.parametrize("lapse", ["one", "psi-2"])
+def test_t_coefficient_matches_independent_code(lapse):
+    """psi^2 p from fold_proof.t_coefficient (hand-written D_i D_j N - N R_ij) against the
+    SymPy-generated Kdot of research/calc/bl_fold.py."""
+    import math
+
+    from research.calc import bl_fold as bf
+
+    saved = fp.LAPSE
+    fp.LAPSE = lapse
+    try:
+        bl = bf.BL(0.77, 0.0, lapse)
+        for rho, z, a in ((0.2, 0.5, -0.7), (0.27, 0.1, -1.7), (0.05, 0.6, -0.2)):
+            tc = fp.t_coefficient(arb(rho), arb(z), arb(math.sin(a)), arb(math.cos(a)), arb(0.77))
+            assert abs(float(tc.mid()) - bl.psi(rho, z) ** 2 * bl.p(rho, z, a)) < 1e-12
+    finally:
+        fp.LAPSE = saved
+
+
+@pytest.mark.slow
+def test_onset_slopes_for_two_lapses():
+    """Rigorous onset slopes F_d / (-F_t) at the fold point for N = 1 and N = psi^-2 contain
+    the values from the two non-rigorous methods of notes/09 (~8 min)."""
+    out, _ = fp.certify_slopes()
+    assert out["one"][2].overlaps(arb("2.385183", "1e-6"))
+    assert out["psi-2"][2].overlaps(arb("10.644372", "1e-6"))
+    assert out["one"][1] < 0 and out["psi-2"][1] < 0

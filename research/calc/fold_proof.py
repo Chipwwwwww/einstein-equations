@@ -201,9 +201,15 @@ def psi_parts(rho, z, d):
     return 1 + HALF_M * (i1 + i2), -HALF_M * (c1 + c2), -HALF_M * (zp * c1 + zm * c2)
 
 
+LAPSE = "one"  # lapse of the slicing for the t-derivative: "one" (N = 1) or "psi-2" (N = psi^-2)
+
+
 def t_coefficient(rho, z, sa, ca, d):
-    """psi^2 p = (Kdot_tt + Kdot_yy) / psi^2 at base (constant-part) values, N = 1,
-    Kdot_ij = -R_ij, R_ij = -2 psi_ij/psi + 6 psi_i psi_j/psi^2 - 2 |grad psi|^2 delta_ij/psi^2."""
+    """psi^2 p = (Kdot_tt + Kdot_yy) / psi^2 at base (constant-part) values, with
+    Kdot_ij = D_i D_j N - N R_ij,
+    R_ij = -2 psi_ij/psi + 6 psi_i psi_j/psi^2 - 2 |grad psi|^2 delta_ij/psi^2,
+    D_i D_j N = N_ij - w_i N_j - w_j N_i + delta_ij w_k N_k, w = 2 log psi (conformally flat
+    Christoffels). Evaluated at the point (x, y, z) = (rho, 0, z), where psi_y = 0."""
     psi, px, pz = 1, 0, 0
     pxx = pyy = pzz = pxz = 0
     for zc in (d * 0.5, -(d * 0.5)):
@@ -223,8 +229,25 @@ def t_coefficient(rho, z, sa, ca, d):
     Ryy = -2 * pyy / psi - 2 * g2 / psi**2
     Rzz = -2 * pzz / psi + 6 * pz * pz / psi**2 - 2 * g2 / psi**2
     Rxz = -2 * pxz / psi + 6 * px * pz / psi**2
-    ktt = -(ca * ca * Rxx + 2 * ca * sa * Rxz + sa * sa * Rzz)
-    return (ktt - Ryy) / psi**2
+    if LAPSE == "one":
+        Kxx, Kyy, Kzz, Kxz = -Rxx, -Ryy, -Rzz, -Rxz
+    elif LAPSE == "psi-2":
+        N = 1 / psi**2
+        Nx, Nz = -2 * px / psi**3, -2 * pz / psi**3
+        Nxx = 6 * px * px / psi**4 - 2 * pxx / psi**3
+        Nyy = -2 * pyy / psi**3
+        Nzz = 6 * pz * pz / psi**4 - 2 * pzz / psi**3
+        Nxz = 6 * px * pz / psi**4 - 2 * pxz / psi**3
+        wx, wz = 2 * px / psi, 2 * pz / psi
+        wN = wx * Nx + wz * Nz
+        Kxx = Nxx - 2 * wx * Nx + wN - N * Rxx
+        Kyy = Nyy + wN - N * Ryy
+        Kzz = Nzz - 2 * wz * Nz + wN - N * Rzz
+        Kxz = Nxz - wx * Nz - wz * Nx - N * Rxz
+    else:
+        raise ValueError(LAPSE)
+    ktt = ca * ca * Kxx + 2 * ca * sa * Kxz + sa * sa * Kzz
+    return (ktt + Kyy) / psi**2
 
 
 def G(rho, z, sa, ca, d):
@@ -552,6 +575,28 @@ def certify_fold(z=FOLD_CENTRE[0], d=FOLD_CENTRE[1], r=BOX_RADIUS):
     slope = FK.c[2] / (-FK.c[3])
     return {"verified": ok, "K": K, "point": Fp, "box": Fb, "checks_X": chk, "steps": steps,
             "at_fold": FK, "checks_K": chkK, "K_ball": (zK, dK, rK), "slope": slope}
+
+
+def certify_slopes(z=FOLD_CENTRE[0], d=FOLD_CENTRE[1], r=BOX_RADIUS, lapses=("one", "psi-2")):
+    """Krawczyk once (the fold point does not depend on the lapse: it is a t = 0 statement),
+    then, for each lapse, enclosures of F_d and F_t on a ball containing K, hence of the onset
+    slope F_d / (-F_t). Returns {lapse: (F_d, F_t, slope)} and the Krawczyk result."""
+    global LAPSE
+    saved = LAPSE
+    try:
+        LAPSE = "one"
+        ok, K, *_ = krawczyk(z, d, r)
+        assert ok, "Krawczyk test failed"
+        rK = max(float(K[0].rad()), float(K[1].rad())) * 1.01
+        zK, dK = float(K[0].mid()), float(K[1].mid())
+        out = {}
+        for lapse in lapses:
+            LAPSE = lapse
+            FK, _ = shoot(arb(zK, rK), arb(dK, rK))
+            out[lapse] = (FK.c[2], FK.c[3], FK.c[2] / (-FK.c[3]))
+        return out, K
+    finally:
+        LAPSE = saved
 
 
 def radius_growth_diagnostic(z=0.62, d=0.7662, s_end=0.05, L=8):

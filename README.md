@@ -25,6 +25,7 @@ Curvature of spacetime on the left, energy and momentum of matter on the right.
 | [`notes/07-the-merger-problem.md`](notes/07-the-merger-problem.md) | What "an exact black-hole merger" would mean: initial data, event vs apparent horizons, what is global. |
 | [`notes/08-kastor-traschen.md`](notes/08-kastor-traschen.md) | The one exact merger we have (Λ > 0, charged), checked line by line, and why Λ → 0 does not help. |
 | [`notes/09-merger-hypotheses.md`](notes/09-merger-hypotheses.md) | Four new attempts: two obstructions, one designed proof, and an onset law for the common horizon. |
+| [`notes/10-onset-theorem-proof.md`](notes/10-onset-theorem-proof.md) | Proof that the common horizon of near-critical Brill–Lindquist data appears at a time linear in the excess separation, with a computer-assisted fold. |
 | [`research/`](research/) | The merger research project: status, claim ledger, idea log, literature, calculations. |
 | [`einstein/`](einstein/) | SymPy code: Christoffel symbols, Riemann, Ricci, Einstein tensor, Kretschmann scalar. |
 | [`tests/`](tests/) | Checks that the solutions in the notes really solve the equations, and every symbolic claim in notes 07–09. |
