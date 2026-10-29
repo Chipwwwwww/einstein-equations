@@ -267,7 +267,35 @@ $\beta(d - d_c) + \gamma t \le$ higher-order terms, i.e. $t \ge t_*(d)$. ∎
 The sketch is standard nonlinear analysis, but it is a sketch: steps (1)–(3)
 are not written out with function spaces and estimates. (F) rests on
 numerics, which a computer-assisted proof could replace (see
-[`research/status.md`](../research/status.md)). That $\Sigma_0$ has **no**
+[`research/status.md`](../research/status.md)).
+
+**Attempted computer-assisted proof of (F) (session 2): not achieved.**
+[`research/calc/fold_proof.py`](../research/calc/fold_proof.py) implements the
+following, in Arb ball arithmetic:
+
+- the shooting function in validated form, with jets in $(z_0, d, t)$;
+- a rigorous fixed-point enclosure of the first segment off the axis, where
+  $\alpha = sA$ and $A(s) = s^{-2}\int_0^s\sigma\Phi$ is a weighted average;
+- the substitution $\mu = \rho\sin\alpha$, which removes the $1/\rho$ term
+  exactly;
+- a Krawczyk test for $(F, \partial_{z_0}F) = 0$.
+
+A first run reported a successful Krawczyk test. **It was invalid.** python-flint
+truncates power series at length 10 by default, so Taylor terms and remainders
+were dropped silently. Tests against ODEs with known solutions exposed this
+([`tests/test_fold_proof.py`](../tests/test_fold_proof.py)).
+
+With the truncation fixed, the naive (Moore-type) enclosure cannot close.
+The zeroth-order axis enclosure has relative width $\propto s_1^2$. After that,
+ball radii grow like $(s/s_1)^2$, although the true flow is neutral there. So
+the final relative width is about $C s_{\rm end}^2 = O(1)$, whatever $s_1$ is.
+(F) therefore remains numerical. The remedy is known: a higher-order rigorous
+(Taylor-model) expansion about the axis, and probably Lohner-type steps.
+
+As numerics only: the Arb integrator at the Newton-refined fold (effectively
+order 9, before the fix) gave $\partial_dF/(-\partial_tF) = 1.2339894/0.5173564 = 2.385183$.
+That is a third method agreeing with (*), and it gives
+$d_c = 0.766197428240\,M$. That $\Sigma_0$ has **no**
 common MOTS anywhere, not just in $\mathcal U$, is numerical evidence
 (shooting, and agreement with Hui–Lin's $d_c$).
 

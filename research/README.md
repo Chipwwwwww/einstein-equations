@@ -47,9 +47,10 @@ $(-,+,+,+)$, Riemann tensor of MTW/Carroll, $G = c = 1$. In addition:
 ## Dependencies
 
 Python ≥ 3.12 and `requirements.txt`: SymPy ≥ 1.12, pytest ≥ 8, NumPy, SciPy
-(numerical calculations in `calc/`). mpmath, used for interval arithmetic,
-ships with SymPy. Tested with Python 3.13, SymPy 1.14, NumPy 2.5, SciPy 1.18,
-mpmath 1.3.
+(numerical calculations in `calc/`), python-flint (Arb ball arithmetic, for the
+validated integrator in `calc/fold_proof.py`). mpmath, used for the interval
+certificates, ships with SymPy. Tested with Python 3.13, SymPy 1.14, NumPy 2.5, SciPy 1.18,
+mpmath 1.3, python-flint 0.9.
 
 ## Reproduce
 

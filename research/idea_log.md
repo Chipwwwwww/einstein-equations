@@ -101,3 +101,19 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
   $d/2 + R\cos\theta$ and subtracting $d/2$ again loses the cancellation
   (dependency problem) and gives $-\infty$. Displacements must be computed
   relative to each centre directly.
+- **python-flint power series are capped at length 10 by default** (`ctx.cap`).
+  Longer Taylor series are truncated *silently*. This produced a false
+  "Krawczyk verified" fold certificate in session 2. Set `ctx.cap` explicitly,
+  and test every validated integrator on ODEs with known solutions at several
+  orders (`tests/test_fold_proof.py`).
+- **Naive (Moore-type) validated integration near the axis singularity.**
+  Rewriting $\alpha' = -\sin\alpha/\rho + G$ with $\mu = \rho\sin\alpha$
+  removes the $1/\rho$ term analytically, but ball radii still grow like
+  $(s/s_1)^2$ in relative terms while the true flow is neutral. With a
+  zeroth-order axis enclosure (relative width $\propto s_1^2$) the final
+  relative width is about $C s_{\rm end}^2$, independent of $s_1$, so making
+  $s_1$ smaller cannot help. Next try: a high-order Taylor model at the axis
+  (width $\propto s_1^{2n}$), and Lohner-type QR steps if needed.
+- **Arb's ball `cos`/`sin`** are crude when the radius is comparable to the
+  midpoint (radius $10^{-9}$ for $\cos[-3.6\times10^{-6}, 0]$, where $10^{-12}$ is
+  possible). Use alternating-series enclosures for small arguments.

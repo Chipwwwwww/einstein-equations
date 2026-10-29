@@ -2,6 +2,32 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-29 (later) — Session 2: attempted computer-assisted proof of the fold
+
+**Decisions**
+
+- **python-flint (Arb) for validated numerics** (`requirements.txt`). Its
+  ball arithmetic and power series are much faster than mpmath intervals.
+  `ctx.cap` must be set explicitly: the default silently truncates series at
+  length 10.
+- **A computer-assisted claim needs known-solution tests first.** Any
+  validated integrator gets tests against ODEs with exact solutions at several
+  orders before it is used for a proof (`tests/test_fold_proof.py`).
+- **`research/calc/fold_proof.py` is kept, marked INCOMPLETE.** It does not
+  certify (F). Its docstring records the bottleneck and the design for whoever
+  continues.
+
+**Progress**
+
+- Validated integrator, parameter jets, axis fixed-point enclosure and
+  Krawczyk test implemented. A false certificate was caught (series cap). The
+  near-axis overestimation was diagnosed precisely: final width about
+  $C s_{\rm end}^2$, independent of $s_1$.
+
+**Next**
+
+- A high-order Taylor-model expansion about the axis (see `research/status.md`).
+
 ## 2026-10-29 — Research project: exact and rigorous results on black-hole mergers
 
 **Decisions**

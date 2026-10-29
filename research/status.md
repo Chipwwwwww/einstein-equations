@@ -1,6 +1,6 @@
 # Status
 
-*Updated 2026-10-29 (session 1). Start here.*
+*Updated 2026-10-29 (sessions 1 and 2). Start here.*
 
 ## Established this session
 
@@ -37,10 +37,21 @@ solutions to 6 significant figures, and $d_c$ and the critical area match the
 literature to all quoted digits. Proposition B in notes/09 turns this into an
 apparent-horizon merger statement, conditional on the fold hypotheses (F).
 
+**Session 2.** A computer-assisted proof of (F) was attempted
+(`research/calc/fold_proof.py`) and **not** achieved. A first "verified"
+Krawczyk run was invalid: python-flint silently truncates power series at
+length 10. Once that was fixed, the naive validated integrator overestimates
+near the axis (see gap 1). The integrator pieces are tested on ODEs with known
+solutions.
+
 ## Unresolved gaps
 
 1. **(F) is numerical.** The nondegenerate fold at $d_c$ (simple zero
-   eigenvalue, $\phi_0 > 0$, $\alpha, \beta \ne 0$) has no proof yet.
+   eigenvalue, $\phi_0 > 0$, $\alpha, \beta \ne 0$) has no proof yet. The
+   session-2 attempt is blocked by a precisely identified bottleneck. The
+   zeroth-order axis enclosure has relative width $\propto s_1^2$, and ball
+   radii then grow like $(s/s_1)^2$, so the final width is about
+   $C s_{\rm end}^2$, independent of $s_1$.
 2. **Proposition B's proof is a sketch.** The Lyapunov–Schmidt argument needs
    function spaces, smooth dependence of the zero-shift slicing on $(d, t)$,
    and remainder estimates written out.
@@ -56,19 +67,19 @@ apparent-horizon merger statement, conditional on the fold hypotheses (F).
 
 ## Next concrete calculation
 
-**A computer-assisted proof of (F).** Use validated interval integration
-(an interval Taylor method, or Lohner-type enclosures) of the axisymmetric
-minimal-surface ODE and its first and second variational equations in $z_0$
-and $d$. The aim is to enclose the shooting map, its $z_0$-derivative and the
-mixed derivatives near $(z_0, d) = (0.63266, 0.76620)$. Then prove, by the
-interval Newton method on the system {mismatch = 0, ∂mismatch/∂z₀ = 0}, that
-a unique degenerate solution exists in an explicit box, with
-∂²mismatch/∂z₀² and ∂mismatch/∂d of fixed sign. That gives (F) rigorously and
-makes Proposition B conditional only on writing out standard nonlinear
-analysis. The existing `bl_fold.py` already has every formula; what is
-missing is a validated ODE integrator (or the `vnode`/CAPD-style algorithm
-written in mpmath intervals). The singular axis start needs a rigorous series
-step.
+**Finish the computer-assisted proof of (F)** in `research/calc/fold_proof.py`.
+Already in place: the jets, the Krawczyk test, the segment structure and the
+checks (Jacobi-field positivity, embeddedness), all exercised on the
+problem. Missing is one ingredient: a **high-order rigorous expansion about
+the axis**. Write $A(s) = \sum_{k \le n} a_k s^{2k} + s^{2n+2}\tilde A(s)$ (and
+likewise $Q$, $Z$). Compute the $a_k$ by the series fixed point
+$A_{\rm new} = \sum_k \Phi_k s^k/(k + 2)$ in `arb_series`. Enclose the
+remainders by the same weighted-average argument with weight
+$\sigma^{2n+3}$; that needs Taylor-model arithmetic for $\Phi$ along the
+solution. This makes the axis width $\propto s_1^{2n+2}$ and breaks the
+$C s_{\rm end}^2$ barrier. If the regular part then still wraps too much, add
+Lohner (QR) steps. Expected payoff: (F) with rigorous enclosures of $d_c$
+(about $10^{-14}$) and of the onset slope.
 
 After that: unequal masses (to test (*) off reflection symmetry), and
 boosted Bowen–York data, where the fold happens in time on one slice (AMMS
