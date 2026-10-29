@@ -121,83 +121,122 @@ def start_box(z0, d=D):
     return [rho, z, rho * a.cos(), rho * a.sin()]
 
 
-def run_lohner(z0, d=D, h=0.25, ds=0.004, L=14, sigma_max=80.0, max_steps=40000, log=None):
+def _split(S):
+    """Cover the Lohner set S by two sets, halving its widest coordinate box r_j."""
+    j = max(range(len(S.r)), key=lambda k: S.r[k].rad())
+    rj = S.r[j]
+    lo, mid, hi = arb(rj.lower()), arb(rj.mid()), arb(rj.upper())
+    out = []
+    for piece in (lo.union(mid), mid.union(hi)):
+        r = list(S.r)
+        r[j] = piece
+        out.append(lohner.Set(S.m, S.A, r))
+    return out
+
+
+def run_lohner(z0, d=D, h=0.25, ds=0.004, L=14, sigma_max=80.0, max_steps=40000, log=None,
+               split_r=None, max_pieces=4096):
     """Integrate the z0 box (an arb ball) until every trajectory in it is excluded.
-    Returns (event, sigma, number of steps); event in E1, E2, E3, N, or a failure
-    (stuck, plane-undecided, timeout). Event N is certified for d = D only; for another d
+    Returns (event, sigma, number of steps); event is E1, E2, E3, N, a combination such as
+    "E2+N" when the box was split, or a failure (stuck, plane-undecided, timeout,
+    too-many-pieces). With split_r, a set whose widest coordinate r_j exceeds split_r is cut
+    into two halves that are followed separately (this is z0-bisection that keeps the common
+    part of the integration). Event N is certified for d = D only; for another d
     (falsification runs, tests/test_gap3.py) it is switched off, and E2, E3 use the radii
     of D, which are then just test values."""
     def f(y):
         return f_bl(y, d)
     neck = d is D
-    S = lohner.Set.from_box(start_box(z0, d))
-    sig, n = 0.0, 0
-    while sig < sigma_max and n < max_steps:
-        X = S.hull()
-        hh = min(h, 2.0 ** math.floor(math.log2(ds / float(X[0].upper()))))
-        while True:
-            try:
-                S_new, B = lohner.step(f, S, hh, L)
-                break
-            except (RuntimeError, ValueError, ZeroDivisionError):
-                hh /= 2
-                if hh < 1e-6:
-                    return "stuck", sig, n
-        if not B[1] > 0 and not (B[2] > 0 or B[2] < 0):
-            return "plane-undecided", sig, n
-        S = S_new
-        sig += hh
-        n += 1
-        X = S.hull()
-        rho_e, z_e = X[0], X[1]
-        if log is not None:
-            log(sig, S)
-        if z_e < 0:
-            return "E1", sig, n
-        if rho_e * rho_e + z_e * z_e > R_STAR * R_STAR:
-            return "E2", sig, n
-        for c in (d / 2, -d / 2):
-            if rho_e * rho_e + (z_e - c) ** 2 < S_STAR * S_STAR:
-                return "E3", sig, n
-        if neck and neck_event(X):
-            return "N", sig, n
-    return "timeout", sig, n
+    stack = [(lohner.Set.from_box(start_box(z0, d)), 0.0)]
+    events, n, sig_max, pieces = set(), 0, 0.0, 1
+    while stack:
+        S, sig = stack.pop()
+        ev = None
+        while ev is None:
+            if sig >= sigma_max or n >= max_steps:
+                return "timeout", sig, n
+            if split_r is not None and max(float(r.rad()) for r in S.r) > split_r:
+                pieces += 1
+                if pieces > max_pieces:
+                    return "too-many-pieces", sig, n
+                S, other = _split(S)
+                stack.append((other, sig))
+            X = S.hull()
+            hh = min(h, 2.0 ** math.floor(math.log2(ds / float(X[0].upper()))))
+            while True:
+                try:
+                    S_new, B = lohner.step(f, S, hh, L)
+                    break
+                except (RuntimeError, ValueError, ZeroDivisionError):
+                    hh /= 2
+                    if hh < 1e-6:
+                        return "stuck", sig, n
+            if not B[1] > 0 and not (B[2] > 0 or B[2] < 0):
+                return "plane-undecided", sig, n
+            S = S_new
+            sig += hh
+            n += 1
+            X = S.hull()
+            rho_e, z_e = X[0], X[1]
+            if log is not None:
+                log(sig, S)
+            if z_e < 0:
+                ev = "E1"
+            elif rho_e * rho_e + z_e * z_e > R_STAR * R_STAR:
+                ev = "E2"
+            elif any(rho_e * rho_e + (z_e - c) ** 2 < S_STAR * S_STAR for c in (d / 2, -d / 2)):
+                ev = "E3"
+            elif neck and neck_event(X):
+                ev = "N"
+        events.add(ev)
+        sig_max = max(sig_max, sig)
+    return "+".join(sorted(events)), sig_max, n
 
 
 EXCLUDED = ("E1", "E2", "E3", "N")
+
+
+def excluded(event):
+    return all(e in EXCLUDED for e in event.split("+"))
+
+
 Z_LO, Z_HI = 139 / 256, 269 / 256  # contains [d/2 + s_*, R_*] = [0.545, 1.05]
 
 
-def run_box(box, d=D):
+def run_box(box, d=D, split_r=None):
     """Worker: box = (lo, hi), dyadic floats. Returns (lo, hi, event, sigma, steps, seconds)."""
     lo, hi = box
     t0 = time.time()
     z0 = (arb(lo) + arb(hi)) / 2 + arb(0, 1) * ((arb(hi) - arb(lo)) / 2)
     try:
-        ev, sig, n = run_lohner(z0, d)
+        ev, sig, n = run_lohner(z0, d, split_r=split_r)
     except (RuntimeError, ValueError, ZeroDivisionError) as e:
         ev, sig, n = f"error {type(e).__name__}", 0.0, 0
     return lo, hi, ev, sig, n, time.time() - t0
 
 
 def sweep(lo=Z_LO, hi=Z_HI, width=2.0**-8, min_width=2.0**-20, processes=4,
-          logfile="gap3_sweep.log"):
-    """Cover [lo, hi] by dyadic boxes; run each, bisect every box that is not excluded.
-    Each result is appended to logfile as it arrives. Returns the list of results and the
-    list of boxes that failed at min_width (empty means the whole range is excluded)."""
+          logfile="gap3_sweep.log", boxes=None, split_r=None):
+    """Cover [lo, hi] by dyadic boxes of the given width (or start from the list boxes);
+    run each, bisect every box that is not excluded. Each result is appended to logfile as
+    it arrives. Returns the list of results and the list of boxes that failed at min_width
+    (empty means the whole range is excluded)."""
+    from functools import partial
     from multiprocessing import Pool
-    n = round((hi - lo) / width)
-    todo = [(lo + k * width, lo + (k + 1) * width) for k in range(n)]
-    results, failed = [], []
+    if boxes is None:
+        n = round((hi - lo) / width)
+        boxes = [(lo + k * width, lo + (k + 1) * width) for k in range(n)]
+    todo, results, failed = list(boxes), [], []
+    work = partial(run_box, split_r=split_r)
     with Pool(processes) as pool, open(logfile, "a") as out:
         while todo:
             nxt = []
-            for r in pool.imap_unordered(run_box, todo, chunksize=1):
+            for r in pool.imap_unordered(work, todo, chunksize=1):
                 results.append(r)
                 b_lo, b_hi, ev = r[:3]
                 out.write(f"{b_lo!r} {b_hi!r} {ev.replace(' ', '_')} {r[3]:.4f} {r[4]} {r[5]:.1f}\n")
                 out.flush()
-                if ev not in EXCLUDED:
+                if not excluded(ev):
                     if b_hi - b_lo <= min_width:
                         failed.append(r)
                     else:
@@ -207,10 +246,47 @@ def sweep(lo=Z_LO, hi=Z_HI, width=2.0**-8, min_width=2.0**-20, processes=4,
     return results, failed
 
 
-if __name__ == "__main__":
+def covered(results, lo=Z_LO, hi=Z_HI):
+    """The gaps in [lo, hi] left by the excluded boxes among results (empty: all covered)."""
+    boxes = sorted((r[0], r[1]) for r in results if excluded(r[2]))
+    gaps, cur = [], lo
+    for a, b in boxes:
+        if a > cur:
+            gaps.append((cur, a))
+        cur = max(cur, b)
+    if cur < hi:
+        gaps.append((cur, hi))
+    return gaps
+
+
+PARTITION = "research/calc/data/gap3_partition_d078.txt"
+
+
+def read_partition(path=PARTITION):
+    with open(path) as f:
+        return [tuple(float(x) for x in line.split()) for line in f if not line.startswith("#")]
+
+
+def main():
+    """python -m research.calc.gap3_sweep [workers] [partition | uniform]: run the certificate
+    over the stored partition (default), or from uniform 2^-8 boxes, bisecting failures."""
     import sys
     procs = int(sys.argv[1]) if len(sys.argv) > 1 else 4
-    res, bad = sweep(processes=procs)
-    print(f"{len(res)} box runs; {len(bad)} boxes not excluded at the minimal width")
-    for r in bad:
-        print("  not excluded:", r)
+    mode = sys.argv[2] if len(sys.argv) > 2 else PARTITION
+    t0 = time.time()
+    boxes = None if mode == "uniform" else read_partition(mode)
+    res, bad = sweep(processes=procs, boxes=boxes)
+    gaps = covered(res)
+    counts = {}
+    for r in res:
+        if excluded(r[2]):
+            for e in r[2].split("+"):
+                counts[e] = counts.get(e, 0) + 1
+    print(f"{len(res)} box runs in {time.time() - t0:.0f} s; excluded boxes by event: {counts}")
+    print(f"{len(bad)} boxes not excluded at the minimal width; gaps in [Z_LO, Z_HI]: {gaps}")
+    if not bad and not gaps:
+        print(f"Every z0 in [{Z_LO}, {Z_HI}] is excluded: no common minimal surface at d = 0.78.")
+
+
+if __name__ == "__main__":
+    main()

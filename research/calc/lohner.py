@@ -109,7 +109,10 @@ def _picard_box(f, X, h):
         Bn = [x + fi * H for x, fi in zip(X, f(B))]
         if all(b.contains(bn) for b, bn in zip(B, Bn)):
             return B
-        B = [arb(b.union(bn).mid(), b.union(bn).rad() * 1.5 + arb(1e-30)) for b, bn in zip(B, Bn)]
+        # widen only the components that are not yet contained: widening all of them can
+        # diverge when some widths depend quadratically on others
+        B = [b if b.contains(bn) else
+             arb(b.union(bn).mid(), b.union(bn).rad() * 1.5 + arb(1e-30)) for b, bn in zip(B, Bn)]
     raise RuntimeError("a-priori enclosure failed")
 
 

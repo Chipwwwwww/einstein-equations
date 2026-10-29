@@ -94,6 +94,20 @@ def test_neck_lemma_on_one_piece():
         assert gn.check_piece(piece) > 0.5
 
 
+@pytest.mark.parametrize("lam, zw, sigma1", [("0.003", "0.2", 1.5), ("0.02", "0.15", 2.0)])
+def test_neck_field_two_integrators_agree(lam, zw, sigma1):
+    """phi(+-sigma1) at a point (lam, z_w): plain interval Taylor steps on jets
+    (gap3_neck) and Lohner steps on the 10-dimensional variational system with the
+    log-derivative lam d/dlam (gap3_neck_lohner). The enclosures must overlap and be tight."""
+    from research.calc import gap3_neck_lohner as gl
+    lam, zw = float(lam), float(zw)  # the same binary inputs for both
+    for s in (-1, 1):
+        a = gn.certify(lam, lam, zw, zw, s=s, sigma1=sigma1)
+        b = gl.certify(lam, lam, zw, zw, s=s, sigma1=sigma1)
+        for x, y in zip(a, b):
+            assert x.overlaps(y) and float(x.rad()) < 1e-10 and float(y.rad()) < 1e-10
+
+
 def test_neck_lemma_fails_before_the_catenoid_zero():
     """Falsification: at sigma = 1.0 < 1.1997 the Jacobi field has not changed sign yet, so the
     same piece must NOT be certified there."""

@@ -28,11 +28,20 @@ thing here.
 - interval and ball-arithmetic certificates (Arb, through python-flint) for
   inequalities and ODE enclosures.
 
-Its trust base is Arb plus about 700 lines of our own code. That code is
-tested against flows with exact solutions, but nobody outside this project
-has reviewed it. The result is for $d = 0.78$ only. The same programme
-should work for any fixed $d > d_c$, but runs longer as $d \to d_c$, where a
-common surface is about to appear.
+Its trust base is Arb plus about 1,100 lines of our own code (with
+docstrings):
+
+- `lohner.py`;
+- `gap3_sweep.py`;
+- `gap3_neck.py`;
+- the jet, axis and Taylor-step parts of `fold_proof.py`;
+- the barrier part of `bl_global.py`.
+
+That code is tested against flows with exact solutions and deliberately
+falsified (§4), but nobody outside this project has reviewed it. The result
+is for $d = 0.78$ only. The same programme should work for any fixed
+$d > d_c$, but it runs longer as $d \to d_c$, where a common surface is about
+to appear.
 
 ## 1 · Reduction to a family of curves
 
@@ -125,7 +134,14 @@ each side of it. Between the two nearest zeros lies an annulus on which
 $\phi$ is a Dirichlet eigenfunction of the Jacobi operator with eigenvalue
 $0$. The annulus is a proper subdomain of the closed surface. By strict
 domain monotonicity, the first eigenvalue of the closed surface is
-therefore negative: it is **unstable**, and cannot be $S^*$.
+therefore negative: it is **unstable**, and cannot be $S^*$. The annulus
+does lie on the surface. The curve cannot reach the axis within
+$|\sigma| \le 1.5$, because axis points are fixed points of the system.
+
+Wider necks look unstable too. In floating point the sign pattern holds up
+to radius $0.04$, using $\sigma = \pm 2$. But certifying that with
+plain interval steps needs impractically small parameter pieces. So the
+sweep integrates through the medium necks instead (§4).
 
 ## 3 · Getting into the neck: the approach lemma
 
@@ -185,8 +201,34 @@ one of these events:
 | E3 | inside a throat ball $B(p_\pm, 0.155)$ | $S^*$ avoids them (barrier) |
 | N | $u < 0$, $\rho \le 0.02$, approach-lemma bounds inside the neck rectangle | closes on the axis, or has an unstable thin neck |
 
-Intervals start at width $2^{-8}$ on $[139/256, 269/256] \supset [0.545, 1.05]$
-and are bisected until they are excluded. (Results: §5.)
+The range $[139/256, 269/256] \supset [0.545, 1.05]$ is covered by a stored
+partition into $z_0$-intervals,
+[`research/calc/data/gap3_partition_d078.txt`](../research/calc/data/gap3_partition_d078.txt).
+Each interval is run, and any interval that is not excluded is bisected.
+
+The partition comes from a first sweep: uniform intervals of width $2^{-8}$,
+bisected on failure. That sweep left two gaps, $[0.59077, 0.59254]$ and
+$[0.59322, 0.59364]$. These are the curves whose necks are too wide for the
+thin-neck lemma (radius $0.005$ to $0.02$) but still narrow enough to make
+the outgoing family spread fast. Lohner's first-order enclosure then
+explodes just before the curve leaves the ball, unless the $z_0$-interval is
+narrow. In the gaps, the stored intervals therefore have width about
+$1.2\times10^{-3}\,(z_0 - z_{\rm top})$, between $2^{-20}$ and $2^{-17}$, a
+rule calibrated on a few runs.
+
+**Falsification checks.**
+
+- At $d = 0.76 < d_c$, two common minimal surfaces exist, at axis heights
+  $0.62181$ and $0.63778$. The same code leaves the width-$2^{-14}$
+  intervals containing them unexcluded, and excludes an interval between
+  them.
+- The thin-neck certificate fails, as it must, when asked for a sign change
+  at $\sigma = 1.0$, before the catenoid's Jacobi zero.
+- The neck Jacobi field computed by a second integrator agrees with the
+  first at test points: Lohner steps on the 10-dimensional variational
+  system ([`research/calc/gap3_neck_lohner.py`](../research/calc/gap3_neck_lohner.py)).
+
+All three are in `tests/test_gap3.py`.
 
 ## 5 · Results
 
