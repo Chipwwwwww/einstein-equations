@@ -21,7 +21,9 @@ extremal charges): an exact merger with different physics.
 [`notes/10-onset-theorem-proof.md`](../notes/10-onset-theorem-proof.md)
 (apparent horizons, Brill–Lindquist) and
 [`notes/11-event-horizon-merger.md`](../notes/11-event-horizon-merger.md)
-(event horizons, Hintz's extreme-mass-ratio mergers).
+(event horizons, Hintz's extreme-mass-ratio mergers) and
+[`notes/12-no-common-horizon.md`](../notes/12-no-common-horizon.md)
+(no common apparent horizon at $t = 0$, Brill–Lindquist at $d = 0.78$).
 
 ## Files
 
@@ -52,7 +54,7 @@ $(-,+,+,+)$, Riemann tensor of MTW/Carroll, $G = c = 1$. In addition:
 
 Python ≥ 3.12 and `requirements.txt`: SymPy ≥ 1.12, pytest ≥ 8, NumPy, SciPy
 (numerical calculations in `calc/`), python-flint (Arb ball arithmetic, for the
-validated integrator in `calc/fold_proof.py`). mpmath, used for the interval
+validated integrators in `calc/fold_proof.py` and `calc/lohner.py`). mpmath, used for the interval
 certificates, ships with SymPy. Tested with Python 3.13, SymPy 1.14, NumPy 2.5, SciPy 1.18,
 mpmath 1.3, python-flint 0.9.
 
@@ -73,7 +75,10 @@ python -m pytest -m slow
 The second command runs the slow checks: the symbolic Kerr check (about three
 minutes), Kerr–de Sitter at rational parameters (about two and a half
 minutes), the computer-assisted fold certificate (about five minutes) and the
-certified onset slopes for two lapses (about seven minutes). The
+certified onset slopes for two lapses (about seven minutes), and the
+thin-neck certificate of notes/12 (about 15 minutes on 4 cores). The z0 sweep
+of notes/12 is not a test, because it takes hours. Run it as
+`python -m research.calc.gap3_sweep 4`; it appends each box to `gap3_sweep.log`. The
 calculations in `calc/` each run as `python -m research.calc.<name>` from the
 repository root; each module's docstring says what it computes and what it
 prints. The expected outputs are recorded in [`status.md`](status.md).
