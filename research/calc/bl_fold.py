@@ -193,6 +193,7 @@ def fold_coefficients(dc, lapse, h=1e-5, npts=4001):
     integ = lambda f: simpson(f * dA, x=s)  # noqa: E731
     return {
         "z0c": z0c,
+        "area": integ(np.ones_like(s)),
         "max|H| on S_c": float(np.max(np.abs(H[5:-5]))),
         "phi0 min/max": (float(phi.min()), float(phi.max())),
         "<phi0,dH/dd>": integ(phi * dHdd),
@@ -244,11 +245,13 @@ def certify_individual(d, R_in=0.01, R_out=0.3, pieces=4000):
 def main():
     print("Brill-Lindquist, bare masses 1/2 each (ADM mass 1), punctures at z = +-d/2")
     dc = critical_separation()
-    print(f"critical separation (common minimal surface born): d_c = {dc:.10f}")
+    print(f"critical separation (common minimal surface born): d_c = {dc:.10f} M"
+          f"  [= {2 * dc:.8f} in units of the bare mass; Hui & Lin 2025: 1.5323948, 1.5323949]")
     for lapse in ("one", "psi-2"):
         c = fold_coefficients(dc, lapse)
         slope = c["<phi0,dH/dd>"] / c["Int N phi0 |A|^2"]
         print(f"\nlapse N = {'1' if lapse == 'one' else 'psi^-2'}")
+        print(f"  area of S_c: {c['area']:.6f} M^2 [x4 = {4 * c['area']:.5f}; Hui & Lin: 196.40795]")
         print(f"  axis height of S_c: {c['z0c']:.8f}; max |H| on S_c: {c['max|H| on S_c']:.1e}; "
               f"phi_0 in [{c['phi0 min/max'][0]:.4f}, {c['phi0 min/max'][1]:.4f}] (one sign)")
         print(f"  AMMS identity: <phi0, p> = {c['<phi0,p>']:.6e}  vs  -Int N phi0 |A|^2 = "

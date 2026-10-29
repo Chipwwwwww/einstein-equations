@@ -2,6 +2,48 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-29 — Research project: exact and rigorous results on black-hole mergers
+
+**Decisions**
+
+- **Layout.** Research notes continue the numbered series (`notes/07`–`09`).
+  Project bookkeeping (status, claim ledger, idea log, literature) lives in
+  `research/`, and executable calculations in `research/calc/` (run as
+  `python -m research.calc.<name>`). Every symbolic claim has a test in
+  `tests/`.
+- **Proof standards.** Only exact identities (`cancel`/`simplify` to 0) count
+  as symbolic proofs. Exact evaluation at sample points is labelled a
+  diagnostic. Computer-assisted sign checks use mpmath interval arithmetic,
+  with parameters entered as exact decimals.
+- **Dependencies.** NumPy and SciPy added to `requirements.txt` for the
+  numerical calculations; mpmath comes with SymPy.
+- **Toolkit changes.** `Spacetime(simplify=...)` also accepts a function (for
+  example `sp.cancel`, which decides identities between rational functions).
+  Kerr uses $\chi = \cos\theta$ so that its components are rational. New:
+  `einstein/fields.py` (Maxwell stress tensor), Reissner–Nordström, Kerr, and
+  conformastatic/Kastor–Traschen metrics. A `slow` pytest marker covers the
+  symbolic-parameter Kerr check (about 3 min); everything else runs in CI.
+- **Conventions added** (stated in `research/README.md`): $K_{ij} = \nabla_in_j$
+  (Wald's sign), $\theta_\pm = \mathrm{tr}_SK \pm H_S$, Gaussian units for
+  Maxwell.
+- **Event-horizon merger definition** tracks the components of
+  $\mathcal B \cap \Sigma$ that contain each hole, rather than requiring the
+  later slice to be connected.
+
+**Progress**
+
+- Problem definition (`notes/07`), Kastor–Traschen benchmark (`notes/08`),
+  four hypotheses (`notes/09`). Main results: the reduced KT system and its
+  classification (Λ = 0 ⇒ static); a certified KT apparent-horizon merger;
+  Lemma A; the H2 obstruction; the near-critical onset law (*) for the
+  Brill–Lindquist common horizon, verified two ways (Proposition B,
+  conditional on the fold hypotheses (F)).
+
+**Next**
+
+- A computer-assisted proof of (F) (validated ODE enclosures plus an
+  interval Newton step). See `research/status.md`.
+
 ## 2026-10-29 — Repository made public
 
 **Decision:** switched visibility from private to public so anyone can read

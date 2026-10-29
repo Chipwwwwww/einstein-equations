@@ -26,6 +26,10 @@ def test_onset_formula_matches_direct_solution():
     dc = bf.critical_separation()
     assert abs(dc - 0.7661974282) < 1e-8
     c = bf.fold_coefficients(dc, "one")
+    # literature (Hui & Lin 2025, bare masses 1, so lengths x2 and areas x4):
+    # d_crit = 1.5323948 (1.5323949 in their ref. [42]), A_crit = 196.40795
+    assert abs(2 * dc - 1.53239485) < 1e-7
+    assert abs(4 * c["area"] - 196.40795) < 1e-4
     # AMMS (2009) Prop. 5.1 in the time-symmetric vacuum case: <phi0, p> = -Int N phi0 |A|^2
     assert abs(c["<phi0,p>"] / c["-Int N phi0 |A|^2"] - 1) < 1e-5
     slope = c["<phi0,dH/dd>"] / c["Int N phi0 |A|^2"]

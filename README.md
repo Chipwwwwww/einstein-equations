@@ -22,8 +22,12 @@ Curvature of spacetime on the left, energy and momentum of matter on the right.
 | [`notes/04-exact-solutions.md`](notes/04-exact-solutions.md) | Schwarzschild, de Sitter, FLRW (Friedmann equations), Kerr. |
 | [`notes/05-gravitational-waves.md`](notes/05-gravitational-waves.md) | Linearized gravity, polarizations, the quadrupole formula. |
 | [`notes/06-open-questions.md`](notes/06-open-questions.md) | Discussion starters: energy, Λ, uniqueness, singularities, quantum gravity. |
+| [`notes/07-the-merger-problem.md`](notes/07-the-merger-problem.md) | What "an exact black-hole merger" would mean: initial data, event vs apparent horizons, what is global. |
+| [`notes/08-kastor-traschen.md`](notes/08-kastor-traschen.md) | The one exact merger we have (Λ > 0, charged), checked line by line, and why Λ → 0 does not help. |
+| [`notes/09-merger-hypotheses.md`](notes/09-merger-hypotheses.md) | Four new attempts: two obstructions, one designed proof, and an onset law for the common horizon. |
+| [`research/`](research/) | The merger research project: status, claim ledger, idea log, literature, calculations. |
 | [`einstein/`](einstein/) | SymPy code: Christoffel symbols, Riemann, Ricci, Einstein tensor, Kretschmann scalar. |
-| [`tests/`](tests/) | Checks that the solutions in the notes really solve the equations. |
+| [`tests/`](tests/) | Checks that the solutions in the notes really solve the equations, and every symbolic claim in notes 07–09. |
 
 ## Quick start
 
