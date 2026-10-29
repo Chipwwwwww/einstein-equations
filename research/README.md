@@ -76,7 +76,7 @@ The second command runs the slow checks: the symbolic Kerr check (about three
 minutes), Kerr–de Sitter at rational parameters (about two and a half
 minutes), the computer-assisted fold certificate (about five minutes) and the
 certified onset slopes for two lapses (about seven minutes), and the
-thin-neck certificate of notes/12 (about 15 minutes on 4 cores). The z0 sweep
+thin-neck certificate of notes/12 (15–25 minutes on 4 cores). The z0 sweep
 of notes/12 is not a test, because it takes hours. Run it as
 `python -m research.calc.gap3_sweep 4`; it appends each box to `gap3_sweep.log`. The
 calculations in `calc/` each run as `python -m research.calc.<name>` from the

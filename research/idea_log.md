@@ -128,6 +128,52 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
   connecting orbits, and a validated sweep elsewhere: a
   heteroclinic-cycle (Shilnikov-type) argument.
 
+### Gap 3 attempt (session 7): thin necks are unstable
+
+- **Idea.** Session 6 planned an isolating-block passage argument at the
+  saddles. We did not build one. A neck is just as useless to $S^*$ if
+  it is *unstable*. Near a waist of radius $\lambda$ the surface is a
+  catenoid up to $O(\lambda)$. The catenoid's dilation Jacobi field vanishes
+  at $\sigma = \pm1.1997$. So it is enough to certify, for all small
+  $\lambda$ at once (λ = 0 included), that the $\lambda$-variation Jacobi
+  field changes sign on both sides within $|\sigma| \le 1.5$.
+  - Thin necks are then excluded wholesale.
+  - Multi-layer necked spheres never have to be followed.
+  - The heteroclinic cycle drops out.
+- **Approach lemma.** A curve heading for the axis ($u < 0$, $\rho \le \rho_e$)
+  either closes on the axis or reaches a waist. The waist radius is at most
+  $|v_e| + K\rho_e^2/2$, and its height moves by at most an explicit
+  $O(\rho_e)$. This hands the curve to the neck lemma with no further
+  integration. It replaces the passage argument.
+- **Lohner's method** for the sweep. Plain interval boxes blow up (radius
+  $10^{20}$ after 189 steps) on curves that wind around the individual
+  horizon. Lohner's parallelepipeds stay at about $10^{-12}$ for point
+  starts.
+- **Tried and failed, so as not to repeat them:**
+  - **Remainder over a wide a-priori box.** In the first Lohner version, the
+    Lagrange remainder $c_{p+1}(B)h^{p+1}$ over a wide $B$ dominated: radius
+    $10^4$, against a true value of $10^{-8}$. Fix: cap each step at about
+    $0.004$ in flat arclength.
+  - **Narrow approach section.** Requiring the near-top box to reach
+    $\rho \le 0.004$ with $u < 0$ failed. Lohner's enclosure there is about
+    300 times the true spread, because errors in the unstable direction grow
+    like $e^\sigma$ while the state shrinks like $e^{-\sigma}$. Fix: stop
+    earlier (any step with $\rho < 0.02$ will do), at the cost of a wider
+    neck rectangle ($\lambda \le 0.00488$).
+  - **Wide neck pieces.** A neck piece with $\lambda \in [0.0045, 0.005]$ and a
+    $z_w$-width of $0.0025$ gives $\phi(\pm1.5)$ only to $\pm 1$. The
+    overestimate grows with the *product* of the two widths. Pieces of
+    $2^{-11} \times 2^{-9}$ work, with margin $0.53$.
+  - **Not needed:** the $z_0$-Jacobi field (event E4 of the plain-interval
+    version). Its sign change comes only after the neck, which N already
+    covers.
+- **Falsification checks run.**
+  - At $d = 0.76 < d_c$, where two common surfaces exist, the sweep code
+    leaves the $2^{-14}$ boxes containing them unexcluded and excludes a box
+    between them.
+  - The neck certificate fails, as it must, when asked for a sign change at
+    $\sigma = 1.0 < 1.1997$.
+
 ## Ideas considered and not pursued (this session)
 
 - **Self-similar mergers.** A homothety rescales the ADM mass, so an

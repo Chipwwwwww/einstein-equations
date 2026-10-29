@@ -3,7 +3,7 @@ surface (research/calc/gap3_neck.py, research/calc/gap3_sweep.py).
 
 Fast checks only: the algebra behind the thin-neck and approach lemmas (SymPy), one piece of
 the neck certificate, and one z0 box per exclusion event. The full certificates are
-`python -m research.calc.gap3_neck` (~15 min on 4 cores) and `python -m research.calc.gap3_sweep`
+`python -m research.calc.gap3_neck` (15-25 min on 4 cores) and `python -m research.calc.gap3_sweep`
 (hours); the slow test below reruns the first."""
 
 import math
@@ -94,6 +94,13 @@ def test_neck_lemma_on_one_piece():
         assert gn.check_piece(piece) > 0.5
 
 
+def test_neck_lemma_fails_before_the_catenoid_zero():
+    """Falsification: at sigma = 1.0 < 1.1997 the Jacobi field has not changed sign yet, so the
+    same piece must NOT be certified there."""
+    piece = (gn.LAM0 - 2.0**-11, gn.LAM0, 0.2109375, 0.2109375 + 2.0**-9, -1)
+    assert gn.check_piece(piece, sigma1=1.0) is None
+
+
 @pytest.mark.parametrize("box, event", [
     ((0.570312500, 0.570556640625), "E3"),        # below z_top: dives into the throat
     ((0.58966064453125, 0.58978271484375), "N"),  # contains z_top: thin neck
@@ -108,3 +115,16 @@ def test_sweep_box(box, event):
 def test_neck_certificate():
     n, worst = gn.certify_region()
     assert n > 0 and worst > 0
+
+
+@pytest.mark.parametrize("z", [0.6218058259214554, 0.6377814681180715])
+def test_sweep_keeps_true_common_surfaces(z):
+    """Falsification: at d = 0.76 < d_c common minimal surfaces exist (axis heights from
+    research/calc/bl_fold.py). The z0 box of width 2^-14 containing each must not be excluded,
+    while a box between them (F = -0.0077 there) is."""
+    from flint import arb
+    d, w = arb("0.76"), 2.0**-14
+    lo = math.floor(z / w) * w
+    assert gs.run_box((lo, lo + w), d)[2] not in gs.EXCLUDED
+    if z < 0.63:
+        assert gs.run_box((0.62896728515625, 0.62896728515625 + w), d)[2] == "E1"

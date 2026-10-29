@@ -68,8 +68,8 @@ def _ball(lo, hi):
     return (lo + hi) / 2 + arb(0, 1) * ((hi - lo) / 2)
 
 
-def certify(lam_lo, lam_hi, zw_lo, zw_hi, s=-1, d="0.78", h=2.0**-5, L=16):
-    """Returns (phi(0), phi(-SIGMA_1), phi(+SIGMA_1)) enclosures over lam in [lam_lo, lam_hi],
+def certify(lam_lo, lam_hi, zw_lo, zw_hi, s=-1, d="0.78", h=2.0**-5, L=16, sigma1=SIGMA_1):
+    """Returns (phi(0), phi(-sigma1), phi(+sigma1)) enclosures over lam in [lam_lo, lam_hi],
     z_w in [zw_lo, zw_hi], for a waist moving down (s = -1) or up (s = +1)."""
     lam_b, zw_b = _ball(lam_lo, lam_hi), _ball(zw_lo, zw_hi)
     lam = J([lam_b, arb(1), arb(0), arb(0), arb(0), arb(0)])
@@ -79,20 +79,20 @@ def certify(lam_lo, lam_hi, zw_lo, zw_hi, s=-1, d="0.78", h=2.0**-5, L=16):
     y0 = [zero, one, zero, zero, one * s]
     out = [phi(y0, lam_b)]
     for direction in (-1, 1):
-        y, _ = fp.integrate(make_rhs(lam, zw, dj, direction), y0, 0.0, SIGMA_1, h, L)
+        y, _ = fp.integrate(make_rhs(lam, zw, dj, direction), y0, 0.0, sigma1, h, L)
         out.append(phi(y, lam_b))
     return tuple(out)
 
 
-def check_piece(piece):
+def check_piece(piece, sigma1=SIGMA_1):
     """piece = (lam_lo, lam_hi, zw_lo, zw_hi, s). Returns the margin (min of -s phi(0) and
-    s phi(+-SIGMA_1), lower bounds) if the sign pattern is certified, else None."""
+    s phi(+-sigma1), lower bounds) if the sign pattern is certified, else None."""
     *box, s = piece
     try:
-        p0, pm, pp = certify(*box, s=s)
+        p0, pm, pp = certify(*box, s=s, sigma1=sigma1)
     except (ValueError, ZeroDivisionError, RuntimeError):
         return None
-    # phi(0) = -s; certified: -s phi(0) > 0 and s phi(+-SIGMA_1) > 0
+    # phi(0) = -s; certified: -s phi(0) > 0 and s phi(+-sigma1) > 0
     vals = [-s * p0, s * pm, s * pp]
     if all(v > 0 for v in vals):
         return min(float(v.lower()) for v in vals)

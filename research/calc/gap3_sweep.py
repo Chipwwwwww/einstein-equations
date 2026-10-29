@@ -121,18 +121,23 @@ def start_box(z0, d=D):
     return [rho, z, rho * a.cos(), rho * a.sin()]
 
 
-def run_lohner(z0, h=0.25, ds=0.004, L=14, sigma_max=80.0, max_steps=40000, log=None):
+def run_lohner(z0, d=D, h=0.25, ds=0.004, L=14, sigma_max=80.0, max_steps=40000, log=None):
     """Integrate the z0 box (an arb ball) until every trajectory in it is excluded.
     Returns (event, sigma, number of steps); event in E1, E2, E3, N, or a failure
-    (stuck, plane-undecided, timeout)."""
-    S = lohner.Set.from_box(start_box(z0))
+    (stuck, plane-undecided, timeout). Event N is certified for d = D only; for another d
+    (falsification runs, tests/test_gap3.py) it is switched off, and E2, E3 use the radii
+    of D, which are then just test values."""
+    def f(y):
+        return f_bl(y, d)
+    neck = d is D
+    S = lohner.Set.from_box(start_box(z0, d))
     sig, n = 0.0, 0
     while sig < sigma_max and n < max_steps:
         X = S.hull()
         hh = min(h, 2.0 ** math.floor(math.log2(ds / float(X[0].upper()))))
         while True:
             try:
-                S_new, B = lohner.step(f_bl, S, hh, L)
+                S_new, B = lohner.step(f, S, hh, L)
                 break
             except (RuntimeError, ValueError, ZeroDivisionError):
                 hh /= 2
@@ -151,10 +156,10 @@ def run_lohner(z0, h=0.25, ds=0.004, L=14, sigma_max=80.0, max_steps=40000, log=
             return "E1", sig, n
         if rho_e * rho_e + z_e * z_e > R_STAR * R_STAR:
             return "E2", sig, n
-        for c in (D / 2, -D / 2):
+        for c in (d / 2, -d / 2):
             if rho_e * rho_e + (z_e - c) ** 2 < S_STAR * S_STAR:
                 return "E3", sig, n
-        if neck_event(X):
+        if neck and neck_event(X):
             return "N", sig, n
     return "timeout", sig, n
 
@@ -163,13 +168,13 @@ EXCLUDED = ("E1", "E2", "E3", "N")
 Z_LO, Z_HI = 139 / 256, 269 / 256  # contains [d/2 + s_*, R_*] = [0.545, 1.05]
 
 
-def run_box(box):
+def run_box(box, d=D):
     """Worker: box = (lo, hi), dyadic floats. Returns (lo, hi, event, sigma, steps, seconds)."""
     lo, hi = box
     t0 = time.time()
     z0 = (arb(lo) + arb(hi)) / 2 + arb(0, 1) * ((arb(hi) - arb(lo)) / 2)
     try:
-        ev, sig, n = run_lohner(z0)
+        ev, sig, n = run_lohner(z0, d)
     except (RuntimeError, ValueError, ZeroDivisionError) as e:
         ev, sig, n = f"error {type(e).__name__}", 0.0, 0
     return lo, hi, ev, sig, n, time.time() - t0
