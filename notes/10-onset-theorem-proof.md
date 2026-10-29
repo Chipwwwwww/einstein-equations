@@ -31,8 +31,9 @@ $\theta_\pm = \mathrm{tr}_S K \pm H_S$ with $K_{ij} = \nabla_i n_j$.
   embedded $\mathcal G$-invariant minimal sphere enclosing both punctures, and
   $\phi_0 > 0$ spans the kernel of its Jacobi operator
   $L = -\Delta_{S_c} - \mathrm{Ric}(\nu, \nu) - |A|^2$.
-- **Slicing.** Fix a compact neighbourhood $V \Subset \Sigma$ of $S_c$ away
-  from the punctures. The slices $\Sigma_t$ of the development have zero shift
+- **Slicing.** Fix a compact neighbourhood $V \subset \mathbb R^3$ of $S_c$
+  that avoids the punctures for every $d$ near $d_c$. $\Sigma$ itself depends
+  on $d$, but $V$ does not, so data on $V$ can be compared across $d$. The slices $\Sigma_t$ of the development have zero shift
   and lapse $N > 0$. We treat $N = 1$ (Gaussian normal coordinates) in
   detail; any smooth, $\mathcal G$-invariant lapse family works the same way.
 
