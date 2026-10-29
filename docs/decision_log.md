@@ -2,6 +2,36 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-29 (session 6) — Gap 3 analysed; merger-timing corollary
+
+**Decisions**
+
+- **Gap 3 is not closed this session, by choice.** The sweep reduces to a
+  window of axis heights, but just above the individual horizon the
+  shooting curves pass necks of every size. A proof needs an isolating-block
+  argument at the axis, which is multi-session work. We certified the two
+  barrier lemmas (they are needed in any version) and recorded the
+  obstruction, the scaling law and the failed shortcuts, so the next attempt
+  starts from there.
+- **Locating the merger event as ε → 0 was not attempted.** It needs light
+  rays over long rescaled times. We recorded instead the cheap rigorous
+  statement that on the slow scale the merger happens at the crossing
+  (Corollary D1).
+
+**Progress**
+
+- `research/calc/bl_global.py` and `tests/test_bl_global.py`:
+  - Lemmas G1 and G2 (interval arithmetic);
+  - the floating-point landscape;
+  - the desingularized $\sigma$-system, checked by SymPy.
+- Corollary D1 in notes/11.
+- Ledger 50–55; status and idea log updated.
+
+**Next**
+
+- Isolating block for the neck passage (gap 3).
+- An expert check of note 11's Lemma 6.
+
 ## 2026-10-29 (session 5) — Λ = 0 event-horizon merger via Hintz 2026
 
 **Decisions**

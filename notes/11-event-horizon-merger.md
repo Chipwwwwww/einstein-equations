@@ -376,6 +376,30 @@ slices; here $\mathscr I^+$ is replaced by the escape region $\mathcal E$
 (§2; Theorem E in §6 restores $\mathscr I^+$ for Λ = 0), and the slices
 are the level sets of $\tau$.
 
+**Corollary D1 (when the horizons merge).** Let $s_{\rm cross}$ be the proper
+time at which $C$ crosses the background horizon $r = r_H$. For every
+$\eta > 0$ there is $\epsilon_0 > 0$ with the following property. For
+$\epsilon < \epsilon_0$, on the adapted slices through $C(s)$:
+
+- the two holes lie in different components of $\mathcal B$ for
+  $s \le s_{\rm cross} - \eta$;
+- they lie in the same component for $s$ in
+  $[s_{\rm cross} + \eta, s_{\rm cross} + \eta_1]$, where $\eta_1 > \eta$ is
+  any value at which $C$ is still inside the domain.
+
+On the slow time scale, then, the event horizons merge at the moment the
+small hole's worldline crosses the background horizon. The details of the
+merger (the Emparan–Martínez horizon) live on the fast scale, in rescaled
+time $\hat s = s/\epsilon$. The same holds for $\mathcal B_{\mathscr I}$ in
+Theorem E.
+
+*Proof.* $C$ crosses $r = r_H$ transversally and to the future. There
+$\nabla r$ is future null and $\dot C$ is future timelike, so
+$\tfrac{d}{ds}r(C(s)) = g(\nabla r, \dot C) < 0$. Choose $c$ so small that
+$r(C(s)) \ge r_H + 2c$ for $s \le s_{\rm cross} - \eta$ and
+$r(C(s)) \le r_H - 3c$ for $s \ge s_{\rm cross} + \eta$. Then apply
+conclusion 4 with that $c$. ∎
+
 ### Proof
 
 **Step 1: the small hole's core lies in $\mathcal B$.** By (G2b) and Lemma 3,
@@ -705,6 +729,7 @@ coordinates remove this step for Theorem D and reduce Theorem E to (N).
 | (G3), Λ = 0 | Hintz 2026 Theorems 1.1 and 13.1, consequence (3), Remark 13.3, (5.56): **read**. Smallness of the decay constants for small data is *our reading* |
 | $t_* = t_{\rm BL} - T(r)$ form of Hintz–Vasy's time function | cited (HV18 (3.9)), *not re-checked* |
 | **Theorem D** (Λ > 0 and Λ = 0): both holes in $\mathcal B$, localisation, merger, $\mathcal B$ connected | **proved here, given (G1)–(G3)**; potentially new (Hintz lists the event horizon and connectedness as open) |
+| Corollary D1: on the slow time scale, the merger happens when $C$ crosses $r_H$ | **proved here** (from Theorem D) |
 | **Theorem E** (Λ = 0, $\mathscr I^+$): both holes in $\mathcal B_{\mathscr I}$, two components then one | **proved here, given (G1)–(G3) and Lemma 6**; potentially new |
 | Lemma 6 = (N) | derived from Hintz 2026 Lemma 3.19, Def. 5.3, (5.2), (5.56), proof of Thm 13.1 (**read**). Support properties and uniformity up to the corner of $\mathscr I^+$ are *our reading* |
 | Localisation and connectedness for $\mathcal B_{\mathscr I}$ | not proved |
