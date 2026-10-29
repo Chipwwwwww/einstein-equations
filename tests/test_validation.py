@@ -157,3 +157,22 @@ def test_adm_evolution_equation_sign():
         KK = sum(K[i, k] * Kmix[k, j] for k in range(3))
         rhs = DDN - N * (three.ricci[i, j] + trK * K[i, j] - 2 * KK) + N * four.ricci[i + 1, j + 1]
         assert sp.simplify(K[i, j].diff(t) - rhs) == 0
+
+
+def test_conformal_mean_curvature_formula():
+    """The formula behind every horizon calculation in research/calc: for gamma = W^2 delta
+    and a level set of F with flat unit normal n = grad F / |grad F|, the gamma-mean
+    curvature H = div_gamma(nu) (nu the gamma-unit normal) equals
+    W^-1 (H_flat + 2 n . grad W / W), H_flat = div_flat(n). Checked from first principles:
+    H = (1/sqrt det gamma) d_i (sqrt det gamma nu^i), with arbitrary F and W."""
+    X = sp.symbols("x y z")
+    F = sp.Function("F")(*X)
+    W = sp.Function("W")(*X)
+    grad = [sp.diff(F, v) for v in X]
+    norm = sp.sqrt(sum(c**2 for c in grad))
+    n = [c / norm for c in grad]
+    nu_up = [W**-1 * c for c in n]  # gamma^{ij} d_j F / |dF|_gamma = W^-1 n^i
+    H = sum(sp.diff(W**3 * nu_up[i], X[i]) for i in range(3)) / W**3
+    H_flat = sum(sp.diff(n[i], X[i]) for i in range(3))
+    expected = (H_flat + 2 * sum(n[i] * sp.diff(W, X[i]) for i in range(3)) / W) / W
+    assert sp.simplify(H - expected) == 0
