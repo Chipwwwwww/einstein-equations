@@ -2,19 +2,24 @@
 
 Hintz (2024, *Gluing small black holes along timelike geodesics III*,
 arXiv:2408.06715) constructs vacuum spacetimes in which a light Kerr black
-hole, of mass $\epsilon m$, falls into a slowly rotating unit-mass Kerr or
-Kerr–de Sitter black hole. Afterwards the spacetime settles down to a single
-black hole. He leaves "the construction of the event horizon, the structure of
-the black hole region—conjecturally connected—" to future work (§1, p. 3–4).
-Hypothesis H3 of [09](09-merger-hypotheses.md) asked whether the event
-horizons in these spacetimes merge in the sense of [07](07-the-merger-problem.md).
+hole, of mass $\epsilon m$, falls into a unit-mass Kerr–de Sitter black hole.
+Afterwards the spacetime settles down to a single black hole.
 
-This note answers it for Λ > 0 and reduces Λ = 0 to two properties of the
-Kerr-stability spacetime.
+- For Λ > 0 this is his Theorem 6.1.
+- For Λ = 0 he sketches it in his Remark 6.2. Hintz's 2026 stability theorem
+  for the whole subextremal Kerr family (*Nonlinear stability of subextremal
+  Kerr black holes*, arXiv:2606.28253, consequence (3) of §1) now supplies
+  the missing late-time step.
 
-- **Theorem D (Λ > 0).** In Hintz's merger spacetimes (his Theorem 6.1) take
-  $\mathcal B$ to be the events that cannot send a signal into the expanding
-  region beyond the cosmological horizon. Then, for all small $\epsilon$:
+He leaves "the construction of the event horizon, the structure of the black
+hole region—conjecturally connected—" to future work (III, §1). Hypothesis H3
+of [09](09-merger-hypotheses.md) asked whether the event horizons in these
+spacetimes merge in the sense of [07](07-the-merger-problem.md).
+
+- **Theorem D (Λ ≥ 0).** Take $\mathcal B$ to be the events that cannot send
+  a signal to the *escape region*. That region is the expanding region
+  beyond the cosmological horizon if Λ > 0, and arbitrarily large distances
+  if Λ = 0. Then, for all small $\epsilon$:
   - $\mathcal B$ contains the interiors of both holes, each with closed
     trapped surfaces;
   - both horizons are located to within any prescribed margin;
@@ -22,14 +27,23 @@ Kerr-stability spacetime.
     $\mathcal B\cap\Sigma_t$, and afterwards in the **same** one;
   - $\mathcal B$ is **connected**.
 
-  The only inputs are statements of Hintz's Theorem 6.1 and his Definition 4.1
-  (both read), plus elementary causal theory and the background facts checked
-  in [`tests/test_eh_merger.py`](../tests/test_eh_merger.py).
-- **Theorem D₀ (Λ = 0).** The same merger statement for Hintz's Remark 6.2.
-  It is *conditional* on two properties (K-esc), (K-trap) of the Kerr-stability
-  development of Klainerman–Szeftel. They prove these properties in their own
-  coordinates. What is missing is the comparison of those coordinates with
-  Kerr's on the initial slice.
+  The inputs are the statements of Hintz's Theorem 6.1 and Definition 4.1
+  (gluing), and, for Λ = 0, of Theorem 1.1/13.1 of the 2026 paper (late
+  times). We read all of them; where we rely on our reading of their
+  uniformity, §7 says so. The rest is elementary causal theory and background
+  facts checked in [`tests/test_eh_merger.py`](../tests/test_eh_merger.py).
+- **Theorem E (Λ = 0, null infinity).** With the textbook black-hole region
+  $M \setminus J^-(\mathscr I^+)$, the merger holds in the exact sense of
+  note 07: two components before the plunge, one after. This assumes one
+  far-field property (N) of the late-time Kerr perturbation: points far out
+  on the initial slice of the stability development can signal to
+  $\mathscr I^+$. We could not verify (N) from the 2026 paper's asymptotics
+  at $\mathscr I^+$.
+
+*History.* Session 4 stated the Λ = 0 case conditionally (as "Theorem D₀"),
+through Klainerman–Szeftel's stability theorem. That needed their coordinates
+to be anchored to Kerr's. Hintz's 2026 theorem works in fixed coordinates, so
+anchoring is no longer needed (§6).
 
 **The idea in one paragraph.** Two facts do all the work.
 
@@ -49,30 +63,39 @@ predictability.
 
 Conventions: [00](00-conventions.md), [07](07-the-merger-problem.md). Hintz and Klainerman–Szeftel also use signature $(-,+,+,+)$, so nothing needs converting.
 
-## 1 · The spacetimes (Hintz, Theorem 6.1)
+## 1 · The spacetimes
 
-**Background.** Slowly rotating Kerr–de Sitter $(M_\bullet, a_\bullet, \Lambda > 0)$,
-with Cauchy, event and cosmological horizon radii $r_{\rm CH} < r_H < r_C$. It
-lives on $M = \mathbb R_{t_*} \times X$ with $X = \{r_- < r < r_+\}$, where
-$r_{\rm CH} < r_- < r_H$ and $r_+ > r_C$. The time function is
-$t_* = t_{\rm BL} - T(r)$, with $\varphi_* = \varphi - \Phi(r)$, and its level
-sets cross both horizons ([HV18, (3.9)], as cited by Hintz; *not re-checked*).
+**Background.**
+
+- **Λ > 0:** slowly rotating Kerr–de Sitter $(M_\bullet, a_\bullet, \Lambda)$,
+  with Cauchy, event and cosmological horizon radii $r_{\rm CH} < r_H < r_C$.
+  It lives on $M = \mathbb R_{t_*} \times X$ with $X = \{r_- < r < r_+\}$,
+  where $r_{\rm CH} < r_- < r_H$ and $r_+ > r_C$ (Hintz III, Thm 6.1).
+- **Λ = 0:** subextremal Kerr $(M_\bullet, a_\bullet)$, with $X = \{r > r_-\}$
+  and $r_- = M_\bullet$, which lies between $r_{\rm CH}$ and $r_H$. This is
+  the inner radius of the domain $\Omega = \{r \ge m_0\}$ in the 2026 paper.
+
+In both cases the time function is $t_* = t_{\rm BL} - T(r)$, with
+$\varphi_* = \varphi - \Phi(r)$. Its level sets cross the horizons ([HV18,
+(3.9)] as cited by Hintz; for Λ = 0 the function $\tilde t$ of the 2026
+paper). For Λ = 0, $T = 0$ for large $r$, so the level sets go to spacelike
+infinity.
 
 **The plunge.** $C$ is a future-inextendible timelike geodesic through
-$t_* = 0$ with $r(C(0)) \in (r_H, r_C)$. It crosses $r = r_H$ in finite time.
-By Hintz's proof of 6.1 it then reaches $r = r_-$, the inner boundary of the
+$t_* = 0$ with $r(C(0)) > r_H$ (and $< r_C$ if Λ > 0). It crosses $r = r_H$ in finite time.
+By Hintz's proof of 6.1 (the same argument works for Λ = 0) it then reaches
+$r = r_-$, the inner boundary of the
 domain, before some time $t_* = T$. On $C$ we use proper time $s$, and
 **Fermi coordinates** $(s, x)$ on a tube $\{|x| < \rho_0\}$ around $C$. Let
-$F(s) = t_*(C(s))$; this is increasing. For Λ = 0 (§6) the same $t_*$ is
-taken equal to $t_{\rm BL}$ far out, so its level sets go to spacelike
-infinity.
+$F(s) = t_*(C(s))$; this is increasing.
 
 Two facts about $C$ are used below.
 
-- **$C$ never reaches the cosmological horizon.** Beyond $r_C$, $r$ increases
-  along every future causal curve (Lemma 2), and $C$ must still reach
+- **$C$ stays below the escape region.** For Λ > 0, $r$ increases beyond
+  $r_C$ along every future causal curve (Lemma 2), and $C$ must still reach
   $r_H < r_C$. So $\sup r\circ C < r_C$; set
-  $c_0 := r_C - \sup r\circ C > 0$.
+  $c_0 := r_C - \sup r\circ C > 0$. For Λ = 0, $\sup r\circ C < \infty$,
+  since $C$ is inside the domain only for a compact time.
 - **After the crossing $C$ only goes deeper.** Once $r(C) < r_H$, $r\circ C$
   decreases.
 
@@ -82,16 +105,34 @@ $\hat r_- < m < \hat r_+$. In rescaled coordinates $\hat s = s/\epsilon$,
 $\hat x = x/\epsilon$, Hintz's model $\hat g_b$ is Kerr on $\{\hat r = |\hat x| \ge m\}$.
 Here $\hat r$ is the Boyer–Lindquist radius and $\hat s = \hat t_{\rm BL} - T(\hat r)$,
 with angle $\phi_* = \phi - \Phi(\hat r)$; $d\hat s$ is timelike everywhere
-(Hintz (2.19); **read**). The spacetime is
-$M_\epsilon = (M \cap \{t_* \ge 0\}) \setminus \{|x| \le \epsilon m\}$ with metric
-$g_\epsilon$. The boundary of the excised ball lies between the small hole's
-two horizons.
+(Hintz (2.19); **read**). The boundary of the excised ball $\{|x| \le \epsilon m\}$
+lies between the small hole's two horizons.
+
+**The spacetime $(M_\epsilon, g_\epsilon)$.**
+
+- **Λ > 0:** Hintz's Theorem 6.1 gives $g_\epsilon$ on
+  $M_\epsilon = (M \cap \{t_* \ge 0\}) \setminus \{|x| \le \epsilon m\}$.
+  Set $T_{\rm late} := T + 1$.
+- **Λ = 0:**
+  1. Fix $T_{\rm late} \ge T + 1$ (chosen in §6). Glue with Hintz's
+     Theorem 5.12 on $\{0 \le t_* \le T_{\rm late}\}$.
+  2. The data on $\Sigma_{T_{\rm late}} = \{t_* = T_{\rm late}\}$ equal the Kerr data
+     outside a compact set, by finite speed of propagation (III, Theorem
+     5.1(3)). They are $O(\epsilon)$-close to them in $C^k$ (III,
+     Definition 4.1(2)), because the small hole has left the domain by then.
+  3. Evolve these data with Theorem 1.1/13.1 of the 2026 paper, on
+     $\{t_* \ge T_{\rm late}\} \cap \{r \ge r_-\}$.
+  4. Both pieces are developments of the same data near
+     $\Sigma_{T_{\rm late}}$, so they glue (local uniqueness). This is consequence
+     (3) in §1 of the 2026 paper.
 
 **What we use from Hintz.** Each item below is our reading of the statement
 cited.
 
-- **(G1) Far field.** For $t_* \le T + 1$, $g_\epsilon \to g$ in $C^\infty$ on
-  every compact set disjoint from $C$ (Theorem 1.1; Definition 4.1(2)).
+- **(G1) Far field.** For $t_* \le T_{\rm late}$, $g_\epsilon \to g$ in
+  $C^\infty$ on every compact set disjoint from $C$ (Theorem 1.1;
+  Definition 4.1(2)). For Λ = 0, also $g_\epsilon = g$ outside a compact set
+  in this range (Theorem 5.1(3)).
 - **(G2) Near field.** In Fermi coordinates,
   $(g_\epsilon)_{\mu\nu}(s, x) = (\hat g_b)_{\mu\nu}(x/\epsilon) + e_{\epsilon,\mu\nu}(s, x)$,
   where $e_\epsilon = (g - \eta) + h_\epsilon$ (eq. (1.2); by scaling,
@@ -104,46 +145,71 @@ cited.
   - **(G2a)** on $\{|x| \le \rho\}$, $\limsup_{\epsilon\to0}\sup|e_\epsilon| \le C\rho^2$;
   - **(G2b)** for each $\hat R$, $e_\epsilon \to 0$ in $C^1$, in the variables
     $(\hat s, \hat x)$, on $\{|\hat x| \le \hat R\}$.
-- **(G3) Late times.** For $t_* \ge T + 1$, $g_\epsilon = g_{b_{\bullet,\epsilon}} + \tilde g_\epsilon$
-  with $|\partial^i_{t_*}\partial^\beta_x \tilde g_\epsilon| \le C\epsilon e^{-\alpha t_*}$
-  and $b_{\bullet,\epsilon} = b_\bullet + O(\epsilon)$ (eq. (6.2)). We read
-  this as uniform over $X$.
+- **(G3) Late times.** For $t_* \ge T_{\rm late}$, $g_\epsilon$ is uniformly
+  $C^0$-close to the background, with $C^1$-closeness on compact sets. The
+  sources differ by Λ.
+  - **Λ > 0:** $g_\epsilon = g_{b_{\bullet,\epsilon}} + \tilde g_\epsilon$
+    with $|\partial^i_{t_*}\partial^\beta_x \tilde g_\epsilon| \le C\epsilon e^{-\alpha t_*}$
+    and $b_{\bullet,\epsilon} = b_\bullet + O(\epsilon)$ (III, eq. (6.2)). We
+    read this as uniform over $X$.
+  - **Λ = 0:** the 2026 paper (Theorems 1.1, 13.1) gives
+    $g_\epsilon = g_{b} + h$ in the fixed coordinates $(\tilde t, x)$, with
+    $|b - b_\bullet|$ small. Here $h$ decays in every asymptotic region:
+    $\tilde t^{-2-\epsilon_K}$ on compact sets, $r^{-1}$ near null and spatial
+    infinity, and $t_*^{-1}\log t_*$ in between. We read the constants as
+    small when the data are small. The theorem is a small-data Nash–Moser
+    construction, and its exterior part states this smallness explicitly
+    (eq. (5.56) there).
 
-## 2 · A black-hole region without null infinity
+## 2 · Black-hole regions defined by escape
 
-Future null infinity of Kerr–de Sitter lies beyond $r_+$, outside Hintz's
+For Λ > 0, future null infinity lies beyond $r_+$, outside Hintz's
 spacetime. What the spacetime does contain is the expanding region beyond the
-cosmological horizon, so we measure escape against that region.
+cosmological horizon. For Λ = 0 the natural target is "arbitrarily far away".
 
-**Definition.** For $0 < c < r_+ - r_C$ let
-$\mathcal C_c = \{p \in M_\epsilon : r(p) \ge r_C + c\}$ and
+**Definition (escape region).**
+
+- **Λ > 0:** $\mathcal E = \{r \ge r_C + c_E\}$, for some
+  $0 < c_E < r_+ - r_C$.
+- **Λ = 0:** $\mathcal E = \{r \ge R\}$, for some
+  $R > \max(r_H, \sup r\circ C) + 2$.
+
+Then
 
 ```math
-\mathcal B = M_\epsilon \setminus J^-(\mathcal C_c),
+\mathcal B = M_\epsilon \setminus J^-(\mathcal E),
 ```
 
 with $J^-$ computed in $M_\epsilon$: the events from which no causal signal
-reaches the cosmological region.
+reaches the escape region.
 
 **Lemma 1.**
 
 - (i) $\mathcal B$ is a future set: if $p \in \mathcal B$ then
   $J^+(p) \subset \mathcal B$.
 - (ii) For exact Kerr–de Sitter, $\mathcal B = \{r \le r_H\}$, which is the
-  usual black-hole region, because $J^-(\mathscr I^+) = J^-(\mathcal C_c)$
+  usual black-hole region, because $J^-(\mathscr I^+) = J^-(\mathcal E)$
   there.
-- (iii) For small $\epsilon$, $\mathcal B$ does not depend on
-  $c \in [c_1, c_2] \subset (0, r_+ - r_C)$.
+- (iii) For small $\epsilon$, $\mathcal B$ does not depend on the
+  parameter: $c_E \in [c_1, c_2] \subset (0, r_+ - r_C)$, or $R$ in a
+  compact range.
+- (iv) For Λ = 0,
+  $\mathcal B \subseteq \mathcal B_{\mathscr I} := M_\epsilon \setminus J^-(\mathscr I^+)$.
+  A causal curve that reaches $\mathscr I^+$ passes through every
+  $\{r \ge R\}$.
 
-*Proof.* (i) If $q \in J^+(p)$ reaches $\mathcal C_c$, so does $p$.
+*Proof.* (i) If $q \in J^+(p)$ reaches $\mathcal E$, so does $p$.
 
 (ii) Inside, $r$ decreases (Lemma 2(a)). On $r = r_H$, the horizon is an
 achronal null hypersurface. Outside, $W_{\rm out}$ carries every point to
-$\mathcal C_c$, and beyond $r_C$ the radius increases up to $\mathscr I^+$.
+$\mathcal E$. For Λ > 0, beyond $r_C$ the radius increases up to
+$\mathscr I^+$. For Λ = 0, the outgoing principal null geodesics from
+$r > r_H$ reach $\mathscr I^+$.
 
-(iii) $C$ stays at $r \le r_C - c_0$, so the region $r \ge r_C + c_1$ stays
-away from it. There $W_{\rm out}$ of Lemma 2 is $g_\epsilon$-timelike, by
-(G1), (G3) and Lemma 3, and carries every point to $r \ge r_C + c_2$. ∎
+(iii) $C$ stays below the escape region, so the region $r \ge r_C + c_1$
+(respectively $r \ge R_1$) stays away from it. There $W_{\rm out}$ of
+Lemma 2 is $g_\epsilon$-timelike, by (G1), (G3) and Lemma 3, and carries
+every point further out. ∎
 
 (Extending $g_\epsilon$ beyond $r_+$ to $\mathscr I^+$ would need a stability
 theorem for the expanding region, e.g. Fournodavlos–Schlue; *not used*.)
@@ -158,7 +224,8 @@ theorem for the expanding region, e.g. Fournodavlos–Schlue; *not used*.)
   beyond $r_C$ it increases. *(test: `g^{rr}`, signs of $\Delta_r$)*
 - **(b) Steering fields.** There are $\partial_{t_*}$-invariant, future timelike
   vector fields:
-  - $W_{\rm in}$ on $\{r_- \le r \le r_C - c'\}$ with $dr(W_{\rm in}) \le -1$;
+  - $W_{\rm in}$ on $\{r_- \le r \le r_C - c'\}$ with $dr(W_{\rm in}) \le -1$
+    (for Λ = 0, on $\{r_- \le r \le R'\}$ for any $R'$);
   - $W_{\rm out}$ on $\{r_H + c' \le r \le r_+\}$ with $dr(W_{\rm out}) \ge 1$.
 
   *Proof.* At each point a future timelike $W$ with $dr(W) < 0$ exists:
@@ -168,7 +235,12 @@ theorem for the expanding region, e.g. Fournodavlos–Schlue; *not used*.)
 
   Such $W$ form a convex cone, so a $\partial_{t_*}$-invariant partition of
   unity over the compact $r$-range glues them; then rescale. $W_{\rm out}$
-  is built the same way. ∎
+  is built the same way.
+
+  For Λ = 0 the range of $W_{\rm out}$ is not compact. For $r \ge 10M$ we
+  take $W_{\rm out} = \partial_t + \tfrac12\partial_r$, which has bounded
+  components and $g(W, W) \le -\tfrac14$ for every $|a| \le M$
+  *(test: polynomial with negative coefficients)*; then glue as before. ∎
 - **(c) Trapped spheres.** If $r_{\rm CH} < r_0 < r_H$, every sphere
   $\{t_* = \text{const}, r = r_0\}$ is a closed trapped surface. With
   $t_* = t_{\rm BL} - T(r)$, the sphere is a Boyer–Lindquist sphere rotated
@@ -242,7 +314,8 @@ $C$, we have $|F(s) - t_*| \le A|x|$, so the last term has size at most
 $2A/K_0 < \mu$ for $K_0$ large. Hence $d\tau$ is $g$-timelike.
 
 - On $\{|x| \ge \delta_1\}$, which stays away from $C$, use (G1), (G3) and
-  Lemma 3.
+  Lemma 3. For Λ = 0 this includes $r \to \infty$, where $d t_* = dt$ has a
+  uniform margin.
 - On $\{|x| \le \delta_1\}$, $d\tau \propto ds \propto d\hat s$. By (G2a),
   $g_\epsilon = \hat g_b(\hat x) + O(\delta_1^2) + o(1)$. Also $\hat g_b$ is
   bounded with bounded inverse and has $\hat g_b^{-1}(d\hat s, d\hat s) \le -\kappa_b$
@@ -261,7 +334,7 @@ $|r - r(C(s(t)))|/\rho$ on $\Sigma_t \cap \{|x| \le \rho\}$, $\rho \le \rho_0$.
 Here $s(t) := F^{-1}(t)$ is the Fermi time of the slice $\Sigma_t$ near $C$.
 Choose them in this order:
 
-1. $c \in (0, \min(c_0, r_+ - r_C)/2)$ with $r_H + 2c < r(C(0))$ and
+1. $c > 0$ (for Λ > 0 also $c < c_0/2$) with $r_H + 2c < r(C(0))$ and
    $r_- + 4c < r_H - 4c$, and $\eta \in (0, (\hat r_+ - m)/2)$;
 2. $\rho_0 \le c/(4L)$ and $\delta_1$ (Lemma 4);
 3. the tube radius $\delta' = \min(\delta_1, c/(8L))$;
@@ -287,7 +360,7 @@ $\Sigma_t$ from Lemma 4:
      $\mathcal B \cap N \subset \{\hat r < \hat r_+ + \eta\}$.
 
    So, up to the margins $c$ and $\eta$ (which are arbitrary), the event
-   horizons sit at the Kerr–de Sitter horizon $r_H$ and, in the small hole's
+   horizons sit at the background horizon $r_H$ and, in the small hole's
    own units, at its Kerr horizon $\hat r_+$.
 4. **Merger.**
    - If $r(C(s(t))) \ge r_H + 2c$, then $T_1(t)$ and $T_2(t)$ lie in different
@@ -299,7 +372,8 @@ $\Sigma_t$ from Lemma 4:
 By 1, 2 and 4, $g_\epsilon$ describes an event-horizon merger in the sense of
 [07](07-the-merger-problem.md): two black holes, initially distinct, end in
 one component. The definition there is phrased with $\mathscr I^+$ and Cauchy
-slices; here $\mathscr I^+$ is replaced by $\mathcal C_c$ (§2), and the slices
+slices; here $\mathscr I^+$ is replaced by the escape region $\mathcal E$
+(§2; Theorem E in §6 restores $\mathscr I^+$ for Λ = 0), and the slices
 are the level sets of $\tau$.
 
 ### Proof
@@ -309,7 +383,8 @@ $\hat r$ is a $g_\epsilon$-time function on $\{m \le \hat r \le \hat r_+ - \eta/
 and decreases to the future. A future causal curve from $P$ therefore stays
 in $P$ until it leaves $M_\epsilon$ through the excision or the inner
 boundary. All the while it lies within $\epsilon\hat r_+$ of $C$. There
-$r \le r_C - c_0 + L\delta' < r_C + c$, so it never reaches $\mathcal C_c$.
+$r \le \sup r\circ C + L\delta'$, which is below the escape region, so it
+never reaches $\mathcal E$.
 
 The surfaces $T_1(t)$ are trapped for $\hat g_b$ (Lemma 2(d)). By (G2b) they
 are trapped for $\epsilon^{-2}g_\epsilon$, hence for $g_\epsilon$.
@@ -337,7 +412,7 @@ r(\gamma) \le r(C(s)) + L\delta' \le r(C(s_e)) + L\delta' \le r(p) + 2L\delta' .
 ```
 
 Between visits $r$ decreases. So $\gamma$ never reaches $r_H - c/2$, let
-alone $\mathcal C_c$. The same argument gives case (ii) directly.
+alone $\mathcal E$. The same argument gives case (ii) directly.
 
 For $T_2(t)$, take $\Sigma_t \cap \{r = r_2\}$, with $r_2 \in \{r_H - 2c, r_H - 3c\}$
 chosen at distance $\ge c/2$ from $r(C)$. Then it avoids
@@ -347,8 +422,9 @@ sphere is trapped by Lemma 2(c) and (G1)/(G3).
 **Step 3: escape.**
 
 - **(a) Compact part.** Consider the compact set
-  $Q = \{0 \le t_* \le T + 1,\ r_H + c \le r \le r_C + c\} \setminus \{|x| < \delta'\}$.
-  Each $p \in Q$ has a $g$-timelike curve to $\mathcal C_{2c}$ that avoids
+  $Q = \{0 \le t_* \le T_{\rm late},\ r_H + c \le r \le r_{\mathcal E}\} \setminus \{|x| < \delta'\}$,
+  where $r_{\mathcal E}$ is the inner radius of $\mathcal E$. Each $p \in Q$
+  has a $g$-timelike curve into the interior of $\mathcal E$ that avoids
   $C$: an integral curve of $W_{\rm out}$, nudged off $C$ if needed, which is
   possible because a curve can always be moved off another curve in four
   dimensions.
@@ -357,8 +433,8 @@ sphere is trapped by Lemma 2(c) and (G1)/(G3).
   finitely many such curves, together with short connecting geodesics, serve
   all of $Q$, and their union is a compact set disjoint from $C$, with a
   common timelike margin. By (G1), (G3) and Lemma 3 these curves are
-  $g_\epsilon$-timelike, so $Q \subset J^-(\mathcal C_c)$.
-- **(b) Late part.** On $\{t_* \ge T + 1,\ r \ge r_H + c\}$, $W_{\rm out}$ is
+  $g_\epsilon$-timelike, so $Q \subset J^-(\mathcal E)$.
+- **(b) Late part.** On $\{t_* \ge T_{\rm late},\ r \ge r_H + c\}$, $W_{\rm out}$ is
   $g_\epsilon$-timelike with $dr \ge 1/2$, by (G3).
 - **(c) Near the small hole while it is outside.** Take $q \in N$ with
   $\hat r(q) \ge \hat r_+ + \eta$ at a time when $r(C) \ge r_H + 2c$. From
@@ -378,7 +454,7 @@ This proves 3.
 **Step 4: separation before the plunge.** Let $r(C(s(t))) \ge r_H + 2c$. The
 coordinate sphere $S = \{s = s(t), |x| = \delta'/2\}$ lies in $\Sigma_t$
 (since $\delta' \le \delta_1$). It has $\hat r = \delta'/(2\epsilon) \ge \hat r_+ + \eta$,
-so $S \subset J^-(\mathcal C_c)$ by Step 3(c).
+so $S \subset J^-(\mathcal E)$ by Step 3(c).
 
 $S$ splits $\Sigma_t$ into an inside, which contains $T_1(t)$, and an
 outside, which contains $T_2(t)$ (since $T_2$ avoids $|x| \le \rho_0$). A
@@ -439,84 +515,127 @@ by Lemma 1(i) it stays in $\mathcal B$.
   creases, the moment of merger, or the toroidal phases seen by
   Emparan–Martínez–Zilhão.
 
-## 6 · Λ = 0: Theorem D₀, conditional
+## 6 · Λ = 0 with null infinity: Theorem E
 
-Hintz's Remark 6.2 replaces Hintz–Vasy by the Kerr stability theorem of
-Klainerman–Szeftel (KS23), with GKS22 and She23.
+For Λ = 0, Theorem D measures escape to arbitrarily large distances. The
+textbook black-hole region is
+$\mathcal B_{\mathscr I} = M_\epsilon \setminus J^-(\mathscr I^+)$. Here
+$\mathscr I^+$ is the null infinity of the late-time development, the face
+$\mathscr I^+$ of the compactified spacetime in the 2026 paper. By Lemma
+1(iv), $\mathcal B \subseteq \mathcal B_{\mathscr I}$.
 
-- Glue up to a time $T_1 \ge T + 1$.
-- Take the induced data on $\Sigma_{T_1} = \{t_* = T_1\}$. These are
-  asymptotically flat, and compactly supported perturbations of Kerr data by
-  finite speed of propagation.
-- Evolve them with the stability theorem.
+Reaching $\mathscr I^+$ is more than reaching large $r$: the signal's
+retarded time must also stay bounded. In Schwarzschild, for comparison, it
+drifts like $2M\log r$ unless one uses the right retarded time. We isolate
+what is needed:
 
-A remark is not a theorem, so we state what we need as hypotheses.
+- **(N)** There is $R_N$, depending only on the background, such that every
+  point of $\Sigma_{T_{\rm late}}$ with $r \ge R_N$ lies in $J^-(\mathscr I^+)$.
 
-- **(Ex)** For small $\epsilon$, these data have a future development
-  $\mathcal M^+_\epsilon$ with complete $\mathscr I^+$, and
-  $M_\epsilon := (\text{Hintz region} \cap \{t_* \le T_1\}) \cup \mathcal M^+_\epsilon$
-  is a spacetime.
-- **(K-esc)** There is $R_0$, independent of $\epsilon$ and $T_1$, such that
-  every point of $\Sigma_{T_1}$ with $r \ge R_0$ lies in $J^-(\mathscr I^+)$.
-- **(K-trap)** There is $c_K \in (0, (r_H - r_-)/16)$ such that, for small
-  $\epsilon$, no point of $\Sigma_{T_1}$ with $r \le r_H - c_K$ lies in
-  $J^-(\mathscr I^+)$.
+**Theorem E.** Let Λ = 0 and assume (N). Choose $T_{\rm late}$ large enough
+that the curves of Step 3(a), started in
+$\{0 \le t_* \le T + 1,\ r_H + c \le r \le R_N + 1\} \setminus \{|x| < \delta'\}$,
+reach $r \ge R_N + 1$ before $t_* = T_{\rm late}$. Then, for small $\epsilon$,
+conclusions 1, 2 and 4 of Theorem D hold with $\mathcal B_{\mathscr I}$ in
+place of $\mathcal B$. That is:
 
-**Theorem D₀.** Assume (Ex), (K-esc), (K-trap). Let $c = 2c_K$ and
-$\delta' \le c_K/(4L)$. Let $\Theta$ be the largest $t_*$-time a $W_{\rm out}$
-curve needs to go from $\{r_H + c \le r \le R_0 + 1\}$ to $r = R_0 + 1$, and
-take $T_1 \ge T + 1 + \Theta$. Then, for small $\epsilon$, with
-$\mathcal B = M_\epsilon \setminus J^-(\mathscr I^+)$, the following
-conclusions of Theorem D hold:
+- the small hole's core $P$ and the large hole's interior lie in
+  $\mathcal B_{\mathscr I}$, with closed trapped surfaces on every slice;
+- before the plunge they lie in different components of
+  $\mathcal B_{\mathscr I} \cap \Sigma_t$;
+- after it they lie in the same component.
 
-- 1;
-- 2 for $t_* \le T_1$;
-- 3 for $t_* \le T + 1$;
-- 4.
+So these asymptotically flat vacuum spacetimes describe the merger of two
+initially distinct black holes in the sense of
+[07](07-the-merger-problem.md), with $\mathscr I^+$.
 
-How each step changes:
+*Proof.* Conclusions 1, 2 and the "same component" half of 4 follow from
+Theorem D, because $\mathcal B \subseteq \mathcal B_{\mathscr I}$: a connected
+subset of $\mathcal B$ is a connected subset of $\mathcal B_{\mathscr I}$.
 
-- Conclusion 1 needs only (Ex). The curves from $P$ stay in the tube, which
-  leaves the domain before $t_* = T$.
-- Step 3 ends at $\Sigma_{T_1}$ and uses (K-esc). For $r \ge R_0 > 2M_\bullet$,
-  the stationary Killing field of Kerr is timelike. It keeps $r$ fixed until
-  $t_* = T_1$. Far out the metric is exactly Kerr, by finite speed of
-  propagation.
-- Step 2 ends at $\Sigma_{T_1}$, at $r \le r_H - 2c_K + 2L\delta' < r_H - c_K$,
-  and uses (K-trap).
+For the "different components" half we need the separating sphere $S$ of
+Step 4 to lie in $J^-(\mathscr I^+)$. By Steps 3(c) and 3(a), each point of
+$S$ has a $g_\epsilon$-timelike curve that reaches $r \ge R_N + 1$ before
+$t_* = T_{\rm late}$. From there follow $\partial_t$ up to
+$\Sigma_{T_{\rm late}}$. This keeps $r$ fixed and stays timelike, because for
+$r \ge 10M$ we have $g(\partial_t, \partial_t) \le -4/5$ with $C^0$
+closeness. The endpoint has $r \ge R_N$, so it lies in $J^-(\mathscr I^+)$
+by (N). ∎
 
-Steps 4 and 5 are unchanged. We do not claim connectedness (Step 6) for
-Λ = 0.
+**Not claimed for $\mathcal B_{\mathscr I}$:** localisation (3) and
+connectedness (5). Both would need escape to $\mathscr I^+$ from late-time
+points near the horizon. That amounts to identifying
+$\partial\mathcal B_{\mathscr I}$ with the dynamical horizon of Chen–Klainerman
+(arXiv:2409.05700) and Hintz (*Horizons of some asymptotically stationary
+spacetimes*, Duke 2026, arXiv:2411.12568). Consequence (2) of the 2026 paper
+asserts that this horizon exists and is smooth. We did not check the
+identification.
 
-**How close KS come to (K-esc) and (K-trap)** (KS23, arXiv:2104.11857,
-**read** §3.4, §3.8). Their admissible future complete spacetime is
-$\mathcal M = {}^{(ext)}\mathcal M \cup {}^{(int)}\mathcal M$, split by
-$\{r = r_0\}$ (Definition 3.4.5).
+**Lemma 5 (escape where the data are exactly Kerr).** Work in Kerr, outside
+the horizon ($\Delta > 0$). Let $dr_*/dr = (r^2 + a^2)/\Delta$ and
+$\tilde u = t - r_* + a\arctan(r/a)$.
 
-- **Escape side.** Every point of ${}^{(ext)}\mathcal M$ lies on an outgoing
-  null geodesic with $e_4(r) = 1$ that reaches $\mathscr I^+$. KS state this
-  for $\mathcal T = \{r = r_0\}$ (§3.8, "Existence of a future event horizon").
-- **Trap side.** On ${}^{(int)}\mathcal M \cap \{r \le r_+(1 - \delta_H/2)\}$,
-  $e_3(r) \le -1/2$ and $e_4(r) \lesssim -\delta_H$. So $r$ decreases along
-  future null geodesics, "so that, in particular, γ(s) cannot reach
-  $\mathscr I^+$" (same section).
+- (a) $\rho^2 g^{-1}(d\tilde u, d\tilde u) = -a^2r^2/(r^2 + a^2) - (\text{a nonnegative term})$.
+  So $\tilde u$ is nondecreasing along future causal curves in $r > r_+$
+  *(test, exact)*.
+- (b) Along an outgoing principal null geodesic, $t - r_*$ is constant, so
+  $\tilde u$ changes by less than $\pi|a|/2$.
+- (c) Let $\Sigma$ be a $t_*$-slice and $r_1$ large enough compared with
+  $r_0$. Then the outgoing principal null geodesic from a point of $\Sigma$
+  with $r \ge r_1$ never meets $J^+(\Sigma \cap \{r < r_0\})$.
 
-  KS state this for null geodesics. For a causal vector
-  $\lambda e_4 + \mu e_3 + f^b e_b$ with $\lambda, \mu \ge 0$, $r$ still
-  decreases, because $e_b(r) = 0$. So it extends to all causal curves.
+*Proof of (c).* Suppose a causal curve runs from $\Sigma \cap \{r < r_0\}$ to
+a point $q$ of the geodesic. Take its last crossing of $\{r = r_0\}$; after
+it the curve stays where $\tilde u$ is a time function. That gives
+$\tilde u(q) \ge t_*(\Sigma) - r_*(r_0) + O(1)$. By (b),
+$\tilde u(q) \le t_*(\Sigma) - r_*(r_1) + \pi|a|$. These are incompatible
+for $r_1$ large. ∎
 
-Here $r$, $e_3$, $e_4$ are KS's own, defined by their PG structures. The
-missing link is **anchoring**: on the initial layer, KS's $r$ must be
-uniformly close to the Kerr $r$ of our $\Sigma_{T_1}$, so that points with
-$r \ge R_0$ and points with $r \le r_H - c_K$ lie in, or flow into, those two
-regions. Two further caveats:
+So the geodesic stays in the domain of dependence of
+$\Sigma \cap \{r \ge r_0\}$. If the data on $\Sigma$ are exactly Kerr there,
+the spacetime is exactly Kerr along it (local uniqueness), and it reaches
+$\mathscr I^+$. Thus (N) holds outside the support of the perturbation.
 
-- KS's theorem starts from an admissible *initial data layer*. That Cauchy
-  data generate one is cited from other work (KS Remark 3.4.3; refs. [36],
-  [37], [8] there). We did not read it, nor check that Hintz's data at
-  $T_1$ qualify.
-- Their $\delta_H$ is a fixed small constant. So (K-trap) is expected with
-  $c_K \approx r_H\delta_H/2$, which is enough here.
+**Why (N) is still an assumption.** Our signals leave from next to the small
+hole, inside the future of the region the gluing has disturbed. By (a)–(b),
+$\tilde u$ grows along them, so they never enter the exactly-Kerr region of
+Lemma 5. They cross $\Sigma_{T_{\rm late}}$ where the data have been
+perturbed, at size $O(\epsilon)$. There (N) must come from the 2026 paper's
+description of null infinity, and we expect it does:
+
+- Near $\Sigma_{\rm IVP}$ far out, the solution is the exterior solution of
+  its Theorem 5.21, $g_{b_0} + h$, with $h$ in the space of its Definition 5.3.
+- In the splitting (3.37) there, the component of $h$ along the outgoing null
+  direction $\partial_0$ of the mass-$m_0$ model, $h(\partial_0, \partial_0)$,
+  belongs to the strongly decaying group $\pi^C h$. Its index set has real
+  parts above $1 + 2\gamma^\Upsilon > 1$.
+- Kerr differs from that model by $O(r^{-2})$ in these components.
+- A curve with tangent $\partial_0 + f\,\partial_1$ and
+  $f \approx C|h(\partial_0, \partial_0)| + Cr^{-2}$ is then timelike. Its
+  retarded time $t_*$ changes by $\int f\,dr < \infty$, so it reaches
+  $\mathscr I^+$.
+
+Two steps remain unchecked:
+
+1. turning the $b$-Sobolev membership into pointwise bounds that are uniform
+   up to $\mathscr I^+$;
+2. matching that exterior solution with the final metric near
+   $\mathscr I^+$. The 2026 paper's Theorem 5.23 states $h_S = \phi_S^*h$ only
+   near $\Sigma_{\rm IVP}$. Elsewhere the two are isometric by uniqueness, and
+   one has to check that the isometry respects $\mathscr I^+$.
+
+**The Klainerman–Szeftel route (session 4, superseded).** Before the 2026
+paper, the Λ = 0 case went through KS23 (arXiv:2104.11857; §3.4 and §3.8
+read). Their spacetime has the needed structure:
+
+- every point of ${}^{(ext)}\mathcal M$ lies on an outgoing null geodesic
+  that reaches $\mathscr I^+$;
+- on ${}^{(int)}\mathcal M \cap \{r \le r_+(1 - \delta_H/2)\}$, $r$ decreases
+  along causal curves.
+
+But both hold in KS's own coordinates, which would have to be anchored to
+Kerr's on the initial layer, and we could not check that. Hintz's fixed
+coordinates remove this step for Theorem D and reduce Theorem E to (N).
 
 ## 7 · What is and is not proved
 
@@ -525,21 +644,25 @@ regions. Two further caveats:
 | Lemma 2(a): $g^{rr} = \Delta_r/\rho^2$ | **checked** (`tests/test_eh_merger.py`, exact) |
 | Lemma 2(c): area identity, $\partial_r E > 0$ for all $r > 0$, all spins, Λ ≥ 0 | **checked** (exact identity); positivity read off term by term |
 | Kerr–de Sitter solves $\mathrm{Ric} = \Lambda g$; reduces to Kerr and SdS | **checked** (rational parameters exactly, slow test; SdS symbolic) |
-| Lemmas 1, 2(b), 2(d), 3, 4 | written out here (elementary) |
-| (G1)–(G3) | Hintz Theorem 1.1, Definition 4.1, (1.2), (6.2): **read**. Uniformity on the tube and over $X$ is *our reading* |
+| Lemma 2(b) for Λ = 0: $\partial_t + \frac12\partial_r$ has $g(W, W) \le -\frac14$ for $r \ge 10M$ | **checked** (polynomial with negative coefficients) |
+| Lemma 5(a): $\tilde u$ is a time function outside a Kerr hole | **checked** (exact identity) |
+| Lemmas 1, 2(b), 2(d), 3, 4, 5(b,c) | written out here (elementary) |
+| (G1)–(G3), Λ > 0 | Hintz III Theorem 1.1, Definition 4.1, (1.2), (6.2): **read**. Uniformity on the tube and over $X$ is *our reading* |
+| (G3), Λ = 0 | Hintz 2026 Theorems 1.1 and 13.1, consequence (3), Remark 13.3, (5.56): **read**. Smallness of the decay constants for small data is *our reading* |
 | $t_* = t_{\rm BL} - T(r)$ form of Hintz–Vasy's time function | cited (HV18 (3.9)), *not re-checked* |
-| **Theorem D** (Λ > 0): both holes in $\mathcal B$, localisation, merger, $\mathcal B$ connected | **proved here, given (G1)–(G3)**; potentially new (Hintz lists it as open) |
-| $\mathcal B$ defined with $\mathscr I^+$ instead of $\mathcal C_c$, for Λ > 0 | not proved: needs the spacetime beyond $r_+$ |
-| **Theorem D₀** (Λ = 0) | **conditional** on (Ex), (K-esc), (K-trap) |
-| (K-esc), (K-trap) | proved by KS in their coordinates; anchoring to Kerr's $r$ *not checked* |
+| **Theorem D** (Λ > 0 and Λ = 0): both holes in $\mathcal B$, localisation, merger, $\mathcal B$ connected | **proved here, given (G1)–(G3)**; potentially new (Hintz lists the event horizon and connectedness as open) |
+| **Theorem E** (Λ = 0, $\mathscr I^+$): both holes in $\mathcal B_{\mathscr I}$, two components then one | **conditional on (N)** |
+| (N) | holds where the data are exactly Kerr (Lemma 5); expected from the 2026 paper's Definition 5.3 near $\mathscr I^+$; *not checked* |
+| Localisation and connectedness for $\mathcal B_{\mathscr I}$ | not proved |
+| $\mathcal B$ defined with $\mathscr I^+$ for Λ > 0 | not proved: needs the spacetime beyond $r_+$ |
 | Exact location, smoothness and merger time of the horizon | not addressed (only to within $c$, $\eta$) |
 
 **Novelty.** Hintz states the structure of the black-hole region ("conjecturally
 connected") as future work. A bounded search (2026-10-29) found no later
 treatment. Theorem D is therefore **potentially new**. The argument is
 elementary given Hintz's estimates, and experts may regard it as routine; its
-content is that $C^0$ control suffices. For Λ = 0 we offer a reduction, not a
-theorem.
+content is that $C^0$ control suffices. For Λ = 0 with $\mathscr I^+$
+(Theorem E) we offer a reduction to the single far-field property (N).
 
 ## 8 · Physical picture
 
@@ -550,7 +673,8 @@ nearly empty space near the big one.
   down, so nothing gets out.
 - **A little outside its horizon,** a rocket can climb out of the small
   hole's well. There space looks almost flat, so it can coast away, and then
-  outrun the big hole into the cosmological region. Its worldline is
+  outrun the big hole's pull to arbitrarily large distances (into the
+  cosmological region, if Λ > 0). Its worldline is
   *timelike with room to spare*, which is why small metric errors cannot
   block it.
 
@@ -579,5 +703,7 @@ estimate.
 - The margins $c$ and $\eta$ are arbitrary but fixed before $\epsilon \to 0$.
   What would it take to locate the merger *event*, the first point where the
   two horizon components touch, as $\epsilon \to 0$?
-- For Λ = 0 everything hinges on anchoring KS's $r$ to Kerr's $r$ on the
-  initial slice. Is that a statement about the gauge, or about physics?
+- Theorem E needs (N): light from far out on a slice must reach null
+  infinity even after crossing gravitational waves of size $\epsilon$. Why is
+  reaching large $r$ not enough? (Think of the $2M\log r$ drift of retarded
+  time in Schwarzschild.)

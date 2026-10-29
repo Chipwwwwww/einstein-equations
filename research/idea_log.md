@@ -52,6 +52,16 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
   - For Λ = 0, the escape and trap inputs move to the initial slice of the
     Kerr-stability development. KS prove them in their own coordinates
     (Theorem D₀, conditional).
+- **Session 5.** Hintz's 2026 stability theorem for the whole subextremal
+  Kerr family (arXiv:2606.28253) works in fixed coordinates. It states the
+  Λ = 0 merger construction as its consequence (3).
+  - Theorem D therefore extends to Λ = 0 with "escape to arbitrarily large
+    distances". The Klainerman–Szeftel anchoring problem disappears.
+  - For the textbook $\mathscr I^+$ version (Theorem E), one gap remains:
+    (N), that far points on the late initial slice reach $\mathscr I^+$.
+  - Lemma 5 proves (N) where the data are exactly Kerr. Our signals,
+    however, travel through the perturbed region. There (N) needs the
+    2026 paper's structure at $\mathscr I^+$, which we did not fully check.
 - **Snag found and fixed.** Interpolating Fermi slices and $t_*$-slices with
   an ordinary cut-off fails, because the boost of $C$ makes the error term of
   order 1. A cut-off in $\log|x|$ makes it $O(1/K_0)$ (Lemma 4).

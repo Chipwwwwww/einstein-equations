@@ -2,6 +2,41 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-29 (session 5) — Λ = 0 event-horizon merger via Hintz 2026
+
+**Decisions**
+
+- **Use Hintz's 2026 subextremal Kerr stability theorem (arXiv:2606.28253)
+  instead of Klainerman–Szeftel for Λ = 0.** It is posed in fixed
+  coordinates, with $g = g_b + h$ and $h$ decaying in every asymptotic
+  region, so the causal arguments of Theorem D transfer directly. With KS we
+  would have had to anchor their coordinates to Kerr's. The 2026 paper also
+  states the Λ = 0 merger construction itself (its consequence (3)).
+- **Two definitions of the black-hole region, kept separate.**
+  - Theorem D uses "cannot signal arbitrarily large distances". It is robust
+    under $C^0$ perturbations, and agrees with the textbook one in exact
+    Kerr.
+  - Theorem E uses $M \setminus J^-(\mathscr I^+)$ and is stated conditional
+    on (N). Reaching $\mathscr I^+$ needs retarded-time control. We traced
+    where it would come from (Hintz 2026, Definition 5.3), but did not check
+    the two remaining steps.
+- **Session 4's Theorem D₀ is marked superseded**, not deleted: the ledger
+  keeps claim 44 with a pointer, and note 11 keeps a short account of the
+  KS route.
+
+**Progress**
+
+- notes/11: Theorem D now covers Λ ≥ 0. Theorem E, Lemma 5 (an escape
+  time function outside Kerr) and the far-field steering field were added.
+- Two new exact SymPy checks in `tests/test_eh_merger.py`.
+- Claim ledger 45–48; status, idea log, literature (Hintz 2026, Chen–Klainerman,
+  Hintz Duke 2026, Shen) updated.
+
+**Next**
+
+- Prove (N) from Hintz 2026's structure at $\mathscr I^+$ (status.md, (a)).
+- Gap 3 (Brill–Lindquist, no common MOTS at $t = 0$).
+
 ## 2026-10-29 (session 4) — Event horizons of extreme-mass-ratio mergers
 
 **Decisions**

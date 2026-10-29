@@ -92,3 +92,52 @@ def test_spheres_beyond_the_cosmological_horizon_are_untrapped():
     assert r_neg < 0 < r_ch < r_h < r_c
     d = sp.lambdify(r, DELTA_R.subs(vals))
     assert d((r_ch + r_h) / 2) < 0 < d((r_h + r_c) / 2) and d(r_c + 1) < 0
+
+
+def _kerr_inverse_tt_rr():
+    """g^{tt} and g^{rr} of Kerr in Boyer-Lindquist form; g^{tr} = 0 and the (t, phi) block
+    is inverted directly."""
+    g = metrics.kerr().metric
+    det_t_phi = g[0, 0] * g[3, 3] - g[0, 3] ** 2
+    return sp.cancel(g[3, 3] / det_t_phi), sp.cancel(1 / g[1, 1])
+
+
+def test_corrected_retarded_time_is_a_time_function_in_the_kerr_exterior():
+    """notes/11, Lemma 5: u~ = t - r_* + a arctan(r / a), with dr_*/dr = (r^2 + a^2) / Delta,
+    has rho^2 g^{-1}(du~, du~) = -a^2 r^2 / (r^2 + a^2) - (manifestly nonnegative) <= 0 where
+    Delta > 0. Along outgoing principal null geodesics u = t - r_* is constant, so u~ changes
+    by at most pi |a| / 2 there."""
+    gtt, grr = _kerr_inverse_tt_rr()
+    rho2 = r**2 + a_kerr**2 * chi**2
+    delta = r**2 - 2 * M * r + a_kerr**2
+    du_dr = -(r**2 + a_kerr**2) / delta + a_kerr**2 / (r**2 + a_kerr**2)
+    norm = sp.cancel(rho2 * (gtt + du_dr**2 * grr))
+    excess = a_kerr**2 * (
+        2 * M * a_kerr**2 * r + a_kerr**4 * chi**2 + 2 * a_kerr**2 * chi**2 * r**2 + chi**2 * r**4
+    ) / (r**2 + a_kerr**2) ** 2
+    assert sp.cancel(norm - (-(a_kerr**2) * r**2 / (r**2 + a_kerr**2) - excess)) == 0
+
+
+def test_outgoing_field_is_uniformly_timelike_far_out():
+    """W = d_t + d_r / 2 has g(W, W) <= -1/4 for r >= 10 M and |a| <= M (Kerr), with bounded
+    components: the steering field used at large r in notes/11, Lemma 2(b).
+    4 rho^2 Delta (g(W, W) + 1/4) = -3 rho^2 Delta + 8 M r Delta + rho^4; with M = 1,
+    r = 10 + x, a^2 = q, chi^2 = c, every coefficient of this polynomial in x is negative
+    for q, c in [0, 1]."""
+    x, q, c = sp.symbols("x q c", nonnegative=True)
+    g = metrics.kerr().metric
+    gWW = g[0, 0] + g[1, 1] / 4
+    rho2 = r**2 + a_kerr**2 * chi**2
+    delta = r**2 - 2 * M * r + a_kerr**2
+    poly = sp.expand(-3 * rho2 * delta + 8 * M * r * delta + rho2**2)
+    assert sp.cancel(4 * rho2 * delta * (gWW + sp.Rational(1, 4)) - poly) == 0
+    poly = sp.expand(poly.subs({M: 1, a_kerr: sp.sqrt(q), chi: sp.sqrt(c)}).subs(r, 10 + x))
+    coeffs = sp.Poly(poly, x).all_coeffs()
+    assert coeffs[:2] == [-2, -66]
+    # bound each coefficient on the box q, c in [0, 1]: positive monomials are at most 1 there
+    for coeff in coeffs[2:]:
+        terms = sp.Add.make_args(sp.expand(coeff))
+        positive = sum(t for t in terms if t.as_coeff_Mul()[0] > 0 and t.free_symbols)
+        constant = sum(t for t in terms if not t.free_symbols)
+        assert all(t.as_coeff_Mul()[0] <= 1 for t in sp.Add.make_args(positive) if t != 0)
+        assert constant + len(sp.Add.make_args(positive)) < 0

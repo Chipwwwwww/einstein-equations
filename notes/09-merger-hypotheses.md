@@ -108,9 +108,11 @@ E_{ij} = -\left(2WW_{tt} + 3W_t^2 - \Lambda - W^{-2}\right) g_{ij} .
 >   cosmological region. Then the merger holds, the region is connected, and
 >   both horizons are localised. **Theorem D** proves this from Hintz's
 >   stated estimates alone.
-> - For Λ = 0, **Theorem D₀** is conditional on two properties of the
->   Kerr-stability development, which Klainerman–Szeftel prove in their own
->   coordinates.
+>   **Session 5:** the same holds for Λ = 0, using Hintz's 2026 stability
+>   theorem for subextremal Kerr in fixed coordinates.
+> - With the textbook $\mathscr I^+$ definition (Λ = 0), **Theorem E** gives
+>   the merger exactly as defined in note 07, assuming one far-field
+>   property (N) of the late development.
 > - (A3) is not needed. (A2) is replaced by a far weaker escape hypothesis,
 >   and only at Λ = 0.
 > - The key observation: causal statements need only $C^0$ closeness of the

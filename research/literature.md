@@ -45,6 +45,10 @@ verified before being relied on in a proof.
 
 | Source | What it gives | Checked |
 | --- | --- | --- |
+| P. Hintz, *Nonlinear stability of subextremal Kerr black holes*, arXiv:2606.28253 (v2 Aug 2026) | global nonlinear stability of the full subextremal Kerr family, for data close to Kerr (polyhomogeneous decay; e.g. equal to Kerr outside a compact set), in generalized wave map gauge on fixed coordinates: $g = g_b + h$ with decay rates in every asymptotic region. Consequence (3): with Hintz III, Λ = 0 EMR merger spacetimes | session 5: Thm 1.1, Thm 13.1, Rems 1.3, 13.2–13.4, Lemma 5.16, Def. 5.3, (3.31)–(3.37), (5.56), Thm 5.23, Rem. 5.24 **read** |
+| X. Chen, S. Klainerman, *Regularity of the future event horizon in perturbations of Kerr*, arXiv:2409.05700 | event horizons of the KS stability spacetimes are smooth null hypersurfaces | abstract |
+| P. Hintz, *Horizons of some asymptotically stationary spacetimes*, Duke Math. J. 175 (2026), arXiv:2411.12568 | a unique null hypersurface asymptotic to the Kerr horizon in dynamical spacetimes that approach Kerr | abstract |
+| D. Shen, *Kerr stability in external regions*, arXiv:2303.12758 | stability of Kerr in external regions $r \ge R_0$ from Cauchy data (after Caciotta–Nicolò) | abstract |
 | D. Christodoulou, S. Klainerman, *The global nonlinear stability of the Minkowski space* (1993) | small data: complete, no black hole | *not re-checked* |
 | D. Christodoulou, *The formation of black holes in general relativity* (EMS 2009) | trapped surfaces form from regular vacuum data (short pulse) | *not re-checked* |
 | P. Hintz, A. Vasy, Acta Math. 220 (2018) | nonlinear stability of slowly rotating Kerr–de Sitter | cited by Hintz III |

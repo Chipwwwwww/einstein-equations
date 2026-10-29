@@ -1,6 +1,6 @@
 # Status
 
-*Updated 2026-10-29 (sessions 1–4). Start here.*
+*Updated 2026-10-29 (sessions 1–5). Start here.*
 
 ## Established so far
 
@@ -73,15 +73,24 @@ $\epsilon$:
 Hintz listed the last point as a conjecture. The proof uses only his stated
 estimates and elementary causal theory: escape routes are timelike curves
 with margin, which survive $C^0$ perturbations, and traps are time functions.
-**Theorem D₀** gives the same merger statement for Λ = 0, conditional on two
-properties of the Kerr-stability development. Klainerman–Szeftel prove these
-in their own coordinates (§3.8, read). New SymPy checks
-(`tests/test_eh_merger.py`):
+
+**Session 5: Λ = 0.** Hintz's 2026 stability theorem for subextremal Kerr
+(arXiv:2606.28253) works in fixed coordinates, and states the Λ = 0 merger
+construction as its consequence (3). So Theorem D now holds for Λ = 0 too,
+with $\mathcal B$ = events that cannot signal arbitrarily large distances.
+**Theorem E** uses the textbook $\mathcal B = M \setminus J^-(\mathscr I^+)$.
+It shows two black-hole components before the plunge and one after, which is
+the event-horizon merger of notes/07. It is conditional on one far-field
+property (N) of the stability development.
+
+New SymPy checks (`tests/test_eh_merger.py`, sessions 4–5):
 
 - Kerr–de Sitter solves $\mathrm{Ric} = \Lambda g$;
 - $g^{rr} = \Delta_r/\rho^2$;
 - the spheres inside the hole are trapped, for every spin and every
-  Λ ≥ 0.
+  Λ ≥ 0;
+- outside Kerr, $\tilde u = t - r_* + a\arctan(r/a)$ is a time function;
+- $\partial_t + \frac12\partial_r$ is uniformly timelike for $r \ge 10M$.
 
 ## Unresolved gaps
 
@@ -95,13 +104,15 @@ in their own coordinates (§3.8, read). New SymPy checks
    independent person has reviewed the code.
 3. **Global absence of a common MOTS on $\Sigma_0$ for $d > d_c$** is
    numerical only. Theorem C is local, near $S_c$.
-4. **Event horizons in vacuum: Λ > 0 done (Theorem D), Λ = 0 conditional
-   (Theorem D₀).** The two remaining inputs for Λ = 0 are (Ex), existence
-   via Hintz's Remark 6.2 and KS Remark 3.4.3, and anchoring KS's $r$ to
-   Kerr's $r$ on the initial layer. Theorem D also rests on our reading of
-   the uniformity in Hintz's (1.2) and (6.2). It uses the cosmological region
-   in place of $\mathscr I^+$, and locates the horizons only up to margins.
-   Proposition B (Brill–Lindquist) still says nothing about event horizons.
+4. **Event horizons in vacuum.** Status:
+   - Theorem D (Λ ≥ 0, escape-defined black-hole region) is done.
+   - Theorem E (Λ = 0, with $\mathscr I^+$) is conditional on (N): far points
+     of the late initial slice reach $\mathscr I^+$, in the region the
+     merger's radiation has disturbed.
+   - Theorem D rests on our reading of the uniformity in Hintz III (1.2),
+     (6.2), and of the smallness of the decay constants in Hintz 2026.
+   - The horizons are located only up to margins.
+   - Proposition B (Brill–Lindquist) still says nothing about event horizons.
 5. **KT**: the absence of a common MOTS before $\tau_c$ is numerical; event
    horizons are taken from BHKT.
 6. **Literature items marked *not re-checked*** in `literature.md` (Hawking–Ellis
@@ -113,11 +124,16 @@ in their own coordinates (§3.8, read). New SymPy checks
 
 Two candidates, in order of tractability.
 
-**(a) Anchoring for Theorem D₀ (Λ = 0).** Read how KS23 and its cited
-references construct the initial data layer from Cauchy data (KS Remark
-3.4.3, refs. [36], [37], [8]). Check whether their $r$ on the layer is
-$O(\epsilon_0)$-close to Kerr's $r$. If so, (K-esc) and (K-trap) follow from
-KS §3.8, and Theorem D₀ becomes conditional only on (Ex).
+**(a) Prove (N) from Hintz 2026's structure at null infinity.** Use its
+Definition 5.3: the outgoing null component $h(\partial_0, \partial_0)$
+decays faster than $r^{-1}$.
+
+1. Turn the $b$-Sobolev bounds into pointwise bounds uniform up to
+   $\mathscr I^+$.
+2. Show that the exterior solution of its Theorem 5.21 and the final metric
+   agree near $\mathscr I^+$ up to an isometry that preserves $\mathscr I^+$.
+
+Then Theorem E holds unconditionally, modulo cited theorems.
 
 **(b) Gap 3, below.**
 
