@@ -84,6 +84,28 @@ def kerr(simplify=sp.cancel):
     return Spacetime(g, (t, r, chi, phi), simplify=simplify)
 
 
+def kerr_de_sitter(simplify=sp.cancel):
+    """Kerr-de Sitter in Boyer-Lindquist form (Carter), coordinates (t, r, chi = cos theta, phi)
+    (notes/11). Solves Ric = Lambda g; Lambda = 0 gives `kerr`.
+
+        Delta_r = (r^2 + a^2)(1 - Lambda r^2 / 3) - 2 M r,  Delta_chi = 1 + Lambda a^2 chi^2 / 3,
+        Xi = 1 + Lambda a^2 / 3,  rho^2 = r^2 + a^2 chi^2.
+    """
+    rho2 = r**2 + a_kerr**2 * chi**2
+    delta_r = (r**2 + a_kerr**2) * (1 - Lambda * r**2 / 3) - 2 * M * r
+    delta_chi = 1 + Lambda * a_kerr**2 * chi**2 / 3
+    xi = 1 + Lambda * a_kerr**2 / 3
+    s2 = 1 - chi**2
+    w = xi**2 * rho2
+    g = sp.zeros(4, 4)
+    g[0, 0] = (-delta_r + delta_chi * a_kerr**2 * s2) / w
+    g[0, 3] = g[3, 0] = a_kerr * s2 * (delta_r - delta_chi * (r**2 + a_kerr**2)) / w
+    g[1, 1] = rho2 / delta_r
+    g[2, 2] = rho2 / (delta_chi * s2)
+    g[3, 3] = s2 * (delta_chi * (r**2 + a_kerr**2) ** 2 - delta_r * a_kerr**2 * s2) / w
+    return Spacetime(g, (t, r, chi, phi), simplify=simplify)
+
+
 def conformastatic(U, simplify=False):
     """ds^2 = -U^-2 dtau^2 + U^2 (dx^2 + dy^2 + dz^2) for any function U(tau, x, y, z).
 

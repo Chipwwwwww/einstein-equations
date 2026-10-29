@@ -54,7 +54,7 @@ Every claim made in notes/07–09, with its status. Categories:
 | 25 | Lemma A: zero-shift umbilic foliations of AF Λ = 0 spacetimes with zero momentum density have $K \equiv 0$, frozen slices | R/N | elementary proof + identity test; probably folklore |
 | 26 | Same + uniqueness of normal KIDs ⇒ static | G | uniqueness not proved |
 | 27 | Hyperboloidal KT ansatz admits no centres, any Λ | N (small) | exact identity + elementary argument; negative result within one ansatz |
-| 28 | EH merger in Hintz's EMR spacetimes | G | conditional on (A2) late-time null escape, (A3) strong asymptotic predictability; proof sketch only |
+| 28 | EH merger in Hintz's EMR spacetimes | N / G | **Λ > 0: proved** (Theorem D, claim 40). **Λ = 0: conditional** (Theorem D₀, claim 44). The session-1 inputs (A2), (A3) are no longer used |
 | 29 | AMMS identity $\langle\phi_0, p\rangle = -\int N\phi_0\lvert A\rvert^2$ at a degenerate time-symmetric minimal surface | E + R | AMMS 2009; re-derived; numerically to $3\times10^{-7}$, two lapses |
 | 30 | BL $d_c = 0.7661974282\,M$ (1.53239486 bare-mass units); $A_{\rm crit} = 49.101988\,M^2$ | E + R | Hui & Lin 2025 (1.5323948; 196.40795): agreement to all quoted digits |
 | 31 | Individual BL horizons exist and are disjoint for every $d \in [0.76, 0.78]$ | N (computer-assisted) | interval arithmetic over the $d$-interval + Andersson–Metzger |
@@ -66,3 +66,13 @@ Every claim made in notes/07–09, with its status. Categories:
 | 37 | Under predictability, the BL holes' black-hole regions are joined by $t_*$ | G | needs claim 3 for marginally trapped surfaces (closure of $\mathcal B$) and predictability of the development |
 | 38 | Computer-assisted proof of (F) | N (computer-assisted) | achieved in session 3, see claim 34. History: a session-2 "verified" run was **invalid** (python-flint series cap of 10), and the session-2 diagnosis of a structural axis barrier was **wrong** (the cause was low-order steps at large step sizes) |
 | 39 | $d_c = 0.766197428240 \pm 1.1\times10^{-13}\,M$ (1.532394856480 ± 2e-13 bare masses) | N (computer-assisted) | Theorem C; contains Hui & Lin's values |
+
+## Event horizons of EMR mergers (notes/11, session 4)
+
+| # | Claim | Cat. | Basis |
+| --- | --- | --- | --- |
+| 40 | Theorem D: in Hintz's Λ > 0 EMR spacetimes, with $\mathcal B$ = events that cannot signal the region beyond the cosmological horizon, for small ε: both holes' interiors lie in $\mathcal B$ with closed trapped surfaces; the horizons are localised to within any margins $c$, $\eta$; the holes lie in different components of $\mathcal B\cap\Sigma_t$ before the plunge and in the same one after it; $\mathcal B$ is path-connected | N | proof in notes/11 §5. Inputs: Hintz Thm 1.1, Def. 4.1, eqs. (1.2), (2.19), (6.2) (**read**); uniformity on the tube and over $X$ is our reading; elementary causal theory. Potentially new: Hintz lists the event horizon and the connectedness of $\mathcal B$ as open |
+| 41 | Spheres $\{t_* = c, r = r_0\}$ inside a Kerr–de Sitter black hole are trapped for every spin and every Λ ≥ 0 ($\partial_rE > 0$ term by term) | R | exact identity (`tests/test_eh_merger.py`); probably known |
+| 42 | Kerr–de Sitter (Carter form) solves Ric = Λg | R | exact at rational parameters (slow test); SdS symbolic (fast); Λ = 0 reduces to Kerr |
+| 43 | Adapted slicing (Lemma 4): a time function equal to Fermi time near $C$ and to $t_*$ away from it exists for small ε, using a logarithmic cut-off | N (small) | elementary proof in notes/11 §4 |
+| 44 | Theorem D₀ (Λ = 0, Hintz Rem. 6.2): merger statements 1–4 of Theorem D with $\mathscr I^+$ | G | conditional on (Ex) existence via KS23, (K-esc) far points of the initial slice escape, (K-trap) points with $r \le r_H - c_K$ do not. KS23 §3.8 proves (K-esc), (K-trap) in their own coordinates (**read**); the anchoring of KS's $r$ to Kerr's $r$ on the initial layer is *not checked* |

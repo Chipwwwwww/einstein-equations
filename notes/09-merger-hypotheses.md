@@ -99,7 +99,26 @@ E_{ij} = -\left(2WW_{tt} + 3W_t^2 - \Lambda - W^{-2}\right) g_{ij} .
    ansatz, with the Majumdar–Papapetrou force balance no longer available).
    This is a failure *within this ansatz* only.
 
-## H3 · Event horizons of extreme-mass-ratio mergers (designed, not executed)
+## H3 · Event horizons of extreme-mass-ratio mergers (executed in session 4: see [11](11-event-horizon-merger.md))
+
+> **Outcome (session 4).** Executed in [note 11](11-event-horizon-merger.md),
+> by a different route from the sketch below.
+>
+> - For Λ > 0 (Hintz Thm 6.1), define the black-hole region relative to the
+>   cosmological region. Then the merger holds, the region is connected, and
+>   both horizons are localised. **Theorem D** proves this from Hintz's
+>   stated estimates alone.
+> - For Λ = 0, **Theorem D₀** is conditional on two properties of the
+>   Kerr-stability development, which Klainerman–Szeftel prove in their own
+>   coordinates.
+> - (A3) is not needed. (A2) is replaced by a far weaker escape hypothesis,
+>   and only at Λ = 0.
+> - The key observation: causal statements need only $C^0$ closeness of the
+>   metric. Escape routes are timelike curves with margin; traps are time
+>   functions.
+>
+> The text below is the session-1 design, kept as written.
+
 
 1. **Obstacle.** Hintz (2024, Thm 6.1 / Rem. 6.2) constructs vacuum
    spacetimes in which a small Kerr hole of mass $\epsilon m$ crosses the
@@ -386,6 +405,7 @@ changed. Light rays notice the infall before rulers do.
 | onset law (*) and Proposition B | **potentially new**; bounded search found no equivalent |
 | computer-assisted fold (Theorem C): rigorous $d_c$ to $10^{-13}$ | **potentially new as a rigorous statement**; the value of $d_c$ itself is known numerically |
 | BL numbers $d_c$, area | **known**; reproduced to all quoted digits |
+| Theorem D (H3, [11](11-event-horizon-merger.md)): event-horizon merger and connected black-hole region in Hintz's Λ > 0 EMR spacetimes | **potentially new**; Hintz lists both as open; elementary given his estimates |
 
 ## Discussion prompts
 
@@ -395,5 +415,6 @@ changed. Light rays notice the infall before rulers do.
 - Lemma A and H2 both fail because a constant-mean-curvature umbilic slicing
   is too rigid. What is the least rigid slicing in which an exact merger
   might still be written down?
-- H3 needs only that light from outside the small hole escapes. Why is that
-  so hard to prove, when it is "obviously" true?
+- H3 needs only that light from outside the small hole escapes. Why was that
+  so hard to prove, when it is "obviously" true? (Note 11: it stops being hard
+  once timelike curves replace light rays.)

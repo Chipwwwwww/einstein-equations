@@ -30,16 +30,31 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
 - **What would have to change:** extra matter cancelling $W^{-2}$, or a
   lapse not equal to $1/W$, which abandons Majumdar–Papapetrou force balance.
 
-### H3 · Event horizons of Hintz's EMR mergers (existence) — designed, not run
+### H3 · Event horizons of Hintz's EMR mergers (existence) — designed in session 1; **executed in session 4 (survives)**
 
 - **Idea.** Causal stability: escaping null rays from a sphere around the
   small hole before crossing; $r$ as a time function inside the large hole
   after crossing.
-- **Status.** Proof sketch written; inputs (A2) (null escape at late times in
+- **Status (session 1).** Proof sketch written; inputs (A2) (null escape at late times in
   the Kerr-stability spacetimes) and (A3) (strong asymptotic predictability)
-  could not be checked this session.
-- **Why not chosen.** The deciding steps sit in 1000-page papers, not in a
+  could not be checked that session.
+- **Why not chosen then.** The deciding steps sit in 1000-page papers, not in a
   calculation we can run.
+- **Session 4: what changed.** Replace escaping *null rays* by escaping
+  *timelike curves with margin*. Those survive any $C^0$-small change of the
+  metric, and Hintz gives $C^0$ closeness on both scales. Replace "trapped
+  surfaces lie in $\mathcal B$" (which needed (A3)) by a direct argument:
+  $r$ is a time function inside, and a gain lemma bounds how much $r$ can
+  grow near the small hole.
+  - For Λ > 0, measure escape against the cosmological region, which lies
+    inside Hintz's domain. Then everything needed is in Hintz's Theorem 6.1:
+    Theorem D, including connectedness of $\mathcal B$ (notes/11).
+  - For Λ = 0, the escape and trap inputs move to the initial slice of the
+    Kerr-stability development. KS prove them in their own coordinates
+    (Theorem D₀, conditional).
+- **Snag found and fixed.** Interpolating Fermi slices and $t_*$-slices with
+  an ordinary cut-off fails, because the boost of $C$ makes the error term of
+  order 1. A cut-off in $\log|x|$ makes it $O(1/K_0)$ (Lemma 4).
 
 ### H4 · Near-critical onset law for the common horizon (existence + controlled) — survives
 

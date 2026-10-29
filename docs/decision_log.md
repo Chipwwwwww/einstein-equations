@@ -2,6 +2,48 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-29 (session 4) — Event horizons of extreme-mass-ratio mergers
+
+**Decisions**
+
+- **Pursue H3 rather than gap 3.** Gap 3 (no common MOTS at $t = 0$) needs a
+  certified sweep-out and is a long computation. H3 could be settled by
+  reading what Hintz and Klainerman–Szeftel actually state.
+- **Measure escape against the cosmological region for Λ > 0.** Future null
+  infinity of Kerr–de Sitter lies outside Hintz's domain, but the region
+  beyond the cosmological horizon lies inside it. In exact Kerr–de Sitter the
+  two definitions of the black-hole region agree (notes/11, Lemma 1).
+- **Use timelike curves with margin instead of null geodesics.** This needs
+  only $C^0$ control of the metric, which Hintz provides on both scales. It
+  removes the session-1 inputs (A2) and (A3).
+- **For Λ = 0, state hypotheses rather than claim a theorem.** Hintz's
+  Remark 6.2 is a remark. KS prove the needed escape and trap properties
+  only in their own coordinates. So Theorem D₀ is labelled conditional, with
+  (Ex), (K-esc), (K-trap) spelled out.
+- **Kerr–de Sitter added to `einstein/metrics.py`**, in Carter's form with
+  $\chi = \cos\theta$, so identities reduce by `cancel`. The full
+  $\mathrm{Ric} = \Lambda g$ check takes about 2.5 minutes at rational
+  parameters and is marked `slow`. The Schwarzschild–de Sitter case runs in
+  CI.
+
+**Progress**
+
+- notes/11: Theorem D (Λ > 0) proved from Hintz Theorem 1.1, Definition 4.1
+  and eqs. (1.2), (2.19), (6.2). Conclusions: both interiors in
+  $\mathcal B$, horizons localised, two components before the plunge and one
+  after, $\mathcal B$ connected. Theorem D₀ (Λ = 0) conditional.
+- `tests/test_eh_merger.py` covers Kerr–de Sitter vs Kerr and SdS, the
+  formula for $g^{rr}$, the area density, and the positivity of
+  $\partial_r E$ that makes the interior spheres trapped.
+- Claim ledger 28 updated; claims 40–44 added. The idea log records H3 as
+  surviving, and why the session-1 route was abandoned.
+
+**Next**
+
+- Anchoring KS's $r$ on the initial layer (would remove (K-esc), (K-trap)).
+- Gap 3 via a certified sweep-out at a fixed $d > d_c$.
+- An independent review of `research/calc/fold_proof.py`.
+
 ## 2026-10-29 (session 3) — The fold hypothesis (F), proved by computer
 
 **Decisions**

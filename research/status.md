@@ -1,6 +1,6 @@
 # Status
 
-*Updated 2026-10-29 (sessions 1–3). Start here.*
+*Updated 2026-10-29 (sessions 1–4). Start here.*
 
 ## Established so far
 
@@ -56,6 +56,33 @@ python-flint series cap). Its diagnosis of an axis "barrier" was wrong: the
 real cause was low-order steps at large step sizes, fixed by a piecewise
 schedule.
 
+**Session 4: event horizons of extreme-mass-ratio mergers (notes/11).**
+Hypothesis H3 is executed. **Theorem D** treats Hintz's Λ > 0 merger
+spacetimes, where a small Kerr hole of mass $\epsilon m$ plunges into a slowly
+rotating Kerr–de Sitter hole. Take $\mathcal B$ to be the set of events that
+cannot signal the region beyond the cosmological horizon. Then, for all small
+$\epsilon$:
+
+- both interiors lie in $\mathcal B$, with closed trapped surfaces;
+- the event horizons sit within any prescribed margins of $r_H$ and of the
+  small hole's own $\hat r_+$;
+- the two holes lie in different components of $\mathcal B \cap \Sigma_t$
+  before the plunge, and in the same one after it;
+- $\mathcal B$ is connected.
+
+Hintz listed the last point as a conjecture. The proof uses only his stated
+estimates and elementary causal theory: escape routes are timelike curves
+with margin, which survive $C^0$ perturbations, and traps are time functions.
+**Theorem D₀** gives the same merger statement for Λ = 0, conditional on two
+properties of the Kerr-stability development. Klainerman–Szeftel prove these
+in their own coordinates (§3.8, read). New SymPy checks
+(`tests/test_eh_merger.py`):
+
+- Kerr–de Sitter solves $\mathrm{Ric} = \Lambda g$;
+- $g^{rr} = \Delta_r/\rho^2$;
+- the spheres inside the hole are trapped, for every spin and every
+  Λ ≥ 0.
+
 ## Unresolved gaps
 
 1. **Proposition B: now written out in notes/10**, except for the standard
@@ -68,9 +95,13 @@ schedule.
    independent person has reviewed the code.
 3. **Global absence of a common MOTS on $\Sigma_0$ for $d > d_c$** is
    numerical only. Theorem C is local, near $S_c$.
-4. **Nothing about event horizons in vacuum.** H3's inputs (A2), (A3) are
-   unchecked. Proposition B says nothing about $\mathscr I^+$, global
-   existence or Kerr asymptotics.
+4. **Event horizons in vacuum: Λ > 0 done (Theorem D), Λ = 0 conditional
+   (Theorem D₀).** The two remaining inputs for Λ = 0 are (Ex), existence
+   via Hintz's Remark 6.2 and KS Remark 3.4.3, and anchoring KS's $r$ to
+   Kerr's $r$ on the initial layer. Theorem D also rests on our reading of
+   the uniformity in Hintz's (1.2) and (6.2). It uses the cosmological region
+   in place of $\mathscr I^+$, and locates the horizons only up to margins.
+   Proposition B (Brill–Lindquist) still says nothing about event horizons.
 5. **KT**: the absence of a common MOTS before $\tau_c$ is numerical; event
    horizons are taken from BHKT.
 6. **Literature items marked *not re-checked*** in `literature.md` (Hawking–Ellis
@@ -79,6 +110,16 @@ schedule.
    $[10.606, 10.682]$.
 
 ## Next concrete calculation
+
+Two candidates, in order of tractability.
+
+**(a) Anchoring for Theorem D₀ (Λ = 0).** Read how KS23 and its cited
+references construct the initial data layer from Cauchy data (KS Remark
+3.4.3, refs. [36], [37], [8]). Check whether their $r$ on the layer is
+$O(\epsilon_0)$-close to Kerr's $r$. If so, (K-esc) and (K-trap) follow from
+KS §3.8, and Theorem D₀ becomes conditional only on (Ex).
+
+**(b) Gap 3, below.**
 
 **Gap 3: prove that no common MOTS exists on $\Sigma_0$ for $d > d_c$.**
 On the time-symmetric slice a common MOTS is a minimal surface enclosing both
@@ -99,4 +140,4 @@ separations.
 See [`README.md`](README.md). Expected outputs: `python -m research.calc.kt_horizons`
 and `python -m research.calc.bl_fold` print the tables quoted in notes/08 §6
 and notes/09 H4. `python -m pytest -m "not slow"` runs everything except the
-symbolic-parameter Kerr check.
+slow checks listed in `README.md`.

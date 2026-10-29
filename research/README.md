@@ -17,7 +17,11 @@ extremal charges): an exact merger with different physics.
 [`notes/08-kastor-traschen.md`](../notes/08-kastor-traschen.md).
 
 **Original work.** Hypotheses, tests and outcomes:
-[`notes/09-merger-hypotheses.md`](../notes/09-merger-hypotheses.md).
+[`notes/09-merger-hypotheses.md`](../notes/09-merger-hypotheses.md). Proofs:
+[`notes/10-onset-theorem-proof.md`](../notes/10-onset-theorem-proof.md)
+(apparent horizons, Brill–Lindquist) and
+[`notes/11-event-horizon-merger.md`](../notes/11-event-horizon-merger.md)
+(event horizons, Hintz's extreme-mass-ratio mergers).
 
 ## Files
 
@@ -67,7 +71,9 @@ python -m pytest -m slow
 ```
 
 The second command runs the slow checks: the symbolic Kerr check (about three
-minutes) and the computer-assisted fold certificate (about five minutes). The
+minutes), Kerr–de Sitter at rational parameters (about two and a half
+minutes), the computer-assisted fold certificate (about five minutes) and the
+certified onset slopes for two lapses (about seven minutes). The
 calculations in `calc/` each run as `python -m research.calc.<name>` from the
 repository root; each module's docstring says what it computes and what it
 prints. The expected outputs are recorded in [`status.md`](status.md).
