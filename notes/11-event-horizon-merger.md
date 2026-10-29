@@ -34,11 +34,11 @@ spacetimes merge in the sense of [07](07-the-merger-problem.md).
   facts checked in [`tests/test_eh_merger.py`](../tests/test_eh_merger.py).
 - **Theorem E (Λ = 0, null infinity).** With the textbook black-hole region
   $M \setminus J^-(\mathscr I^+)$, the merger holds in the exact sense of
-  note 07: two components before the plunge, one after. This assumes one
-  far-field property (N) of the late-time Kerr perturbation: points far out
-  on the initial slice of the stability development can signal to
-  $\mathscr I^+$. We could not verify (N) from the 2026 paper's asymptotics
-  at $\mathscr I^+$.
+  note 07: two components before the plunge, one after. This needs one more
+  input: points far out on the initial slice of the stability development
+  can signal to $\mathscr I^+$. Lemma 6 derives it from the 2026 paper's
+  description of null infinity. That derivation is our reading of the
+  paper, not an independent verification.
 
 *History.* Session 4 stated the Λ = 0 case conditionally (as "Theorem D₀"),
 through Klainerman–Szeftel's stability theorem. That needed their coordinates
@@ -526,13 +526,17 @@ $\mathscr I^+$ of the compactified spacetime in the 2026 paper. By Lemma
 
 Reaching $\mathscr I^+$ is more than reaching large $r$: the signal's
 retarded time must also stay bounded. In Schwarzschild, for comparison, it
-drifts like $2M\log r$ unless one uses the right retarded time. We isolate
-what is needed:
+drifts like $2M\log r$ unless one uses the right retarded time. What is
+needed is:
 
 - **(N)** There is $R_N$, depending only on the background, such that every
-  point of $\Sigma_{T_{\rm late}}$ with $r \ge R_N$ lies in $J^-(\mathscr I^+)$.
+  point of the late development near $\Sigma_{T_{\rm late}}$ with $r \ge R_N$
+  lies in $J^-(\mathscr I^+)$.
 
-**Theorem E.** Let Λ = 0 and assume (N). Choose $T_{\rm late}$ large enough
+We derive (N) from the 2026 paper's description of null infinity (Lemma 6
+below).
+
+**Theorem E.** Let Λ = 0. Choose $T_{\rm late}$ large enough
 that the curves of Step 3(a), started in
 $\{0 \le t_* \le T + 1,\ r_H + c \le r \le R_N + 1\} \setminus \{|x| < \delta'\}$,
 reach $r \ge R_N + 1$ before $t_* = T_{\rm late}$. Then, for small $\epsilon$,
@@ -560,7 +564,7 @@ $t_* = T_{\rm late}$. From there follow $\partial_t$ up to
 $\Sigma_{T_{\rm late}}$. This keeps $r$ fixed and stays timelike, because for
 $r \ge 10M$ we have $g(\partial_t, \partial_t) \le -4/5$ with $C^0$
 closeness. The endpoint has $r \ge R_N$, so it lies in $J^-(\mathscr I^+)$
-by (N). ∎
+by (N), that is, by Lemma 6. ∎
 
 **Not claimed for $\mathcal B_{\mathscr I}$:** localisation (3) and
 connectedness (5). Both would need escape to $\mathscr I^+$ from late-time
@@ -596,33 +600,82 @@ $\Sigma \cap \{r \ge r_0\}$. If the data on $\Sigma$ are exactly Kerr there,
 the spacetime is exactly Kerr along it (local uniqueness), and it reaches
 $\mathscr I^+$. Thus (N) holds outside the support of the perturbation.
 
-**Why (N) is still an assumption.** Our signals leave from next to the small
+**Why Lemma 5 is not enough.** Our signals leave from next to the small
 hole, inside the future of the region the gluing has disturbed. By (a)–(b),
 $\tilde u$ grows along them, so they never enter the exactly-Kerr region of
 Lemma 5. They cross $\Sigma_{T_{\rm late}}$ where the data have been
 perturbed, at size $O(\epsilon)$. There (N) must come from the 2026 paper's
-description of null infinity, and we expect it does:
+description of null infinity.
 
-- Near $\Sigma_{\rm IVP}$ far out, the solution is the exterior solution of
-  its Theorem 5.21, $g_{b_0} + h$, with $h$ in the space of its Definition 5.3.
-- In the splitting (3.37) there, the component of $h$ along the outgoing null
-  direction $\partial_0$ of the mass-$m_0$ model, $h(\partial_0, \partial_0)$,
-  belongs to the strongly decaying group $\pi^C h$. Its index set has real
-  parts above $1 + 2\gamma^\Upsilon > 1$.
-- Kerr differs from that model by $O(r^{-2})$ in these components.
-- A curve with tangent $\partial_0 + f\,\partial_1$ and
-  $f \approx C|h(\partial_0, \partial_0)| + Cr^{-2}$ is then timelike. Its
-  retarded time $t_*$ changes by $\int f\,dr < \infty$, so it reaches
-  $\mathscr I^+$.
+**Lemma 6 ((N) holds).** This is our reading of the 2026 paper. Near
+$\mathscr I^+$ it uses:
 
-Two steps remain unchecked:
+- the null coordinates of the mass-$m_0$ Schwarzschild model, $x^0$ and
+  $x^1 = t_*$, where $t_*$ is the hyperboloidal time;
+- near $\mathscr I^+$, $t_*$ equals the model's retarded time $u$;
+- the null frame $\partial_0$ (outgoing, $\partial_0 r = \frac12(1 - 2m_0/r)$)
+  and $\partial_1$ (ingoing), from its (3.30)–(3.33).
 
-1. turning the $b$-Sobolev membership into pointwise bounds that are uniform
-   up to $\mathscr I^+$;
-2. matching that exterior solution with the final metric near
-   $\mathscr I^+$. The 2026 paper's Theorem 5.23 states $h_S = \phi_S^*h$ only
-   near $\Sigma_{\rm IVP}$. Elsewhere the two are isometric by uniqueness, and
-   one has to check that the isometry respects $\mathscr I^+$.
+Then (N) holds.
+
+*Proof.*
+
+1. **Where the final metric is explicit.** In the proof of its Theorem 13.1
+   (Steps 2–3), the final metric on $\{t_* < 1\}$ is the boosted exterior
+   solution $\phi^*g_{b_0} + h'$. This is because the Nash–Moser correction
+   $\Phi(U)$ is supported in $\{t_* \ge 1\}$, and the cut-off $\chi_K$
+   vanishes for $t_* \le 10$. Here $\phi$ is the small asymptotic boost, and
+   $h'$ lies in the space of its Definition 5.3, with small norm (its
+   (5.56) and Step 2).
+2. **The outgoing null component $g(\partial_0, \partial_0)$**, term by term:
+   - *Kerr background.* The paper states
+     $(g_{m,a} - g_m)_{\bar\mu\bar\nu} \in r^{-2}C^\infty$ (after its
+     Definition 3.16), and $g_m(\partial_0, \partial_0) = 0$. So
+     $g_{b_0}(\partial_0, \partial_0) = O(r^{-2})$. *(test: in these
+     coordinates it is $-a^2\sin^2\theta/(4r^2) + O(r^{-3})$, and exactly 0
+     for Schwarzschild.)*
+   - *The boost.* By its Lemma 3.19,
+     $\phi^*g_{m,a} - g_{m,a} = r^{-1}h_{S,11}(dx^1)^2 + O(\rho_0\rho_I^2)$.
+     Since $dx^1(\partial_0) = 0$, the boost adds only $O(\rho_I^2)$ here.
+   - *The perturbation.* $h'(\partial_0, \partial_0) = h'_{00}$ is part of
+     $\pi^C h'$. Its index set at $\mathscr I^+$ has real parts above
+     $1 + 2\gamma^\Upsilon$, and its remainder weight is $\ell_I > 1$
+     (Definition 5.3, (5.8)). The spaces are weighted $b$-Sobolev spaces with
+     respect to a $b$-density (its (5.2)), and $H_b^k \subset L^\infty$ for
+     $k \ge 3$. So $|h'_{00}| \le C\epsilon'\rho_I^{1+\delta}$ (times a power
+     of $\rho_0$), with $\delta > 0$ and $\epsilon' \to 0$ as $\epsilon \to 0$.
+
+   Near $\mathscr I^+$ we have $\rho_I \sim |t_*|/r$. So at fixed $t_*$,
+   $|g(\partial_0, \partial_0)| \le C(t_*)\,r^{-1-\delta}$. Also, for
+   $r \ge R_N$, $g(\partial_0, \partial_1)$ is within $1/8$ of $-\frac12$ and
+   $|g(\partial_1, \partial_1)| \le 1/8$.
+3. **The escape curve.** Take $V = \partial_0 + f\,\partial_1$ with
+   $f = 4|g(\partial_0, \partial_0)| + r^{-2}$. Then
+   $g(V, V) \le g_{00} - \tfrac34 f + \tfrac18 f^2 < 0$, and $V$ is future
+   directed. Along its integral curves:
+   - $dr/d\lambda \ge 1/8$ and $dt_*/d\lambda = f$;
+   - so $t_*$ increases by at most $\int 8f\,dr < \infty$. Near spatial
+     infinity the bound on $h'_{00}$ carries a factor $\rho_0^\alpha$, so the
+     integral is finite for each starting radius. For fixed $R_N$ and small
+     $\epsilon$ it is below 1;
+   - the curve reaches $r = \infty$ at finite $t_*$ and fixed angle, that is,
+     at a point of $\mathscr I^+$.
+
+   A starting point $q$ at $r \ge R_N$ near $\Sigma_{T_{\rm late}}$ has
+   $t_*(q) \approx -r \ll 0$, so the whole curve stays in $\{t_* < 1\}$,
+   where step 1 applies. ∎
+
+**What Lemma 6 rests on.** We read these statements but did not verify them
+independently:
+
+- the support properties in step 1, taken from the structure of the proof
+  of Theorem 13.1;
+- that Definition 5.3 describes $h'$ uniformly up to $\mathscr I^+$ near
+  its corner with spatial infinity. Definition 5.3 is stated on the exterior
+  domain, which contains that corner.
+
+Lemma 6 is the least robust link in Theorem E, and the place where an
+expert check of the 2026 paper would help most.
 
 **The Klainerman–Szeftel route (session 4, superseded).** Before the 2026
 paper, the Λ = 0 case went through KS23 (arXiv:2104.11857; §3.4 and §3.8
@@ -646,13 +699,14 @@ coordinates remove this step for Theorem D and reduce Theorem E to (N).
 | Kerr–de Sitter solves $\mathrm{Ric} = \Lambda g$; reduces to Kerr and SdS | **checked** (rational parameters exactly, slow test; SdS symbolic) |
 | Lemma 2(b) for Λ = 0: $\partial_t + \frac12\partial_r$ has $g(W, W) \le -\frac14$ for $r \ge 10M$ | **checked** (polynomial with negative coefficients) |
 | Lemma 5(a): $\tilde u$ is a time function outside a Kerr hole | **checked** (exact identity) |
+| Lemma 6, Kerr part: $g(\partial_0, \partial_0) = -a^2\sin^2\theta/(4r^2) + O(r^{-3})$, and 0 for Schwarzschild | **checked** (exact, limit) |
 | Lemmas 1, 2(b), 2(d), 3, 4, 5(b,c) | written out here (elementary) |
 | (G1)–(G3), Λ > 0 | Hintz III Theorem 1.1, Definition 4.1, (1.2), (6.2): **read**. Uniformity on the tube and over $X$ is *our reading* |
 | (G3), Λ = 0 | Hintz 2026 Theorems 1.1 and 13.1, consequence (3), Remark 13.3, (5.56): **read**. Smallness of the decay constants for small data is *our reading* |
 | $t_* = t_{\rm BL} - T(r)$ form of Hintz–Vasy's time function | cited (HV18 (3.9)), *not re-checked* |
 | **Theorem D** (Λ > 0 and Λ = 0): both holes in $\mathcal B$, localisation, merger, $\mathcal B$ connected | **proved here, given (G1)–(G3)**; potentially new (Hintz lists the event horizon and connectedness as open) |
-| **Theorem E** (Λ = 0, $\mathscr I^+$): both holes in $\mathcal B_{\mathscr I}$, two components then one | **conditional on (N)** |
-| (N) | holds where the data are exactly Kerr (Lemma 5); expected from the 2026 paper's Definition 5.3 near $\mathscr I^+$; *not checked* |
+| **Theorem E** (Λ = 0, $\mathscr I^+$): both holes in $\mathcal B_{\mathscr I}$, two components then one | **proved here, given (G1)–(G3) and Lemma 6**; potentially new |
+| Lemma 6 = (N) | derived from Hintz 2026 Lemma 3.19, Def. 5.3, (5.2), (5.56), proof of Thm 13.1 (**read**). Support properties and uniformity up to the corner of $\mathscr I^+$ are *our reading* |
 | Localisation and connectedness for $\mathcal B_{\mathscr I}$ | not proved |
 | $\mathcal B$ defined with $\mathscr I^+$ for Λ > 0 | not proved: needs the spacetime beyond $r_+$ |
 | Exact location, smoothness and merger time of the horizon | not addressed (only to within $c$, $\eta$) |
@@ -661,8 +715,9 @@ coordinates remove this step for Theorem D and reduce Theorem E to (N).
 connected") as future work. A bounded search (2026-10-29) found no later
 treatment. Theorem D is therefore **potentially new**. The argument is
 elementary given Hintz's estimates, and experts may regard it as routine; its
-content is that $C^0$ control suffices. For Λ = 0 with $\mathscr I^+$
-(Theorem E) we offer a reduction to the single far-field property (N).
+content is that $C^0$ control suffices. Theorem E (Λ = 0, with
+$\mathscr I^+$) is potentially new in the same sense. It leans further on
+our reading of the 2026 paper (Lemma 6).
 
 ## 8 · Physical picture
 
@@ -706,4 +761,6 @@ estimate.
 - Theorem E needs (N): light from far out on a slice must reach null
   infinity even after crossing gravitational waves of size $\epsilon$. Why is
   reaching large $r$ not enough? (Think of the $2M\log r$ drift of retarded
-  time in Schwarzschild.)
+  time in Schwarzschild.) Lemma 6 shows the gauge of the 2026 paper keeps
+  the outgoing component $g(\partial_0, \partial_0)$ integrable. Why is that
+  exactly the component that matters?

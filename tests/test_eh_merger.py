@@ -141,3 +141,18 @@ def test_outgoing_field_is_uniformly_timelike_far_out():
         constant = sum(t for t in terms if not t.free_symbols)
         assert all(t.as_coeff_Mul()[0] <= 1 for t in sp.Add.make_args(positive) if t != 0)
         assert constant + len(sp.Add.make_args(positive)) < 0
+
+
+def test_outgoing_null_component_of_kerr_decays_like_r_minus_2():
+    """notes/11, Lemma 6. In the null frame of the mass-M Schwarzschild model used at null
+    infinity (Hintz 2026, (3.30)-(3.32)), x^1 = t - r with t = t_BL - r_*^{Schw} + r and
+    d_0 = (1 - 2M/r)/2 (d_t + d_r): g(d_0, d_0) vanishes for Schwarzschild and is
+    -a^2 (1 - chi^2) / (4 r^2) + O(r^-3) for Kerr. Hence the background's outgoing null
+    component is integrable along outgoing curves."""
+    g = metrics.kerr().metric
+    V = sp.Matrix([r / (r - 2 * M), 1, 0, 0])  # d_t + d_r in the new coordinates, in BL components
+    g00 = sp.cancel((1 - 2 * M / r) ** 2 / 4 * (V.T * g * V)[0, 0])
+    assert sp.cancel(g00.subs(a_kerr, 0)) == 0
+    w = sp.Symbol("w", positive=True)  # w = 1/r
+    lead = sp.limit(sp.cancel(g00.subs(r, 1 / w) / w**2), w, 0)
+    assert sp.simplify(lead + a_kerr**2 * (1 - chi**2) / 4) == 0

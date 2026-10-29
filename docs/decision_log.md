@@ -16,10 +16,11 @@ Newest first. Each entry: what was decided, why, and where things stand.
   - Theorem D uses "cannot signal arbitrarily large distances". It is robust
     under $C^0$ perturbations, and agrees with the textbook one in exact
     Kerr.
-  - Theorem E uses $M \setminus J^-(\mathscr I^+)$ and is stated conditional
-    on (N). Reaching $\mathscr I^+$ needs retarded-time control. We traced
-    where it would come from (Hintz 2026, Definition 5.3), but did not check
-    the two remaining steps.
+  - Theorem E uses $M \setminus J^-(\mathscr I^+)$. Reaching
+    $\mathscr I^+$ needs retarded-time control. Lemma 6 gets it from Hintz
+    2026: the outgoing null component is integrable (Lemma 3.19,
+    Definition 5.3, and the support properties of the proof of Theorem
+    13.1). This is labelled as our reading.
 - **Session 4's Theorem D₀ is marked superseded**, not deleted: the ledger
   keeps claim 44 with a pointer, and note 11 keeps a short account of the
   KS route.
@@ -34,7 +35,7 @@ Newest first. Each entry: what was decided, why, and where things stand.
 
 **Next**
 
-- Prove (N) from Hintz 2026's structure at $\mathscr I^+$ (status.md, (a)).
+- Expert check of Lemma 6. Locating the merger event (status.md, (a)).
 - Gap 3 (Brill–Lindquist, no common MOTS at $t = 0$).
 
 ## 2026-10-29 (session 4) — Event horizons of extreme-mass-ratio mergers

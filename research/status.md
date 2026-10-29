@@ -80,8 +80,10 @@ construction as its consequence (3). So Theorem D now holds for Λ = 0 too,
 with $\mathcal B$ = events that cannot signal arbitrarily large distances.
 **Theorem E** uses the textbook $\mathcal B = M \setminus J^-(\mathscr I^+)$.
 It shows two black-hole components before the plunge and one after, which is
-the event-horizon merger of notes/07. It is conditional on one far-field
-property (N) of the stability development.
+the event-horizon merger of notes/07. Its extra input, that far points reach
+$\mathscr I^+$, is derived (Lemma 6) from the 2026 paper's gauge at null
+infinity. There the outgoing null component of the metric decays
+integrably. The derivation is our reading of that paper.
 
 New SymPy checks (`tests/test_eh_merger.py`, sessions 4–5):
 
@@ -106,9 +108,11 @@ New SymPy checks (`tests/test_eh_merger.py`, sessions 4–5):
    numerical only. Theorem C is local, near $S_c$.
 4. **Event horizons in vacuum.** Status:
    - Theorem D (Λ ≥ 0, escape-defined black-hole region) is done.
-   - Theorem E (Λ = 0, with $\mathscr I^+$) is conditional on (N): far points
-     of the late initial slice reach $\mathscr I^+$, in the region the
-     merger's radiation has disturbed.
+   - Theorem E (Λ = 0, with $\mathscr I^+$) is proved given Lemma 6. Lemma 6
+     is our reading of Hintz 2026's structure at $\mathscr I^+$: Lemma 3.19,
+     Definition 5.3, and the support properties in the proof of Theorem
+     13.1. An expert check of that reading is the most valuable review.
+   - Localisation and connectedness of the textbook region remain open.
    - Theorem D rests on our reading of the uniformity in Hintz III (1.2),
      (6.2), and of the smallness of the decay constants in Hintz 2026.
    - The horizons are located only up to margins.
@@ -124,16 +128,12 @@ New SymPy checks (`tests/test_eh_merger.py`, sessions 4–5):
 
 Two candidates, in order of tractability.
 
-**(a) Prove (N) from Hintz 2026's structure at null infinity.** Use its
-Definition 5.3: the outgoing null component $h(\partial_0, \partial_0)$
-decays faster than $r^{-1}$.
-
-1. Turn the $b$-Sobolev bounds into pointwise bounds uniform up to
-   $\mathscr I^+$.
-2. Show that the exterior solution of its Theorem 5.21 and the final metric
-   agree near $\mathscr I^+$ up to an isometry that preserves $\mathscr I^+$.
-
-Then Theorem E holds unconditionally, modulo cited theorems.
+**(a) Locate the merger event as ε → 0.** This is the first point where the
+two horizon components touch. It would need the horizon at the scale where
+the margins $c$, $\eta$ of Theorem D are removed: null geodesics, not
+timelike curves. The heuristic answer is Emparan–Martínez's exact
+extreme-mass-ratio horizon, so the natural first step is a rigorous version
+of their rescaling limit.
 
 **(b) Gap 3, below.**
 

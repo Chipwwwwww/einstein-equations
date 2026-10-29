@@ -60,8 +60,12 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
   - For the textbook $\mathscr I^+$ version (Theorem E), one gap remains:
     (N), that far points on the late initial slice reach $\mathscr I^+$.
   - Lemma 5 proves (N) where the data are exactly Kerr. Our signals,
-    however, travel through the perturbed region. There (N) needs the
-    2026 paper's structure at $\mathscr I^+$, which we did not fully check.
+    however, travel through the perturbed region.
+  - Lemma 6 then derives (N) from the 2026 paper's gauge, in which the
+    outgoing null component $h(\partial_0, \partial_0)$ decays faster than
+    $r^{-1}$. The asymptotic boost only touches $(dx^1)^2$ (Lemma 3.19).
+    Kerr's own outgoing component is $-a^2\sin^2\theta/4r^2$ (checked). This
+    rests on our reading of the paper.
 - **Snag found and fixed.** Interpolating Fermi slices and $t_*$-slices with
   an ordinary cut-off fails, because the boost of $C$ makes the error term of
   order 1. A cut-off in $\log|x|$ makes it $O(1/K_0)$ (Lemma 4).
