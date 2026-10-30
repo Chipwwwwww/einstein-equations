@@ -269,19 +269,22 @@ def run(z_lo, z_hi, d_lo, d_hi, slots, h=0.25, ds=0.004, L=14, sigma_max=60.0, z
 
 
 # ---------------------------------------------------------------------------
-# Driver: the local lemma on the whole fold window that the slab sweep leaves out
-# (gap3_interval.HOLE, image gap3_interval.hole_z0() = [0.629036.., 0.636869..] in z0).
+# Drivers. The fold window gap3_interval.FOLD_WINDOW is left out of the sweep for
+# d <= gap3_interval.D_HOLE; the lemma covers it in two parts:
+#   1. (i) and (ii) on FOLD_WINDOW x [D_C_LO, D1] (certify_window, slots (0, 1, 2, 4));
+#   2. (ii) alone on FOLD_WINDOW x [D1, D_HOLE] (certify_fd, slots (0, 2)), which extends
+#      F(z0, d) = F(z0, d*) + int F_d > 0 up to D_HOLE.
+# Pieces are PIECE wide in z0 (wider ones blow up), and D1 - d_c (part 1) or DPIECE (part 2)
+# in d.
 # ---------------------------------------------------------------------------
 PIECE = 2.0**-12
+DPIECE = 2.0**-12
 SLOTS = (0, 1, 2, 4)  # F_z, F_zz, F_d in one run
 
 
 def fold_window():
-    """Dyadic z0-window [k PIECE, l PIECE] containing hole_z0() and the fold point."""
-    from research.calc.gap3_interval import hole_z0
-    lo, hi = hole_z0()
-    lo, hi = min(lo, Z_C_LO), max(hi, Z_C_HI)
-    return math.floor(lo / PIECE) * PIECE, math.ceil(hi / PIECE) * PIECE
+    from research.calc.gap3_interval import FOLD_WINDOW
+    return FOLD_WINDOW
 
 
 def check_piece(piece):
@@ -297,8 +300,19 @@ def check_piece(piece):
     return piece, float(Fzz.lower()), float(Fd.lower()), n, time.time() - t0
 
 
+def check_piece_fd(piece):
+    """(piece, F_d lower bound or None, steps or error, seconds) on piece = (z_lo, z_hi, d_lo,
+    d_hi)."""
+    t0 = time.time()
+    try:
+        _, _, Fd, n = run(*piece, (0, 2))
+    except AssertionError as e:
+        return piece, None, str(e), time.time() - t0
+    return piece, float(Fd.lower()), n, time.time() - t0
+
+
 def certify_window(processes=4, min_width=2.0**-16, log=print):
-    """Conditions (i) and (ii) of the local lemma on fold_window(), bisecting failed pieces.
+    """Part 1: conditions (i) and (ii) on FOLD_WINDOW x [D_C_LO, D1], bisecting failed pieces.
     Returns (pieces, worst F_zz lower bound, worst F_d lower bound)."""
     from multiprocessing import Pool
     a, b = fold_window()
@@ -324,9 +338,51 @@ def certify_window(processes=4, min_width=2.0**-16, log=print):
     return sorted(done), wzz, wd
 
 
+def certify_fd(processes=4, min_width=2.0**-16, log=print):
+    """Part 2: F_d > 0 on FOLD_WINDOW x [D1, D1 + k DPIECE] >= [D1, D_HOLE], bisecting failed
+    pieces in z0 (then d). Returns (pieces, worst F_d lower bound, d reached)."""
+    from multiprocessing import Pool
+    from research.calc.gap3_interval import D1, D_HOLE
+    a, b = fold_window()
+    nd = math.ceil((D_HOLE - D1) / DPIECE)
+    todo = [(a + i * PIECE, a + (i + 1) * PIECE, D1 + k * DPIECE, D1 + (k + 1) * DPIECE)
+            for k in range(nd) for i in range(round((b - a) / PIECE))]
+    done, wd = [], math.inf
+    with Pool(processes) as pool:
+        while todo:
+            nxt = []
+            for piece, fd, n, sec in pool.imap(check_piece_fd, todo, chunksize=1):
+                ok = fd is not None and fd > 0
+                if log:
+                    log(f"  {' '.join(repr(x) for x in piece)}  F_d >= {fd}  steps {n}  "
+                        f"{sec:.0f} s  {'ok' if ok else 'SPLIT'}")
+                if ok:
+                    done.append(piece)
+                    wd = min(wd, fd)
+                    continue
+                z0, z1, d0, d1 = piece
+                if z1 - z0 > min_width:
+                    m = (z0 + z1) / 2
+                    nxt += [(z0, m, d0, d1), (m, z1, d0, d1)]
+                elif d1 - d0 > min_width:
+                    m = (d0 + d1) / 2
+                    nxt += [(z0, z1, d0, m), (z0, z1, m, d1)]
+                else:
+                    raise AssertionError(f"fold lemma (part 2) fails on {piece}")
+            todo = nxt
+    return sorted(done), wd, D1 + nd * DPIECE
+
+
 if __name__ == "__main__":
-    procs = int(sys.argv[1]) if len(sys.argv) > 1 else 4
     t0 = time.time()
+    if len(sys.argv) > 1 and sys.argv[1] == "fd":
+        procs = int(sys.argv[2]) if len(sys.argv) > 2 else 4
+        pieces, wd, top = certify_fd(procs, log=lambda m: print(m, flush=True))
+        a, b = fold_window()
+        print(f"Fold lemma part 2: z0 in [{a!r}, {b!r}], d in [D1, {top!r}]: F_d >= {wd:.4g} "
+              f"on {len(pieces)} pieces ({time.time() - t0:.0f} s)")
+        sys.exit(0)
+    procs = int(sys.argv[1]) if len(sys.argv) > 1 else 4
     pieces, wzz, wd = certify_window(procs, log=lambda m: print(m, flush=True))
     a, b = fold_window()
     print(f"Fold lemma: z0 in [{a!r}, {b!r}], d in [{D_C_LO!r}, D1]: F_zz >= {wzz:.4g}, "

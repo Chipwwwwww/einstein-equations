@@ -74,24 +74,34 @@ def test_band_cover_check_is_dyadic_and_recursive():
     assert not gi.covered_by((6e-4, 8e-4, -2e-4, -1e-4, -1), quarters)
 
 
-def test_slab_leaves_out_exactly_the_fold_window():
-    """The slab boxes cover [DELTA_MIN, DELTA_MAX] minus HOLE, the hole's z0-image lies inside
-    the fold lemma's window, and the z0-window [d/2 + s*, R*] is covered for d in [D0, D1]."""
+def test_partition_tiles_the_strip_minus_the_fold_holes():
+    """In every band and slab, the boxes tile [lo, hi] except for the fold hole; the holes lie
+    only below D_HOLE and map into the fold window (interval check), which contains the fold
+    point; the z0-window [d/2 + s*, R*] is covered; and the fold lemma's two parts reach
+    D_HOLE from below d_c."""
     from research.calc import gap3_fold as gf
-    boxes = gi.initial_boxes(gi.D0, gi.D1, gi.HOLE)
-    edges = sorted({(b[0], b[1]) for b in boxes})
-    x = gi.DELTA_MIN
-    for lo, hi in edges:
-        if lo != x:
-            assert (x, lo) == gi.HOLE
-        x = hi
-    assert x == gi.DELTA_MAX
-    assert all(b[2] == gi.D0 and b[3] == gi.D1 for b in boxes)
-    lo, hi = gi.hole_z0()
+    boxes = set(gi.initial_boxes())
+    holes = 0
+    for lo, hi, w, dw in gi.BANDS:
+        for dl, dh in gi.slabs(dw):
+            xs = sorted(b[0] for b in boxes if b[2] == dl and b[3] == dh and lo <= b[0] < hi)
+            h = gi.hole(dl, dh, w)
+            expect, x = [], lo
+            while x < hi:
+                if h and h[0] <= x < h[1]:
+                    x = h[1]
+                    continue
+                expect.append(x)
+                x += w
+            assert xs == expect
+            if h and lo <= h[0] < hi:
+                holes += 1
+                assert dh <= gi.D_HOLE and gi.hole_inside(dl, dh, h) and h[1] > h[0]
+    assert holes == 2
     a, b = gf.fold_window()
-    assert a <= lo and hi <= b and a <= gf.Z_C_LO and gf.Z_C_HI <= b
-    assert gi.z0_window_covered(gi.D0, gi.D1)
-    assert gi.D0 <= gf.D_C_LO and gf.D_C_HI < gi.D1
+    assert a <= gf.Z_C_LO and gf.Z_C_HI <= b
+    assert gi.holes_inside() and gi.z0_window_covered()
+    assert gi.D0 <= gf.D_C_LO and gf.D_C_HI < gi.D1 and gi.D1 + 6 * gf.DPIECE >= gi.D_HOLE
 
 
 def test_falsification_below_d_c():

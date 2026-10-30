@@ -1,5 +1,5 @@
 """Gap 3 over an interval of separations: no common minimal surface of equal-mass Brill-Lindquist
-data for every d in [D1, D2] (notes/12, Theorem F').
+data for every d in (d_c, D2] (notes/12, Theorem F'), certified slab by slab upward from d_c.
 
 Same proof as Theorem F (research/calc/gap3_sweep.py, notes/12), with the separation d as a
 parameter everywhere:
@@ -7,24 +7,31 @@ parameter everywhere:
   * barriers: certify_throat / certify_far of research/calc/bl_global.py with d an interval;
     over [0.765625, 0.78125] the throat radius must shrink to s_* = 0.15 (0.155 fails at
     d = 0.766), the far radius R_* = 1.05 still works;
-  * thin necks, radius <= LAM0_INT = 2^-7 (approach lemma, event N): research/calc/gap3_neck.py,
+  * thin necks, radius <= LAM0_INT = 3 * 2^-8 (approach lemma, event N): research/calc/gap3_neck.py,
     certify_region_rel, in the coordinates (lam, zeta = z_w - d/2) for all d at once;
   * medium necks (event W): the curve is integrated to its waist; the waist box
     (lam, zeta, direction) is recorded and the thin-neck sign pattern is certified on it
-    afterwards (research/calc/gap3_neck_lohner.py, certify_rel, on a fixed dyadic grid, for all
+    afterwards (research/calc/gap3_neck_lohner.py, certify_rel, on dyadic cells, for all
     d in [D_LO, D_HI] at once);
+  * the fold window FOLD_WINDOW (z0 near the fold point) for d <= D_HOLE: left to the local fold
+    lemma, research/calc/gap3_fold.py;
   * the sweep: Lohner sets with d kept out of the moving frame (lohner.PSet). The initial sets
     are band-aligned, z0 = Z0_REF + delta + SLOPE (d - D_REF), so that a (delta, d)-box follows
-    the top of the individual horizon as d changes (z_top(d) has slope ~0.543).
+    the top of the individual horizon as d changes (z_top(d) has slope ~0.543). Box sizes come
+    from the calibrated table BANDS.
 
 Events (whole enclosure):
   E1  z < 0, every step that allowed z = 0 having u != 0 (steps are halved until it does);
   E2  outside B(0, R_*);
   E3  inside B(p_+-, s_*), with z - d/2 and z + d/2 taken from the set itself (not from hulls);
   N   approach lemma, as in gap3_sweep, in the variable zeta = z - d/2;
-  W   u < 0 at the start of a step and u > 0 at its end: the waist (u = 0) lies in that step, with
-      lam = rho_w in B_rho and zeta_w in zeta(start) + [0, h] B_v, direction sign(B_v). Excluded
-      once the neck lemma is certified on that waist box.
+  W   u < 0 on the whole set after some step and u > 0 on it after a later one: every curve has
+      its waist (u = 0) in one of the step boxes in between, with lam = rho_w and zeta_w in their
+      unions, direction sign(v) over them. Excluded once the neck lemma is certified there.
+
+Run: python -m research.calc.gap3_interval 4            (sweep, resumes from gap3_interval.log)
+     python -m research.calc.gap3_interval progress LOG (largest d_k with [D0, d_k] covered)
+     python -m research.calc.gap3_interval verify LOG [d_k]  (cover, holes, band certificate)
 """
 
 import math
@@ -239,48 +246,81 @@ def certify_piece(piece):
 # ---------------------------------------------------------------------------
 # Driver.
 # ---------------------------------------------------------------------------
-D1 = 0.7662353515625  # = 0.765625 + 5 * 2^-13; D1 - d_c = 3.79e-5
+D0 = 0.7661974282399  # d_c - 1.0e-13 <= d_c (Theorem C: d_c = 0.766197428240 +- 1.1e-13)
+D1 = 0.7662353515625  # = 0.765625 + 5 * 2^-13: the fold lemma's first part ends here
+D_HOLE = 0.767578125  # below this the fold window is left to the fold lemma (gap3_fold.py)
 D2 = D_HI  # 0.78125, contains 0.78
 DELTA_MIN, DELTA_MAX = -0.0625, 0.46875  # covers z0 in [Z_LO, Z_HI] = [136/256, 269/256]
 TOP = (-0.00390625, 0.0078125)  # neighbourhood of the individual horizon's top: necks
+# The fold window in z0, certified by research/calc/gap3_fold.py: there F > 0 for every
+# d in (d_c, D_HOLE] (F_zz > 0 and F_d > 0 up to D1, F_d > 0 from D1 to D_HOLE).
+FOLD_WINDOW = (0.62890625, 0.636962890625)
+
+# Partition of [DELTA_MIN, DELTA_MAX] x d into boxes: bands (lo, hi, delta-width, d-width).
+# Calibrated on test boxes at both ends of the d-range (session 9): wider boxes get stuck,
+# because Lohner's first-order enclosure explodes where the curves turn. The closer to the top
+# of the individual horizon (delta = 0), the narrower; the single-d sweep at d = 0.78 needed
+# similar widths (research/calc/data/gap3_partition_d078.txt).
+BANDS = [
+    (DELTA_MIN, -0.046875, 2.0**-10, 2.0**-9),
+    (-0.046875, -0.015625, 2.0**-12, 2.0**-10),
+    (-0.015625, -0.0078125, 2.0**-13, 2.0**-10),
+    (-0.0078125, TOP[0], 2.0**-14, 2.0**-10),
+    (TOP[0], TOP[1], 2.0**-14, 2.0**-10),
+    (TOP[1], 0.01171875, 2.0**-15, 2.0**-10),
+    (0.01171875, 0.013671875, 2.0**-14, 2.0**-10),
+    (0.013671875, 0.0625, 2.0**-13, 2.0**-10),
+    (0.0625, 0.0703125, 2.0**-12, 2.0**-10),
+    (0.0703125, 0.15625, 2.0**-11, 2.0**-10),
+    (0.15625, DELTA_MAX, 2.0**-10, 2.0**-9),
+]
 
 
-# The thin slab next to the fold, d in [D0, D1] (D0 just below d_c): the delta-window HOLE
-# around the fold is left to the local fold lemma (research/calc/gap3_fold.py), which covers
-# z0 in [Z0_REF + HOLE[0] + SLOPE (D0 - D_REF), Z0_REF + HOLE[1] + SLOPE (D1 - D_REF)].
-D0 = 0.7661974282399  # d_c - 1.0e-13 <= d_c (Theorem C: d_c = 0.766197428240 +- 1.1e-13)
-HOLE = (48 * 2.0**-10, 56 * 2.0**-10)
+def slabs(w, d1=D0, d2=D2):
+    """The d-slabs [D2 - (k+1) w, D2 - k w] (a grid anchored at D2) with top <= d2, the lowest
+    one cut at d1."""
+    out, k = [], 0
+    while D2 - k * w > d1:
+        hi, lo = D2 - k * w, max(d1, D2 - (k + 1) * w)
+        if hi <= d2:
+            out.append((lo, hi))
+        k += 1
+    return out[::-1]
 
 
-def initial_boxes(d1=D1, d2=D2, hole=None):
-    """Near the top: delta-width 2^-14, d-width 2^-10. Elsewhere: 2^-10 and 2^-9. Near-top boxes
-    come first (they are the delicate ones). hole = (lo, hi) on the 2^-10 grid: leave out
-    delta in [lo, hi]."""
-    def slabs(w):
-        out, d = [], d2
-        while d > d1:
-            out.append((max(d1, d - w), d))
-            d -= w
-        return out
-    top, rest = [], []
-    for dl, dh in slabs(2.0**-10):
-        x = TOP[0]
-        while x < TOP[1]:
-            top.append((x, x + 2.0**-14, dl, dh))
-            x += 2.0**-14
-    for dl, dh in slabs(2.0**-9):
-        x = DELTA_MIN
-        while x < DELTA_MAX:
-            w = 2.0**-10
-            if TOP[0] <= x < TOP[1]:
-                x = TOP[1]
-                continue
-            if hole and hole[0] <= x < hole[1]:
-                x = hole[1]
-                continue
-            rest.append((x, min(x + w, TOP[0]) if x < TOP[0] else x + w, dl, dh))
-            x = rest[-1][1]
-    return top + rest
+def hole(dl, dh, w):
+    """For a slab below D_HOLE: the delta-range on the w-grid whose z0-image over d in [dl, dh]
+    lies inside FOLD_WINDOW (rounded inward, with interval arithmetic). Else None."""
+    if dh > D_HOLE:
+        return None
+    a, b = FOLD_WINDOW
+    lo = (arb(a) - arb(Z0_REF) - arb(SLOPE) * (arb(dl) - arb(D_REF))) / w
+    hi = (arb(b) - arb(Z0_REF) - arb(SLOPE) * (arb(dh) - arb(D_REF))) / w
+    return math.ceil(float(lo.upper()) + 1e-9) * w, math.floor(float(hi.lower()) - 1e-9) * w
+
+
+def hole_inside(dl, dh, h):
+    """Interval check: the z0-image of h x [dl, dh] lies in FOLD_WINDOW."""
+    lo = arb(Z0_REF) + arb(h[0]) + arb(SLOPE) * (arb(dl) - arb(D_REF))
+    hi = arb(Z0_REF) + arb(h[1]) + arb(SLOPE) * (arb(dh) - arb(D_REF))
+    return bool(lo >= FOLD_WINDOW[0] and hi <= FOLD_WINDOW[1])
+
+
+def initial_boxes(d1=D0, d2=D2):
+    """All boxes of the partition (BANDS) in [DELTA_MIN, DELTA_MAX] x [d1, d2], minus the fold
+    holes, ordered by d (so the sweep certifies (d_c, d_k] for growing d_k)."""
+    boxes = []
+    for lo, hi, w, dw in BANDS:
+        for dl, dh in slabs(dw, d1, d2):
+            h = hole(dl, dh, w)
+            x = lo
+            while x < hi:
+                if h and h[0] <= x < h[1]:
+                    x = h[1]
+                    continue
+                boxes.append((x, x + w, dl, dh))
+                x += w
+    return sorted(boxes, key=lambda b: (b[2], b[0]))
 
 
 EXCLUDED = ("E1", "E2", "E3", "N", "W")
@@ -297,22 +337,38 @@ def split(box):
     return []
 
 
-def sweep(boxes=None, processes=4, logfile="gap3_interval.log", resume=False):
-    """Run all boxes, bisecting failures. Appends one line per run to logfile:
+def sweep(boxes=None, processes=4, logfile="gap3_interval.log", resume=False, chunk=64):
+    """Run all boxes, lowest d first, bisecting failures (split) as soon as they occur, so that
+    the certified range (d_c, d_k] grows steadily. Appends one line per run to logfile:
     delta_lo delta_hi d_lo d_hi event sigma steps seconds [lam_lo lam_hi ze_lo ze_hi s].
-    resume: skip the boxes that logfile already records as excluded (exclusions stay valid
-    when the neck windows or LAM_MAX are enlarged later; everything else is run again)."""
-    from multiprocessing import Pool
+    resume: reuse logfile. A box logged as excluded is skipped; one logged as not excluded is
+    replaced by its children (exclusions stay valid when the neck windows or LAM_MAX grow)."""
+    import heapq
     import os
-    todo = boxes if boxes is not None else initial_boxes()
-    if resume and os.path.exists(logfile):
-        old = read_log(logfile)
-        todo = [b for b in todo if old.get(b, ("",))[0] not in EXCLUDED]
+    from multiprocessing import Pool
+    boxes = list(boxes if boxes is not None else initial_boxes())
+    old = read_log(logfile) if resume and os.path.exists(logfile) else {}
+    todo = []
+
+    def expand(b):
+        r = old.get(b)
+        if r is None:
+            todo.append(b)
+        elif r[0] not in EXCLUDED:
+            kids = split(b)
+            for k in kids:
+                expand(k)
+            if not kids:
+                todo.append(b)
+    for b in boxes:
+        expand(b)
+    heap = [(b[2], b[0], b) for b in todo]
+    heapq.heapify(heap)
     results, failed = [], []
     with Pool(processes) as pool, open(logfile, "a") as out:
-        while todo:
-            nxt = []
-            for r in pool.imap(run_box, todo, chunksize=1):
+        while heap:
+            batch = [heapq.heappop(heap)[2] for _ in range(min(chunk, len(heap)))]
+            for r in pool.imap(run_box, batch, chunksize=1):
                 box, ev, sig, n, sec, waist = r
                 results.append(r)
                 extra = " ".join(repr(x) for x in waist) if waist else ""
@@ -320,11 +376,10 @@ def sweep(boxes=None, processes=4, logfile="gap3_interval.log", resume=False):
                 out.flush()
                 if ev not in EXCLUDED:
                     kids = split(box)
-                    if kids:
-                        nxt += kids
-                    else:
+                    for k in kids:
+                        heapq.heappush(heap, (k[2], k[0], k))
+                    if not kids:
                         failed.append(r)
-            todo = nxt
     return results, failed
 
 
@@ -400,10 +455,10 @@ def read_log(path):
     return out
 
 
-def check_cover(runs, d1=D1, d2=D2, hole=None):
-    """Every initial box is excluded, or split (split()) into children that are, recursively.
-    Returns the list of uncovered boxes (empty: the region [DELTA_MIN, DELTA_MAX] x [d1, d2]
-    is covered by excluded boxes)."""
+def check_cover(runs, d1=D0, d2=D2):
+    """Every initial box in [d1, d2] is excluded, or split (split()) into children that are,
+    recursively. Returns the list of uncovered boxes (empty: [DELTA_MIN, DELTA_MAX] x [d1, d2]
+    minus the fold holes is covered by excluded boxes)."""
     bad = []
 
     def ok(box):
@@ -418,12 +473,18 @@ def check_cover(runs, d1=D1, d2=D2, hole=None):
             bad.append(box)
             return False
         return all([ok(k) for k in kids])
-    for b in initial_boxes(d1, d2, hole):
+    for b in initial_boxes(d1, d2):
         ok(b)
     return bad
 
 
-def z0_window_covered(d1=D1, d2=D2):
+def holes_inside(d1=D0, d2=D2):
+    """Every fold hole of the partition maps into FOLD_WINDOW (interval check)."""
+    return all(hole_inside(dl, dh, h) for _, _, w, dw in BANDS for dl, dh in slabs(dw, d1, d2)
+               for h in [hole(dl, dh, w)] if h)
+
+
+def z0_window_covered(d1=D0, d2=D2):
     """For every d in [d1, d2], z0 = Z0_REF + delta + SLOPE (d - D_REF) with delta in
     [DELTA_MIN, DELTA_MAX] covers [d/2 + s_*, R_*] (interval arithmetic; the map is monotone
     in d, so the endpoints suffice)."""
@@ -433,13 +494,23 @@ def z0_window_covered(d1=D1, d2=D2):
     return bool(lo < d / 2 + S_STAR and hi > R_STAR)
 
 
-def verify(logfile, processes=4, log=print, slab=False):
-    """Post-processing of a sweep log: cover check, z0-window check, and the medium-neck band
-    certificate for every waist event. Returns a summary dict. slab=True: the log of the thin
-    slab [D0, D1] with the fold window HOLE left out (its z0-range goes to gap3_fold)."""
-    d1, d2, hole = (D0, D1, HOLE) if slab else (D1, D2, None)
-    runs = read_log(logfile)
-    uncovered = check_cover(runs, d1, d2, hole)
+def certified_up_to(runs):
+    """The largest slab top d_k such that the partition on [D0, d_k] is covered (check_cover)."""
+    tops = sorted(set.intersection(*[{dh for _, dh in slabs(dw)} for _, _, _, dw in BANDS]))
+    best = None
+    for t in tops:
+        if check_cover(runs, D0, t):
+            break
+        best = t
+    return best
+
+
+def verify(logfile, d2=D2, processes=4, log=print):
+    """Post-processing of a sweep log for d in [D0, d2]: cover check, holes inside the fold
+    window, z0-window check, and the medium-neck band certificate for every waist event in
+    that range. Returns a summary dict."""
+    runs = {b: r for b, r in read_log(logfile).items() if b[3] <= d2}
+    uncovered = check_cover(runs, D0, d2)
     waists = [w for ev, w in runs.values() if ev == "W"]
     cells, bad_cells = certify_band(waists, processes=processes, log=log)
     cert = {(c[0], c[2], c[1] - c[0], c[4]) for c in cells}
@@ -447,38 +518,23 @@ def verify(logfile, processes=4, log=print, slab=False):
     counts = {}
     for ev, _ in runs.values():
         counts[ev] = counts.get(ev, 0) + 1
-    out = {"runs": len(runs), "events": counts, "uncovered": uncovered,
-           "z0_window": z0_window_covered(d1, d2), "waists": len(waists),
-           "band_cells": len(cells), "band_failed": len(bad_cells),
-           "uncertified_waists": uncertified}
-    if slab:
-        out["hole_z0"] = hole_z0()
-    return out
-
-
-def hole_z0():
-    """The z0-range [lo, hi] the fold lemma must cover: the hole's image over d in [D0, D1]
-    (z0 increases with delta and with d), as floats rounded outward."""
-    lo = arb(Z0_REF) + arb(HOLE[0]) + arb(SLOPE) * (arb(D0) - arb(D_REF))
-    hi = arb(Z0_REF) + arb(HOLE[1]) + arb(SLOPE) * (arb(D1) - arb(D_REF))
-    return float(lo.lower()), float(hi.upper())
+    return {"d_range": (D0, d2), "runs": len(runs), "events": counts, "uncovered": uncovered,
+            "holes_inside_fold_window": holes_inside(D0, d2),
+            "z0_window": z0_window_covered(D0, d2), "waists": len(waists),
+            "band_cells": len(cells), "band_failed": len(bad_cells),
+            "uncertified_waists": uncertified}
 
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) > 2 and sys.argv[1] in ("verify", "verify-slab"):
-        summary = verify(sys.argv[2], processes=int(sys.argv[3]) if len(sys.argv) > 3 else 4,
-                         slab=sys.argv[1] == "verify-slab")
+    if len(sys.argv) > 2 and sys.argv[1] == "verify":
+        d2 = float(sys.argv[3]) if len(sys.argv) > 3 else D2
+        summary = verify(sys.argv[2], d2=d2, processes=int(sys.argv[4]) if len(sys.argv) > 4 else 4)
         for k, v in summary.items():
             print(f"{k}: {v if not isinstance(v, list) or len(v) < 20 else str(len(v)) + ' items'}")
         sys.exit(0)
-    if len(sys.argv) > 1 and sys.argv[1] == "slab":
-        procs = int(sys.argv[2]) if len(sys.argv) > 2 else 4
-        t0 = time.time()
-        res, bad = sweep(initial_boxes(D0, D1, HOLE), processes=procs, logfile="gap3_slab.log",
-                         resume=True)
-        print(f"slab sweep: {len(res)} runs in {time.time() - t0:.0f} s; {len(bad)} boxes failed "
-              f"at the minimal size")
+    if len(sys.argv) > 2 and sys.argv[1] == "progress":
+        print("covered up to d =", certified_up_to(read_log(sys.argv[2])))
         sys.exit(0)
     procs = int(sys.argv[1]) if len(sys.argv) > 1 else 4
     t0 = time.time()
