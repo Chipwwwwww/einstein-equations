@@ -42,7 +42,8 @@ def test_small_neck_certificate_over_the_interval():
 
 def test_medium_neck_certificate_over_the_interval():
     """certify_rel on a grid cell at lam ~ 0.03 for all d in [D_LO, D_HI]."""
-    cell = (0.03, 0.03 + gi.GRID, -0.2535, -0.2535 + gi.GRID, -1)
+    w = 2.0**-12
+    cell = (0.03, 0.03 + w, -0.2535, -0.2535 + w, -1)
     assert gi._certify_cell(cell) > 0
 
 
@@ -57,3 +58,37 @@ def test_interval_boxes_end_in_N_and_W():
     # floating point: waists between (0.01355, -0.22238) and (0.01388, -0.22322) over the box
     assert s == -1 and lam_lo < 0.01355 and 0.01388 < lam_hi
     assert ze_lo < -0.22322 and -0.22238 < ze_hi
+
+
+def test_band_cover_check_is_dyadic_and_recursive():
+    """covered_by: a waist box is covered by a certified GRID cell, or by certified quarters
+    of it that meet the box; a missing quarter or the other direction s is not covered."""
+    G = gi.GRID
+    whole = [(0.0, G, -G, 0.0, -1)]
+    assert gi.covered_by((1e-4, 5e-4, -5e-4, -1e-4, -1), whole)
+    assert not gi.covered_by((1e-4, 5e-4, -5e-4, -1e-4, 1), whole)
+    assert not gi.covered_by((1e-4, 1.2e-3, -5e-4, -1e-4, -1), whole)
+    h = G / 2
+    quarters = [(0.0, h, -G, -h, -1), (h, G, -G, -h, -1), (0.0, h, -h, 0.0, -1)]
+    assert gi.covered_by((1e-4, 2e-4, -2e-4, -1e-4, -1), quarters)
+    assert not gi.covered_by((6e-4, 8e-4, -2e-4, -1e-4, -1), quarters)
+
+
+def test_slab_leaves_out_exactly_the_fold_window():
+    """The slab boxes cover [DELTA_MIN, DELTA_MAX] minus HOLE, the hole's z0-image lies inside
+    the fold lemma's window, and the z0-window [d/2 + s*, R*] is covered for d in [D0, D1]."""
+    from research.calc import gap3_fold as gf
+    boxes = gi.initial_boxes(gi.D0, gi.D1, gi.HOLE)
+    edges = sorted({(b[0], b[1]) for b in boxes})
+    x = gi.DELTA_MIN
+    for lo, hi in edges:
+        if lo != x:
+            assert (x, lo) == gi.HOLE
+        x = hi
+    assert x == gi.DELTA_MAX
+    assert all(b[2] == gi.D0 and b[3] == gi.D1 for b in boxes)
+    lo, hi = gi.hole_z0()
+    a, b = gf.fold_window()
+    assert a <= lo and hi <= b and a <= gf.Z_C_LO and gf.Z_C_HI <= b
+    assert gi.z0_window_covered(gi.D0, gi.D1)
+    assert gi.D0 <= gf.D_C_LO and gf.D_C_HI < gi.D1

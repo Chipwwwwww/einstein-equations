@@ -57,3 +57,25 @@ def test_parameters_kept_out_of_the_frame():
         assert X[0].contains(t.cos()) and X[1].contains(t.sin())
     assert max(float(x.rad()) for x in X) < 0.025
     assert max(float(r.rad()) for r in S.r) < 1e-3
+
+
+def test_block_diagonal_frame():
+    """step_param with blocks: a rotation (x, y) carrying its variation (xa, ya) = d/da of
+    (x, y) for the initial data (cos a, sin a); with a = [-0.01, 0.01] in r the variation block
+    is wide. Exact: x = cos(t + a), xa = -sin(t + a). The enclosures must contain the exact
+    values at both ends of a, and with blocks the first block must not pick up the width of the
+    second (at most the true spread of cos(t + a), 0.01, plus a small excess)."""
+    def f(y):
+        x, yy, xa, ya = y[:4]
+        return [-yy, x, -ya, xa, y[4] * 0]
+    a = arb(0, 0.01)
+    X0 = [a.cos(), a.sin(), -a.sin(), a.cos()]
+    for blocks in (None, [[0, 1], [2, 3]]):
+        S = lohner.PSet.from_box(X0, [arb(0)])
+        for _ in range(40):
+            S, _ = lohner.step_param(f, S, 0.25, 14, blocks)
+        X = S.hull()
+        for e in ("-0.01", "0.01"):
+            t = arb(10) + arb(e)
+            assert X[0].contains(t.cos()) and X[2].contains(-t.sin())
+        assert float(X[0].rad()) < 0.011

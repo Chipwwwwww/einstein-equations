@@ -2,6 +2,68 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-30 (session 9) — Review of Lemmas 6–7; Theorem F toward d_c (in progress)
+
+**Decisions**
+
+- **Lemmas 6–7 re-checked step by step against Hintz 2026** (notes/11,
+  review table). One correction: the case split at $t_* = 1$, and Lemma 7
+  does use the support property, through Lemma 6. A self-review; an outside
+  expert is still advised.
+- **Gap 3 over an interval after all** (user request), reversing session 8's
+  deprioritisation. The plan avoids the hundreds of CPU-hours estimated then:
+  - One sweep over boxes in $(\delta, d)$ for $d \in [D_1, 0.78125]$,
+    $D_1 = 0.766235$. It uses the relative height $z - d/2$, so $d$ enters
+    only through the lower puncture, and Lohner sets with $d$ as a
+    parameter.
+  - A **waist event W** that hands medium necks ($\lambda \le 0.05$) to a
+    $d$-independent **band certificate**: dyadic cells in $(\lambda, \zeta)$,
+    each certified for all $d$ at once.
+  - **A local fold lemma** for the last slab $d \in (d_c, D_1]$. At the fold
+    point, $F = F_z = 0$ (Theorem C), so $F_{zz} > 0$ and $F_d > 0$ on a
+    $z_0$-window give $F > 0$ there for every $d > d_c$. The sweep covers
+    the rest of the slab.
+- **How the fold-lemma enclosures were made tight** (`gap3_fold.py`). Each
+  step was needed; each failure is recorded in the module docstring.
+  - Block-diagonal Lohner frames, one block per jet slot. With a full QR
+    frame the set blows up at σ ≈ 15.
+  - $z_0$ as a dummy PSet parameter. Its first-order dependence then stays
+    correlated across the jet blocks.
+  - Near the plane, switch to $\tau$ with $z = z_{sw}(1-\tau)$. All curves
+    cross at $\tau = 1$, and the jets there are the crossing derivatives.
+  - Cross-check: a thin run reproduces Theorem C's $F_{zz}$ and $F_d$, which
+    come from a different integrator.
+- **Neck window widened to $\zeta \in [-0.234, -0.133]$.** The first sweep
+  got stuck at $\delta \approx \pm0.0017$. A floating-point map of the necks
+  shows why: the pinch is at $\delta = 0$ (the individual horizon itself),
+  and the neck height moves off the old window as $|\delta|$ grows. The
+  small-neck certificate is being extended; earlier exclusions stay valid
+  (the window only grew), so the sweep resumes from its log.
+- **`LAM_MAX` 0.04 → 0.05.** Band cells certify up to λ = 0.049, and the
+  necks at $\delta \approx 0.0076$ have λ ≈ 0.039–0.041.
+- **Pitfall recorded.** python-flint prints a ball as `[+/- |mid|+rad]` when
+  the radius is not small relative to the midpoint. A positive enclosure
+  [0.66, 0.80] printed as `[+/- 0.803]` and was misread for a while. Use
+  `lower()` / `upper()`.
+
+**Progress (when this entry was written)**
+
+- Small-neck certificate over $d \in [0.765625, 0.78125]$, $\zeta \in [-0.2109, -0.1465]$:
+  - λ ≤ 0.00488: 660 pieces, margin ≥ 0.511;
+  - λ ∈ [0.00488, 0.0078]: 396 pieces, margin ≥ 0.297;
+  - λ ∈ [0.0078, 0.0117]: 540 pieces, margin ≥ 0.0029.
+  - Extensions to $\zeta \in [-0.234, -0.211]$ and $[-0.146, -0.133]$ are
+    running.
+- Fold lemma over $z_0 \in [0.62891, 0.63696]$, $d \in [d_c, D_1]$ (33 pieces):
+  running; every piece so far passes with $F_{zz} \ge 170$ and $F_d \ge 0.65$.
+- Main sweep (7,328 initial boxes) resumed; the slab sweep is queued after it.
+
+**Next**
+
+- Finish the runs. Then `python -m research.calc.gap3_interval verify gap3_interval.log`
+  and `verify-slab gap3_slab.log` (cover checks plus the band certificate).
+  Write up Theorem F′ in notes/12, with the ledger and status.
+
 ## 2026-10-30 (session 8) — Textbook black-hole region = escape-defined region (Λ = 0)
 
 **Decisions**

@@ -290,9 +290,26 @@ class PSet:
         return [a + b for a, b in zip(self.p0, self.q)]
 
 
-def step_param(f, S, h, L):
+def _qr_frame(Cm, widths, blocks):
+    """Orthogonal frame from QR of the point matrix Cm, columns ordered by the width they carry.
+    With blocks (lists of state indices), the frame is block diagonal: one QR per diagonal
+    block. For a triangular system (variational equations, jets) this keeps the widths of later
+    blocks out of the earlier ones: with one full QR, the large widths of the jets leak into the
+    base state through the rotated frame and the set blows up (research/calc/gap3_fold.py)."""
+    n = Cm.shape[0]
+    Q = np.zeros((n, n))
+    for blk in blocks or [list(range(n))]:
+        idx = np.array(blk)
+        order = idx[np.argsort(-widths[idx])]
+        q, _ = np.linalg.qr(Cm[np.ix_(idx, order)])
+        Q[np.ix_(idx, idx)] = q
+    return Q
+
+
+def step_param(f, S, h, L, blocks=None):
     """One Lohner step of length h for a PSet; f is the augmented right-hand side.
-    Returns (new PSet, a-priori enclosure B of the augmented state over the step)."""
+    Returns (new PSet, a-priori enclosure B of the augmented state over the step).
+    blocks: optional partition of the state indices for a block-diagonal frame (_qr_frame)."""
     n, k, p = len(S.m), len(S.p0), L - 2
     N = n + k
     Y = S.hull() + S.params()
@@ -324,8 +341,7 @@ def step_param(f, S, h, L):
     C2 = Jx * S.P + Jp
     Cm = np.array([[float(C1[i, j].mid()) for j in range(n)] for i in range(n)])
     widths = np.array([float(S.r[j].rad()) * np.linalg.norm(Cm[:, j]) for j in range(n)])
-    order = np.argsort(-widths)
-    Q, _ = np.linalg.qr(Cm[:, order])
+    Q = _qr_frame(Cm, widths, blocks)
     A_new = arb_mat([[float(Q[i, j]) for j in range(n)] for i in range(n)])
     Ainv = A_new.inv()
     P_new = arb_mat([[arb(C2[i, l].mid()) for l in range(k)] for i in range(n)])

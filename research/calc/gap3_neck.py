@@ -189,11 +189,19 @@ def certify_region(lam0=LAM0, zw_lo=ZW_LO, zw_hi=ZW_HI, dlam=2.0**-11, dzw=2.0**
 
 # The interval version (research/calc/gap3_interval.py): waists at zeta = z_w - d/2 in
 # [ZE_LO, ZE_HI], for every separation d in [D_LO, D_HI] (dyadic endpoints).
-ZE_LO, ZE_HI = -108 * 2.0**-9, -75 * 2.0**-9  # [-0.2109375, -0.146484375]
+# The window was first [-108, -75] * 2^-9 (session 9: runs "interval", "-ext", "-ext2"). The
+# sweep then showed approach-lemma windows reaching past both ends: necks of curves starting
+# just above (below) the top of the individual horizon sit lower (higher). So it was extended
+# to [-120, -68] * 2^-9 (runs "-lo" and "-hi").
+ZE_LO, ZE_HI = -120 * 2.0**-9, -68 * 2.0**-9  # [-0.234375, -0.1328125]
+ZE_MID, ZE_MID2 = -108 * 2.0**-9, -75 * 2.0**-9  # the first runs covered [ZE_MID, ZE_MID2]
 D_LO, D_HI = 0.765625, 0.78125  # 49/64, 50/64: contains [d_c, 0.78]
 LAM0_INT = 3 * 2.0**-8  # 0.01171875: thin-neck radius limit of the interval version
-_INT_RANGES = {"interval": (0.0, LAM0), "interval-ext": (LAM0, 2.0**-7),
+_LAM_RANGES = {"interval": (0.0, LAM0), "interval-ext": (LAM0, 2.0**-7),
                "interval-ext2": (2.0**-7, LAM0_INT)}
+_INT_RANGES = {**{k: v + (ZE_MID, ZE_MID2) for k, v in _LAM_RANGES.items()},
+               **{k + "-lo": v + (ZE_LO, ZE_MID) for k, v in _LAM_RANGES.items()},
+               **{k + "-hi": v + (ZE_MID2, ZE_HI) for k, v in _LAM_RANGES.items()}}
 
 
 def _split_rel(piece):
@@ -233,9 +241,10 @@ def certify_region_rel(lam0=LAM0, ze_lo=ZE_LO, ze_hi=ZE_HI, d_lo=D_LO, d_hi=D_HI
 def main():
     import sys
     if len(sys.argv) > 1 and sys.argv[1] in _INT_RANGES:
-        lo, hi = _INT_RANGES[sys.argv[1]]
-        n, w = certify_region_rel(lam_lo=lo, lam0=hi)
-        print(f"Thin-neck lemma: lam in [{lo}, {hi}], zeta = z_w - d/2 in [{ZE_LO}, {ZE_HI}], "
+        lo, hi, zlo, zhi = _INT_RANGES[sys.argv[1]]
+        procs = int(sys.argv[2]) if len(sys.argv) > 2 else 4
+        n, w = certify_region_rel(lam_lo=lo, lam0=hi, ze_lo=zlo, ze_hi=zhi, processes=procs)
+        print(f"Thin-neck lemma: lam in [{lo}, {hi}], zeta = z_w - d/2 in [{zlo}, {zhi}], "
               f"d in [{D_LO}, {D_HI}], both directions, {n} pieces, margin >= {w:.4f}")
         return
     n, w = certify_region()

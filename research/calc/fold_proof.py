@@ -113,6 +113,9 @@ class J:
     def __rtruediv__(a, b):
         return inv(a) * b
 
+    def sqrt(a):  # lets generic code (research/calc/gap3_fold.py) call x.sqrt() on jets
+        return sqrt(a)
+
 
 def _compose(x, f0, f1, f2):
     """f(x) for a jet x, given f, f', f'' at the constant part (delta^3 = 0 in the ring)."""

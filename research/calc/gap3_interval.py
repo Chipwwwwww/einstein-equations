@@ -43,8 +43,9 @@ ctx.prec = 128  # fold_proof sets 256; enclosures here are ~1e-12 at best, 128 b
 S_STAR, R_STAR = arb("0.15"), arb("1.05")
 RHO_N = arb("0.02")
 Z0_REF, D_REF, SLOPE = 0.5896559, 0.78, 0.543  # z_top(0.78) and its slope in d (floating point)
-GRID = 2.0**-12  # grid of the medium-neck certificate in (lam, zeta)
-LAM_MAX = 0.04  # largest waist radius handed to the medium-neck certificate
+GRID = 2.0**-10  # starting cells of the medium-neck certificate in (lam, zeta)
+GRID_MIN = 2.0**-15  # cells that fail are quartered down to this size
+LAM_MAX = 0.05  # largest waist radius handed to the medium-neck certificate
 
 
 def _ball(lo, hi):
@@ -244,9 +245,17 @@ DELTA_MIN, DELTA_MAX = -0.0625, 0.46875  # covers z0 in [Z_LO, Z_HI] = [136/256,
 TOP = (-0.00390625, 0.0078125)  # neighbourhood of the individual horizon's top: necks
 
 
-def initial_boxes(d1=D1, d2=D2):
+# The thin slab next to the fold, d in [D0, D1] (D0 just below d_c): the delta-window HOLE
+# around the fold is left to the local fold lemma (research/calc/gap3_fold.py), which covers
+# z0 in [Z0_REF + HOLE[0] + SLOPE (D0 - D_REF), Z0_REF + HOLE[1] + SLOPE (D1 - D_REF)].
+D0 = 0.7661974282399  # d_c - 1.0e-13 <= d_c (Theorem C: d_c = 0.766197428240 +- 1.1e-13)
+HOLE = (48 * 2.0**-10, 56 * 2.0**-10)
+
+
+def initial_boxes(d1=D1, d2=D2, hole=None):
     """Near the top: delta-width 2^-14, d-width 2^-10. Elsewhere: 2^-10 and 2^-9. Near-top boxes
-    come first (they are the delicate ones)."""
+    come first (they are the delicate ones). hole = (lo, hi) on the 2^-10 grid: leave out
+    delta in [lo, hi]."""
     def slabs(w):
         out, d = [], d2
         while d > d1:
@@ -265,6 +274,9 @@ def initial_boxes(d1=D1, d2=D2):
             w = 2.0**-10
             if TOP[0] <= x < TOP[1]:
                 x = TOP[1]
+                continue
+            if hole and hole[0] <= x < hole[1]:
+                x = hole[1]
                 continue
             rest.append((x, min(x + w, TOP[0]) if x < TOP[0] else x + w, dl, dh))
             x = rest[-1][1]
@@ -285,11 +297,17 @@ def split(box):
     return []
 
 
-def sweep(boxes=None, processes=4, logfile="gap3_interval.log"):
+def sweep(boxes=None, processes=4, logfile="gap3_interval.log", resume=False):
     """Run all boxes, bisecting failures. Appends one line per run to logfile:
-    delta_lo delta_hi d_lo d_hi event sigma steps seconds [lam_lo lam_hi ze_lo ze_hi s]."""
+    delta_lo delta_hi d_lo d_hi event sigma steps seconds [lam_lo lam_hi ze_lo ze_hi s].
+    resume: skip the boxes that logfile already records as excluded (exclusions stay valid
+    when the neck windows or LAM_MAX are enlarged later; everything else is run again)."""
     from multiprocessing import Pool
+    import os
     todo = boxes if boxes is not None else initial_boxes()
+    if resume and os.path.exists(logfile):
+        old = read_log(logfile)
+        todo = [b for b in todo if old.get(b, ("",))[0] not in EXCLUDED]
     results, failed = [], []
     with Pool(processes) as pool, open(logfile, "a") as out:
         while todo:
@@ -312,7 +330,7 @@ def sweep(boxes=None, processes=4, logfile="gap3_interval.log"):
 
 def certify_band(waists, processes=4, log=print):
     """Certify the medium-neck sign pattern on every GRID cell (lam, zeta, s) that meets a waist
-    box, for all d in [D_LO, D_HI]; quarter cells that fail (down to GRID/8). Returns the set of
+    box, for all d in [D_LO, D_HI]; quarter cells that fail (down to GRID_MIN). Returns the set of
     certified cells as (lam_lo, lam_hi, ze_lo, ze_hi, s) and the list of uncertified ones."""
     from multiprocessing import Pool
     cells = sorted({p for w in waists for p in grid_pieces(w)})
@@ -325,7 +343,7 @@ def certify_band(waists, processes=4, log=print):
             for c, m in zip(todo, res):
                 if m is not None:
                     ok.append(c)
-                elif c[1] - c[0] > GRID / 8:
+                elif c[1] - c[0] > GRID_MIN:
                     l0, l1, z0, z1, s = c
                     lm, zm = (l0 + l1) / 2, (z0 + z1) / 2
                     nxt += [(a, b, e, f, s) for a, b in ((l0, lm), (lm, l1)) for e, f in ((z0, zm), (zm, z1))]
@@ -348,26 +366,122 @@ def _certify_cell(c):
 
 
 def covered_by(waist, cells):
-    """Is the waist box inside the union of certified cells with the same direction?"""
+    """Is the waist box inside the union of certified cells with the same direction? cells:
+    the certified dyadic cells (lam_lo, lam_hi, ze_lo, ze_hi, s) of certify_band, all on the
+    grids GRID / 2^j. Every GRID cell meeting the box must be certified or, recursively, every
+    one of its quarters that meets the box."""
     lam_lo, lam_hi, ze_lo, ze_hi, s = waist
-    # sample-free check on the cell grid: every GRID/8 sub-cell meeting the box must lie in
-    # some certified cell
-    step = GRID / 8
-    i0, i1 = math.floor(lam_lo / step), math.floor(lam_hi / step)
-    k0, k1 = math.floor(ze_lo / step), math.floor(ze_hi / step)
-    for i in range(i0, i1 + 1):
-        for k in range(k0, k1 + 1):
-            x, y = (i + 0.5) * step, (k + 0.5) * step
-            if not any(c[4] == s and c[0] <= x <= c[1] and c[2] <= y <= c[3] for c in cells):
-                return False
-    return True
+    cert = cells if isinstance(cells, set) else {(c[0], c[2], c[1] - c[0], c[4]) for c in cells}
+
+    def ok(l0, z0, size):
+        if (l0, z0, size, s) in cert:
+            return True
+        if size <= GRID_MIN:
+            return False
+        h = size / 2
+        return all(ok(a, b, h) for a in (l0, l0 + h) for b in (z0, z0 + h)
+                   if a <= lam_hi and a + h >= lam_lo and b <= ze_hi and b + h >= ze_lo)
+    return all(ok(i * GRID, k * GRID, GRID) for i, k, _ in grid_pieces(waist))
+
+
+def read_log(path):
+    """Parse a sweep log into {box: (event, waist)} (the last run of each box wins)."""
+    out = {}
+    with open(path) as f:
+        for line in f:
+            if line.startswith("#") or not line.strip():
+                continue
+            t = line.split()
+            box = tuple(float(x) for x in t[:4])
+            waist = None
+            if len(t) >= 13:
+                waist = (float(t[8]), float(t[9]), float(t[10]), float(t[11]), int(t[12]))
+            out[box] = (t[4], waist)
+    return out
+
+
+def check_cover(runs, d1=D1, d2=D2, hole=None):
+    """Every initial box is excluded, or split (split()) into children that are, recursively.
+    Returns the list of uncovered boxes (empty: the region [DELTA_MIN, DELTA_MAX] x [d1, d2]
+    is covered by excluded boxes)."""
+    bad = []
+
+    def ok(box):
+        r = runs.get(box)
+        if r is None:
+            bad.append(box)
+            return False
+        if r[0] in EXCLUDED:
+            return True
+        kids = split(box)
+        if not kids:
+            bad.append(box)
+            return False
+        return all([ok(k) for k in kids])
+    for b in initial_boxes(d1, d2, hole):
+        ok(b)
+    return bad
+
+
+def z0_window_covered(d1=D1, d2=D2):
+    """For every d in [d1, d2], z0 = Z0_REF + delta + SLOPE (d - D_REF) with delta in
+    [DELTA_MIN, DELTA_MAX] covers [d/2 + s_*, R_*] (interval arithmetic; the map is monotone
+    in d, so the endpoints suffice)."""
+    d = _ball(d1, d2)
+    lo = arb(Z0_REF) + arb(DELTA_MIN) + arb(SLOPE) * (d - arb(D_REF))
+    hi = arb(Z0_REF) + arb(DELTA_MAX) + arb(SLOPE) * (d - arb(D_REF))
+    return bool(lo < d / 2 + S_STAR and hi > R_STAR)
+
+
+def verify(logfile, processes=4, log=print, slab=False):
+    """Post-processing of a sweep log: cover check, z0-window check, and the medium-neck band
+    certificate for every waist event. Returns a summary dict. slab=True: the log of the thin
+    slab [D0, D1] with the fold window HOLE left out (its z0-range goes to gap3_fold)."""
+    d1, d2, hole = (D0, D1, HOLE) if slab else (D1, D2, None)
+    runs = read_log(logfile)
+    uncovered = check_cover(runs, d1, d2, hole)
+    waists = [w for ev, w in runs.values() if ev == "W"]
+    cells, bad_cells = certify_band(waists, processes=processes, log=log)
+    cert = {(c[0], c[2], c[1] - c[0], c[4]) for c in cells}
+    uncertified = [w for w in waists if not covered_by(w, cert)]
+    counts = {}
+    for ev, _ in runs.values():
+        counts[ev] = counts.get(ev, 0) + 1
+    out = {"runs": len(runs), "events": counts, "uncovered": uncovered,
+           "z0_window": z0_window_covered(d1, d2), "waists": len(waists),
+           "band_cells": len(cells), "band_failed": len(bad_cells),
+           "uncertified_waists": uncertified}
+    if slab:
+        out["hole_z0"] = hole_z0()
+    return out
+
+
+def hole_z0():
+    """The z0-range [lo, hi] the fold lemma must cover: the hole's image over d in [D0, D1]
+    (z0 increases with delta and with d), as floats rounded outward."""
+    lo = arb(Z0_REF) + arb(HOLE[0]) + arb(SLOPE) * (arb(D0) - arb(D_REF))
+    hi = arb(Z0_REF) + arb(HOLE[1]) + arb(SLOPE) * (arb(D1) - arb(D_REF))
+    return float(lo.lower()), float(hi.upper())
 
 
 if __name__ == "__main__":
     import sys
+    if len(sys.argv) > 2 and sys.argv[1] in ("verify", "verify-slab"):
+        summary = verify(sys.argv[2], processes=int(sys.argv[3]) if len(sys.argv) > 3 else 4,
+                         slab=sys.argv[1] == "verify-slab")
+        for k, v in summary.items():
+            print(f"{k}: {v if not isinstance(v, list) or len(v) < 20 else str(len(v)) + ' items'}")
+        sys.exit(0)
+    if len(sys.argv) > 1 and sys.argv[1] == "slab":
+        procs = int(sys.argv[2]) if len(sys.argv) > 2 else 4
+        t0 = time.time()
+        res, bad = sweep(initial_boxes(D0, D1, HOLE), processes=procs, logfile="gap3_slab.log",
+                         resume=True)
+        print(f"slab sweep: {len(res)} runs in {time.time() - t0:.0f} s; {len(bad)} boxes failed "
+              f"at the minimal size")
+        sys.exit(0)
     procs = int(sys.argv[1]) if len(sys.argv) > 1 else 4
     t0 = time.time()
-    res, bad = sweep(processes=procs)
+    res, bad = sweep(processes=procs, resume=True)
     print(f"sweep: {len(res)} runs in {time.time() - t0:.0f} s; {len(bad)} boxes failed at the "
           f"minimal size")
-
