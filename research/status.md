@@ -149,8 +149,15 @@ case appears to be **potentially new**.
    - *Session 7:* localisation and connectedness hold for the textbook
      region too. Corollary E1 shows $\mathcal B_{\mathscr I} = \mathcal B$,
      via Lemma 7, which extends Lemma 6 to all late times. Lemma 7 reads Hintz
-     2026's Remark 13.4(1), Lemma 11.38 and the proof of Lemma 11.5; it does
-     not need the support of the Nash–Moser correction.
+     2026's (13.2)–(13.3), (3.44) and the proof of Lemma 11.5 for
+     $t_* \ge 1$, and Lemma 6 (hence the support of the Nash–Moser
+     correction) for $t_* < 1$.
+   - *Session 9:* Lemmas 6 and 7 were reviewed step by step against the
+     paper's text (notes/11, review table). The frame, components, Kerr and
+     boost terms, cut-offs, function-space normalisations and the metric
+     for $t_* < 1$ are all confirmed. One error was corrected: Lemma 7's
+     case split, and its claim not to need the support property. This was
+     a self-review; an outside expert check is still advised.
    - Theorem D rests on our reading of the uniformity in Hintz III (1.2),
      (6.2), and of the smallness of the decay constants in Hintz 2026.
    - The horizons are located only up to margins.

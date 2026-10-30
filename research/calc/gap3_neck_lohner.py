@@ -66,9 +66,9 @@ def f_neck(y, direction=1, d=D78):
 
 def _phi_parts(y):
     """phi and its gradient with respect to the state."""
-    R, Z, U, V, Rl, Zl, Ul, Vl, lam, zw = y
+    R, Z, U, V, Rl, Zl, Ul, Vl = y[:8]
     phi = -V * (R + Rl) + U * (Z + Zl)
-    grad = [-V, U, Z + Zl, -(R + Rl), -V, U, 0, 0, 0, 0]
+    grad = [-V, U, Z + Zl, -(R + Rl), -V, U, 0, 0] + [0] * (len(y) - 8)
     return phi, grad
 
 
@@ -103,3 +103,57 @@ def certify(lam_lo, lam_hi, zw_lo, zw_hi, s=-1, sigma1=SIGMA_2, h=2.0**-4, L=14,
             S, _ = lohner.step_param(lambda y: f_neck(y, direction, d), S, h, L)
         out.append(phi_enclosure(S))
     return tuple(out)
+
+
+# ---------------------------------------------------------------------------
+# Relative coordinates, for intervals of separations (research/calc/gap3_interval.py):
+# zeta = z_w - d/2 is the waist height above the upper puncture, so d enters only through the
+# distance zeta + d to the lower puncture. Parameters (lam, zeta, d) stay out of the frame.
+# ---------------------------------------------------------------------------
+def f_neck_rel(y, direction=1):
+    """As f_neck with state (R, Z, U, V, Rc, Zc, Uc, Vc, lam, zeta, d)."""
+    R, Z, U, V, Rl, Zl, Ul, Vl, lam, ze, d = y
+    zero = lam * 0
+    Rd, Zd, Ud, Vd = Dl(R, Rl), Dl(Z, Zl), Dl(U, Ul), Dl(V, Vl)
+    lamd = Dl(lam, lam)
+    rho = lamd * Rd
+    psi, prh, pz = 1, 0, 0
+    for Zc in (Dl(ze, zero) + lamd * Zd, Dl(ze + d, zero) + lamd * Zd):
+        ir = 1 / (rho * rho + Zc * Zc).sqrt()
+        ir3 = ir * ir * ir
+        psi = psi + QUARTER * ir
+        prh = prh - QUARTER * Rd * ir3
+        pz = pz - QUARTER * Zc * ir3
+    P = 4 * lamd * (Ud * pz - Vd * lamd * prh) / psi
+    F = [Ud, Vd, Rd - Vd * P, Ud * P]
+    out = [x.v for x in F] + [x.g for x in F]
+    if direction < 0:
+        out = [-x for x in out]
+    return out + [zero, zero, zero]
+
+
+def certify_rel(lam, ze, d, s, sigma_min=1.25, sigma_max=2.5, h=2.0**-4, L=14):
+    """For the balls lam, ze = z_w - d/2, d and the direction s of the waist: integrate both ways
+    from the waist and stop each direction at the first step (sigma >= sigma_min) where
+    s phi > 0 is certified on the whole set. Returns the two certified margins, or None."""
+    x0 = [arb(1), arb(0), arb(0), arb(s), arb(0), arb(0), arb(0), arb(0)]
+    margins = []
+    for direction in (-1, 1):
+        S = lohner.PSet.from_box(x0, [lam, ze, d])
+        sig, ok = 0.0, None
+        while sig < sigma_max:
+            try:
+                S, _ = lohner.step_param(lambda y: f_neck_rel(y, direction), S, h, L)
+            except (ValueError, ZeroDivisionError, RuntimeError):
+                return None
+            sig += h
+            if sig >= sigma_min:
+                val = s * phi_enclosure(S)
+                if val > 0:
+                    ok = float(val.lower())
+                    break
+        if ok is None:
+            return None
+        margins.append(ok)
+    return margins
+

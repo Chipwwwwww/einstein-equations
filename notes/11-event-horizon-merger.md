@@ -699,50 +699,66 @@ Then (N) holds.
    where step 1 applies. ∎
 
 **Lemma 7 ((N) at all late times).** There is $R_N$ such that every point
-of the late development $\{t_* \ge T_{\rm late}\}$ with $r \ge R_N$ lies
-in $J^-(\mathscr I^+)$. This is our reading of the 2026 paper again, but it
-uses less of it than Lemma 6: the support of the Nash–Moser correction is
-not needed.
+of the late development with $r \ge R_N$ lies in $J^-(\mathscr I^+)$. Here
+$r$ and the hyperboloidal time $t_*$ (its (11.3)) are the coordinates of
+the 2026 paper. This is our reading of that paper, like Lemma 6, and it
+contains Lemma 6. *(Corrected in session 9, see the review below: the
+session-7 proof split the cases at $t_* = 2$ instead of $t_* = 1$, and
+wrongly said the support property of the Nash–Moser correction was not
+needed.)*
 
-*Proof.* Use the escape curve of Lemma 6, step 3, with $V = \partial_0 + f\,\partial_1$
-and $f = 4|g(\partial_0, \partial_0)| + r^{-2}$, now starting from a point $q$
-at any late time. Two facts are needed.
+*Proof.* Use the escape curve of Lemma 6, step 3: $V = \partial_0 + f\,\partial_1$
+with $f = 4|g(\partial_0, \partial_0)| + r^{-2}$, started at a point $q$
+with $r(q) \ge R_N$ and $t_*(q) = T$, at any time. Three facts are needed.
 
-- **Frame.** For $r \ge R_N$, $g(\partial_0, \partial_1)$ is within $1/8$
-  of $-\frac12$, and $|g(\partial_1, \partial_1)| \le 1/8$. This holds
-  everywhere, not only near $\Sigma_{T_{\rm late}}$, because:
-  - $h$ is small in $L^\infty$: its weighted $b$-Sobolev norm is small, and
-    $H_b^k \subset L^\infty$;
-  - the reference metric $g_{b_0, b, -S} = (1 - \chi_K)(\phi_S)^*g_{b_0} + \chi_K g_b$
-    of its (13.3) is within $O(|b - b_0| + |S|)$ of $g_{b_0}$;
-  - the Kerr frame components tend to $-\frac12$ and $0$ as $r \to \infty$.
-- **Integrability near $\mathscr I^+$ at finite retarded time.** Let $q$
-  have $t_*(q) = T$. Along the curve $t_*$ stays in $[T, T + \Delta]$ for
-  some $\Delta$ (a continuity argument with the bound below). So only
-  the slab $\{T \le t_* \le T + \Delta,\ r \ge R_N\}$ matters. It
-  reaches $\mathscr I^+$ away from $\iota^+$ and $I^0$, so there
-  $\rho_I \le C_T/r$. On that slab, near $\mathscr I^+$:
-  - $\chi_K = 0$ (it "equals 1 near $K^+$ and 0 near $\mathscr I^+$",
-    its §1.5). So the reference metric is the boosted
-    $(\phi_S)^*g_{b_0}$, whose outgoing component is $O(r^{-2})$, as in
-    Lemma 6.
-  - For $t_* \ge 2$, its Remark 13.4(1) writes
-    $g = g^0 + h_{\rm tot}(\vec p) + h_{b,\rm rem}(\vec q) + \tilde h$.
-    Every term of $h_{\rm tot}$ has the form $[\delta^*, \chi_K](\cdots)$,
-    supported in $\mathrm{supp}\, d\chi_K$ and vanishing to infinite order
-    at $\mathscr I^+$ (its Lemma 11.38, Definitions 11.47 and 11.55).
-    $h_{b,\rm rem}$ carries a factor $\chi_K$ (its (11.229)). Both vanish
-    near $\mathscr I^+$.
-  - $\tilde h$ lies in the space of its Definition 11.3, the same one as
-    in (13.2). For it the paper itself records
-    $\tilde h_{00} \in C_b^{k-3,(1+2\gamma^\Upsilon, 1-\epsilon, 2+\epsilon_K)}$
-    (proof of its Lemma 11.5, from (11.8): $h_{00}$ is a component of
-    $\pi^C h$). So $|\tilde h_{00}| \le C\rho_I^{1+2\gamma^\Upsilon} \le C_T\, r^{-1-2\gamma^\Upsilon}$.
-    For $t_* \le 2$ Lemma 6 applies directly.
+- **Frame, everywhere on $\{r \ge R_N\}$.** $g(\partial_0, \partial_1)$
+  is within $1/8$ of $-\frac12$, $|g(\partial_1, \partial_1)| \le 1/8$,
+  and $f \le 1/2$. These follow because:
+  - $g = g_{b_0, b, -S} + h$ by its (13.3);
+  - $h$ is small in $L^\infty$ (small weighted $b$-Sobolev norm);
+  - the reference metric $(1 - \chi_K)(\phi_S)^*g_{b_0} + \chi_K g_b$ is
+    within $O(|b - b_0| + |S|)$ of $g_{b_0}$;
+  - the Kerr components tend to $-\frac12$ and $0$.
 
-So $\int_{R_N}^\infty f\,dr < \infty$ along the curve. Then $t_*$ increases
-by at most $8\int f\,dr$, which fixes $\Delta$, and the curve reaches
-$r = \infty$ at finite $t_*$: a point of $\mathscr I^+$. ∎
+  So $dr/d\lambda \ge 1/8$ and $dt_*/d\lambda = f$ (since
+  $dx^1 = dt_*$, its (3.29)).
+- **Bounds for $t_* < 1$.** By Steps 2–3 of the proof of its Theorem
+  13.1, $g = (\phi_S)^*g_{b_0} + h_{-S}$ there:
+  - $\chi_- = 1$ on $(-\infty, \frac74]$;
+  - the Nash–Moser part $\Phi(U)$ is supported in $\{t_* \ge 1\}$
+    (Definition 12.1, Theorem 12.3);
+  - $h_{-S}$ is an exterior solution, with the component structure of
+    Definition 5.3.
+
+  This is Lemma 6, step 2: $|g(\partial_0, \partial_0)| \le C\rho_I^{1+\delta}$,
+  with a power of $\rho_0$ near $I^0$.
+- **Bounds for $t_* \ge 1$**, on $\Omega^*$.
+  - $h$ lies in the space of its (13.2). Restricted to $\Omega^*$ this
+    is the space $X^k$ of its Lemma 11.5. The proof of that lemma
+    records $h_{00} \in C_b^{k-3,(1+2\gamma^\Upsilon, 1-\epsilon, 2+\epsilon_K)}$,
+    because $h_{00}$ is a component of $\pi^C h$ ((11.8), Definition 5.2).
+  - Near $\mathscr I^+$ we have $\chi_K = 0$ ($\mathrm{supp}\,\chi_K \subset \{r < t/2\}$,
+    Definition 3.17). So the reference metric is $(\phi_S)^*g_{b_0}$,
+    whose outgoing component is $O(r^{-2}) + O(\rho_0\rho_I^2\rho_+)$
+    by its (3.44); $\chi_{\rm IVP} = 1$ on $\Omega$.
+  - So at finite $t_*$, $|g(\partial_0, \partial_0)| \le C_T\, r^{-1-2\gamma^\Upsilon}$
+    for $r \ge C'T$. Here $\rho_I = (t_* + 2)/r$, its Lemma 3.15.
+  - On the compact range $R_N \le r \le C'T$ it is bounded. There it
+    contains the mass-mismatch term $(m - m_0)/r$ from $\chi_K g_b$, and
+    $h_{00} = O(\rho_+^{1-\epsilon})$.
+
+So $\int_{R_N}^\infty f\,dr < \infty$ along the curve. It grows at most like
+$\log T + T^{\epsilon}$, but only finiteness is used. $t_*$ increases by
+at most $8\int f\,dr$, which closes the continuity argument. The curve
+reaches $r = \infty$ at finite $t_*$, at a point of $\mathscr I^+$. ∎
+
+*Coordinates.* The 2026 paper's coordinates are boosted relative to the
+background coordinates by $\phi_S$. Near $\Sigma_{T_{\rm late}}$ the boost
+shifts time by $O(|S|r)$ and space by $O(|S|t)$, so the two radii differ by
+$O(1)$ there. At late times they differ by $O(|S|t)$. In Theorem D and
+Corollary E1, $r$ on the late development means the paper's $r$. Escape
+curves increase it at a rate $\ge 1/8$, so the choice is immaterial for
+"reaching arbitrarily large $r$".
 
 Why the reference mass matters: in the outgoing null frame of mass $m_0$,
 Schwarzschild of mass $m$ has
@@ -789,9 +805,36 @@ independently:
   its corner with spatial infinity. Definition 5.3 is stated on the exterior
   domain, which contains that corner.
 
-For Lemma 7, add: Remark 13.4(1), Lemma 11.38 and Definitions 11.47 and 11.55
-(supports of the correction terms), (11.229), and the proof of Lemma 11.5.
-Lemma 7 does not need the support property of the Nash–Moser correction.
+For Lemma 7, add: (13.2)–(13.3), Definitions 3.17 and 5.2, (3.29)–(3.36),
+(3.44), Lemma 3.15, and the proof of Lemma 11.5. Lemma 7 uses the support
+property of the Nash–Moser correction through Lemma 6, for $t_* < 1$. The
+session-7 text cited Remark 13.4(1), Lemma 11.38 and Definitions 11.47 and
+11.55. Those confirm that the correction terms vanish near $\mathscr I^+$,
+but (13.2) already contains this.
+
+**Independent review of Lemmas 6 and 7 (session 9).** Each step was
+re-checked against the text of the 2026 paper, not against our notes.
+
+| Step | Check | Outcome |
+| --- | --- | --- |
+| null frame | (3.29)–(3.33): $x^1 = t_*$, $\partial_0 = \frac12(1 - \frac{2m}{r})\partial_r$ at fixed $x^1$, $g_m = -(1 - \frac{2m}{r})dx^0dx^1 + r^2\slashed g$ | confirmed: $\partial_0$ is outgoing null for $g_m$; $g_m(\partial_0, \partial_1) = -\frac12(1 - \frac{2m}{r})$; $dt_*(\partial_0) = 0$ |
+| "$h_{00}$" | (3.35) splits $S^2T^*$ by $(dx^0)^2$, $dx^0dx^1$, …, so $h_{00} = h(\partial_0, \partial_0)$; Definition 5.2: $\pi^C h = (h_{00}, h_{0\bar b}, \frac12\slashed{\mathrm{tr}}\, h)$ | confirmed |
+| Kerr part | $(g_{m,a})_{\bar\mu\bar\nu} - (g_m)_{\bar\mu\bar\nu} \in r^{-2}C^\infty(M)$, after Definition 3.16 | confirmed (also checked exactly in `tests/test_eh_merger.py`) |
+| boost | (3.44) holds on $\mathrm{supp}\,\chi_{\rm IVP}(1 - \chi_K)$ | confirmed applicable: $\chi_{\rm IVP} = 1$ for $t_{\rm IVP} > -r/10$, and $\mathrm{supp}\,\chi_K \subset \{t > 50m_0,\ r < t/2\}$ (Definition 3.17) |
+| weights in §5 | (5.2): weighted $b$-Sobolev spaces relative to a $b$-density, so weights are pointwise rates | confirmed, so Lemma 6's $\rho_I^{1+\delta}$ is right |
+| weights in §§11–13 | different normalisation ($3 + \epsilon_I$ for the same objects, footnote 103) | handled by citing the paper's own conversion (proof of Lemma 11.5) instead of converting ourselves |
+| metric for $t_* < 1$ | proof of Theorem 13.1, Steps 2–3: $\chi_- = 1$ on $(-\infty, \frac74]$, $\Phi(U)$ supported in $t_* \ge 1$ | confirmed; **correction**: Lemma 7 needs this too |
+| split of Lemma 7's proof | session 7 used Remark 13.4(1) for $t_* \ge 2$ and Lemma 6 for $t_* \le 2$, but Lemma 6 covers only $t_* < 1$ | **corrected**: use (13.2) and Lemma 11.5 on $\Omega^* = \{t_* \ge 1\}$ |
+| region near $\iota^+$ | the escape curve crosses $R_N \le r \le C'T$, where $g_{00}$ is only $O(1/r)$ (mass mismatch) | added to the proof: the range is compact for fixed $T$; $f \le \frac12$ uniformly |
+| coordinates | the paper's coordinates are boosted by $\phi_S$ | added: displacement $O(\lvert S\rvert t)$ at late times; immaterial for escape |
+
+What this review does *not* do:
+
+- It does not re-prove the paper's statements (13.2), (3.44), Lemma 11.5.
+- It does not check the identification of our $\Sigma_{T_{\rm late}}$ data
+  with the paper's initial-value setting (Remark 13.3, §5.7.1).
+- It was done by the same reasoning agent that wrote the lemmas, against the
+  primary text. An outside expert check is still the most valuable review.
 
 Lemmas 6 and 7 are the least robust link in Theorem E, and the place where an
 expert check of the 2026 paper would help most.
@@ -827,7 +870,7 @@ coordinates remove this step for Theorem D and reduce Theorem E to (N).
 | Corollary D1: on the slow time scale, the merger happens when $C$ crosses $r_H$ | **proved here** (from Theorem D) |
 | **Theorem E** (Λ = 0, $\mathscr I^+$): both holes in $\mathcal B_{\mathscr I}$, two components then one | **proved here, given (G1)–(G3) and Lemma 6**; potentially new. Strengthened by Corollary E1 below |
 | Lemma 6 = (N) | derived from Hintz 2026 Lemma 3.19, Def. 5.3, (5.2), (5.56), proof of Thm 13.1 (**read**). Support properties and uniformity up to the corner of $\mathscr I^+$ are *our reading* |
-| Lemma 7 ((N) at all late times) | derived from Hintz 2026 Remark 13.4(1), Lemma 11.38, Defs. 11.47, 11.55, (11.229), proof of Lemma 11.5 (**read**, session 7); the frame reading as in Lemma 6 is *our reading* |
+| Lemma 7 ((N) at all late times) | derived from Hintz 2026 (13.2)–(13.3), Defs. 3.17, 5.2, (3.29)–(3.36), (3.44), Lemma 3.15, proof of Lemma 11.5, and Lemma 6 for $t_* < 1$ (**read**). Reviewed against the source in session 9, which corrected the proof's case split; outside expert check still advised |
 | Corollary E1: $\mathcal B_{\mathscr I} = \mathcal B$, so localisation and connectedness hold for $\mathcal B_{\mathscr I}$ | **proved here, given (G1)–(G3) and Lemma 7** (session 7) |
 | Mass mismatch: $g_m(\partial_0^{m_0}, \partial_0^{m_0}) = (m - m_0)(1 - (m + m_0)/r)/(r - 2m)$ | **checked** (exact) |
 | $\mathcal B$ defined with $\mathscr I^+$ for Λ > 0 | not proved: needs the spacetime beyond $r_+$ |
