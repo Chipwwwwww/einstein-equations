@@ -323,3 +323,30 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
 - **Arb's ball `cos`/`sin`** are crude when the radius is comparable to the
   midpoint (radius $10^{-9}$ for $\cos[-3.6\times10^{-6}, 0]$, where $10^{-12}$ is
   possible). Use alternating-series enclosures for small arguments.
+- **Jets through Lohner's method near the fold (session 9).** Four tries
+  before the derivative enclosures were usable (`research/calc/gap3_fold.py`):
+  1. A full QR frame on the 20-dimensional jet system. The set blew up at
+     $\sigma \approx 15$, because the jets' large widths leak into the base
+     state through the rotated frame. Fix: block-diagonal frames, one per jet
+     order (`lohner.step_param(blocks=...)`).
+  2. Block frames alone gave $F_{zz}$ to $\pm 300$. Each block then carries
+     its own $z_0$-spread in $r$, uncorrelated with the others. Fix: make
+     $z_0$ a dummy parameter of the set, so that its first-order effect sits
+     in one column $P$ shared by all blocks.
+  3. Evaluating the crossing formulas (with the time corrections $s'$, $s''$)
+     on the step boxes that straddle the plane. Even in mean-value form this
+     is a union over a window of steps along the flow. Fix: switch to $z$ as
+     the clock before the plane, so that every curve crosses at $\tau = 1$.
+  4. Some of the "failures" in 2–3 were not failures. python-flint prints a
+     ball as `[+/- |mid|+rad]` when the radius is not small next to the
+     midpoint, so [0.66, 0.80] showed as `[+/- 0.803]`. Read `lower()` and
+     `upper()`, never the printed ball.
+- **Neck window too narrow for an interval of $d$ (session 9).** The first
+  interval sweep stalled at $\delta \approx \pm0.0017$ and $0.0076$. A
+  floating-point map of the necks explained it. The pinch is at $\delta = 0$
+  (the individual horizon itself). As $|\delta|$ grows, the neck height moves
+  past the certified window, which the approach lemma's drift (up to
+  $0.015$) reaches before the neck does. The necks at $\delta \approx 0.0076$
+  are wider than the old `LAM_MAX` $= 0.04$. Fix: widen the window to
+  $\zeta \in [-0.234, -0.133]$ and raise `LAM_MAX` to 0.05. Lesson: map the
+  necks in floating point before choosing certificate windows.

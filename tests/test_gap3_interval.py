@@ -92,3 +92,15 @@ def test_slab_leaves_out_exactly_the_fold_window():
     assert a <= lo and hi <= b and a <= gf.Z_C_LO and gf.Z_C_HI <= b
     assert gi.z0_window_covered(gi.D0, gi.D1)
     assert gi.D0 <= gf.D_C_LO and gf.D_C_HI < gi.D1
+
+
+def test_falsification_below_d_c():
+    """At d = 0.76595 < d_c two common minimal surfaces exist, at z0 = 0.630956 and 0.634135
+    (floating point; delta = 0.048929 and 0.052108 in the sweep's coordinates). Boxes
+    containing them must not be excluded; a box between them, where F ~ -3e-4, is (E1)."""
+    d = (0.76594, 0.76596)
+    for delta in (0.048929, 0.052108):
+        r = gi.run_box((delta - 2.0**-16, delta + 2.0**-16) + d)
+        assert r[1] not in gi.EXCLUDED, r
+    r = gi.run_box((0.0504, 0.0504 + 2.0**-16) + d)
+    assert r[1] == "E1", r

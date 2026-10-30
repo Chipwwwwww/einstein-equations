@@ -41,3 +41,11 @@ def test_desingularised_meridian_system():
     assert sp.simplify(dsig(v) - u * P) == 0
     U, V, R, PP = sp.symbols("U V R P")
     assert sp.expand(2 * U * (R - V * PP) + 2 * V * (U * PP) - 2 * R * U) == 0
+
+
+def test_barriers_over_the_interval_of_separations():
+    """Theorem F' (notes/12 section 7): both barriers hold for every d in [0.765625, 0.78125]
+    at once (d an interval). The throat radius must shrink to 0.15: 0.155 fails at d = 0.766."""
+    d = ["0.765625", "0.78125"]
+    assert bg.certify_throat(d=d, s_star="0.15") < 0
+    assert bg.certify_far(d=d, R_star="1.05") > 0
