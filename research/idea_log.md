@@ -128,7 +128,7 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
   connecting orbits, and a validated sweep elsewhere: a
   heteroclinic-cycle (Shilnikov-type) argument.
 
-### Gap 3 attempt (session 7): thin necks are unstable
+### Gap 3 attempt (session 7): thin necks are unstable — succeeded at d = 0.78
 
 - **Idea.** Session 6 planned an isolating-block passage argument at the
   saddles. We did not build one. A neck is just as useless to $S^*$ if
@@ -167,6 +167,41 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
   - **Not needed:** the $z_0$-Jacobi field (event E4 of the plain-interval
     version). Its sign change comes only after the neck, which N already
     covers.
+- **Medium necks (the last obstacle).** The first full sweep excluded
+  everything except $z_0 \in [0.59077, 0.59254] \cup [0.59322, 0.59364]$.
+  There the necks have radius $0.005$ to $0.02$: too wide for the
+  certified lemma, so the curves must be integrated through the neck and
+  out of the ball. After the neck the family spreads in proportion to
+  $\rho/\rho_w$, and Lohner's first-order enclosure explodes. The
+  second-order term (interval Jacobian over the hull) feeds back, at
+  $\sigma \approx 26$, just before the exit, whatever the box width down
+  to $2^{-17}$. Boxes of width about $1.2\times10^{-3}(z_0 - z_{\rm top})$
+  ($2^{-20}$ to $2^{-17}$) pass. A stored partition with that rule closed
+  both gaps in one certificate run.
+- **Tried and failed for the medium necks:**
+  - **Smaller $\sigma$-steps or arclength steps.** The cap $h \le 1/16$
+    changes nothing. Larger arclength steps ($ds = 0.01$) get stuck earlier.
+  - **Splitting the set mid-run** along its widest direction, to share the
+    integration up to the neck. Transverse errors are already too large by
+    the time splitting starts, so the pieces explode in number (more than
+    4,096).
+  - **Extending the neck lemma** to radius 0.03 with the plain-interval jet
+    integrator. Pieces of $2^{-10} \times 2^{-10}$ give $\phi(\pm1.5)$
+    only to $\pm1$; we would need tens of thousands of pieces.
+  - **The same with Lohner on the 10-dimensional variational system**
+    (`gap3_neck_lohner.py`).
+    - With plain $\partial_\lambda$, the coefficients are of order 100 and
+      the a-priori enclosure diverged. Two fixes: `_picard_box` now widens
+      only the components that are not yet contained, and the variables use
+      the log-derivative $\lambda\partial_\lambda$.
+    - Even then, $(\lambda, z_w)$ pieces of width $10^{-3}$ blow up after
+      about 0.7 in $\sigma$. The constant parameters are mixed into the
+      QR frame.
+    - The next thing to try is keeping them out of it.
+- **A scare that was not a bug.** The two neck integrators first disagreed
+  at $10^{-17}$, beyond both radii. The jet version had been given
+  $\lambda$ and $z_w$ as decimal strings, the Lohner version as binary
+  floats. With identical inputs the enclosures overlap.
 - **Falsification checks run.**
   - At $d = 0.76 < d_c$, where two common surfaces exist, the sweep code
     leaves the $2^{-14}$ boxes containing them unexcluded and excludes a box

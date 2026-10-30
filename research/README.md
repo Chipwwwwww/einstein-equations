@@ -77,8 +77,11 @@ minutes), Kerr–de Sitter at rational parameters (about two and a half
 minutes), the computer-assisted fold certificate (about five minutes) and the
 certified onset slopes for two lapses (about seven minutes), and the
 thin-neck certificate of notes/12 (15–25 minutes on 4 cores). The z0 sweep
-of notes/12 is not a test, because it takes hours. Run it as
-`python -m research.calc.gap3_sweep 4`; it appends each box to `gap3_sweep.log`. The
+of notes/12 is not a test, because it takes 2.8 hours on 4 cores. Run it as
+`python -m research.calc.gap3_sweep 4`; it appends each box to `gap3_sweep.log`
+in the current directory. The certified log is
+`calc/data/gap3_sweep_d078.log`, and a fast test checks that its boxes cover
+the window. The
 calculations in `calc/` each run as `python -m research.calc.<name>` from the
 repository root; each module's docstring says what it computes and what it
 prints. The expected outputs are recorded in [`status.md`](status.md).

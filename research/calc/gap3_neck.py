@@ -1,5 +1,10 @@
 """Gap 3, thin necks: a meridian curve with a thin waist cannot belong to a stable surface.
 
+RESULT (session 7, notes/12 §2): certify_region() certifies the sign pattern below for all
+lam in [0, LAM0 = 0.00488], z_w in [ZW_LO, ZW_HI] = [0.1797, 0.2422], both directions: 640
+pieces, all on the first try, margin >= 0.5269 (25 min on 4 cores; slow test in
+tests/test_gap3.py).
+
 Rescale around a waist point (rho, z) = (lam, z_w) where the curve is vertical (u = 0,
 v = s lam, s = -1 going down, +1 going up): rho = lam R, z = z_w + lam Z, u = lam U,
 v = lam V. In sigma-time the meridian system (research/calc/gap3_sweep.py) becomes

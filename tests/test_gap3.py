@@ -7,6 +7,7 @@ the neck certificate, and one z0 box per exclusion event. The full certificates 
 (hours); the slow test below reruns the first."""
 
 import math
+import os
 
 import pytest
 import sympy as sp
@@ -142,3 +143,21 @@ def test_sweep_keeps_true_common_surfaces(z):
     assert gs.run_box((lo, lo + w), d)[2] not in gs.EXCLUDED
     if z < 0.63:
         assert gs.run_box((0.62896728515625, 0.62896728515625 + w), d)[2] == "E1"
+
+
+def test_stored_certificate_covers_the_window():
+    """The stored certificate log (research/calc/data/gap3_sweep_d078.log, produced by
+    `python -m research.calc.gap3_sweep 4`) consists of excluded z0 boxes whose union covers
+    [139/256, 269/256], which contains every possible axis height [0.545, 1.05]. This checks
+    the record, not the computation: rerun the module to redo that."""
+    rows = []
+    log = os.path.join(os.path.dirname(gs.__file__), "data", "gap3_sweep_d078.log")
+    with open(log) as f:
+        for line in f:
+            if not line.startswith("#"):
+                lo, hi, ev = line.split()[:3]
+                rows.append((float(lo), float(hi), ev))
+    assert len(rows) == len(gs.read_partition())
+    assert all(gs.excluded(ev) for _, _, ev in rows)
+    assert gs.covered(rows) == []
+    assert gs.Z_LO <= 0.545 and gs.Z_HI >= 1.05

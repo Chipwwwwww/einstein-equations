@@ -4,7 +4,7 @@ points (tests/test_gap3.py); NOT part of the proof.
 
 Status (session 7). Meant to extend the thin-neck lemma to necks of radius up to ~0.03, where
 gap3_neck's plain interval steps need impractically small parameter pieces. It does not do
-that yet: with (lam, z_w) pieces of width ~1e-3 the Lohner set stays tight for about 0.5 in
+that yet: with (lam, z_w) pieces of width ~1e-3 the Lohner set stays tight for about 0.7 in
 sigma and then blows up, because the constant parameters are mixed into the moving QR frame
 (parameter wrapping). Keeping the parameters out of the frame (x = m + A r + P (p - p0)) is
 the obvious next step.

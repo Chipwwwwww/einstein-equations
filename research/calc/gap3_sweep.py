@@ -1,6 +1,11 @@
 """Gap 3, validated sweep: exclude a common minimal surface of Brill-Lindquist data at d = 0.78,
 shooting curve by shooting curve, with Lohner enclosures (research/calc/lohner.py).
 
+RESULT (session 7, notes/12, Theorem F). All 2,452 z0-intervals of the stored partition
+data/gap3_partition_d078.txt end in an exclusion event (E3: 182, N: 38, E2: 1,639, E1: 593),
+and they cover [139/256, 269/256] without gaps: 2.8 h on 4 cores, log in
+data/gap3_sweep_d078.log.
+
 Setting (research/calc/bl_global.py). An outermost common minimal surface S* would be a stable,
 embedded, G-invariant sphere whose profile runs from an axis point (0, z0) to the plane z = 0,
 meets that plane once and at a right angle, stays in B(0, R_*) and outside the throat balls
@@ -38,11 +43,14 @@ in the region where K holds (continuity) and the waist height z_w is in [ZW_LO, 
 thin-neck lemma then gives a Jacobi field with two zeros around the waist: the surface is
 unstable, so it is not S*.
 
-Run: python -m research.calc.gap3_sweep [workers]   (the full sweep, several hours on 4 cores;
-results appended to the log file named in sweep()).
+Run: python -m research.calc.gap3_sweep [workers] [partition-file | uniform]   (the certificate
+over the stored partition by default; results appended to gap3_sweep.log in the current
+directory). The partition was built from a first uniform sweep (2^-8 boxes, bisected) plus
+boxes of width about 1.2e-3 (z0 - z_top) in its two gaps, the medium necks (notes/12 §4).
 """
 
 import math
+import os
 import time
 
 from flint import arb
@@ -259,7 +267,7 @@ def covered(results, lo=Z_LO, hi=Z_HI):
     return gaps
 
 
-PARTITION = "research/calc/data/gap3_partition_d078.txt"
+PARTITION = os.path.join(os.path.dirname(__file__), "data", "gap3_partition_d078.txt")
 
 
 def read_partition(path=PARTITION):

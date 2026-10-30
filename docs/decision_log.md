@@ -2,6 +2,59 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-30 (session 7) — Gap 3 closed at d = 0.78 (Theorem F, computer-assisted)
+
+**Decisions**
+
+- **Thin necks are excluded by instability, not followed.** Session 6
+  planned isolating blocks at the axis saddles. Instead:
+  - A certified thin-neck lemma: near a thin waist the surface is a
+    catenoid up to $O(\lambda)$. Its $\lambda$-variation Jacobi field
+    changes sign on both sides, so the surface is unstable. The outermost
+    surface is stable, so it has no such neck.
+  - An analytic approach lemma hands any curve heading into the axis to the
+    neck lemma.
+
+  This removes the heteroclinic-cycle and multi-layer analysis entirely.
+- **Lohner's method for the sweep** (`research/calc/lohner.py`). Plain
+  interval boxes blow up on curves that wind around the individual horizon.
+- **Medium necks by brute force, with a stored partition.**
+  - Necks of radius 0.005–0.02 are too wide for the certified lemma, and too
+    narrow to integrate through cheaply.
+  - Three fixes failed: mid-run splitting, a wider neck certificate with
+    plain intervals, and a parametric Lohner neck certificate.
+  - What worked: calibrated $z_0$-intervals in that window, stored in
+    `research/calc/data/gap3_partition_d078.txt`, so that the certificate
+    is one reproducible run.
+- **Deliberate falsification before trusting it.**
+  - At $d = 0.76 < d_c$, the code does not exclude the real common
+    surfaces.
+  - The neck certificate fails where it must ($\sigma = 1.0$).
+  - Two integrators agree on the neck Jacobi field.
+- **Novelty is stated narrowly.** Dain–Weinstein–Yamada (2011) already
+  prove non-existence for large separation. Our result is the explicit
+  near-critical case ($d/d_c = 1.018$), and only for one $d$.
+
+**Progress**
+
+- notes/12 (Theorem F); `lohner.py`, `gap3_neck.py`, `gap3_sweep.py`,
+  `gap3_neck_lohner.py` (cross-check only); `tests/test_lohner.py`,
+  `tests/test_gap3.py`.
+- Thin-neck certificate: 640 pieces, margin ≥ 0.527, 25 min. CI reruns it
+  as a slow test.
+- Sweep: 2,452 intervals, all excluded, 2.8 h on 4 cores; the log is in
+  `research/calc/data/`.
+- Ledger 56–61; status, idea log, literature, notes/10 and the READMEs
+  updated.
+
+**Next**
+
+- Gap 3 for all $d \in (d_c, 0.78]$ (status.md (b)). That joins Theorem F
+  to the onset theorem.
+- A parametric Lohner variant ($x = m + Ar + P(p - p_0)$) to certify the
+  medium necks cheaply.
+- Independent review of the new code.
+
 ## 2026-10-29 (session 6) — Gap 3 analysed; merger-timing corollary
 
 **Decisions**

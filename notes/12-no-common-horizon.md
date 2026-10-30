@@ -147,8 +147,8 @@ sweep integrates through the medium necks instead (§4).
 
 The lemma above needs the waist radius and height. These come from a state
 on the way in. Let $K$ bound $4(|\psi_z| + |\psi_\rho|)/\psi$ on the
-rectangle $[0, 0.02] \times [z_{\rm lo}, z_{\rm hi}]$, the certified $z_w$
-range. Interval arithmetic gives $K = 16.53$. Since $|u|, |v| \le \rho$, we
+rectangle $0 \le \rho \le 0.02$, $0.1797 \le z \le 0.2422$ (the certified $z_w$
+range). Interval arithmetic gives $K = 16.53$. Since $|u|, |v| \le \rho$, we
 get $|P| \le K\rho$ there.
 
 Suppose a curve is at a state with $u < 0$ (moving toward the axis) and
@@ -156,9 +156,10 @@ $\rho \le \rho_e$. While $u < 0$, $\rho$ is a parameter along the curve, and
 $dv/d\rho = P$, so $|dv/d\rho| \le K\rho$. Two cases are possible.
 
 - **$u < 0$ forever.** Then $\rho \to 0$, because otherwise
-  $u' \ge \rho(1 - K\rho) > 0$ would bring $u$ to $0$. The curve closes up on
-  the axis at a point with $z > 0$. It is a sphere around $p_+$ alone, not
-  the profile of $S^*$.
+  $u' \ge \rho(1 - K\rho) > 0$ would bring $u$ to $0$. The curve ends on the
+  axis at a point with $z > 0$, without reaching the plane, so it is not
+  the profile of $S^*$. (That profile meets the axis only at
+  $(0, \pm z_0)$.)
 - **$u$ reaches $0$ at a waist.** Its radius is
 
   ```math
@@ -232,8 +233,28 @@ All three are in `tests/test_gap3.py`.
 
 ## 5 · Results
 
-**In progress.** The certificate runs are under way. Until this section
-records them, Theorem F is a target, not a result.
+Both certificates ran on 2026-10-29/30, on 4 cores.
+
+- **Thin-neck lemma**: 640 pieces, all certified on the first try, margin
+  $\ge 0.527$. That took 25 minutes; the CI run of the slow test repeats it.
+- **Sweep**: all 2,452 $z_0$-intervals of the stored partition were excluded
+  on the first try, with no bisection. That took 2.8 hours (11.4 CPU-hours).
+  The log is
+  [`research/calc/data/gap3_sweep_d078.log`](../research/calc/data/gap3_sweep_d078.log).
+  The excluded intervals cover $[139/256, 269/256]$ without gaps.
+
+The events fall into five consecutive ranges of $z_0$:
+
+| $z_0$ | Event | Intervals | What the curve does |
+| --- | --- | --- | --- |
+| $[0.5430, 0.5884]$ | E3 | 182 | dives into the throat around $p_+$ |
+| $[0.5884, 0.5908]$ | N | 38 | thin neck at the bottom of the individual horizon (on both sides of $z_{\rm top} = 0.58968$) |
+| $[0.5908, 0.5973]$ | E2 | 1,579 | wider neck, then flares out of the ball |
+| $[0.5973, 0.8730]$ | E1 | 593 | meets the plane at a non-right angle |
+| $[0.8730, 1.0508]$ | E2 | 60 | leaves the ball |
+
+This matches the floating-point landscape of session 6. Together with §§1–3,
+it proves Theorem F. ∎
 
 ## 6 · What is and is not proved
 
@@ -243,6 +264,7 @@ records them, Theorem F is a target, not a result.
 | approach lemma, catenoid Jacobi field, reduction | analytic, written out above and in session 6 |
 | stability of the outermost minimal surface | literature (Andersson–Mars–Simon, Andersson–Metzger); not re-derived |
 | other separations $d > d_c$ | **not proved**. The same code applies at any fixed $d$; no uniform argument |
+| combination with the onset theorem of note 10 | **not yet**. That theorem holds for $d_c < d < d_c + \delta_0$ with $\delta_0$ unspecified, and $d = 0.78$ ($d - d_c = 0.014$) may lie beyond it |
 | independent review of the code | **not done** |
 
 **Prior work.**
