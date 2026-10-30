@@ -209,6 +209,52 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
   - The neck certificate fails, as it must, when asked for a sign change at
     $\sigma = 1.0 < 1.1997$.
 
+### Session 8: what to do after Theorem F
+
+- **Parameters out of the Lohner frame (`lohner.PSet`, `step_param`)
+  — works, as a tool.** The set is $x = m + Ar + Pq$, with the parameter
+  offsets $q$ in a box that is never re-wrapped. On a rotation with an
+  uncertain speed it tracks the true spread, plus a second-order excess.
+  On the thin-neck system at $\lambda \approx 0.03$, pieces of $\pm10^{-4}$
+  certify the sign change. Before, they blew up after $\sigma \approx 0.7$.
+- **But the medium-neck certificate stays expensive.** The approach lemma
+  allows waist heights in a window of width about $0.06$ at
+  $\lambda \sim 0.025$. With pieces of $2\times10^{-4}$ that is about
+  $2\times10^4$ pieces, so we did not run it.
+- **The $z_0$-Jacobi field (event E4) with Lohner — failed.** The field
+  does turn negative just after the neck, at $\sigma \approx 22$, where
+  enclosures are still tight. But carrying the variational equations
+  makes the enclosure blow up near $\sigma \approx 18$, where the curve
+  passes $0.19$ from the puncture: second derivatives of $\psi$ of order
+  $10^3$ times derivative components of order 4. Smaller steps change
+  nothing. Boxes of width $2^{-20}$ do give E4, but the plain sweep already
+  works at that width. The option stays in `run_lohner(variational=True)`;
+  the certificate does not use it.
+- **Gap 3 for an interval of $d$ — deprioritised.**
+  - It needs the medium necks certified as a lemma in three parameters
+    $(\lambda, z_w, d)$. The band of medium-neck $z_0$ moves with $d$, so
+    sweeping through it needs boxes about $10^{-6}$ wide in both $z_0$ and
+    $d$.
+  - It also needs an explicit neighbourhood of the fold.
+  - Our estimate is hundreds of CPU-hours.
+  - Even then it would not locate the merger in time: that needs
+    non-existence on the slices $0 < t < t_*$ as well.
+- **$\mathcal B_{\mathscr I} = \mathcal B$ for Λ = 0 — succeeded (reading).**
+  - Lemma 6's escape curve to $\mathscr I^+$ needs only two things: $h$
+    small, and $g(\partial_0, \partial_0)$ integrable in $r$ at a fixed
+    retarded time.
+  - The 2026 paper gives both at every late time. Its Remark 13.4(1)
+    decomposes the metric. Lemma 11.38 and Definitions 11.47 and 11.55
+    put every correction term in $\mathrm{supp}\, d\chi_K$, which is
+    disjoint from $\mathscr I^+$. The proof of its Lemma 11.5 gives
+    $h_{00} = O(\rho_I^{1+2\gamma^\Upsilon})$.
+  - So Lemma 7 holds, and with it Corollary E1: localisation and
+    connectedness for the textbook region.
+  - Failure mode we checked for: a reference metric of the wrong mass near
+    $\mathscr I^+$ would give $g(\partial_0, \partial_0) \sim (m - m_0)/r$,
+    which is not integrable. The cut-off $\chi_K$ vanishes there, so this
+    does not occur.
+
 ## Ideas considered and not pursued (this session)
 
 - **Self-similar mergers.** A homothety rescales the ADM mass, so an

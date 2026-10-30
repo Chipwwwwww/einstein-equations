@@ -146,7 +146,11 @@ case appears to be **potentially new**.
      is our reading of Hintz 2026's structure at $\mathscr I^+$: Lemma 3.19,
      Definition 5.3, and the support properties in the proof of Theorem
      13.1. An expert check of that reading is the most valuable review.
-   - Localisation and connectedness of the textbook region remain open.
+   - *Session 7:* localisation and connectedness hold for the textbook
+     region too. Corollary E1 shows $\mathcal B_{\mathscr I} = \mathcal B$,
+     via Lemma 7, which extends Lemma 6 to all late times. Lemma 7 reads Hintz
+     2026's Remark 13.4(1), Lemma 11.38 and the proof of Lemma 11.5; it does
+     not need the support of the Nash–Moser correction.
    - Theorem D rests on our reading of the uniformity in Hintz III (1.2),
      (6.2), and of the smallness of the decay constants in Hintz 2026.
    - The horizons are located only up to margins.

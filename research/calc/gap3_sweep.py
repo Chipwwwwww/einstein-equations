@@ -129,6 +129,39 @@ def start_box(z0, d=D):
     return [rho, z, rho * a.cos(), rho * a.sin()]
 
 
+def start_box_var(z0, d=D):
+    """As start_box, followed by the derivatives (rho, z, u, v)_z0 of the same states with
+    respect to z0, enclosed over the ball z0 (jets in z0, slot 1)."""
+    zj = J([z0, arb(1), arb(0), arb(0), arb(0), arb(0)])
+    dj = J([d, arb(0), arb(0), arb(0), arb(0), arb(0)])
+    A, Q, Z = fp.axis_enclosure(zj, dj, fp.S1)
+    s1 = arb(fp.S1)
+    rho = s1 + Q * s1**3
+    z = zj + Z * s1**2
+    sa, ca = fp.sin_cos(A * s1)
+    y = [rho, z, rho * ca, rho * sa]
+    return [x.c[0] for x in y] + [x.c[1] for x in y]
+
+
+def f_var(y, d=D):
+    """The sigma-system with its variational equations: state (rho, z, u, v) followed by its
+    z0-derivatives; the derivative part is f evaluated on tangent numbers."""
+    F = f_bl([lohner.Dl(a, b) for a, b in zip(y[:4], y[4:])], d)
+    return [g.v for g in F] + [g.g for g in F]
+
+
+def jacobi_z0(S):
+    """phi = u z_z0 - v rho_z0 over the 8-dimensional Lohner set S, in mean-value form: rho
+    times the normal component of the z0-variation, a Jacobi field, positive at the start."""
+    def parts(y):
+        return y[2] * y[5] - y[3] * y[4], [0, 0, y[5], -y[4], -y[3], y[2], 0, 0]
+    phi_m, _ = parts(S.m)
+    _, grad = parts(S.hull())
+    n = len(S.m)
+    return phi_m + sum((sum((grad[i] * S.A[i, j] for i in range(n)), arb(0)) * S.r[j]
+                        for j in range(n)), arb(0))
+
+
 def _split(S):
     """Cover the Lohner set S by two sets, halving its widest coordinate box r_j."""
     j = max(range(len(S.r)), key=lambda k: S.r[k].rad())
@@ -143,7 +176,7 @@ def _split(S):
 
 
 def run_lohner(z0, d=D, h=0.25, ds=0.004, L=14, sigma_max=80.0, max_steps=40000, log=None,
-               split_r=None, max_pieces=4096):
+               split_r=None, max_pieces=4096, variational=False):
     """Integrate the z0 box (an arb ball) until every trajectory in it is excluded.
     Returns (event, sigma, number of steps); event is E1, E2, E3, N, a combination such as
     "E2+N" when the box was split, or a failure (stuck, plane-undecided, timeout,
@@ -151,11 +184,20 @@ def run_lohner(z0, d=D, h=0.25, ds=0.004, L=14, sigma_max=80.0, max_steps=40000,
     into two halves that are followed separately (this is z0-bisection that keeps the common
     part of the integration). Event N is certified for d = D only; for another d
     (falsification runs, tests/test_gap3.py) it is switched off, and E2, E3 use the radii
-    of D, which are then just test values."""
-    def f(y):
-        return f_bl(y, d)
+    of D, which are then just test values. With variational=True the z0-derivatives are
+    carried along (8-dimensional sets) and event E4 is checked: the z0-Jacobi field
+    phi = u z_z0 - v rho_z0, positive at the start, is negative on the whole set, so every
+    curve has a zero of it, and the cap it bounds is unstable."""
+    if variational:
+        def f(y):
+            return f_var(y, d)
+        start = start_box_var(z0, d)
+    else:
+        def f(y):
+            return f_bl(y, d)
+        start = start_box(z0, d)
     neck = d is D
-    stack = [(lohner.Set.from_box(start_box(z0, d)), 0.0)]
+    stack = [(lohner.Set.from_box(start), 0.0)]
     events, n, sig_max, pieces = set(), 0, 0.0, 1
     while stack:
         S, sig = stack.pop()
@@ -194,14 +236,16 @@ def run_lohner(z0, d=D, h=0.25, ds=0.004, L=14, sigma_max=80.0, max_steps=40000,
                 ev = "E2"
             elif any(rho_e * rho_e + (z_e - c) ** 2 < S_STAR * S_STAR for c in (d / 2, -d / 2)):
                 ev = "E3"
-            elif neck and neck_event(X):
+            elif neck and neck_event(X[:4]):
                 ev = "N"
+            elif variational and jacobi_z0(S) < 0:
+                ev = "E4"
         events.add(ev)
         sig_max = max(sig_max, sig)
     return "+".join(sorted(events)), sig_max, n
 
 
-EXCLUDED = ("E1", "E2", "E3", "N")
+EXCLUDED = ("E1", "E2", "E3", "E4", "N")
 
 
 def excluded(event):

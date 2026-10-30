@@ -40,3 +40,20 @@ def test_nonlinear_with_known_solution():
     out = _run(f, [arb(0), arb(1)], 0.125, 16)
     assert out[1].contains(arb(1) / 3)
     assert float(out[1].rad()) < 1e-8
+
+
+def test_parameters_kept_out_of_the_frame():
+    """lohner.step_param: x' = -p y, y' = p x with p in [0.999, 1.001], from (1, 0) for time 20.
+    The enclosure must contain (cos 20p, sin 20p) for p at both ends and the middle, and stay
+    close to the true spread 20 * 0.001 (the parameter error is carried by P q, never
+    re-boxed; the excess is second order)."""
+    f = lambda y: [-y[2] * y[1], y[2] * y[0], y[0] * 0]  # noqa: E731
+    S = lohner.PSet.from_box([arb(1), arb(0)], [arb(1, 0.001)])
+    for _ in range(80):
+        S, _ = lohner.step_param(f, S, 0.25, 14)
+    X = S.hull()
+    for p in ("0.999", "1", "1.001"):
+        t = arb(p) * 20
+        assert X[0].contains(t.cos()) and X[1].contains(t.sin())
+    assert max(float(x.rad()) for x in X) < 0.025
+    assert max(float(r.rad()) for r in S.r) < 1e-3

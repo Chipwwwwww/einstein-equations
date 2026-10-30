@@ -74,6 +74,54 @@ class D:
         return D(s, [x / (2 * s) for x in a.g])
 
 
+class Dl:
+    """Tangent (dual) number: value + one directional derivative, for writing variational
+    equations as f evaluated on Dl inputs. Components may be arb, arb_series or D (whose own
+    gradients are then taken with respect to the whole state)."""
+
+    __slots__ = ("v", "g")
+
+    def __init__(self, v, g):
+        self.v, self.g = v, g
+
+    def __add__(a, b):
+        if isinstance(b, Dl):
+            return Dl(a.v + b.v, a.g + b.g)
+        return Dl(a.v + b, a.g)
+
+    __radd__ = __add__
+
+    def __neg__(a):
+        return Dl(-a.v, -a.g)
+
+    def __sub__(a, b):
+        return a + (-b)
+
+    def __rsub__(a, b):
+        return (-a) + b
+
+    def __mul__(a, b):
+        if isinstance(b, Dl):
+            return Dl(a.v * b.v, a.v * b.g + a.g * b.v)
+        return Dl(a.v * b, a.g * b)
+
+    __rmul__ = __mul__
+
+    def inv(a):
+        i = 1 / a.v
+        return Dl(i, -(a.g * i * i))
+
+    def __truediv__(a, b):
+        return a * b.inv() if isinstance(b, Dl) else Dl(a.v / b, a.g / b)
+
+    def __rtruediv__(a, b):
+        return a.inv() * b
+
+    def sqrt(a):
+        s = a.v.sqrt()
+        return Dl(s, a.g / (2 * s))
+
+
 def _integral(x):
     return D(x.v.integral(), [g.integral() for g in x.g]) if isinstance(x, D) else x.integral()
 
@@ -204,3 +252,94 @@ def step(f, S, h, L):
             acc += Ainv[i, j] * (xm[j] - m_new[j])
         r_new.append(acc)
     return Set(m_new, A_new, r_new), B
+
+
+# ---------------------------------------------------------------------------
+# Parameters kept out of the frame. With constant parameters p treated as extra state
+# variables (p' = 0), the QR frames mix parameter and state directions, and the parameter box
+# gets re-wrapped at every step: on the thin-neck system of gap 3 the set blows up after
+# sigma ~ 0.7 (research/idea_log.md, session 7). Here the set is
+#     x = m + A r + P q,   p = p0 + q,   q in a FIXED box,
+# so the parameter dependence is carried linearly by the point matrix P and never re-boxed:
+#     x_new in phi(m, p0) + Jx (A r + P q) + Jp q
+#           = xm + (Jx A) r + (Jx P + Jp) q,
+#     P' = mid(Jx P + Jp),   r' = A'^-1 [ (Jx A) r + (Jx P + Jp - P') q + (xm - m') ].
+# f acts on the augmented state (x, p) and returns zeros for the parameter components.
+# ---------------------------------------------------------------------------
+class PSet:
+    """The set m + A r + P q of states, for parameters p0 + q; q is fixed for the whole run."""
+
+    def __init__(self, m, A, r, P, p0, q):
+        self.m, self.A, self.r, self.P, self.p0, self.q = m, A, r, P, p0, q
+
+    @classmethod
+    def from_box(cls, X, params):
+        n, k = len(X), len(params)
+        m = [arb(x.mid()) for x in X]
+        p0 = [arb(p.mid()) for p in params]
+        A = arb_mat([[1 if i == j else 0 for j in range(n)] for i in range(n)])
+        return cls(m, A, [x - mi for x, mi in zip(X, m)], arb_mat(n, k), p0,
+                   [p - pi for p, pi in zip(params, p0)])
+
+    def hull(self):
+        n, k = len(self.m), len(self.p0)
+        return [self.m[i] + sum((self.A[i, j] * self.r[j] for j in range(n)), arb(0))
+                + sum((self.P[i, l] * self.q[l] for l in range(k)), arb(0)) for i in range(n)]
+
+    def params(self):
+        return [a + b for a, b in zip(self.p0, self.q)]
+
+
+def step_param(f, S, h, L):
+    """One Lohner step of length h for a PSet; f is the augmented right-hand side.
+    Returns (new PSet, a-priori enclosure B of the augmented state over the step)."""
+    n, k, p = len(S.m), len(S.p0), L - 2
+    N = n + k
+    Y = S.hull() + S.params()
+    B = _picard_box(f, Y, h)
+    hb = arb(h)
+    Tm = taylor(f, S.m + S.p0, L)
+    TB = taylor(f, B, L)
+    xm = []
+    for i in range(n):
+        acc = arb(0)
+        for kk in range(p, -1, -1):
+            acc = acc * hb + _coef(Tm[i], kk)
+        xm.append(acc + _coef(TB[i], p + 1) * hb ** (p + 1))
+    TX = taylor(f, Y, L, grad=True)
+    TBg = taylor(f, B, L, grad=True)
+    Pbox = _phi_box(_jacobian(f, B), h)
+    J = arb_mat(n, N)
+    for i in range(n):
+        for j in range(N):
+            acc = arb(0)
+            for kk in range(p, -1, -1):
+                acc = acc * hb + _coef(TX[i].g[j], kk)
+            J[i, j] = acc
+    Rem = arb_mat([[_coef(TBg[i].g[j], p + 1) for j in range(N)] for i in range(n)]) * Pbox
+    J = J + Rem * hb ** (p + 1)
+    Jx = arb_mat([[J[i, j] for j in range(n)] for i in range(n)])
+    Jp = arb_mat([[J[i, n + l] for l in range(k)] for i in range(n)])
+    C1 = Jx * S.A
+    C2 = Jx * S.P + Jp
+    Cm = np.array([[float(C1[i, j].mid()) for j in range(n)] for i in range(n)])
+    widths = np.array([float(S.r[j].rad()) * np.linalg.norm(Cm[:, j]) for j in range(n)])
+    order = np.argsort(-widths)
+    Q, _ = np.linalg.qr(Cm[:, order])
+    A_new = arb_mat([[float(Q[i, j]) for j in range(n)] for i in range(n)])
+    Ainv = A_new.inv()
+    P_new = arb_mat([[arb(C2[i, l].mid()) for l in range(k)] for i in range(n)])
+    m_new = [arb(x.mid()) for x in xm]
+    M = Ainv * C1
+    E = Ainv * (C2 - P_new)
+    r_new = []
+    for i in range(n):
+        acc = arb(0)
+        for j in range(n):
+            acc += M[i, j] * S.r[j]
+        for l in range(k):
+            acc += E[i, l] * S.q[l]
+        for j in range(n):
+            acc += Ainv[i, j] * (xm[j] - m_new[j])
+        r_new.append(acc)
+    return PSet(m_new, A_new, r_new, P_new, S.p0, S.q), B

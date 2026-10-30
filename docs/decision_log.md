@@ -2,6 +2,42 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-30 (session 8) — Textbook black-hole region = escape-defined region (Λ = 0)
+
+**Decisions**
+
+- **Gap 3 for an interval of separations is deprioritised.** The cost
+  estimate is hundreds of CPU-hours (idea log, session 8), and it would not
+  locate the merger in time anyway.
+- **Closed the cheapest open item in notes/11 instead.**
+  - Localisation and connectedness for $\mathcal B_{\mathscr I}$ followed
+    from extending Lemma 6 to all late times (Lemma 7). The 2026 paper
+    itself records the needed decay of $h_{00}$ on the whole late region.
+  - This gives Corollary E1, $\mathcal B_{\mathscr I} = \mathcal B$.
+  - The session-6 plan, identifying $\partial\mathcal B_{\mathscr I}$ with
+    a dynamical horizon, was not needed.
+- **Kept the new Lohner tools, documented as tools.**
+  - `lohner.PSet`/`step_param` keeps parameters out of the moving frame.
+    It is tested.
+  - `run_lohner(variational=True)` (event E4) did not help; it is kept as
+    an option and is not used by the certificate.
+
+**Progress**
+
+- notes/11: Lemma 7, Corollary E1, the mass-mismatch identity (new exact
+  test), intro and §7 table.
+- `research/calc/lohner.py`: `Dl` (tangent numbers), `PSet`, `step_param`
+  (new test).
+- Ledger 62–63; status, literature (Hintz 2026 sections read), idea log,
+  README.
+
+**Next**
+
+- An expert check of Lemmas 6–7 (our reading of Hintz 2026).
+- Locating the merger event as ε → 0. This probably needs Hintz's
+  intermediate-zone estimates to $o(\epsilon)$, because the big horizon's
+  $O(\epsilon)$ teleological shift is $O(1)$ in rescaled units.
+
 ## 2026-10-30 (session 7) — Gap 3 closed at d = 0.78 (Theorem F, computer-assisted)
 
 **Decisions**

@@ -39,6 +39,11 @@ spacetimes merge in the sense of [07](07-the-merger-problem.md).
   can signal to $\mathscr I^+$. Lemma 6 derives it from the 2026 paper's
   description of null infinity. That derivation is our reading of the
   paper, not an independent verification.
+- **Corollary E1 (session 7).** The textbook region and the escape-defined
+  region coincide, $\mathcal B_{\mathscr I} = \mathcal B$, so all of
+  Theorem D holds for the textbook black-hole region: localisation and
+  connectedness included. It rests on Lemma 7, the all-late-times version
+  of Lemma 6, read from the same paper.
 
 *History.* Session 4 stated the Λ = 0 case conditionally (as "Theorem D₀"),
 through Klainerman–Szeftel's stability theorem. That needed their coordinates
@@ -590,14 +595,14 @@ $r \ge 10M$ we have $g(\partial_t, \partial_t) \le -4/5$ with $C^0$
 closeness. The endpoint has $r \ge R_N$, so it lies in $J^-(\mathscr I^+)$
 by (N), that is, by Lemma 6. ∎
 
-**Not claimed for $\mathcal B_{\mathscr I}$:** localisation (3) and
-connectedness (5). Both would need escape to $\mathscr I^+$ from late-time
-points near the horizon. That amounts to identifying
-$\partial\mathcal B_{\mathscr I}$ with the dynamical horizon of Chen–Klainerman
-(arXiv:2409.05700) and Hintz (*Horizons of some asymptotically stationary
-spacetimes*, Duke 2026, arXiv:2411.12568). Consequence (2) of the 2026 paper
-asserts that this horizon exists and is smooth. We did not check the
-identification.
+*Session 7: localisation (3) and connectedness (5) for
+$\mathcal B_{\mathscr I}$ as well.* Lemma 7 below extends (N) from the
+neighbourhood of $\Sigma_{T_{\rm late}}$ to all late times. Corollary E1
+then gives $\mathcal B_{\mathscr I} = \mathcal B$, so all of Theorem D
+holds for the textbook black-hole region. (The session-6 version of this
+note left (3) and (5) open. It suggested identifying
+$\partial\mathcal B_{\mathscr I}$ with the dynamical horizon of
+Chen–Klainerman and Hintz (Duke 2026); that is not needed.)
 
 **Lemma 5 (escape where the data are exactly Kerr).** Work in Kerr, outside
 the horizon ($\Delta > 0$). Let $dr_*/dr = (r^2 + a^2)/\Delta$ and
@@ -693,7 +698,89 @@ Then (N) holds.
    $t_*(q) \approx -r \ll 0$, so the whole curve stays in $\{t_* < 1\}$,
    where step 1 applies. ∎
 
-**What Lemma 6 rests on.** We read these statements but did not verify them
+**Lemma 7 ((N) at all late times).** There is $R_N$ such that every point
+of the late development $\{t_* \ge T_{\rm late}\}$ with $r \ge R_N$ lies
+in $J^-(\mathscr I^+)$. This is our reading of the 2026 paper again, but it
+uses less of it than Lemma 6: the support of the Nash–Moser correction is
+not needed.
+
+*Proof.* Use the escape curve of Lemma 6, step 3, with $V = \partial_0 + f\,\partial_1$
+and $f = 4|g(\partial_0, \partial_0)| + r^{-2}$, now starting from a point $q$
+at any late time. Two facts are needed.
+
+- **Frame.** For $r \ge R_N$, $g(\partial_0, \partial_1)$ is within $1/8$
+  of $-\frac12$, and $|g(\partial_1, \partial_1)| \le 1/8$. This holds
+  everywhere, not only near $\Sigma_{T_{\rm late}}$, because:
+  - $h$ is small in $L^\infty$: its weighted $b$-Sobolev norm is small, and
+    $H_b^k \subset L^\infty$;
+  - the reference metric $g_{b_0, b, -S} = (1 - \chi_K)(\phi_S)^*g_{b_0} + \chi_K g_b$
+    of its (13.3) is within $O(|b - b_0| + |S|)$ of $g_{b_0}$;
+  - the Kerr frame components tend to $-\frac12$ and $0$ as $r \to \infty$.
+- **Integrability near $\mathscr I^+$ at finite retarded time.** Let $q$
+  have $t_*(q) = T$. Along the curve $t_*$ stays in $[T, T + \Delta]$ for
+  some $\Delta$ (a continuity argument with the bound below). So only
+  the slab $\{T \le t_* \le T + \Delta,\ r \ge R_N\}$ matters. It
+  reaches $\mathscr I^+$ away from $\iota^+$ and $I^0$, so there
+  $\rho_I \le C_T/r$. On that slab, near $\mathscr I^+$:
+  - $\chi_K = 0$ (it "equals 1 near $K^+$ and 0 near $\mathscr I^+$",
+    its §1.5). So the reference metric is the boosted
+    $(\phi_S)^*g_{b_0}$, whose outgoing component is $O(r^{-2})$, as in
+    Lemma 6.
+  - For $t_* \ge 2$, its Remark 13.4(1) writes
+    $g = g^0 + h_{\rm tot}(\vec p) + h_{b,\rm rem}(\vec q) + \tilde h$.
+    Every term of $h_{\rm tot}$ has the form $[\delta^*, \chi_K](\cdots)$,
+    supported in $\mathrm{supp}\, d\chi_K$ and vanishing to infinite order
+    at $\mathscr I^+$ (its Lemma 11.38, Definitions 11.47 and 11.55).
+    $h_{b,\rm rem}$ carries a factor $\chi_K$ (its (11.229)). Both vanish
+    near $\mathscr I^+$.
+  - $\tilde h$ lies in the space of its Definition 11.3, the same one as
+    in (13.2). For it the paper itself records
+    $\tilde h_{00} \in C_b^{k-3,(1+2\gamma^\Upsilon, 1-\epsilon, 2+\epsilon_K)}$
+    (proof of its Lemma 11.5, from (11.8): $h_{00}$ is a component of
+    $\pi^C h$). So $|\tilde h_{00}| \le C\rho_I^{1+2\gamma^\Upsilon} \le C_T\, r^{-1-2\gamma^\Upsilon}$.
+    For $t_* \le 2$ Lemma 6 applies directly.
+
+So $\int_{R_N}^\infty f\,dr < \infty$ along the curve. Then $t_*$ increases
+by at most $8\int f\,dr$, which fixes $\Delta$, and the curve reaches
+$r = \infty$ at finite $t_*$: a point of $\mathscr I^+$. ∎
+
+Why the reference mass matters: in the outgoing null frame of mass $m_0$,
+Schwarzschild of mass $m$ has
+
+```math
+g(\partial_0, \partial_0) = \frac{(m - m_0)\,\bigl(1 - (m + m_0)/r\bigr)}{r - 2m} \sim \frac{m - m_0}{r},
+```
+
+which is not integrable: retarded time would drift like
+$(m - m_0)\log r$ (`tests/test_eh_merger.py`). The final black hole has a
+different mass from the ADM mass $m_0$, but in the 2026 paper's construction
+the switch to it ($\chi_K$) stays away from $\mathscr I^+$. Along the curve,
+$t_*$ can grow like $\log T$ for late starting points. That is harmless: only
+finiteness is needed.
+
+**Corollary E1 ($\mathcal B_{\mathscr I} = \mathcal B$).** Let Λ = 0. Take
+the escape radius $R \ge R_N + 1$ (allowed by Lemma 1(iii)). Then
+$\mathcal B_{\mathscr I} = \mathcal B$. Hence all five conclusions of
+Theorem D hold for the textbook black-hole region
+$M_\epsilon \setminus J^-(\mathscr I^+)$:
+
+- both holes lie in it, with closed trapped surfaces;
+- localisation within the margins;
+- two components before the plunge and one after;
+- connectedness.
+
+*Proof.* $\mathcal B \subseteq \mathcal B_{\mathscr I}$ by Lemma 1(iv). For
+the converse, let $p \notin \mathcal B$. A causal curve runs from $p$ to a
+point $q$ with $r(q) \ge R$. There are two cases.
+
+- If $t_*(q) \ge T_{\rm late}$, then $q \in J^-(\mathscr I^+)$ by Lemma 7.
+- If $t_*(q) < T_{\rm late}$, follow $\partial_t$ from $q$ up to
+  $\Sigma_{T_{\rm late}}$, as in the proof of Theorem E. This keeps $r$
+  fixed and stays timelike for $r \ge 10M$. Then apply Lemma 7.
+
+Either way $p \in J^-(\mathscr I^+)$, so $p \notin \mathcal B_{\mathscr I}$. ∎
+
+**What Lemmas 6 and 7 rest on.** We read these statements but did not verify them
 independently:
 
 - the support properties in step 1, from Definition 12.1, the target
@@ -702,7 +789,11 @@ independently:
   its corner with spatial infinity. Definition 5.3 is stated on the exterior
   domain, which contains that corner.
 
-Lemma 6 is the least robust link in Theorem E, and the place where an
+For Lemma 7, add: Remark 13.4(1), Lemma 11.38 and Definitions 11.47 and 11.55
+(supports of the correction terms), (11.229), and the proof of Lemma 11.5.
+Lemma 7 does not need the support property of the Nash–Moser correction.
+
+Lemmas 6 and 7 are the least robust link in Theorem E, and the place where an
 expert check of the 2026 paper would help most.
 
 **The Klainerman–Szeftel route (session 4, superseded).** Before the 2026
@@ -734,9 +825,11 @@ coordinates remove this step for Theorem D and reduce Theorem E to (N).
 | $t_* = t_{\rm BL} - T(r)$ form of Hintz–Vasy's time function | cited (HV18 (3.9)), *not re-checked* |
 | **Theorem D** (Λ > 0 and Λ = 0): both holes in $\mathcal B$, localisation, merger, $\mathcal B$ connected | **proved here, given (G1)–(G3)**; potentially new (Hintz lists the event horizon and connectedness as open) |
 | Corollary D1: on the slow time scale, the merger happens when $C$ crosses $r_H$ | **proved here** (from Theorem D) |
-| **Theorem E** (Λ = 0, $\mathscr I^+$): both holes in $\mathcal B_{\mathscr I}$, two components then one | **proved here, given (G1)–(G3) and Lemma 6**; potentially new |
+| **Theorem E** (Λ = 0, $\mathscr I^+$): both holes in $\mathcal B_{\mathscr I}$, two components then one | **proved here, given (G1)–(G3) and Lemma 6**; potentially new. Strengthened by Corollary E1 below |
 | Lemma 6 = (N) | derived from Hintz 2026 Lemma 3.19, Def. 5.3, (5.2), (5.56), proof of Thm 13.1 (**read**). Support properties and uniformity up to the corner of $\mathscr I^+$ are *our reading* |
-| Localisation and connectedness for $\mathcal B_{\mathscr I}$ | not proved |
+| Lemma 7 ((N) at all late times) | derived from Hintz 2026 Remark 13.4(1), Lemma 11.38, Defs. 11.47, 11.55, (11.229), proof of Lemma 11.5 (**read**, session 7); the frame reading as in Lemma 6 is *our reading* |
+| Corollary E1: $\mathcal B_{\mathscr I} = \mathcal B$, so localisation and connectedness hold for $\mathcal B_{\mathscr I}$ | **proved here, given (G1)–(G3) and Lemma 7** (session 7) |
+| Mass mismatch: $g_m(\partial_0^{m_0}, \partial_0^{m_0}) = (m - m_0)(1 - (m + m_0)/r)/(r - 2m)$ | **checked** (exact) |
 | $\mathcal B$ defined with $\mathscr I^+$ for Λ > 0 | not proved: needs the spacetime beyond $r_+$ |
 | Exact location, smoothness and merger time of the horizon | not addressed (only to within $c$, $\eta$) |
 

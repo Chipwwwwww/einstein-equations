@@ -2,12 +2,15 @@
 (research/calc/lohner.py). Used as an independent cross-check of research/calc/gap3_neck.py at
 points (tests/test_gap3.py); NOT part of the proof.
 
-Status (session 7). Meant to extend the thin-neck lemma to necks of radius up to ~0.03, where
-gap3_neck's plain interval steps need impractically small parameter pieces. It does not do
-that yet: with (lam, z_w) pieces of width ~1e-3 the Lohner set stays tight for about 0.7 in
-sigma and then blows up, because the constant parameters are mixed into the moving QR frame
-(parameter wrapping). Keeping the parameters out of the frame (x = m + A r + P (p - p0)) is
-the obvious next step.
+Status (sessions 7-8). Meant to extend the thin-neck lemma to necks of radius up to ~0.03,
+where gap3_neck's plain interval steps need impractically small parameter pieces.
+  * Session 7: with (lam, z_w) as state variables, pieces of width ~1e-3 stay tight for about
+    0.7 in sigma and then blow up (the constant parameters were mixed into the QR frame).
+  * Session 8: the parameters are kept out of the frame (lohner.PSet, x = m + A r + P q). At
+    lam ~ 0.03, pieces of +-1e-4 now certify phi(+-1.5) with radius < 1e-2 against a margin
+    >= 0.2; pieces of +-5e-4 still fail (the excess is second order in the piece width and
+    grows fast in sigma). Covering the waists that the approach lemma allows for the medium
+    necks would take ~2e4 pieces, so the region certificate has not been run.
 
 Same lemma as research/calc/gap3_neck.py (read its docstring first): in the rescaled variables
 around a waist of radius lam at height z_w, the lam-variation Jacobi field
@@ -30,57 +33,11 @@ the variational equations. Checked against gap3_neck.certify at points (tests/te
 from flint import arb
 
 from research.calc import lohner
+from research.calc.lohner import Dl
 
 QUARTER = arb(1) / 4
 D78 = arb("0.78")
 SIGMA_2 = 2.0
-
-
-class Dl:
-    """Dual number in the single parameter lam: value + derivative. Components may be arb,
-    arb_series or lohner.D (whose own gradients are taken with respect to the state)."""
-
-    __slots__ = ("v", "g")
-
-    def __init__(self, v, g):
-        self.v, self.g = v, g
-
-    def __add__(a, b):
-        if isinstance(b, Dl):
-            return Dl(a.v + b.v, a.g + b.g)
-        return Dl(a.v + b, a.g)
-
-    __radd__ = __add__
-
-    def __neg__(a):
-        return Dl(-a.v, -a.g)
-
-    def __sub__(a, b):
-        return a + (-b)
-
-    def __rsub__(a, b):
-        return (-a) + b
-
-    def __mul__(a, b):
-        if isinstance(b, Dl):
-            return Dl(a.v * b.v, a.v * b.g + a.g * b.v)
-        return Dl(a.v * b, a.g * b)
-
-    __rmul__ = __mul__
-
-    def inv(a):
-        i = 1 / a.v
-        return Dl(i, -(a.g * i * i))
-
-    def __truediv__(a, b):
-        return a * b.inv() if isinstance(b, Dl) else Dl(a.v / b, a.g / b)
-
-    def __rtruediv__(a, b):
-        return a.inv() * b
-
-    def sqrt(a):
-        s = a.v.sqrt()
-        return Dl(s, a.g / (2 * s))
 
 
 def f_neck(y, direction=1, d=D78):
@@ -116,29 +73,33 @@ def _phi_parts(y):
 
 
 def phi_enclosure(S):
-    """phi over the Lohner set S = m + A r, in mean-value form around m."""
-    n = len(S.m)
-    phi_m, _ = _phi_parts(S.m)
-    _, grad = _phi_parts(S.hull())
+    """phi over the set S = m + A r + P q (lohner.PSet; phi depends on the state only), in
+    mean-value form around m."""
+    n, k = len(S.m), len(S.p0)
+    phi_m, _ = _phi_parts(S.m + S.p0)
+    _, grad = _phi_parts(S.hull() + S.params())
     acc = phi_m
     for j in range(n):
         acc += sum((grad[i] * S.A[i, j] for i in range(n)), arb(0)) * S.r[j]
+    for l in range(k):
+        acc += sum((grad[i] * S.P[i, l] for i in range(n)), arb(0)) * S.q[l]
     return acc
 
 
 def certify(lam_lo, lam_hi, zw_lo, zw_hi, s=-1, sigma1=SIGMA_2, h=2.0**-4, L=14, d=D78):
     """(phi(0), phi(-sigma1), phi(+sigma1)) enclosures over lam in [lam_lo, lam_hi], z_w in
-    [zw_lo, zw_hi], for a waist moving down (s = -1) or up (s = +1)."""
+    [zw_lo, zw_hi], for a waist moving down (s = -1) or up (s = +1). The parameters (lam, z_w)
+    are kept out of the moving frame (lohner.step_param)."""
     def ball(lo, hi):
         lo, hi = arb(lo), arb(hi)
         return (lo + hi) / 2 + arb(0, 1) * ((hi - lo) / 2)
     lam, zw = ball(lam_lo, lam_hi), ball(zw_lo, zw_hi)
-    y0 = [arb(1), arb(0), arb(0), arb(s), arb(0), arb(0), arb(0), arb(0), lam, zw]
+    x0 = [arb(1), arb(0), arb(0), arb(s), arb(0), arb(0), arb(0), arb(0)]
     out = [arb(-s)]  # phi(0) = -V R = -s exactly
     nsteps = round(sigma1 / h)
     for direction in (-1, 1):
-        S = lohner.Set.from_box(y0)
+        S = lohner.PSet.from_box(x0, [lam, zw])
         for _ in range(nsteps):
-            S, _ = lohner.step(lambda y: f_neck(y, direction, d), S, h, L)
+            S, _ = lohner.step_param(lambda y: f_neck(y, direction, d), S, h, L)
         out.append(phi_enclosure(S))
     return tuple(out)

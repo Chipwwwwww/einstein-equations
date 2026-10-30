@@ -156,3 +156,19 @@ def test_outgoing_null_component_of_kerr_decays_like_r_minus_2():
     w = sp.Symbol("w", positive=True)  # w = 1/r
     lead = sp.limit(sp.cancel(g00.subs(r, 1 / w) / w**2), w, 0)
     assert sp.simplify(lead + a_kerr**2 * (1 - chi**2) / 4) == 0
+
+
+def test_outgoing_null_component_with_the_wrong_mass_is_not_integrable():
+    """notes/11, Lemma 7. In the outgoing null frame of mass m0 (as in the previous test),
+    Schwarzschild of mass m has
+        g(d_0, d_0) = (m - m0) (1 - (m + m0)/r) / (r - 2m),
+    which is ~ (m - m0)/r: not integrable in r, so retarded time would drift like
+    (m - m0) log r. Lemma 7 needs the reference metric near scri+ to have the ADM mass m0
+    at every finite retarded time; in Hintz 2026 the cut-off chi_K that switches to the final
+    mass vanishes near scri+, so this term never arises there."""
+    m, m0, t, rr = sp.symbols("m m0 t r", positive=True)
+    g = sp.diag(-(1 - 2 * m / rr), 1 / (1 - 2 * m / rr))  # (t, r) block of Schwarzschild, mass m
+    V = sp.Matrix([sp.Rational(1, 2), (1 - 2 * m0 / rr) / 2])  # d_0 of mass m0, components (t, r)
+    g00 = (V.T * g * V)[0, 0]
+    assert sp.cancel(g00 - (m - m0) * (1 - (m + m0) / rr) / (rr - 2 * m)) == 0
+    assert sp.limit(rr * g00, rr, sp.oo) == m - m0
