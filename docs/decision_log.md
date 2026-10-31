@@ -2,6 +2,43 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-31 (session 13) — Correcting and extending the certificate; geometric structure
+
+**Decisions**
+
+- **Base.** PR #3's head `aabde39`. New branch `claude/bl-metric-extension`, with a draft PR against
+  `claude/bl-metric-evaluator`.
+- **Audit before building.** The BG proof was read on the page, not from extracted text.
+  - Its condition (12) is $a < R/(16RC + 8M)$, with the ball in $E_{2a}$. Sessions 11–12 had used
+    $\min(1/(16C), R/(8M))$.
+  - Notes 15 and 16 are marked superseded. The corrected baseline is $5.115\times10^{-4}$.
+- **Extension method.** The analytic route was chosen, not an energy method. Fixed-lapse ADM is only
+  weakly hyperbolic, and an energy step needs a reduction, $H^s$ residual bounds and explicit
+  constants that are not available yet. CK′ (a proved generalisation: exponent $\beta$, zero-order
+  split) plus a symmetric quadrant covering with sub-boxes extends the time in the same chart, for
+  the same solution.
+- **Regions.** The whole tube and the waist region (profile boxes with $z \le 0.15$). $s_0$ is capped
+  by the punctures' singular cones, which are farther from the waist.
+- **Bounded B→A experiments with fixed candidate classes:** a $t^6$ covariant basis of 14 natural
+  tensors, and Weyl variables along the observers. Decisions were by exact rationals and balls,
+  with Schwarzschild controls.
+- **Gauge vs physics.** The single-hole control shows the series' convergence time is the time to
+  the $r = 0$ curvature singularity. The earlier "gauge breakdown" wording is corrected.
+- **Tooling lessons.** `pgrep -f` patterns matched their own wait loops twice. python-flint `x**2`
+  is NaN at zero midpoint. A pool worker must be referenced by module path when the module runs
+  as `__main__`.
+
+**Progress**
+
+- Certificates: classic and sharp (corrected times plus CK′ schedules), ext ($8.683\times10^{-4}$), waist
+  ($1.545\times10^{-3}$).
+- The evaluator combines certificates and has the extra derivative bound; comparison table.
+- New: notes/17; `tests/test_bl_structure.py`; ledger claims 93–102.
+
+**Next**
+
+- One validated energy-estimate step for the Einstein–Bianchi system in Gauss gauge.
+
 ## 2026-10-31 (session 12) — An evaluable metric; B-to-A experiments
 
 **Decisions**

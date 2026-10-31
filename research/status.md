@@ -1,6 +1,56 @@
 # Status
 
-*Updated 2026-10-31 (sessions 1–12). Start here.*
+*Updated 2026-10-31 (sessions 1–13). Start here.*
+
+## Session 13: corrected and extended certificate, better derivatives, geometric structure
+
+Branch `claude/bl-metric-extension`, from `aabde39` (PR #3's head). Note:
+[`notes/17-certified-extension.md`](../notes/17-certified-extension.md).
+
+- **A foundational error, repaired.**
+  - The abstract Cauchy–Kovalevskaya condition of Baouendi–Goulaouic is $a < R/(16RC + 8M)$
+    (read on the page). It is not the $\min(1/(16C), R/(8M))$ that sessions 11–12 reconstructed
+    from garbled text.
+  - So the certified times of notes 15–16 were too large. For the same $C$ and $K_0$ they are
+    $2.885\times10^{-4}$, not $2.988\times10^{-4}$, and $5.115\times10^{-4}$, not $5.557\times10^{-4}$.
+  - The baseline "$T_0 = 5.556\times10^{-4}$" was therefore not justified.
+  - A second latent hole, also repaired: NaN-producing ball powers could have been skipped
+    silently.
+- **Theorem CK′ (proved, notes/17 §2).** BG's proof with a weight exponent $\beta$, and the Lipschitz
+  bound split into derivative-loss and output-level zero-order parts.
+- **Certified extension (computer-assisted, candidate):**
+  - $T = 8.683\times10^{-4}$ on the whole tube $U$ (×1.70 over the corrected baseline);
+  - $T = 1.545\times10^{-3}$ on the waist region $U_w$ (×3.02);
+  - for every $d \in I$.
+
+  The coverings use the conjugation and reflection symmetry and imaginary sub-boxes.
+- **Evaluator.** It combines all certificates and CK′ schedules, has an extra $\partial_t\partial_x$
+  bound, and caches jets. The before/after table is in notes/17 §4. Second derivatives at $T_0/2$:
+  17.5 (corrected baseline) → 2.6e-03 at the generic point, order 7.
+- **B → A.** No category-A expression.
+  - For conformally flat time-symmetric vacuum data, $\gamma_2$ is algebraic in Ric. $\gamma_3$
+    follows a five-term covariant law (fitted, held-out, exact at 3 points).
+  - Pointwise-algebraic-in-Ric evolution is excluded at $t^6$.
+  - The tidal tensor obeys $E = E_0 - t^2(\tfrac32E_0^2 - \tfrac12\mathrm{tr}E_0^2)$. Its speciality
+    drifts at $t^2$ and its eigenframe rotates at $t^4$, which excludes every closed isotropic law
+    $E' = f(E)$.
+- **Crunch audit.** For one hole, the series' convergence time at a comoving point is the time to
+  reach the $r = 0$ **curvature singularity**. Notes 14 and 16 had called it a gauge breakdown.
+- **Not achieved.** An energy-estimate continuation (the feasibility analysis is in notes/17 §3).
+  No merger at any explicit $d$.
+
+Session-13 evidence labels:
+
+| Item | Label | How checked |
+| --- | --- | --- |
+| BG constant | primary source re-read on the page | — |
+| certificates classic, sharp, ext, waist | computer-assisted | **recomputed** this session (`python -m research.calc.ck_bound <mode>`) |
+| CK′ | proof in notes/17 §2 | lemma integrals sampled in tests |
+| evaluator comparison and demo | computer-assisted | **recomputed** |
+| $t^4$, $t^6$, $E$ laws and exclusions | exact and ball arithmetic | **recomputed**; tests |
+| Theorems C, F, F′; Proposition B; Corollary J | as before | inherited, not rerun |
+
+
 
 ## Session 12: an evaluable metric (category B), and a bounded search for category A
 

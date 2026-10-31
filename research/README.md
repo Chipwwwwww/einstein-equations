@@ -40,6 +40,8 @@ convergence of the series representation near the critical surface (route J) is 
 | [`idea_log.md`](idea_log.md) | Hypotheses, the tests run on them, and how they failed or survived. |
 | [`literature.md`](literature.md) | Primary sources, what was checked in each and what could not be. |
 | [`route_map.md`](route_map.md) | Routes toward explicit dynamical binary metrics (A–J): question, decisive test, status (session 10). |
+| [`../notes/17-certified-extension.md`](../notes/17-certified-extension.md) | Session 13: corrected certificate constant, Theorem CK′ and the extension, derivative bounds, $t^6$ and Weyl structure. |
+| [`report_session13.md`](report_session13.md) | Session 13 report: corrected and extended certificate, derivative errors before/after, B-to-A results. |
 | [`report_bl_metric.md`](report_bl_metric.md) | Session 12 report: the metric evaluator, the sharp certificate, B-to-A experiments, what was rerun. |
 | [`report_route_j.md`](report_route_j.md) | Session 11 report: Proposition T (certified convergence time near $S_c$), baseline audit, what was rerun, blocking estimate. |
 | [`calc/`](calc/) | Executable calculations (numerical and computer-assisted). |
@@ -192,6 +194,41 @@ r["g"], r["dg"], r["ddg"], r["error_budget"], r["status"]
 ```
 
 Tests: `python -m pytest tests/test_bl_metric.py tests/test_ck_bound.py` (about 1 minute).
+
+### Session 13: corrected and extended certificates
+
+```bash
+python -m research.calc.ck_bound classic
+```
+
+```bash
+python -m research.calc.ck_bound sharp
+```
+
+```bash
+python -m research.calc.ck_bound ext
+```
+
+```bash
+python -m research.calc.ck_bound waist
+```
+
+```bash
+python -m research.calc.bl_metric compare
+```
+
+1. **The four certificates.** They write `calc/data/ck_bound{,_sharp,_ext,_waist}.json`, using 4
+   processes. Each record carries:
+   - the corrected Baouendi–Goulaouic time (`T_bg`);
+   - the Theorem CK′ schedule of $(\beta, a, B)$ triples (notes/17 §2);
+   - the source commit.
+
+   Wall times and peak memory are in notes/17 §3.
+2. **The before/after table** of notes/17 §4. It writes `calc/data/bl_metric_compare.json`.
+
+The evaluator now loads every certificate and uses all that apply to a point.
+
+Tests: `python -m pytest tests/test_bl_metric.py tests/test_ck_bound.py tests/test_bl_structure.py`.
 
 ## What counts as proof here
 
