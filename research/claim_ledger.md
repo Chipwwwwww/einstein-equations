@@ -100,3 +100,25 @@ Every claim made in notes/07–09, with its status. Categories:
 | 59 | **Theorem F**: equal-mass time-symmetric BL data at $d = 0.78$ ($M = 1$) contain no closed embedded minimal surface enclosing both punctures; the apparent horizon at $t = 0$ is the two individual horizons | N (computer-assisted) | claims 51–53, 57, 58 and the validated sweep: 2,452 $z_0$-intervals covering $[0.543, 1.051]$, each ending in E1/E2/E3/N (`research/calc/gap3_sweep.py`, log in `research/calc/data/`); 2.8 h on 4 cores. Potentially new: Dain–Weinstein–Yamada 2011 prove non-existence only for sufficiently large separation |
 | 60 | Falsification of the sweep: at $d = 0.76 < d_c$ the $2^{-14}$ intervals containing the two real common minimal surfaces are not excluded, while an interval between them is | R (test) | `tests/test_gap3.py` |
 | 61 | Floating point: the thin-neck sign pattern persists for necks up to radius 0.04 (with $\sigma = \pm2$), so medium necks are unstable too | C | point evaluations of the certified integrator; region certificate not achieved (parameter wrapping) |
+
+## Gap 3 over an interval; the head-on example (sessions 9–10; notes/12 §7, 13)
+
+| # | Claim | Status | Evidence |
+| --- | --- | --- | --- |
+| 64 | Small-neck lemma over $d \in [0.765625, 0.78125]$: $\lambda \le 3\cdot2^{-8}$, $\zeta_w \in [-120, -68]\cdot2^{-9}$, both directions | N (computer-assisted) | `gap3_neck.certify_region_rel`, nine runs, 2,664 pieces, margin $\ge 0.0029$; record `research/calc/data/gap3_neck_interval.txt` (run once, replay command there) |
+| 65 | Local fold lemma: $F > 0$ on $z_0 \in [0.62891, 0.63696]$ for every $d \in (d_c, 0.767578]$ | N (computer-assisted) | Theorem C + `gap3_fold.py`: part 1 $F_{zz} \ge 125.1$, $F_d \ge 0.591$ (33 pieces); part 2 $F_d \ge 0.177$ (198 pieces); records in `research/calc/data/gap3_fold_*.txt` (run once); thin-run cross-check against Theorem C (`tests/test_gap3_fold.py`, slow) |
+| 66 | **Theorem F′**: for every $d \in (d_c, 0.767578125]$ no closed embedded minimal surface encloses both punctures | N (computer-assisted) | claims 64, 65, interval barriers (`tests/test_bl_global.py`), band certificate and sweep (`gap3_interval.py`, verify of the stored log); see notes/12 §7 for the replay status |
+| 67 | **Theorem H**: near-critical BL head-on development: two individual horizons and no common one at $t = 0$; a common MOTS from $t_* = c(d - d_c) + O((d - d_c)^2)$, $c \in [2.3768, 2.3936]$ | N (computer-assisted + analytic), $\delta_0$ non-explicit | claims 33, 38, 66; notes/13 |
+
+## Toward explicit binaries (session 10; notes/14, research/route_map.md)
+
+| # | Claim | Status | Evidence |
+| --- | --- | --- | --- |
+| 68 | Proposition P: the BL development is Petrov type I on an open dense subset of the initial slice for every $d > 0$ (type D on the axis) | N (small), analytically proved | closed-form eigenvalue differences on $z = 0$; exact rational check at $d = 0.78$; `research/calc/petrov_bl.py`, `tests/test_petrov_bl.py` |
+| 69 | P ⇒ no algebraically special ansatz (single KS, KSK, RT, Kundt, twisting II/D) reproduces the BL development on an open set meeting the type-I region | N (small) | P + Goldberg–Sachs |
+| 70 | Axisymmetric locally AF radiative vacuum with a second Killing field is boost-rotation symmetric; its sources need nodal singularities or negative masses | E | Pravda–Pravdová, gr-qc/0003067 (section read); Bičák gr-qc/0004016 §11 (read); Bičák–Schmidt 1984 (*not read*) |
+| 71 | Proposition S: the geodesic-slicing development of BL data is a convergent series in $t$ near each point, with explicit recursive coefficients; it solves the full vacuum equations | R (standard theorem applied) | Cauchy–Kovalevskaya + constraint propagation; code validated against exact Schwarzschild free fall and the Hamiltonian constraint (`tests/test_bl_series.py`) |
+| 72 | Near the critical surface ($d = d_c$, $(\rho, z) = (0.25, 0)$) the series' convergence radius is $T \approx 2.7$ | C (numerical) | ratio estimates through $t^{14}$, `research/calc/data/bl_series_dc.json` |
+| 73 | For conformally flat time-symmetric vacuum data, $B_{ij} = -t\,C_{ij}(\gamma_0) + O(t^3) = O(t^3)$; for BL the $t^3$ coefficient is nonzero | R (identity) + C (numerical) | `bl_series.magnetic_weyl`; Schwarzschild control $B \equiv 0$ |
+| 74 | Route J: for $d - d_c$ small, the apparent-horizon merger region near $S_c$ lies inside the convergence domain of S | N (small), qualitative | analytic dependence on $d$ + claims 67, 71; explicit bounds missing |
+| 75 | An explicit (category A) dynamical binary metric | **not found** | routes A–J screened, `research/route_map.md` |

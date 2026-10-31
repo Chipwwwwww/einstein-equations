@@ -2,6 +2,45 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-31 (session 10) — Explicit binaries: route screening, Petrov obstruction, time series
+
+**Decisions**
+
+- **Starting point.** Research continues on `claude/black-hole-merger-solutions-rpa9hj`. This is
+  the only research branch; `main` has the discussion notes only, and there were no PRs.
+- **The interval sweep stops at $d = 0.767578$.** That is enough for Theorem H (note 13).
+  Continuing to $0.78125$ costs about 18 more hours and is optional.
+- **Routes screened before computing** (`research/route_map.md`, ten routes):
+  - two were rejected by precise obstructions: algebraically special forms (proved here) and
+    two-Killing integrable methods (literature);
+  - one was executed (route E, the time series);
+  - one was identified as most promising (J, near-critical BL);
+  - the rest remain untested, each with its decisive test stated.
+- **Two-vector Kerr–Schild was not attempted.** Its decisive test is a solvability analysis of
+  an overdetermined linear system at $O(m_1m_2)$. It is recorded, not started.
+- **Bugs found by validation, kept in the record.** The jet engine had two bugs:
+  - a broadcasting error (constants added to every coefficient);
+  - array aliasing ($\gamma_{\rho\rho}$ and $\gamma_{zz}$ shared storage).
+
+  Both were found by the exact Schwarzschild comparison and the Hamiltonian-constraint check,
+  before any BL number was used.
+- **Monitoring pitfall.** mawk block-buffers piped input, so awk-based log watches missed stuck
+  sweep boxes for an hour. Use `awk -W interactive`.
+
+**Progress**
+
+- Theorem F′ verified for $d \in (d_c, 0.767578125]$: notes/12 §7, the stored log, and the
+  replayed band certificate. Theorem H (note 13) is no longer pending.
+- New: note 14, `research/route_map.md`, `research/calc/petrov_bl.py`,
+  `research/calc/bl_series.py`, tests `test_petrov_bl.py` and `test_bl_series.py`, ledger 64–75,
+  a literature section on explicit binaries, and the status audit.
+
+**Next**
+
+- Route J: Arb jets for the route-E recursion plus a majorant tail. The goal is a certified
+  convergence radius near $S_c$, then certified $\partial_t^2F$ and an explicit $\delta_0$.
+- Optional: extend Theorem F′ to $0.78125$ (resume the sweep), joining it to Theorem F.
+
 ## 2026-10-30 (session 9) — Review of Lemmas 6–7; Theorem F toward d_c (in progress)
 
 **Decisions**

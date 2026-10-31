@@ -33,6 +33,7 @@ extremal charges): an exact merger with different physics.
 | [`claim_ledger.md`](claim_ledger.md) | Every claim, labelled: established (with source), reproduced here, candidate new, conjecture/numerical, gap. |
 | [`idea_log.md`](idea_log.md) | Hypotheses, the tests run on them, and how they failed or survived. |
 | [`literature.md`](literature.md) | Primary sources, what was checked in each and what could not be. |
+| [`route_map.md`](route_map.md) | Routes toward explicit dynamical binary metrics (A–J): question, decisive test, status (session 10). |
 | [`calc/`](calc/) | Executable calculations (numerical and computer-assisted). |
 | [`../tests/`](../tests/) | pytest checks of every symbolic claim. |
 
@@ -85,6 +86,54 @@ the window. The
 calculations in `calc/` each run as `python -m research.calc.<name>` from the
 repository root; each module's docstring says what it computes and what it
 prints. The expected outputs are recorded in [`status.md`](status.md).
+
+### Continuation (sessions 9–10)
+
+Each certificate below was run once, and its record is in `calc/data/`. Replay commands:
+
+```bash
+python -m research.calc.gap3_neck interval 4
+```
+
+```bash
+python -m research.calc.gap3_fold 4
+```
+
+```bash
+python -m research.calc.gap3_fold fd 4
+```
+
+```bash
+python -m research.calc.gap3_interval 4
+```
+
+```bash
+python -m research.calc.gap3_interval verify gap3_interval.log 0.767578125 4
+```
+
+1. The neck runs: `interval` is one of nine; the names are in `gap3_neck._INT_RANGES`. Each run
+   takes about 10–30 minutes.
+2. Fold lemma part 1: about 2.5 CPU-hours.
+3. Fold lemma part 2: about 7 CPU-hours.
+4. The interval sweep: about 7 hours on 4 cores up to $d = 0.767578$. It resumes from
+   `gap3_interval.log` in the current directory, lowest $d$ first, so stop it once
+   `python -m research.calc.gap3_interval progress gap3_interval.log` reports the stage you want.
+5. Verify a log: cover check, holes, and the band certificate, replayed. The stored log is
+   `calc/data/gap3_interval_stage1.log`.
+
+Route E (the BL time series) and the Petrov check:
+
+```bash
+python -m research.calc.bl_series
+```
+
+```bash
+python -m research.calc.petrov_bl
+```
+
+The first validates against Schwarzschild free fall and prints the coefficients near $S_c$
+(about 6 minutes at order $t^{12}$). The second is exact arithmetic. The next decisive
+calculation is described in `route_map.md` §J.
 
 ## What counts as proof here
 

@@ -1,6 +1,51 @@
 # Status
 
-*Updated 2026-10-30 (sessions 1–7). Start here.*
+*Updated 2026-10-31 (sessions 1–10). Start here.*
+
+## Session 10: baseline audit and the explicit-binary programme
+
+**Where the research lives.** Branch `claude/black-hole-merger-solutions-rpa9hj`
+(`main` holds only the original discussion notes 00–06). No pull request existed before
+session 10.
+
+**Audit of the main claims** (full list: [`claim_ledger.md`](claim_ledger.md)):
+
+| Claim | Category | Replayable? |
+| --- | --- | --- |
+| Theorem C (fold, $d_c$, signs) | computer-assisted (Arb) | yes: `python -m research.calc.fold_proof` (~10 min), and a slow test |
+| Theorem F ($d = 0.78$) | computer-assisted | partly: the slow test checks the **coverage** of the stored log `research/calc/data/gap3_sweep_d078.log`; replaying the computation is `python -m research.calc.gap3_sweep` (11.4 CPU-h, run once in session 7); the neck lemma is replayed by a slow test |
+| Theorem F′ ($d \in (d_c, 0.767578]$) | computer-assisted | the sweep was run once (log `research/calc/data/gap3_interval_stage1.log`); `verify` replays the band certificate for every waist and checks coverage, but does **not** re-run the sweep's boxes (that is a resume of `python -m research.calc.gap3_interval 4` on an empty log, ~7 h); fold lemma and neck runs stored with replay commands |
+| Proposition B / Theorem H (apparent-horizon merger, near-critical BL) | analytic + computer-assisted; $\delta_0$ not explicit | via Theorem C and F′ |
+| Theorems D/E, Lemmas 6–7 (event horizons, extreme mass ratio) | **conditional**: our reading of Hintz 2024/2026, self-reviewed in session 9, not externally reviewed | analytic |
+| Kastor–Traschen horizons | reproduced; the common-MOTS absence before $\tau_c$ is numerical | yes |
+
+The historically flagged issues stand as follows.
+
+- *Local vs global MOTS:* settled at $t = 0$ by Theorem F′. Open for $0 < t < t_*$ outside a
+  neighbourhood of $S_c$.
+- *$d = 0.78$ vs the neighbourhood of $d_c$:* settled by Theorem F′, which starts at $d_c$.
+- *Apparent vs event horizons:* the BL results are apparent-horizon results only. The event-horizon
+  results are EMR and conditional.
+- *Log coverage vs replay:* see the table above.
+
+**New in session 10** ([`notes/14-explicit-binaries.md`](../notes/14-explicit-binaries.md),
+[`route_map.md`](route_map.md)):
+
+- **No explicit dynamical binary metric was found.** None is known in the literature checked.
+- **Proposition P (proved, exact).** The BL head-on spacetime is Petrov type I on an open dense
+  set of the initial slice, for every $d$. So no algebraically special ansatz describes it:
+  Kerr–Schild, Kerr–Schild–Kundt, Robinson–Trautman, Kundt.
+- **Literature obstruction.** Integrable methods need two commuting Killing fields. AF radiative
+  spacetimes with two Killing fields are boost-rotation symmetric, with struts, strings or negative
+  masses.
+- **Proposition S (route E).** The geodesic-slicing development of BL data is an explicit
+  convergent series in $t$ (Cauchy–Kovalevskaya): category B, local. It is validated against exact
+  Schwarzschild free fall. Near $S_c$ the radius is about $2.7M$ (numerical), against
+  $t_* \le 0.0033$ on the interval of Theorem F′.
+- **Most promising route (J):** a certified lower bound on that radius would give an exact
+  convergent representation of a region containing a proved apparent-horizon merger, and could
+  make $\delta_0$ explicit.
+
 
 ## Established so far
 
@@ -170,6 +215,11 @@ case appears to be **potentially new**.
    $[10.606, 10.682]$.
 
 ## Next concrete calculation
+
+*(Session 10: the next decisive calculation is route J. Run the route-E recursion with interval
+(Arb) jets, and add a Cauchy–Kovalevskaya majorant tail. That gives a certified lower bound on
+the convergence radius near $S_c$, and certified $\partial_t^2F$ toward an explicit $\delta_0$.
+See `route_map.md` §J. The items below are from session 8.)*
 
 Two candidates, in order of tractability.
 

@@ -58,6 +58,31 @@ verified before being relied on in a proof.
 | G. Neugebauer, J. Hennig, arXiv:0905.4179; J. Hennig, G. Neugebauer, arXiv:1103.5248; review arXiv:1105.5830 | no stationary, axisymmetric vacuum two-black-hole configurations with regular axis (double-Kerr–NUT) | abstracts |
 | F. Pretorius, PRL 95 (2005) 121101; M. Campanelli et al., PRL 96 (2006) 111101; J. Baker et al., PRL 96 (2006) 111102 | numerical binary black-hole evolutions through merger | *not re-checked* |
 
+## Explicit binaries: obstructions and known exact classes (session 10)
+
+Inspection levels:
+
+- **read**: the relevant section or theorem was read;
+- **abstract**: the abstract or catalogue record only;
+- **cited**: the citation was located, the source was not read.
+
+| Source | What it gives | Checked |
+| --- | --- | --- |
+| V. Pravda, A. Pravdová, *Boost-rotation symmetric spacetimes – review*, Czech. J. Phys. 50 (2000) 333–376, gr-qc/0003067 | axisymmetric, locally AF (a piece of $\mathscr I^+$), electrovacuum, with a second Killing field forming a 2D Lie algebra with the axial one: boost (radiative) or translation (not radiative). Sources are uniformly accelerated: "The acceleration can be caused by nodal singularities or by mutual gravitational interaction. However, in the case with no nodal singularities, negative masses occur." | read (statement and assumptions; refs [6] vacuum, [7] electrovacuum) |
+| J. Bičák, B. Schmidt, *Isometries compatible with gravitational radiation*, J. Math. Phys. 25 (1984) 600–606 | the vacuum theorem behind the above | cited; *not read* |
+| J. Bičák, B. Schmidt, *Asymptotically flat radiative space-times with boost-rotation symmetry: the general structure*, Phys. Rev. D 40 (1989) 1827 | construction of all AF boost-rotation symmetric spacetimes from flat-space wave solutions | abstract (OSTI 5551002) |
+| J. Bičák, *Selected solutions of Einstein's field equations*, Lect. Notes Phys. 540 (2000) 1–126, gr-qc/0004016, §11 | boost-rotation symmetric solutions: nodal singularities ("strings") or self-acceleration with negative mass; global smooth sections of $\mathscr I$ except where the sources start and end | read (§11, part) |
+| W. Bonnor, N. Swaminarayan, Z. Phys. 177 (1964) 240 | uniformly accelerated (positive/negative mass) particles | cited (via the reviews) |
+| R. Bach, H. Weyl (1922); W. Israel, K. Khan, Nuovo Cim. 33 (1964) 331 | static collinear vacuum black holes held apart by struts | secondary sources (search results) |
+| M. Gürses, F. Gürsey, *Lorentz covariant treatment of the Kerr–Schild geometry*, J. Math. Phys. 16 (1975) 2385 | Einstein equations linear (mixed form) for Kerr–Schild metrics | abstract and citing papers (e.g. Gergely, gr-qc/0203101) |
+| Kerr–Schild 1965; Debney–Kerr–Schild 1969; H. Stephani et al., *Exact Solutions* (2nd ed., 2003), ch. 32 | vacuum KS: geodesic shear-free $k$, algebraically special; classification | cited; *book not re-checked* |
+| superposed Kerr–Schild black holes: arXiv:2405.03289 (*Some consequences of the Kerr–Schild gauge*), gr-qc/0305071 (*Physics and initial data for multiple black hole spacetimes*), gr-qc/0205060 (*Kerr–Schild type initial data for black holes with angular momenta*) | sums of KS black holes are not vacuum; used as approximate data in numerical relativity | search summaries only; authors not re-checked |
+| E. Wessels, *Exact analytic characteristic initial data for axisymmetric, non-rotating, vacuum spacetimes, with an application to the binary black hole problem*, CQG 15 (1998) 2509, gr-qc/9811074 | exact data on a null hypersurface, not a spacetime | abstract |
+
+A broad search (extended web search, plus the reviews above) found no claimed exact, regular, AF,
+dynamical two-black-hole vacuum solution. A 2021 Phys. Lett. B paper (search result, not read)
+states that no exact analytic solution of the merger phase is available.
+
 ## Not covered
 
 Gluing constructions of initial data (Corvino, Chruściel–Delay,

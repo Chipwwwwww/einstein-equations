@@ -10,7 +10,8 @@ moment the two holes share a horizon. This was gap 3 of
 [`research/status.md`](../research/status.md).
 
 This note closes gap 3 for one separation, $d = 0.78$ (in units
-$G = c = M_{\rm ADM} = 1$; $d_c = 0.7662$).
+$G = c = M_{\rm ADM} = 1$; $d_c = 0.7662$). §7 (session 9) extends it to every $d$ in
+$(d_c, 0.767578]$, an interval starting at the critical separation (Theorem F′).
 
 > **Theorem F (computer-assisted).** Take the time-symmetric Brill–Lindquist
 > data $\gamma = \psi^4\delta$, $\psi = 1 + \frac{1}{4r_+} + \frac{1}{4r_-}$
@@ -38,10 +39,9 @@ docstrings):
 - the barrier part of `bl_global.py`.
 
 That code is tested against flows with exact solutions and deliberately
-falsified (§4), but nobody outside this project has reviewed it. The result
-is for $d = 0.78$ only. The same programme should work for any fixed
-$d > d_c$, but it runs longer as $d \to d_c$, where a common surface is about
-to appear.
+falsified (§4), but nobody outside this project has reviewed it. Theorem F
+is for $d = 0.78$ only. Theorem F′ (§7) covers $(d_c, 0.767578]$, with a
+local lemma at the fold, where a common surface is about to appear.
 
 ## 1 · Reduction to a family of curves
 
@@ -263,8 +263,8 @@ it proves Theorem F. ∎
 | barriers, $K$, thin-neck lemma, sweep | computer-assisted (Arb / mpmath intervals) |
 | approach lemma, catenoid Jacobi field, reduction | analytic, written out above and in session 6 |
 | stability of the outermost minimal surface | literature (Andersson–Mars–Simon, Andersson–Metzger); not re-derived |
-| other separations $d > d_c$ | **not proved**. The same code applies at any fixed $d$; no uniform argument |
-| combination with the onset theorem of note 10 | **not yet**. That theorem holds for $d_c < d < d_c + \delta_0$ with $\delta_0$ unspecified, and $d = 0.78$ ($d - d_c = 0.014$) may lie beyond it |
+| other separations $d > d_c$ | *(session 9)* proved for every $d \in (d_c, 0.767578]$: Theorem F′, §7. Not yet for $(0.767578, 0.78)$ |
+| combination with the onset theorem of note 10 | *(session 9)* done: Theorem F′ starts at $d_c$, so it combines with the onset theorem whatever $\delta_0$ is (Theorem H, note 13) |
 | independent review of the code | **not done** |
 
 **Prior work.**
@@ -282,6 +282,216 @@ it proves Theorem F. ∎
 Theorem F is explicit, at $d/d_c = 1.018$, within 2% of the critical
 separation, where compactness arguments say nothing. As far as our bounded
 search found, it is **potentially new**, as a computer-assisted proof.
+
+## 7 · An interval of separations reaching $d_c$: Theorem F′
+
+> **Theorem F′ (computer-assisted).** For every separation $d$ with
+> $d_c < d \le 0.767578125$, no closed embedded minimal surface of the
+> Brill–Lindquist data encloses both punctures. The apparent horizon of
+> $\Sigma_0$ consists of the two individual horizons. Here
+> $d_c = 0.766197428240 \pm 1.1\times10^{-13}$ is the fold separation of
+> Theorem C ([note 09](09-merger-hypotheses.md)), in units
+> $G = c = M_{\rm ADM} = 1$.
+
+The interval starts at the critical separation itself. At $d = d_c$ a
+degenerate common minimal surface exists; just below $d_c$ there are two
+(the fold). So $d_c$ is exactly where the common horizon of the initial data
+appears. Combined with the onset theorem of [note 10](10-onset-theorem-proof.md),
+this gives the head-on collision of [note 13](13-head-on-collision.md).
+
+The code reaches up to $0.78125$. Each further $2^{-9}$ in $d$ costs
+about 2.5 hours on 4 cores, so the theorem is stated for the part that has
+been run. Joining it to Theorem F at $0.78$ takes about 18 more hours of
+computing and is optional.
+
+The proof follows §§1–5 with $d$ an interval parameter everywhere. Three
+things are new:
+
+- a waist event, with a band certificate that holds for all $d$ at once;
+- a calibrated partition;
+- a local lemma at the fold, where the sweep cannot work.
+
+### 7.1 · What carries over, with $d$ an interval
+
+- **Barriers** (`tests/test_bl_global.py`), for all
+  $d \in [0.765625, 0.78125]$ at once:
+  - throat spheres of radius $s \le 0.15$ have $H < 0$ (bound $-0.037$);
+  - spheres $|x| \ge 1.05$ have $H > 0$ (bound $0.060$).
+
+  The throat radius had to shrink from $0.155$, which fails at $d = 0.766$.
+- **Relative height.** The state is $(\rho, \zeta, u, v)$ with
+  $\zeta = z - d/2$, the height above the upper puncture. Then $d$ enters
+  the equations only through the lower puncture, at $\zeta = -d$. With $z$
+  itself as the state, a box in $d$ decorrelates $z$ from $d$ inside $\psi$,
+  and the sets blow up at $\sigma \approx 16$.
+- **Boxes in $(\delta, d)$.** The start is
+  $z_0 = z_{\rm ref} + \delta + 0.543\,(d - 0.78)$. The slope follows the
+  top of the individual horizon, so a box stays in the same place relative
+  to the delicate region as $d$ changes. Each box is one Lohner set, with $d$
+  kept out of the moving frame (`lohner.PSet`).
+- **Thin necks (event N).** The thin-neck lemma is certified in the
+  variables $(\lambda, \zeta_w)$ for all $d \in [0.765625, 0.78125]$ at once,
+  on $\lambda \le 0.0117$ and $\zeta_w \in [-0.234, -0.133]$, both directions
+  ([`research/calc/gap3_neck.py`](../research/calc/gap3_neck.py),
+  `certify_region_rel`). Nine runs, 2,664 pieces, worst margin $0.0029$
+  ([`research/calc/data/gap3_neck_interval.txt`](../research/calc/data/gap3_neck_interval.txt)).
+
+  The $\zeta$-window had to be wider than at $d = 0.78$. As $z_0$ moves away
+  from the top of the individual horizon, the neck height moves too, and the
+  approach lemma's drift (up to $0.015$) carries the window past its old
+  ends.
+
+### 7.2 · Medium necks: the waist event W and the band certificate
+
+At $d = 0.78$, the medium necks ($\lambda \approx 0.005$–$0.04$) needed
+$z_0$-intervals as narrow as $2^{-20}$ (§4). Over an interval of $d$ that
+would mean millions of boxes. Instead, the sweep stops at the waist.
+
+- **Event W.** Take the window from the last step after which $u < 0$ on the
+  whole set to the first step after which $u > 0$ on it. Every curve has its
+  waist ($u = 0$) in one of the window's step boxes. The waist box is the
+  union of their $\rho$-ranges times the union of their $\zeta$-ranges, and
+  the direction is $\mathrm{sign}\,v$. W is recorded when $v$ has one sign
+  and $\lambda < 0.05$.
+- **Band certificate.** The sign pattern of the neck Jacobi field (§2) is
+  certified on dyadic cells in $(\lambda, \zeta_w)$, each for all
+  $d \in [0.765625, 0.78125]$ at once
+  ([`research/calc/gap3_neck_lohner.py`](../research/calc/gap3_neck_lohner.py),
+  `certify_rel`). The method is Lohner, with $(\lambda, \zeta_w, d)$ as
+  parameters. Each direction stops at the first $\sigma \ge 1.25$ where
+  $s\phi > 0$ is certified, up to $\sigma = 3$. Cells start at $2^{-10}$,
+  and failures are quartered. A waist box counts once every cell it meets is
+  certified.
+
+The instability argument of §2 applies unchanged. A neck whose Jacobi field
+changes sign on both sides makes the surface unstable, so it cannot be
+$S^*$.
+
+### 7.3 · The partition
+
+A first sweep with coarse boxes stalled almost everywhere within $0.05$ of
+the top of the individual horizon. Lohner's first-order enclosures explode
+where the curves turn.
+
+Test boxes at both ends of the $d$-range then fixed a table of bands
+(`gap3_interval.BANDS`). The $\delta$-width runs from $2^{-10}$ far from the
+top down to $2^{-15}$ next to it, and the $d$-width is $2^{-10}$ near the
+top. This is close to what the single-$d$ sweep at $0.78$ needed. Boxes that
+still fail are bisected, and the sweep runs lowest $d$ first, so the
+certified range $(d_c, d_k]$ grows steadily.
+
+### 7.4 · Near the fold: a local lemma
+
+As $d \downarrow d_c$, the curves near the fold point $z_c = 0.63266$ meet
+the plane almost at a right angle, since $F = \alpha + \pi/2 \to 0$ there.
+Event E1 needs $u \ne 0$ at the crossing. Up to $d = 0.7676$ it fails even
+for boxes of $\delta$-width $2^{-15}$, because $F \approx F_d\,(d - d_c)$ is
+below $2\times10^{-3}$. So the sweep leaves out the *fold window*
+$z_0 \in [0.62891, 0.63696]$ for $d \le 0.767578$. A lemma covers it instead.
+
+**Local fold lemma.** Let $Z$ be an interval of $z_0$ containing the fold
+point $z^*$, and $d_1 > d_c$. Suppose that for all $z_0 \in Z$ and
+$d \in [d_c, d_1]$ the curve reaches the plane with $v < 0$, and that
+
+- $\partial^2_{z_0}F > 0$ for $d$ at $d_c$;
+- $\partial_dF > 0$ on all of $[d_c, d_1]$.
+
+Then $F > 0$ on $Z \times (d_c, d_1]$. *Proof.* Theorem C gives
+$F = \partial_{z_0}F = 0$ at $(z^*, d_c)$. By Taylor's theorem,
+
+```math
+F(z_0, d_c) = \tfrac12\,\partial^2_{z_0}F(\xi, d_c)\,(z_0 - z^*)^2 \ge 0 .
+```
+
+Then
+
+```math
+F(z_0, d) = F(z_0, d_c) + \int_{d_c}^{d}\partial_dF(z_0, s)\,ds > 0 .
+```
+
+∎
+
+**Enclosures.** Jets in $(z_0, d)$ are carried through Lohner's method
+([`research/calc/gap3_fold.py`](../research/calc/gap3_fold.py)). Three
+choices were each needed to make them tight; the failures are recorded in
+the module docstring and the idea log.
+
+1. **A block-diagonal frame**, one block per jet order. The base curve does
+   not see its jets, but a full QR frame lets the jets' large widths leak
+   into it.
+2. **$z_0$ as a parameter of the set**, next to $d$. Its first-order effect
+   is then carried exactly and correlated across all jet orders.
+3. **$z$ as the clock near the plane.** The last stretch uses
+   $\tau \in [0, 1]$ with $z = z_{\rm sw}(1 - \tau)$, as in Theorem C.
+   Every curve crosses at $\tau = 1$, where the jets are the derivatives of
+   the crossing state:
+
+   ```math
+   F_z = \alpha_x\cdot x_z,\qquad
+   F_{zz} = \alpha_{xx}(x_z, x_z) + \alpha_x\cdot x_{zz},\qquad
+   F_d = \alpha_x\cdot x_d .
+   ```
+
+As a check, a thin run at the fold point reproduces Theorem C's
+$\partial^2_{z_0}F$ and $\partial_dF$. Those were computed by a different
+integrator in a different parametrisation (`tests/test_gap3_fold.py`).
+
+**Results.** Pieces of width $2^{-12}$ in $z_0$; wider ones blow up.
+
+| Part | Region | Pieces | Bounds |
+| --- | --- | --- | --- |
+| 1 | $d \in [d_c - 10^{-13},\ 0.7662354]$ | 33, none split | $\partial^2_{z_0}F \ge 125.1$, $\partial_dF \ge 0.591$ |
+| 2 | $d \in [0.7662354,\ 0.7677002]$ | 198, $2^{-12}$ in $d$, none split | $\partial_dF \ge 0.177$ |
+
+The records are
+[`gap3_fold_window.txt`](../research/calc/data/gap3_fold_window.txt) and
+[`gap3_fold_fd.txt`](../research/calc/data/gap3_fold_fd.txt). The
+holes the sweep leaves out map into the fold window, which is checked by
+interval arithmetic (`gap3_interval.holes_inside`).
+
+### 7.5 · Results
+
+Run on 2026-10-30/31, on 4 cores. The stored log is
+[`research/calc/data/gap3_interval_stage1.log`](../research/calc/data/gap3_interval_stage1.log).
+
+- **Coverage.** The partition of
+  $[\delta_{\min}, \delta_{\max}] \times [d_c - 10^{-13},\ 0.767578]$, minus the fold
+  holes, has 2,644 boxes. All are excluded, 33 of them after bisection: 2,677 excluded boxes in
+  total. `check_cover` confirms coverage, the holes map into the fold window, and the
+  $z_0$-window $[d/2 + s_*, R_*]$ is covered.
+- **Events** (merged across $d$), in the same order as at $d = 0.78$ (§5). The waist event W
+  replaces the medium-neck E2 range there:
+
+| $\delta$ (offset from the top of the individual horizon) | Event | Boxes |
+| --- | --- | --- |
+| $[-0.0625, -0.0027]$ | E3 | 575 |
+| $[-0.0027, +0.0022]$ | N | 160 |
+| $[+0.0022, +0.0095]$ | W | 291 |
+| $[+0.0094, +0.2861]$, minus the fold window | E1 | 1,464 |
+| $[+0.2861, +0.4688]$ | E2 | 187 |
+
+- **Band certificate** for all 382 waist boxes recorded with $d \le 0.767578$ (291 of them in
+  the final cover): *running at the time of this commit; the theorem is pending its result.*
+
+**Replay status.**
+
+- The sweep was run once.
+- `verify` replays the band certificate and checks coverage. It does not re-run the sweep's
+  boxes; that is a resume of `python -m research.calc.gap3_interval 4` on an empty log, about
+  7 hours.
+- The neck and fold-lemma certificates were each run once, and their records are stored.
+
+Together with the barriers, the reduction of §1 and the lemmas of §§2–3, these prove
+Theorem F′. ∎
+
+**Falsification.** At $d = 0.76595 < d_c$, two common minimal surfaces
+exist, at $z_0 = 0.630956$ and $0.634135$. The interval code leaves the
+boxes containing them unexcluded, and excludes a box between them by E1
+(`tests/test_gap3_interval.py`).
+
+**Trust base.** Everything in §6, plus `gap3_interval.py`, `gap3_fold.py`
+and `certify_rel`. As for Theorem F, nobody outside this project has
+reviewed the code.
 
 ## Discussion prompts
 
