@@ -22,8 +22,17 @@ Curvature of spacetime on the left, energy and momentum of matter on the right.
 | [`notes/04-exact-solutions.md`](notes/04-exact-solutions.md) | Schwarzschild, de Sitter, FLRW (Friedmann equations), Kerr. |
 | [`notes/05-gravitational-waves.md`](notes/05-gravitational-waves.md) | Linearized gravity, polarizations, the quadrupole formula. |
 | [`notes/06-open-questions.md`](notes/06-open-questions.md) | Discussion starters: energy, Λ, uniqueness, singularities, quantum gravity. |
+| [`notes/07-the-merger-problem.md`](notes/07-the-merger-problem.md) | What "an exact black-hole merger" would mean: initial data, event vs apparent horizons, what is global. |
+| [`notes/08-kastor-traschen.md`](notes/08-kastor-traschen.md) | The one exact merger we have (Λ > 0, charged), checked line by line, and why Λ → 0 does not help. |
+| [`notes/09-merger-hypotheses.md`](notes/09-merger-hypotheses.md) | Four new attempts: two obstructions, one designed proof, and an onset law for the common horizon. |
+| [`notes/10-onset-theorem-proof.md`](notes/10-onset-theorem-proof.md) | Proof that the common horizon of near-critical Brill–Lindquist data appears at a time linear in the excess separation, with a computer-assisted fold. |
+| [`notes/11-event-horizon-merger.md`](notes/11-event-horizon-merger.md) | Event horizons of Hintz's extreme-mass-ratio mergers: merger and connected black-hole region (Λ ≥ 0, escape-defined); with null infinity for Λ = 0 (the textbook black-hole region equals the escape-defined one), resting on our reading of the far-field structure in Hintz 2026. |
+| [`notes/12-no-common-horizon.md`](notes/12-no-common-horizon.md) | Computer-assisted proof that Brill–Lindquist data just beyond the critical separation have no common apparent horizon anywhere: at $d = 0.78$ (Theorem F), and for every $d$ from $d_c$ to $0.7676$ (Theorem F′). Lohner-validated shooting, a thin-neck instability lemma, and a local lemma at the fold. |
+| [`notes/13-head-on-collision.md`](notes/13-head-on-collision.md) | One head-on collision, constructed: near-critical Brill–Lindquist data whose vacuum evolution has two apparent horizons at first and a common one at a certified time (Theorem H), with what it does and does not show. |
+| [`notes/14-explicit-binaries.md`](notes/14-explicit-binaries.md) | Toward an explicit dynamical binary metric: what counts as a result, which routes are blocked (Petrov type I of the head-on spacetime; integrable methods need struts), and an exact convergent series for the BL head-on spacetime near the merger. No explicit binary metric is known. |
+| [`research/`](research/) | The merger research project: status, claim ledger, idea log, literature, calculations. |
 | [`einstein/`](einstein/) | SymPy code: Christoffel symbols, Riemann, Ricci, Einstein tensor, Kretschmann scalar. |
-| [`tests/`](tests/) | Checks that the solutions in the notes really solve the equations. |
+| [`tests/`](tests/) | Checks that the solutions in the notes really solve the equations, and every symbolic claim in notes 07–09. |
 
 ## Quick start
 

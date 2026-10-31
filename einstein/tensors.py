@@ -23,7 +23,10 @@ class Spacetime:
 
     Pass simplify=False when you will post-process the expressions yourself
     (for example, expanding to first order in a small parameter): simplifying
-    the full nonlinear expressions first is slow and unnecessary.
+    the full nonlinear expressions first is slow and unnecessary. Pass a
+    function instead, such as sp.cancel, to apply it at every stage: for a
+    metric that is rational in the coordinates, sp.cancel puts each component
+    in canonical form, so a result of 0 is an exact identity.
     """
 
     def __init__(self, metric, coords, simplify=True):
@@ -34,7 +37,10 @@ class Spacetime:
             raise ValueError(f"metric is {self.metric.shape}, expected {self.dim}x{self.dim}")
         if self.metric != self.metric.T:
             raise ValueError("metric must be symmetric")
-        self._simplify = sp.simplify if simplify else (lambda expr: expr)
+        if callable(simplify):
+            self._simplify = simplify
+        else:
+            self._simplify = sp.simplify if simplify else (lambda expr: expr)
 
     @cached_property
     def inverse(self):
