@@ -1,6 +1,53 @@
 # Status
 
-*Updated 2026-10-31 (sessions 1–10). Start here.*
+*Updated 2026-10-31 (sessions 1–11). Start here.*
+
+## Session 11: route J — a certified convergence time near the critical surface
+
+Branch `claude/route-j-ck-certificate`, from the research head `afe0bed` of
+`claude/black-hole-merger-solutions-rpa9hj`. Note: [`notes/15-route-j-convergence.md`](../notes/15-route-j-convergence.md).
+
+- **Proposition T (computer-assisted; candidate new).**
+  - The objects: $U$, the closed tube of radius $0.02$ about the critical surface $S_c$, and
+    $I = [d_c - 10^{-13}, 0.767578125]$.
+  - The claim: for every $d \in I$, the geodesic-slicing vacuum development of the BL data exists
+    on $U \times (-T_{\min}, T_{\min})$, with $T_{\min} = 2.988\times10^{-4}\,M$. It is real
+    analytic there and equal to its convergent Taylor series in $t$, with an explicit truncation
+    bound.
+  - Method: the abstract Cauchy–Kovalevskaya theorem (Nishida; Baouendi–Goulaouic), with
+    re-derived constants. The Lipschitz and source bounds are certified by Arb balls on 2,815
+    complex cells.
+  - Record: `research/calc/data/ck_bound.json`. Replay: `python -m research.calc.ck_bound`
+    (about 2.5 min). It was replayed in session 11 and is bit-identical.
+- **Corollary J (qualitative).**
+  - For $d \in (d_c, d_c + \delta_1)$, the local common-MOTS formation of Proposition B happens
+    inside the certified region.
+  - $\delta_1$ is **not explicit**. The heuristic from the linear law is
+    $\delta_1 \approx T_{\min}/2.39 = 1.25\times10^{-4}$.
+- **Not achieved:** an explicit $\delta$ with $\lvert t_* - c(d - d_c)\rvert \le C_2(d - d_c)^2$.
+  The blocking estimates are in notes/15 §7.3:
+  - a certified spectral gap $\lambda_2(L_{S_c})$, over all modes;
+  - certified second derivatives of the true shooting function on $\Sigma_t$. These need a
+    validated MOTS shooting solver for non-conformally-flat data with $K \ne 0$.
+- **Scope.** Local branch only. It is not shown to be the first common apparent horizon of the
+  slicing, and it says nothing about event horizons.
+- **Audit of route E** (notes/15 §8):
+  - The note-14 claim "T is analytic in d, hence bounded below" was not a proof; it is replaced
+    by the uniform certificate.
+  - $T \approx 2.7$ remains numerical.
+  - Constraint propagation is now cited to Frittelli 1997 (read). Both constraints are also
+    checked order by order.
+
+Session-11 evidence labels:
+
+| Item | Label | How it was checked in session 11 |
+| --- | --- | --- |
+| Proposition T | computer-assisted | **recomputed** twice (bit-identical); precision 128 vs 192 bits agrees to $7\times10^{-10}$ |
+| tests `test_ck_bound.py`, momentum constraint | tests | **run** |
+| Theorem C box, $c \in [2.3768, 2.3936]$ | computer-assisted | **read from stored evidence** (the slow test was not rerun); the profile run starts from its box |
+| Theorem F′, Theorem F | computer-assisted | **read from stored evidence**. The 111 fast tests run at the session-11 baseline (13 min) exercise their components and the Theorem F log coverage; the F′ `verify` replay and both sweeps were not rerun |
+| Proposition B, Corollary J | analytic | written out; $\delta_0$, $\delta_1$ not explicit |
+
 
 ## Session 10: baseline audit and the explicit-binary programme
 
@@ -42,9 +89,9 @@ The historically flagged issues stand as follows.
   convergent series in $t$ (Cauchy–Kovalevskaya): category B, local. It is validated against exact
   Schwarzschild free fall. Near $S_c$ the radius is about $2.7M$ (numerical), against
   $t_* \le 0.0033$ on the interval of Theorem F′.
-- **Most promising route (J):** a certified lower bound on that radius would give an exact
-  convergent representation of a region containing a proved apparent-horizon merger, and could
-  make $\delta_0$ explicit.
+- **Most promising route (J):** a certified lower bound on that radius. *Done in session 11:*
+  Proposition T, $T_{\min} = 2.988\times10^{-4}$ on a tube about $S_c$. Making $\delta_0$ explicit
+  is still open (see above).
 
 
 ## Established so far
@@ -180,10 +227,13 @@ case appears to be **potentially new**.
    our own code. Tests and cross-checks are listed in notes/09, but no
    independent person has reviewed the code.
 3. **Global absence of a common MOTS on $\Sigma_0$ for $d > d_c$.**
-   - Proved at $d = 0.78$ (Theorem F, computer-assisted, session 7).
-   - Every other $d$ is open. That includes the $d$ near $d_c$ where the onset
-     theorem applies: its $\delta_0$ is unspecified.
-   - The new code's trust base: about 1,100 lines plus Arb, tested and
+   - Proved at $d = 0.78$ (Theorem F, session 7) and for every $d \in (d_c, 0.767578]$
+     (Theorem F′, sessions 9–10), both computer-assisted.
+   - Open for $d \in (0.767578, 0.78)$ and $d > 0.78$, except at large $d$, where Dain–Weinstein–Yamada
+     apply (non-quantitative).
+   - Open for $0 < t < t_*$ outside a neighbourhood of $S_c$. So the common MOTS of Theorem H is not
+     shown to be the first common apparent horizon.
+   - The code's trust base: about 1,100 lines (F) plus about 1,500 (F′) plus Arb, tested and
      falsified, not independently reviewed.
 4. **Event horizons in vacuum.** Status:
    - Theorem D (Λ ≥ 0, escape-defined black-hole region) is done.
@@ -216,38 +266,25 @@ case appears to be **potentially new**.
 
 ## Next concrete calculation
 
-*(Session 10: the next decisive calculation is route J. Run the route-E recursion with interval
-(Arb) jets, and add a Cauchy–Kovalevskaya majorant tail. That gives a certified lower bound on
-the convergence radius near $S_c$, and certified $\partial_t^2F$ toward an explicit $\delta_0$.
-See `route_map.md` §J. The items below are from session 8.)*
+*(Session 11.)* The decisive calculation toward an explicit $\delta$ in Theorem H (notes/15 §7.3):
 
-Two candidates, in order of tractability.
+1. **The spectral gap of the Jacobi operator of $S_c$, over every Fourier mode.** Certify
+   $\lambda_2(L_{S_c}) \ge \underline\lambda > 0$. Each mode $e^{im\varphi}$ gives an ODE eigenvalue
+   problem on the profile. The $m = 0$ ground state $\phi_0 > 0$ with eigenvalue 0 is Theorem C.
+   This quantifies the Lyapunov–Schmidt step of Proposition B.
+2. **A validated axisymmetric MOTS shooting solver for $(\gamma(t), K(t))$.** Its inputs are the
+   Proposition T enclosures and Cauchy estimates (notes/15 §6). Its outputs are certified bounds on
+   $\partial_t^2\Phi$, $\partial_t\partial_d\Phi$, $\partial_t\partial_{z_0}\Phi$, $\partial_d^2\Phi$,
+   $\partial_d\partial_{z_0}\Phi$ and $\inf\partial^2_{z_0}\Phi$ on
+   $[z_{0,c} \pm r] \times [d_c, d_c + \delta] \times [0, T_{\min}]$.
+3. Optional: a sharper convergence time (better scale or constants). The full interval of
+   Theorem F′ needs $T \gtrsim 0.0033$, eleven times $T_{\min}$.
 
-**(a) Locate the merger event as ε → 0.** This is the first point where the
-two horizon components touch. It would need the horizon at the scale where
-the margins $c$, $\eta$ of Theorem D are removed: null geodesics, not
-timelike curves. The heuristic answer is Emparan–Martínez's exact
-extreme-mass-ratio horizon, so the natural first step is a rigorous version
-of their rescaling limit.
-
-**(b) Gap 3 for a whole interval of separations.** The next target is
-"no common MOTS at $t = 0$ for every $d \in (d_c, 0.78]$", which would join
-Theorem F to the onset theorem. Route:
-
-1. Make $d$ a ball parameter throughout. The code is ready for it in
-   `f_bl`, `start_box`, the barriers and the neck lemma.
-2. Sweep $(z_0, d)$-boxes as in Theorem F, leaving out a small neighbourhood
-   of the fold point $(z_{0,c}, d_c)$.
-3. Cover that neighbourhood with the local uniqueness of Theorem C. Its
-   Krawczyk box is tiny, so a larger certified neighbourhood is needed
-   first: a Krawczyk test on a bigger box, or Taylor models.
-
-Cost driver: the medium necks (radius $0.005$–$0.02$), where the sweep needs
-$z_0$-intervals of width about $10^{-3}(z_0 - z_{\rm top})$. A Lohner
-variant that keeps parameters out of the moving frame
-($x = m + Ar + P(p - p_0)$) would let the thin-neck lemma reach radius
-about $0.03$, where it holds in floating point. That would remove most of
-this cost (`research/calc/gap3_neck_lohner.py`, idea log session 7).
+*Earlier items.* (a) Locate the merger event in Hintz's EMR spacetimes as ε → 0: the first point
+where the two horizon components touch. This needs the horizon at the scale where the margins
+$c$, $\eta$ of Theorem D are removed, i.e. null geodesics rather than timelike curves. The
+heuristic answer is Emparan–Martínez's exact extreme-mass-ratio horizon. (b) Gap 3 for a whole
+interval of separations: *done* as Theorem F′ (sessions 9–10).
 
 **Gap 3 at $d = 0.78$: done (session 7, notes/12).** The obstruction
 recorded in session 6 was the necks of every size near $z_{\rm top}$. It is

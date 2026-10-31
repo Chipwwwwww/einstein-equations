@@ -22,12 +22,12 @@ No route has produced a category-A metric. **No new exact solution was found.**
 | B. Kerr–Schild-type decompositions | A | **rejected** (single KS, any algebraically special form) | BL head-on spacetime is Petrov type I on an open dense set (proved, exact) |
 | C. Interaction corrections to two-hole seeds | A/D | untested beyond literature | superposed KS data are not vacuum (literature); first correction is an unrestricted PDE |
 | D. Matched asymptotic zones | D | untested | finite-order matching is not exact; the transition-region residual is $O(\epsilon^n)$, not zero |
-| E. Time series from exact data | **B** (local) | **tested, works** | BL development in geodesic gauge = convergent series (Cauchy–Kovalevskaya), coefficients computed to $t^{14}$, validated |
+| E. Time series from exact data | **B** (local) | **tested, works** | BL development in geodesic gauge = convergent series (Cauchy–Kovalevskaya), coefficients computed to $t^{14}$, validated; certified convergence time $T_{\min} = 2.988\times10^{-4}$ near $S_c$ (session 11) |
 | F. Characteristic / tetrad formulations | B/C | screened | exact null data exist (Wessels 1998), but they are data, not a spacetime |
 | G. Solution-generating methods (Ernst, inverse scattering, Bäcklund) | A | **rejected** for regular AF radiating binaries (literature) | need 2 commuting Killing fields; AF radiative ⇒ boost-rotation symmetric ⇒ struts or negative mass |
 | H. Resummation of expansions | B | untested | no convergence theorem for PN/PM; formal |
 | I. Numerical/symbolic discovery | E | started (route E data) | ratio estimates of the convergence radius in $t$ (numerical evidence only) |
-| J. Near-critical BL as the explicit example | B + C | **promising** | combine E with Theorem H (note 13): the merger region is inside the convergence domain for $d \to d_c$ |
+| J. Near-critical BL as the explicit example | B + C | **partly done** (session 11) | Proposition T: certified $T_{\min}$ on a tube about $S_c$, uniform in $d \in [d_c, 0.767578]$; Corollary J: local MOTS formation inside it for $d - d_c < \delta_1$, $\delta_1$ not explicit (notes/15) |
 
 ## A · Symmetry reduction with retained radiation
 
@@ -102,7 +102,8 @@ No route has produced a category-A metric. **No new exact solution was found.**
 - **Convergence (theorem, standard).** In second-order form the system is of Kovalevskaya type.
   The data are analytic away from the punctures, so the series converges for $|t| < T(x)$, and the
   constraints propagate. This makes it **category B** (exact, convergent) at **level 2** (a local
-  dynamical spacetime). $T(x)$ is not computed.
+  dynamical spacetime). *Session 11:* $T \ge T_{\min} = 2.988\times10^{-4}$ on the tube of radius
+  $0.02$ about $S_c$, certified (notes/15, Proposition T). Elsewhere $T(x)$ is not computed.
 - **Validation.**
   - Single centre: matches the exact Schwarzschild free fall from rest, $(r/R_0)^2$, through
     $t^{10}$ to $10^{-12}$.
@@ -112,8 +113,8 @@ No route has produced a category-A metric. **No new exact solution was found.**
   interval. Geodesic slicing reaches the crunch at finite $t$: for Schwarzschild,
   $T = \pi\sqrt{R_0^3/8M}$, which is $\pi M$ at the throat. The radius $T(x)$ is a gauge-dependent
   domain, not a physical time limit.
-- **Next.** Rigorous lower bounds on $T$ near $S_c$, via majorants or interval jets. This is the
-  input route J needs.
+- **Next.** *Done near $S_c$ (session 11):* an abstract Cauchy–Kovalevskaya bound with constants
+  certified in Arb. A sharper scale would be needed to reach the numerical $T \approx 2.7$.
 
 ## F · Characteristic, double-null, tetrad formulations
 
@@ -159,20 +160,31 @@ Route E's coefficients serve as discovery data. Ratio estimates $|g_k/g_{k+1}|$ 
 (numerical evidence only; for Schwarzschild they converge slowly to $T^2$ from above). No pattern
 promoted to a claim.
 
-## J · Near-critical BL: the explicit example (promising)
+## J · Near-critical BL: the explicit example (partly done, session 11)
 
 - **Combination.**
   - Theorem H (note 13; Proposition B + Theorem F′): an apparent-horizon merger at
     $t_*(d) = c(d - d_c) + O((d - d_c)^2)$, $c \in [2.3768, 2.3936]$.
   - Route E: near the critical surface $S_c$ the spacetime *is* the convergent series for
-    $|t| < T$. $T$ is uniform near $S_c$ for $d$ near $d_c$, by analytic dependence on $d$.
-  - So for $d - d_c$ small the whole merger event ($0 \le t \le t_*$, near $S_c$) lies inside the
-    domain of an explicit convergent representation: category B for the metric, C for the merger.
+    $|t| < T$.
+- **Done (notes/15).**
+  - *Proposition T* (computer-assisted). For every $d \in [d_c - 10^{-13}, 0.767578125]$, the
+    development equals its convergent series on $U \times (-T_{\min}, T_{\min})$. Here $U$ is the
+    closed tube of radius $0.02$ about $S_c$ and $T_{\min} = 2.988\times10^{-4}$. The proof is the
+    abstract CK theorem with constants re-derived from Baouendi–Goulaouic; $C$ and $K_0$ are
+    certified on 2,815 complex cells. The note-14 argument "$T$ is analytic in $d$, hence bounded
+    below" was not a proof and is replaced by this.
+  - *Corollary J*. For $d \in (d_c, d_c + \delta_1)$ the local common-MOTS formation lies inside
+    that region: category B for the metric, C for the merger. $\delta_1$ is not explicit;
+    $\approx 1.25\times10^{-4}$ by the linear law (heuristic).
 - **Missing.**
-  - An explicit $T$ (rigorous lower bound).
-  - An explicit $\delta_0$, from a quantitative IFT using bounds on $\partial_t^2F$ obtained from
-    the series.
-  - Control of common MOTSs outside $\mathcal U$ for $0 < t < t_*$.
-- **Next decisive calculation.** Interval (Arb) jets for the route-E recursion. Combined with a
-  majorant tail bound, they would give a certified lower bound on $T$ near $S_c$ and certified
-  $\partial_t^2 F$.
+  - An explicit $\delta$ (blocking estimates, notes/15 §7.3):
+    - a certified spectral gap $\lambda_2(L_{S_c})$ over all Fourier modes;
+    - certified second derivatives of the true shooting function on $\Sigma_t$, from a validated
+      MOTS solver for $(\gamma(t), K(t))$ fed by the Proposition T enclosures.
+  - Coverage of the whole Theorem F′ interval. It needs $T \gtrsim 0.0033$, eleven times
+    $T_{\min}$.
+  - Control of common MOTSs outside $\mathcal U$ for $0 < t < t_*$. Without it, the local branch is
+    not shown to be the first common apparent horizon.
+- **Next decisive calculation.** The $m \ge 0$ spectral gap of $L_{S_c}$ (validated ODE
+  eigenvalue enclosures on the profile), then the validated shooting solver on $\Sigma_t$.

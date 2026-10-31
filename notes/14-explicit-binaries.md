@@ -159,7 +159,9 @@ independent jet engine: truncated power series in $(\rho, z, t^2)$.
 and $(\rho, z) = (0.25, 0)$, near where the critical surface crosses the plane, the coefficients
 through $t^{14}$ give ratios $|g_k/g_{k+1}| \approx 7.5$ for the $zz$ component. That suggests a
 convergence radius $T \approx 2.7$ there. For comparison, Schwarzschild at the throat has
-$T = \pi M$, set by the crunch of geodesic slicing.
+$T = \pi M$, set by the crunch of geodesic slicing. The ratio estimate is heuristic. The
+certified lower bound near $S_c$ is $T_{\min} = 2.988\times10^{-4}$
+([note 15](15-route-j-convergence.md), Proposition T).
 
 **A structural fact.** The magnetic part of the Weyl tensor is
 
@@ -183,21 +185,30 @@ $B = O(t^3)$. The $t^3$ coefficient is nonzero for BL, while for Schwarzschild $
 
 Combine S with Theorem H ([note 13](13-head-on-collision.md)). For $d$ just above $d_c$, a
 common apparent horizon appears at $t_*(d) = c\,(d - d_c) + O((d - d_c)^2)$, with
-$c \in [2.3768, 2.3936]$, near the critical surface $S_c$. The radius $T$ depends analytically on
-$d$, so it is bounded below near $S_c$ for $d$ near $d_c$. Hence, for $d - d_c$ small:
+$c \in [2.3768, 2.3936]$, near the critical surface $S_c$. The time of validity is bounded below
+near $S_c$, uniformly for $d$ near $d_c$. *(Session 10 argued this from analytic dependence on
+$d$, which is not a proof. Session 11 proves it with an explicit bound: Proposition T of
+[note 15](15-route-j-convergence.md).)* Hence, for $d - d_c$ small:
 
 > the whole apparent-horizon merger region ($0 \le t \le t_*$, near $S_c$) is covered by the
 > convergent series of S.
 
 That is a category-B representation of a spacetime region containing a level-4 (apparent-horizon)
-merger, with a category-C proof of the merger. On the interval of Theorem F′, $t_* \le 0.0033$,
-against $T \approx 2.7$: a factor of about 800.
+merger, with a category-C proof of the merger.
+
+- On the interval of Theorem F′, $t_*$ reaches about $0.0033$ (linear law).
+- That is far below the numerical $T \approx 2.7$.
+- It is eleven times the certified $T_{\min} = 2.988\times10^{-4}$. So the certified statement
+  (Corollary J of note 15) covers only $d$ close enough to $d_c$; by the linear law (heuristic),
+  $d - d_c \lesssim 1.25\times10^{-4}$.
 
 **Missing, in order of difficulty.**
 
-1. A rigorous lower bound on $T$ near $S_c$. The plan: interval (Arb) jets for the recursion, plus
-   a Cauchy–Kovalevskaya majorant for the tail.
-2. Certified bounds on $\partial_t^2 F$ from the series, which would make Proposition B's
+1. *(Done in session 11, note 15.)* A rigorous lower bound on $T$ near $S_c$. It was obtained
+   with the abstract Cauchy–Kovalevskaya theorem and Arb-certified constants, not with interval
+   jets.
+2. Certified second derivatives of the true shooting function on $\Sigma_t$, and a certified
+   spectral gap of the Jacobi operator of $S_c$ (note 15 §7.3). These would make Proposition B's
    $\delta_0$ explicit and give a theorem for a specific $d$.
 3. Common MOTSs away from $S_c$ for $0 < t < t_*$.
 4. Event horizons, which are out of reach for these data.
@@ -224,8 +235,9 @@ against $T \approx 2.7$: a factor of about 800.
 | G: two-Killing integrable methods give accelerated sources (struts or negative mass) | literature (reviews read; 1984 theorem not read) |
 | S: convergent series, full vacuum equations | standard theorem applied; code validated |
 | $T \approx 2.7$ near $S_c$ | numerical evidence |
+| $T \ge 2.988\times10^{-4}$ on a tube about $S_c$, uniformly for $d \in [d_c, 0.767578]$ | computer-assisted (note 15) |
 | $B = O(t^3)$ for conformally flat time-symmetric data | exact at order $t$; nonzero $t^3$ coefficient numerical |
-| J: the merger region lies inside the convergence domain for $d \to d_c$ | proved qualitatively (analytic dependence); explicit bounds missing |
+| J: the merger region lies inside the convergence domain for $d \to d_c$ | proved with an explicit time (note 15, Corollary J); the range of $d$ is not explicit |
 | explicit binary metric (category A) | **not found** |
 
 ## Discussion prompts
