@@ -12,6 +12,17 @@ from flint import arb, ctx
 from research.calc import fold_proof as fp
 
 
+@pytest.fixture(autouse=True)
+def _working_precision():
+    """fold_proof works at 256 bits. Other modules set the global python-flint precision on
+    import (research/calc/gap3_interval.py uses 128), and pytest imports every test module before
+    running any, so pin the precision here and restore it afterwards."""
+    old = ctx.prec
+    ctx.prec = 256
+    yield
+    ctx.prec = old
+
+
 def jet(value):
     return fp.J([arb(value)] + [arb(0)] * 5)
 
