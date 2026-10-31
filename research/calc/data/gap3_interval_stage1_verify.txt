@@ -1,0 +1,14 @@
+# python -m research.calc.gap3_interval verify gap3_interval_stage1.log 0.767578125 4 (session 10, 2026-10-31)
+# runs/events count every logged run with d <= 0.767578125, including parents that were bisected (stuck, plane-undecided).
+  band round: 609 cells, 144 new after splitting, 573 certified, 0 failed
+  band round: 144 cells, 0 new after splitting, 717 certified, 0 failed
+d_range: (0.7661974282399, 0.767578125)
+runs: 2902
+events: {'E3': 595, 'N': 241, 'W': 382, 'E1': 1464, 'plane-undecided': 19, 'E2': 187, 'stuck': 14}
+uncovered: []
+holes_inside_fold_window: True
+z0_window: True
+waists: 382
+band_cells: 717
+band_failed: 0
+uncertified_waists: []

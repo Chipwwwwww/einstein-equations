@@ -6,10 +6,8 @@ asymptotically flat vacuum spacetime, with the merger proved rather than
 simulated. This note assembles it. The ingredients are proved in notes 09,
 10 and 12; here they are put together, with each one's status.
 
-*Status (session 9, while writing):* part 1 of the theorem rests on
-Theorem F′ (note 12 §7). Its last sweep is still running and has not yet
-been verified. Until it is, part 1 is proved only at $d = 0.78$, which may
-lie outside the range of the theorem.
+*Status:* part 1 of the theorem rests on Theorem F′ (note 12 §7). Theorem F′
+was verified in session 10 for every $d \in (d_c, 0.767578]$.
 
 No closed-form metric is known for such a collision ([note 07](07-the-merger-problem.md) §4).
 So "constructing" the example means three steps:

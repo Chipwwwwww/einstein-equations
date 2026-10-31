@@ -471,7 +471,10 @@ Run on 2026-10-30/31, on 4 cores. The stored log is
 | $[+0.2861, +0.4688]$ | E2 | 187 |
 
 - **Band certificate** for all 382 waist boxes recorded with $d \le 0.767578$ (291 of them in
-  the final cover): *running at the time of this commit; the theorem is pending its result.*
+  the final cover): 609 cells of $2^{-10}$, of which 573 certified at once, with the other 36
+  quartered and all 144 quarters certified. That makes 717 cells, none failing, and every waist
+  box is covered
+  ([`gap3_interval_stage1_verify.txt`](../research/calc/data/gap3_interval_stage1_verify.txt)).
 
 **Replay status.**
 
