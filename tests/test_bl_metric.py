@@ -103,10 +103,15 @@ def test_constraints_vanish_order_by_order():
     assert max(float(abs(v).upper()) for m in mom for v in m) < 1e-25
 
 
+def _tube():
+    """The whole-tube certificate with the session-12 constants (times are fractions of its T)."""
+    return bm.load_certificate("ck_bound_sharp.json")
+
+
 def test_axis_is_regular_and_the_metric_is_axisymmetric():
     """On the axis the Cartesian chart is regular: gamma is finite, diagonal and gamma_xx = gamma_yy.
     Off the axis, two points related by a rotation have rotated metrics (equivariance)."""
-    cert = bm.load_certificate()
+    cert = _tube()
     t = arb("0.2") * arb(cert["T_min"])
     r = bm.evaluate_metric(t, "0", "0", "0.62", "0.7662", order=2)
     g = r["g"]
@@ -126,8 +131,7 @@ def test_axis_is_regular_and_the_metric_is_axisymmetric():
 
 
 def test_refuses_outside_the_certified_domain():
-    cert = bm.load_certificate()
-    T = arb(cert["T_min"])
+    T = arb(max(c["T_min"] for c in bm.load_certificates()))
     with pytest.raises(bm.DomainError):
         bm.evaluate_metric(T * arb("1.01"), "0.26", "0", "0", "0.7662", order=2)    # |t| >= T_min
     with pytest.raises(bm.DomainError):
@@ -139,7 +143,7 @@ def test_refuses_outside_the_certified_domain():
 
 
 def test_unreachable_tolerance_fails_informatively():
-    cert = bm.load_certificate()
+    cert = _tube()
     with pytest.raises(bm.DomainError, match="not reached"):
         bm.evaluate_metric(arb(cert["T_min"]) / 2, "0.26", "0", "0", "0.7662", tolerance=1e-40,
                            max_order=2)
@@ -148,7 +152,7 @@ def test_unreachable_tolerance_fails_informatively():
 def test_overlapping_enclosures_precision_order_patch_and_time_reflection():
     """Certified enclosures computed differently must overlap: 128 vs 192 bits, order 2 vs 3, a
     spatial patch vs points inside it; and gamma is even, d_t gamma odd in t."""
-    cert = bm.load_certificate()
+    cert = _tube()
     t = arb("0.3") * arb(cert["T_min"])
     x, y, z, d = "0.17", "0.11", "0.5", "0.7662"
     r1 = bm.evaluate_metric(t, x, y, z, d, order=2, precision=128)
@@ -169,11 +173,13 @@ def test_overlapping_enclosures_precision_order_patch_and_time_reflection():
 
 
 def test_lorentzian_on_the_whole_certified_domain():
-    """|gamma(t) - gamma_0|_F <= R_gamma B on U for |t| < T_min, and gamma_0 = psi^4 delta >= psi_min^4:
-    so gamma(t) is positive definite (g Lorentzian) wherever the evaluator certifies."""
-    cert = bm.load_certificate()
-    lower = arb(cert["psi_abs_lower"]) ** 4 - arb(cert["radii"][0]) * arb(cert["sup_u_weighted_bound"])
-    assert lower > 16
+    """|gamma(t) - gamma_0|_F <= R_gamma B on U_c for every certified pair (a, B) of every certificate,
+    and gamma_0 = psi^4 delta >= psi_min^4: so gamma(t) is positive definite (g Lorentzian) wherever
+    the evaluator certifies."""
+    for cert in bm.load_certificates():
+        p = arb(cert["psi_abs_lower"])
+        for a, B in bm.certified_pairs(cert):
+            assert p * p * p * p - arb(cert["radii"][0]) * arb(B) > 15
     assert ctx.prec >= 53
 
 
@@ -209,3 +215,29 @@ def test_conformally_flat_and_silent_ansatze_are_excluded():
         xs = (arb("0.6"), arb("0.2"), arb("0.9"))
         assert all(x.contains(0) for v in st.cotton_s1(xs, None, arb(1), centres=cs).values() for x in v)
         assert all(x.contains(0) for v in st.magnetic_t3(xs, None, arb(1), centres=cs).values() for x in v)
+
+
+def test_certificates_combine_and_respect_their_regions():
+    """A waist point uses the waist certificate and the tube certificates; a point near the top of S_c
+    only the tube ones; the waist certificate alone refuses the top point; tails from the combination
+    are no larger than from any single certificate; the corrected Baouendi-Goulaouic time is below
+    the CK' time for the same constants."""
+    certs = {c["file"]: c for c in bm.load_certificates()}
+    waist, tube = certs["ck_bound_waist.json"], certs["ck_bound_sharp.json"]
+    t = arb("0.3") * arb(tube["T_min"])
+    r = bm.evaluate_metric(t, "0.26", "0", "0.05", "0.7662", order=3)
+    assert "ck_bound_waist.json" in r["error_budget"]["certificate"] and len(r["error_budget"]["certificate"]) >= 2
+    r_w = bm.evaluate_metric(t, "0.26", "0", "0.05", "0.7662", order=3, certificate=waist)
+    r_t = bm.evaluate_metric(t, "0.26", "0", "0.05", "0.7662", order=3, certificate=tube)
+    for k, v in r["error_budget"]["time_truncation"].items():
+        assert v <= r_w["error_budget"]["time_truncation"][k] and v <= r_t["error_budget"]["time_truncation"][k]
+    top = bm.evaluate_metric(t, "0", "0", "0.62", "0.7662", order=2)
+    assert "ck_bound_waist.json" not in top["error_budget"]["certificate"]
+    with pytest.raises(bm.DomainError):
+        bm.evaluate_metric(t, "0", "0", "0.62", "0.7662", order=2, certificate=waist)
+    # beyond the tube's time but inside the waist's: certified only on the waist region
+    tw = arb("0.9") * arb(waist["T_min"])
+    assert bm.evaluate_metric(tw, "0.26", "0", "0.05", "0.7662", order=3)["status"] == "certified"
+    with pytest.raises(bm.DomainError):
+        bm.evaluate_metric(tw, "0.17", "0.11", "0.5", "0.7662", order=3)
+    assert tube["T_bg"] < tube["T_min"]
