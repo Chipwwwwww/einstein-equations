@@ -18,7 +18,8 @@ For conformally flat time-symmetric data H = O(t^3), so curl H perturbs E from t
 gamma from t^6: gamma - gamma_silent = O(t^6). The experiments below test this, identify the t^6
 remainder, and compare the silent and true series to high order (analytic structure).
 
-Run: python -m research.calc.bl_silent   (writes research/calc/data/bl_silent.json)
+Run: python -m research.calc.bl_silent        (writes research/calc/data/bl_silent.json)
+     python -m research.calc.bl_silent long   (t^20 at two points: research/calc/data/bl_silent_N10.json)
 """
 
 import json
@@ -156,6 +157,17 @@ def silent_crunch(E0_eigs, t_max=20.0):
     return float(sol.t[-1]) if sol.status == 1 else None
 
 
+def fit_radius(c, k0=4):
+    """Radius estimate in t from a least-squares fit log|c_k| = a - 2 k log T over k >= k0 (c in s = t^2;
+    exploratory, more stable than single ratios when the coefficients oscillate)."""
+    ks = [k for k in range(k0, len(c)) if c[k] and c[k] > 0]
+    if len(ks) < 2:
+        return None
+    A = np.vstack([np.ones(len(ks)), np.array(ks, dtype=float)]).T
+    _, b = np.linalg.lstsq(A, np.log(np.array([c[k] for k in ks])), rcond=None)[0]
+    return float(np.exp(-b / 2))
+
+
 def ratio_radius(c):
     """Ratio estimates |c_k / c_(k+1)|^(1/2) of a series in s = t^2 (exploratory)."""
     return [abs(c[k] / c[k + 1]) ** 0.5 for k in range(2, len(c) - 1) if c[k + 1] != 0]
@@ -231,6 +243,10 @@ def high_order(x0, d, N=8, n_sil=40, prec=256):
         out["ratio_T_silent"] = ratio_radius(out["norm_silent"])
         out["ratio_T_remainder"] = [abs(out["norm_remainder"][k] / out["norm_remainder"][k + 1]) ** 0.5
                                     for k in range(3, N) if out["norm_remainder"][k + 1]]
+        out["fit_T_true"] = fit_radius(out["norm_true"])
+        out["fit_T_silent_same_orders"] = fit_radius(out["norm_silent"][:N + 1])
+        out["fit_T_silent_to_order_n_sil"] = fit_radius(out["norm_silent"], k0=10)
+        out["fit_T_remainder"] = fit_radius(out["norm_remainder"])
         out["silent_crunch_t"] = silent_crunch(out["E0_eigenvalues"])
         return out
 
@@ -312,5 +328,21 @@ def main(out=os.path.join(bm.DATA, "bl_silent.json"), N=8, names=("P1", "P2", "P
     return res
 
 
+def main_long(out=os.path.join(bm.DATA, "bl_silent_N10.json"), names=("P1", "P3")):
+    """Coefficients to t^20 (N = 10) at two points (about 20 minutes each, run in parallel)."""
+    from multiprocessing import Pool
+    with Pool(len(names)) as pool:
+        rows = pool.starmap(high_order, [(POINTS[n][0], POINTS[n][1], 10) for n in names])
+    res = {n: r for n, r in zip(names, rows)}
+    res["replay"] = "python -m research.calc.bl_silent long"
+    with open(out, "w") as f:
+        json.dump(res, f, indent=1)
+    return res
+
+
 if __name__ == "__main__":
-    main()
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "long":
+        main_long()
+    else:
+        main()

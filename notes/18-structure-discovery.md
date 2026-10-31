@@ -265,6 +265,11 @@ Write $\lvert\cdot\rvert$ for the $\gamma_0$-orthonormal Frobenius norm of mixed
 
 Everything in the table is computed from ball midpoints, so it is exploratory.
 
+*Respecting the B-class domain.* Only Taylor coefficients at $t = 0$ are used. They are enclosed
+rigorously, and they are coefficients of the true development at that point. No sum of the series is
+evaluated outside the certified time interval. The radius estimates are statements about the
+coefficient sequences, not certified values of the metric.
+
 | Point | $E_0$ eigenvalues | $\lvert\rho_3\rvert/\lvert\gamma_3\rvert$ | $\lvert\rho_8\rvert/\lvert\gamma_8\rvert$ | $T_{\rm fit}$ true | $T_{\rm fit}$ silent | silent collapse time | $T_{\rm fit}$ remainder |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | P4 $(0.05, 0.02, 0.6)$ | $(-0.585, 0.292, 0.293)$ | 0.010 | 0.131 | 2.137 | 2.111 | 2.054 | 1.755 |
@@ -359,6 +364,9 @@ by Bôcher's theorem at the punctures and Liouville's at infinity. The family co
 - the geodesic slicing, $c = (1, \tfrac14, \tfrac14)$, where $N = 1$;
 - the antisymmetric ("odd") lapse $c = (1, -\tfrac14, -\tfrac14)$ of the classic two-hole maximal
   slicings [SCDE76].
+
+Everything in H2 uses only the jets of the data at $t = 0$. The statement is exact at order $t^2$
+and needs no certified time interval.
 
 ### 7.2 Equations
 

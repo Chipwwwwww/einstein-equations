@@ -244,7 +244,7 @@ python -m research.calc.bl_foliation
 
 1. **H1** (notes/18 §6). It writes `calc/data/bl_silent.json`: the exact low-order checks, the
    $(\mathrm{curl}\,H)_3$ law at held-out points, and the coefficient comparison to $t^{16}$ at six
-   generic points. It takes about 25 minutes on one core.
+   generic points. It takes about 20 minutes on one core.
 
    `python -m research.calc.bl_silent long` adds the two runs to $t^{20}$
    (`calc/data/bl_silent_N10.json`). It takes about 20 minutes on two cores.
