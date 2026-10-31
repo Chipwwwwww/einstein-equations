@@ -1,6 +1,47 @@
 # Status
 
-*Updated 2026-10-31 (sessions 1–13). Start here.*
+*Updated 2026-10-31 (sessions 1–14). Start here.*
+
+## Session 14: bottleneck map, a local/nonlocal split, and foliations
+
+Branch `claude/bl-structure-discovery`, from `c26cb9f` (PR #4's head). Note:
+[`notes/18-structure-discovery.md`](../notes/18-structure-discovery.md). Report:
+[`report_session14.md`](report_session14.md).
+
+**No structural breakthrough. No category-A metric.**
+
+- **Bottleneck map and scope audit** (notes/18 §§3–4). Every earlier exclusion is relative to BL
+  data, and most are relative to geodesic slicing. Padé poles, method ceilings and fitted laws are
+  marked as such.
+- **H1, silent/nonlocal split** (discovery experiment, notes/18 §6).
+  - *Exact:* the silent (local tidal) ODE reproduces the development through $t^4$.
+  - *Exact:* the first deviation, at $t^6$, is one traceless source $(\mathrm{curl}\,H)_3$.
+  - *Verified identity, held out:* that source obeys a four-term covariant law.
+  - *Exploratory:* near the holes the silent part dominates to $t^{16}$ (remainder ≤ 13 %).
+    Elsewhere the nonlocal remainder dominates.
+  - *Exploratory:* everywhere the remainder has the smallest fitted radius (1.76–3.88, growing
+    away from the holes), so the series' radius is not the local collapse time.
+  - Verdict: a good local model near the holes, not a global organising principle.
+- **H2, conformally flat leaves in other slicings** (notes/18 §7).
+  - *Certified at $d = 0.7662$, $0.767$ and $1.5$:* no lapse in the bounded maximal-type family
+    $N = (c_0 + c_+/r_+ + c_-/r_-)/\psi$ gives conformally flat leaves at $O(t^2)$. The family
+    includes the geodesic slicing.
+  - *Unexpected:* at each single point such a lapse exists. In axisymmetry there are only two
+    conditions per point (parity), so the exclusion needs two points.
+- **Tools:** `research/calc/bl_silent.py` and `research/calc/bl_foliation.py`, with 8 tests and
+  Schwarzschild and gauge controls.
+- **Next decisive experiment:** the singular set $t = \tau(x)$ of the development, from the
+  coefficients to $t^{24}$ along a ray from a throat to the far zone. Is $\tau$ real (a singularity
+  before the local collapse) or complex? Does it vary smoothly?
+
+| Item | Label | How checked |
+| --- | --- | --- |
+| baseline (structure tests, one evaluator call) | rerun | `tests/test_bl_structure.py`; certified at $t = 2\times10^{-4}$ |
+| silent chain, $t^6$ coefficients | exact | rational arithmetic, tests |
+| $(\mathrm{curl}\,H)_3$ law | identity verified, held out | exact + ball |
+| high-order comparison | exploratory | `python -m research.calc.bl_silent` |
+| Proposition L | computer-assisted | `python -m research.calc.bl_foliation`, tests |
+| certificates, Theorems C, F, F′, H, CK′ | inherited | not rerun |
 
 ## Session 13: corrected and extended certificate, better derivatives, geometric structure
 

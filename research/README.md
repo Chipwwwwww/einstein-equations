@@ -40,6 +40,8 @@ convergence of the series representation near the critical surface (route J) is 
 | [`idea_log.md`](idea_log.md) | Hypotheses, the tests run on them, and how they failed or survived. |
 | [`literature.md`](literature.md) | Primary sources, what was checked in each and what could not be. |
 | [`route_map.md`](route_map.md) | Routes toward explicit dynamical binary metrics (A–J): question, decisive test, status (session 10). |
+| [`../notes/18-structure-discovery.md`](../notes/18-structure-discovery.md) | Session 14: bottleneck map, hypothesis portfolio, silent/nonlocal split (H1), conformally flat foliations for maximal-type lapses (H2). |
+| [`report_session14.md`](report_session14.md) | Session 14 report: what was tested, what decided it, what failed and in what scope. |
 | [`../notes/17-certified-extension.md`](../notes/17-certified-extension.md) | Session 13: corrected certificate constant, Theorem CK′ and the extension, derivative bounds, $t^6$ and Weyl structure. |
 | [`report_session13.md`](report_session13.md) | Session 13 report: corrected and extended certificate, derivative errors before/after, B-to-A results. |
 | [`report_bl_metric.md`](report_bl_metric.md) | Session 12 report: the metric evaluator, the sharp certificate, B-to-A experiments, what was rerun. |
@@ -229,6 +231,27 @@ python -m research.calc.bl_metric compare
 The evaluator now loads every certificate and uses all that apply to a point.
 
 Tests: `python -m pytest tests/test_bl_metric.py tests/test_ck_bound.py tests/test_bl_structure.py`.
+
+### Session 14: structure experiments
+
+```bash
+python -m research.calc.bl_silent
+```
+
+```bash
+python -m research.calc.bl_foliation
+```
+
+1. **H1** (notes/18 §6). It writes `calc/data/bl_silent.json`: the exact low-order checks, the
+   $(\mathrm{curl}\,H)_3$ law at held-out points, and the coefficient comparison to $t^{16}$ at six
+   generic points. It takes about 25 minutes on one core.
+
+   `python -m research.calc.bl_silent long` adds the two runs to $t^{20}$
+   (`calc/data/bl_silent_N10.json`). It takes about 20 minutes on two cores.
+2. **H2** (notes/18 §7). It writes `calc/data/bl_foliation.json`: the two-point certificates at three
+   separations, plus the gauge and Schwarzschild controls. It takes about one minute.
+
+Tests: `python -m pytest tests/test_bl_silent.py tests/test_bl_foliation.py` (about 35 s).
 
 ## What counts as proof here
 

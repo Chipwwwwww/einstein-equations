@@ -2,6 +2,47 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-31 (session 14) — Bottlenecks, a local/nonlocal split, foliations
+
+**Decisions**
+
+- **Base.** PR #4's head `c26cb9f`. New branch `claude/bl-structure-discovery`, with a draft PR
+  against `claude/bl-metric-extension`.
+- **No large certificate rerun.** The baseline was the structure tests plus one certified evaluator
+  call.
+- **Definition of essential progress** (notes/18 §2): a finite rule for infinitely many
+  coefficients; a certified simplifying reduction or slicing; a no-go for a whole natural class; or
+  a domain extension by a new mechanism. Tighter constants and one more fitted order count as
+  incremental.
+- **Portfolio of eight hypotheses** (notes/18 §5), ranked by information per cost. H1
+  (silent/nonlocal split, the discovery experiment) and H2 (conformally flat leaves for
+  maximal-type lapses, the gauge experiment) were executed. They are of different kinds, and both
+  are cheap with the existing jet engines.
+- **H2 point choice.** The single-point certificate failed because pointwise common zeros exist.
+  This was diagnosed as Cotton–York parity in axisymmetry (rank 2), not a numerical problem, so the
+  certificate pairs two points per separation.
+- **No $d$-interval claim for H2.** The $d$-ball enclosures were too wide, so the statement is made
+  at three separations only (claim 110 records the gap).
+
+**Progress**
+
+- H1 exact results: claims 103–105. H1 exploratory result: claim 106.
+- H2: claims 107–109 (Proposition L).
+- Tools: `research/calc/bl_silent.py`, `research/calc/bl_foliation.py`; tests
+  `tests/test_bl_silent.py` (5), `tests/test_bl_foliation.py` (3).
+- Note 18, report `research/report_session14.md`.
+- Status, ledger, route map and READMEs updated.
+
+**Next**
+
+- The singular set $t = \tau(x)$ of the series: coefficients to $t^{24}$ ($N = 12$) along a ray from
+  a throat to the far zone. Is it real or complex, and does it vary smoothly?
+- **Correction made during the session.** A far-zone "radius 2.4" read off one ratio was an
+  oscillation dip. It is replaced by least-squares fits, and the $t^{20}$ run at P3 showed the dip.
+- The general-lapse foliation system: formal (jet) compatibility of $DC[N\,DDN - N^2\mathrm{Ric}] = 0$
+  for axisymmetric $N$.
+- H8: the $m_+m_-$ sector of the coefficients.
+
 ## 2026-10-31 (session 13) — Correcting and extending the certificate; geometric structure
 
 **Decisions**

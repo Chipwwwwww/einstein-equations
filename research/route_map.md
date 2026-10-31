@@ -234,3 +234,27 @@ near $T \approx 10^{-3}$ (notes/16 §2).
   The first orders are algebraic and universal for conformally flat time-symmetric data (notes/17
   §§5–6). Still untested: two-vector Kerr–Schild; maximal-slicing analogues of C1, C2; a recurrence
   in the order (needs more exact orders).
+
+## Session 14 · Bottlenecks, local/nonlocal split, foliations
+
+- **Map.** notes/18 §3 gives six bottlenecks with evidence, and §4 audits the scope of every
+  earlier exclusion.
+- **E → A (H1).** The geodesic development is exactly silent through $t^4$. The first nonlocal
+  source $(\mathrm{curl}\,H)_3$ has a covariant law. Near the holes the local (silent) collapse
+  dominates; elsewhere the nonlocal part does (exploratory).
+  - *Status:* tested. The silent part is kept as a local model; a global silent factorisation is
+    rejected (exploratory).
+- **Gauge (H2).** Conformally flat leaves are excluded for every bounded maximal-type lapse at three
+  separations (certified, Proposition L). Pointwise, a conformally flat lapse exists, because there
+  are only two conditions per point.
+  - *Status:* tested, rejected for that family.
+  - *Open:* arbitrary lapses, an overdetermined 2×1 fifth-order system.
+- **Not executed, ranked** (notes/18 §5):
+  - H8, the $m_+m_-$ interaction sector;
+  - H6, the Geroch-reduced 2+1 test;
+  - H4, two-vector Kerr–Schild;
+  - H7, Misner data;
+  - H5, the energy step.
+- **Next decisive experiment.** The singular set $t = \tau(x)$ of the series, from the coefficients
+  to $t^{24}$ along a ray. A real, smoothly varying $\tau$ favours a resummation in $s/\tau(x)^2$;
+  a complex one needs nonlocal continuation.
