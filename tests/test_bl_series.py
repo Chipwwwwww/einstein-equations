@@ -43,3 +43,12 @@ def test_magnetic_weyl_starts_at_t_cubed():
     assert abs(b["zp"][1]) > 0.1
     c = bs.magnetic_weyl(1.0, 0.3, [(1.0, 0.0)], 8)
     assert max(abs(v) for v in c["rp"] + c["zp"]) < 1e-12
+
+
+def test_momentum_constraint_holds_order_by_order():
+    """The recursion uses only the evolution equations; the momentum constraint
+    D_j K^j_i - D_i K must still vanish at every order the jets justify (BL, d = 0.78, and
+    Schwarzschild)."""
+    for centres, pt in (([(0.5, 0.39), (0.5, -0.39)], (0.25, 0.1)), ([(1.0, 0.0)], (1.0, 0.3))):
+        m = bs.momentum_constraint(*pt, centres, 8)
+        assert max(abs(v) for v in m["r"] + m["z"]) < 1e-10
