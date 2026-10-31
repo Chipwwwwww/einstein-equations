@@ -8,7 +8,7 @@ Mathematical statement (notes/15-route-j-convergence.md, Proposition T):
   I = [d_lo, d_hi]. For every d in I the vacuum development of equal-mass time-symmetric BL data in
   geodesic slicing (lapse 1, shift 0), written as the first-order system below, has a unique real-
   analytic solution on U x {|t| < T_min}. Its Taylor series in t converges there, uniformly on U, with
-  sup |u(t)| <= 4 T_min K0 < R/2.
+  sup |u(t)|_w <= 4 T_min K0 / R_K < 1/2 (weighted norm below).
 
 System. Unknowns gamma_ij, g_kij (= d_k gamma_ij), K_ij (repository sign, K_ij = (1/2) d_t gamma_ij):
     d_t gamma_ij = 2 K_ij,      d_t g_kij = 2 d_k K_ij,
@@ -20,27 +20,32 @@ propagates exactly (d_t(g - d gamma) = 0), so solutions of the system solve the 
 equations; the ADM constraints then propagate (notes/15 §2).
 
 Abstract CK theorem (Nishida 1977, J. Differential Geom. 12, 629-633; proof read in Baouendi-
-Goulaouic, Journees EDP 1977, numdam jedp.151): on a decreasing scale X_s (0 < s <= s0) of Banach
+Goulaouic, Journees EDP 1977, 1-8, numdam JEDP_1977____1_0): on a decreasing scale X_s (0 < s <= s0) of Banach
 spaces, if for all 0 < s' < s <= s0 and u, v in the R-ball of X_s
     (H1) |F(u) - F(v)|_{s'} <= C |u - v|_s / (s - s'),     (H2) |F(0)|_s <= M / (s0 - s),
 then du/dt = F(u), u(0) = 0 has a unique solution with sup |u(t)|_s < R for |t| < a (1 - s/s0), for any
-a < s0 min(1/(16 C), R/(8 M)) (constants derived in notes/15 §3 from inequalities (10)-(12) there).
-With M = s0 K0, K0 = sup |F(0)|, this gives T_min = min(s0 / (16 C), R / (8 K0)).
+a < s0 min(1/(16 C), R/(8 M)), and then sup |u(t)|_s <= 4 a M / s0 (constants re-derived in notes/15
+§3 from the proof's inequalities (10)-(12)). With R = 1 in the weighted norm below and
+M = s0 K0 / R_K, K0 = sup |Ric(gamma_0)|_F, this gives T_min = min(s0 / (16 C), R_K / (8 K0)).
 
 Scale. X_s = bounded holomorphic maps on Omega_s = {w in C^3 : dist(w, U) < s} (Hermitian distance),
-sup norm of |u| = max(|u_gamma|_F, |u_g|_F, |u_K|_F) (Frobenius norms). Cauchy's estimate gives
-|d_k u|_{s'} <= |u|_s / (s - s') and |grad u|_F <= sqrt(3) |u|_s / (s - s').
+with the weighted sup norm |u|_w = max(|u_gamma|_F / R_gamma, |u_g|_F / R_g, |u_K|_F / R_K) (Frobenius
+norms, radii = RADII) and ball radius R = 1. Cauchy's estimate gives |d_k u|_{s'} <= |u|_s / (s - s')
+and |grad u|_F <= sqrt(3) |u|_s / (s - s').
 
-Bounds (per covering cell, complex ball arithmetic, python-flint acb, with d an interval):
-    C_gamma = 2 s0,   C_g = 2 sqrt(3),
-    C_K = 3 sqrt(3) Gam_F + 3 Gam_op^2 (s0 G1 + sqrt(3) R) + s0 (L_B + L_Q),
-    Gam_op = sup |G|_op <= |psi|^-4 / (1 - q), q = R |psi|^-4 < 1, Gam_F = sqrt(3) Gam_op,
-    G1 = sup |grad g0|_F,  L_B, L_Q from interval Jacobians (forward-mode duals over acb),
+Bounds (per covering cell, complex ball arithmetic, python-flint acb, with d an interval). Unweighted
+block coefficients c_AB, in |F_A(u) - F_A(v)| <= sum_B c_AB |u_B - v_B|_s / (s - s'):
+    c_gammaK = 2 s0,   c_gK = 2 sqrt(3),   c_KK = s0 J_QK,
+    c_Kg     = 3 sqrt(3) Gam_F + s0 J_Bg,
+    c_Kgamma = s0 (J_BG + J_QG) Gam_op^2 + 3 Gam_op^2 (s0 G1 + sqrt(3) R_g),
+    Gam_op = sup |G|_op <= sup|psi|^-4 / (1 - q), q = R_gamma sup|psi|^-4 < 1, Gam_F = sqrt(3) Gam_op,
+    G1 = sup |grad g0|_F, J_* = Frobenius norms of interval Jacobians (forward-mode duals over acb),
     K0 = sup |Ric(gamma_0)|_F.
+The weighted Lipschitz constant is C = max_A sum_B (R_B / R_A) c_AB (lipschitz_C), M = s0 K0 / R_K.
 Reduction by symmetry: all these norms are invariant under real rotations about the axis and under
-z -> -z (equal masses), so the sup over Omega_s0 is the sup over points whose real part lies in the
-half-plane y = 0, x >= 0, z >= 0-side cells: the covering uses cells in (rho, z) with imaginary parts
-in [-s0, s0]^3 (a superset of the Hermitian s0-ball).
+z -> -z (equal masses), so the sup over Omega_s0 is a sup over complex points whose real part lies in
+the meridian half-plane y = 0: the covering uses cells in (rho, z) with imaginary parts in
+[-s0, s0]^3 (a superset of the Hermitian s0-ball).
 
 Run: python -m research.calc.ck_bound   (writes research/calc/data/ck_bound.json)
 """

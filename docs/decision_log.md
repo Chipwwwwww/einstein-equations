@@ -2,6 +2,66 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-31 (session 11) — Route J: certified convergence time near the critical surface
+
+**Decisions**
+
+- **Branching.**
+  - Work is on `claude/route-j-ck-certificate`, branched from the research head `afe0bed` of
+    `claude/black-hole-merger-solutions-rpa9hj`. It goes to a draft PR against that branch.
+  - The research branch has draft PR #1 against `main`; it was not touched.
+- **Method: the abstract Cauchy–Kovalevskaya theorem, not interval jets plus a majorant tail.**
+  The session-10 plan, interval jets of the recursion, would bound finitely many coefficients
+  but not the tail. The abstract theorem (Nishida; Baouendi–Goulaouic's proof, read) gives the
+  whole solution from two explicit constants:
+  - a Lipschitz constant $C$ in a scale of holomorphic sup-norm spaces;
+  - a source bound $K_0$.
+
+  Both are certified in Arb.
+- **First-order reduction in $(\gamma, \partial\gamma, K)$.** This makes $F$ first order, as the
+  theorem needs. $g = \partial\gamma$ propagates exactly, and the symmetric part and time
+  reflection follow by uniqueness.
+- **Block-weighted norm, radii $(1, 20, 10)$.**
+  - With the unweighted max norm, $C \sim 10^3$, because of the mismatch of scales between blocks.
+  - The weights and $s_0 = 0.012$ come from a small search. Any choice is valid; the search only
+    selects.
+  - $s_0 = 0.05$ fails in practice: the complex singular cones of the punctures make the bounds blow up.
+- **Covering reduced by symmetry.** Rotations and $z \to -z$ act unitarily on all the norms. So
+  cells are taken in the meridian half-plane, with imaginary parts in $[-s_0, s_0]^3$.
+- **The garbled constant (12) of Baouendi–Goulaouic is re-derived**, not trusted
+  (notes/15 §3). Constraint propagation is cited to Frittelli 1997 eqs. (12)–(13) (read).
+- **Honest scope.** An explicit $\delta$ was *not* obtained.
+  - The blocking estimates (notes/15 §7.3) are a certified spectral gap of $L_{S_c}$ over all modes,
+    and certified second derivatives of the true shooting function on $\Sigma_t$.
+  - The local branch is not shown to be the first common apparent horizon.
+  - Nothing is said about event horizons.
+
+**Progress**
+
+- Proposition T:
+  - $T_{\min} = 2.988\times10^{-4}$ on the tube of radius $0.02$ about $S_c$, for every
+    $d \in [d_c - 10^{-13}, 0.767578125]$;
+  - $C = 2.510$, $K_0 = 148.77$, 2,815 cells, 128-bit balls;
+  - replayed bit-identically; 128 vs 192 bits agree to $7\times10^{-10}$.
+- Corollary J (qualitative). New files: note 15, `research/calc/ck_bound.py`,
+  `research/calc/data/ck_bound.json` and `tests/test_ck_bound.py` (6 tests). `bl_series` gained a
+  momentum-constraint check and its test. Ledger entries 76–81.
+- Stale summaries reconciled:
+  - status: the gap-3 item and the next calculation;
+  - ledger claims 35, 72, 74;
+  - route map E/J;
+  - notes 10, 13, 14;
+  - the READMEs.
+- Baseline: 111 fast tests pass at `afe0bed` (13 min). CI was green on PR #1.
+
+**Next**
+
+- The spectral gap $\lambda_2(L_{S_c})$ over all Fourier modes (validated ODE eigenvalue
+  enclosures).
+- A validated MOTS shooting solver on $\Sigma_t$, fed by the Proposition T enclosures. With it,
+  an explicit $\delta$.
+- Optional: a sharper scale, to cover the whole Theorem F′ interval ($T \gtrsim 0.0033$).
+
 ## 2026-10-31 (session 10) — Explicit binaries: route screening, Petrov obstruction, time series
 
 **Decisions**

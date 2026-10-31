@@ -23,7 +23,12 @@ extremal charges): an exact merger with different physics.
 [`notes/11-event-horizon-merger.md`](../notes/11-event-horizon-merger.md)
 (event horizons, Hintz's extreme-mass-ratio mergers) and
 [`notes/12-no-common-horizon.md`](../notes/12-no-common-horizon.md)
-(no common apparent horizon at $t = 0$, Brill–Lindquist at $d = 0.78$).
+(no common apparent horizon at $t = 0$, Brill–Lindquist, at $d = 0.78$ and for
+$d \in (d_c, 0.767578]$). The head-on example is assembled in
+[`notes/13-head-on-collision.md`](../notes/13-head-on-collision.md). The explicit-binary routes
+are in [`notes/14-explicit-binaries.md`](../notes/14-explicit-binaries.md), and the certified
+convergence of the series representation near the critical surface (route J) is in
+[`notes/15-route-j-convergence.md`](../notes/15-route-j-convergence.md).
 
 ## Files
 
@@ -34,6 +39,7 @@ extremal charges): an exact merger with different physics.
 | [`idea_log.md`](idea_log.md) | Hypotheses, the tests run on them, and how they failed or survived. |
 | [`literature.md`](literature.md) | Primary sources, what was checked in each and what could not be. |
 | [`route_map.md`](route_map.md) | Routes toward explicit dynamical binary metrics (A–J): question, decisive test, status (session 10). |
+| [`report_route_j.md`](report_route_j.md) | Session 11 report: Proposition T (certified convergence time near $S_c$), baseline audit, what was rerun, blocking estimate. |
 | [`calc/`](calc/) | Executable calculations (numerical and computer-assisted). |
 | [`../tests/`](../tests/) | pytest checks of every symbolic claim. |
 
@@ -55,7 +61,8 @@ $(-,+,+,+)$, Riemann tensor of MTW/Carroll, $G = c = 1$. In addition:
 
 Python ≥ 3.12 and `requirements.txt`: SymPy ≥ 1.12, pytest ≥ 8, NumPy, SciPy
 (numerical calculations in `calc/`), python-flint (Arb ball arithmetic, for the
-validated integrators in `calc/fold_proof.py` and `calc/lohner.py`). mpmath, used for the interval
+validated integrators in `calc/fold_proof.py` and `calc/lohner.py`, and the convergence certificate
+`calc/ck_bound.py`). mpmath, used for the interval
 certificates, ships with SymPy. Tested with Python 3.13, SymPy 1.14, NumPy 2.5, SciPy 1.18,
 mpmath 1.3, python-flint 0.9.
 
@@ -132,8 +139,25 @@ python -m research.calc.petrov_bl
 ```
 
 The first validates against Schwarzschild free fall and prints the coefficients near $S_c$
-(about 6 minutes at order $t^{12}$). The second is exact arithmetic. The next decisive
-calculation is described in `route_map.md` §J.
+(about 6 minutes at order $t^{12}$). The second is exact arithmetic.
+
+### Route J (session 11)
+
+```bash
+python -m research.calc.ck_bound
+```
+
+This certifies Proposition T of notes/15: $T_{\min} = 2.988\times10^{-4}$ on the tube of radius
+$0.02$ about $S_c$, for every $d \in [d_c - 10^{-13}, 0.767578125]$.
+
+- **Runtime.** About 2.5 minutes on one core: 80 s for the Lohner profile run from Theorem C's box,
+  60 s for the 2,815 cells.
+- **Output.** It writes `calc/data/ck_bound.json` (constants, cells, profile boxes). A run on
+  which any hypothesis check fails returns `"ok": false` and writes nothing.
+- **Arguments.** Optional: `s0 R_gamma R_g R_K`.
+- **Tests.** `python -m pytest tests/test_ck_bound.py` (about 40 s).
+
+The next decisive calculation is in `route_map.md` §J and notes/15 §7.3.
 
 ## What counts as proof here
 
