@@ -28,7 +28,8 @@ $d \in (d_c, 0.767578]$). The head-on example is assembled in
 [`notes/13-head-on-collision.md`](../notes/13-head-on-collision.md). The explicit-binary routes
 are in [`notes/14-explicit-binaries.md`](../notes/14-explicit-binaries.md), and the certified
 convergence of the series representation near the critical surface (route J) is in
-[`notes/15-route-j-convergence.md`](../notes/15-route-j-convergence.md).
+[`notes/15-route-j-convergence.md`](../notes/15-route-j-convergence.md), and the evaluable metric built on it in
+[`notes/16-bl-metric.md`](../notes/16-bl-metric.md).
 
 ## Files
 
@@ -39,6 +40,7 @@ convergence of the series representation near the critical surface (route J) is 
 | [`idea_log.md`](idea_log.md) | Hypotheses, the tests run on them, and how they failed or survived. |
 | [`literature.md`](literature.md) | Primary sources, what was checked in each and what could not be. |
 | [`route_map.md`](route_map.md) | Routes toward explicit dynamical binary metrics (A–J): question, decisive test, status (session 10). |
+| [`report_bl_metric.md`](report_bl_metric.md) | Session 12 report: the metric evaluator, the sharp certificate, B-to-A experiments, what was rerun. |
 | [`report_route_j.md`](report_route_j.md) | Session 11 report: Proposition T (certified convergence time near $S_c$), baseline audit, what was rerun, blocking estimate. |
 | [`calc/`](calc/) | Executable calculations (numerical and computer-assisted). |
 | [`../tests/`](../tests/) | pytest checks of every symbolic claim. |
@@ -158,6 +160,38 @@ $0.02$ about $S_c$, for every $d \in [d_c - 10^{-13}, 0.767578125]$.
 - **Tests.** `python -m pytest tests/test_ck_bound.py` (about 40 s).
 
 The next decisive calculation is in `route_map.md` §J and notes/15 §7.3.
+
+### The metric evaluator (session 12)
+
+```bash
+python -m research.calc.ck_bound sharp
+```
+
+```bash
+python -m research.calc.bl_metric
+```
+
+```bash
+python -m research.calc.bl_structure
+```
+
+1. **The sharp certificate** of notes/16 §2: $T_{\min} = 5.556\times10^{-4}$. It writes
+   `calc/data/ck_bound_sharp.json` in about 2.5 minutes. `ck_bound classic` replays note 15's
+   certificate with outward rounding.
+2. **The evaluator demonstration** ($d = 0.7662$; three points, three times, two patches). It
+   writes `calc/data/bl_metric_demo.json` in about 1.5 minutes.
+3. **The B-to-A experiments**. They write `calc/data/bl_structure.json` in about 10 minutes; the
+   Padé part is most of it.
+
+Use it from Python:
+
+```python
+from research.calc.bl_metric import evaluate_metric
+r = evaluate_metric("1e-4", "0.17", "0.11", "0.5", "0.7662", tolerance=1e-10)
+r["g"], r["dg"], r["ddg"], r["error_budget"], r["status"]
+```
+
+Tests: `python -m pytest tests/test_bl_metric.py tests/test_ck_bound.py` (about 1 minute).
 
 ## What counts as proof here
 

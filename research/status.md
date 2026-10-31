@@ -1,6 +1,57 @@
 # Status
 
-*Updated 2026-10-31 (sessions 1–11). Start here.*
+*Updated 2026-10-31 (sessions 1–12). Start here.*
+
+## Session 12: an evaluable metric (category B), and a bounded search for category A
+
+Branch `claude/bl-metric-evaluator`, from `7c4bff6` (PR #2's head). Note:
+[`notes/16-bl-metric.md`](../notes/16-bl-metric.md). Report: [`report_bl_metric.md`](report_bl_metric.md).
+
+- **The metric evaluator** (`research/calc/bl_metric.py`). `evaluate_metric(t, x, y, z, d, ...)`
+  returns certified enclosures of the following, all in comoving Cartesian geodesic-slicing
+  coordinates ($g_{00} = -1$, $g_{0i} = 0$, $M_{\rm ADM} = 1$):
+  - every component of $g_{\mu\nu}$, and $g^{\mu\nu}$;
+  - $\partial g$ and $\partial^2g$, including time derivatives.
+
+  It returns an itemised error budget (coefficient rounding, no spatial approximation, time-tail
+  bounds, parameters). Points outside $U \times (-T_{\min}, T_{\min})$ or $d \notin I$ are refused
+  or marked uncertified.
+  - Demonstration at $d = 0.7662$, order 5: metric errors $10^{-14}$, $7\times10^{-10}$ and
+    $4\times10^{-6}$ at $t/T_{\min} = 0.1$, $0.25$, $0.5$, at points on the axis, on the plane and
+    at a generic point, plus patches. About 5 s per evaluation.
+  - Lorentzian on the whole certified domain.
+- **Audit and repair of the session-11 certificate.** Its scalar bounds had used round-to-nearest
+  floats: cells, the $d$-hull, $\sup\lvert\psi\rvert^{-4}$, the $G$-box radius, $C$ and $T_{\min}$.
+  Everything is now outward rounded. The replay moves $T_{\min}$ by $-5.6\times10^{-12}$
+  (relative), so $2.988\times10^{-4}$ stands.
+- **Proposition T′ (computer-assisted, candidate).** $T_{\min} = 5.556\times10^{-4}\,M$, 86% more.
+  It comes from exact norms of the principal part of the Ricci operator: $\lVert A(I, \cdot)\rVert = 2$,
+  and $\tfrac12\lVert T\rVert = \tfrac12\sqrt{14 + 2\sqrt{33}}$ instead of 3.
+- **Limits of this method.**
+  - Localising to the waist of $S_c$ gives no gain.
+  - $s_0$ is capped by the puncture terms' complex singular cones $\sum_i(w_i - p_{\pm,i})^2 = 0$.
+  - For any weights, $C \ge 2\sqrt3\sup\lvert\psi\rvert^{-2}$, so $T \lesssim 10^{-3}$.
+  - Recentering cannot help: the analytic width is used up at rate $16C$.
+- **B → A experiments.** A category-A metric was **not found**.
+  - *A:* the $t^4$ coefficient is the universal $\tfrac56\mathrm{Ric}\cdot\mathrm{Ric} - \tfrac16\lvert\mathrm{Ric}\rvert^2\gamma_0 - \tfrac1{12}\Delta\mathrm{Ric}$
+    (proved, and checked exactly).
+  - *C1:* the geodesic slices are not conformally flat; the Cotton tensor is $\ne 0$ at $t^2$.
+  - *C2:* the flow is not silent; $B_{ij} \ne 0$ at $t^3$. Both are certified by enclosures that
+    exclude 0, with Schwarzschild as the control.
+  - *D:* Padé, exploratory.
+- **Merger.** Not certified at any explicit $d$. At $d = 0.7662$ the linear law places the common
+  MOTS at $t_* \approx 0.011\,T_{\min}$, inside the slab, but $\delta_1$ is still not explicit.
+
+Session-12 evidence labels:
+
+| Item | Label | How it was checked |
+| --- | --- | --- |
+| classic and sharp certificates | computer-assisted | **recomputed** this session (`ck_bound classic`, `ck_bound sharp`, about 75 s of cells each) |
+| evaluator and its demo | computer-assisted | **recomputed** (`python -m research.calc.bl_metric`) |
+| structure experiments | ball / exact arithmetic | **recomputed** (`python -m research.calc.bl_structure`) |
+| Theorems C, F, F′; Proposition B; Corollary J | as before | **inherited**, not rerun |
+| embedding of the CK region in the MGHD | standard | cited, not re-checked |
+
 
 ## Session 11: route J — a certified convergence time near the critical surface
 

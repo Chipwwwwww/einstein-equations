@@ -15,6 +15,17 @@ replaces it by a **certified** bound.
   region. This is only *qualitative*: the range of $d$ for which it holds is not computed.
 - The estimate that would make it quantitative is stated in §7.3. It is the blocking inequality.
 
+*Session 12 ([note 16](16-bl-metric.md)).*
+
+- **Audit.** The certificate's scalar bounds are now outward rounded. The stored $T_{\min}$ had
+  been formed with round-to-nearest; the repaired replay is $5.6\times10^{-12}$ (relative)
+  smaller, so the rounded-down $2.988\times10^{-4}$ below stands.
+- **Domain.** The proof covers the compact set $U$ of note 16 §1, the componentwise inflation of
+  the profile boxes, which contains the tube used below.
+- **A longer time.** Exact norms of the principal part give $T_{\min} = 5.556\times10^{-4}$
+  (Proposition T′).
+- **An evaluator.** `research/calc/bl_metric.py` evaluates the metric with certified errors.
+
 Conventions are those of [note 00](00-conventions.md) and `research/README.md`:
 
 - signature $(-,+,+,+)$;

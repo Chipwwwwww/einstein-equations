@@ -2,6 +2,47 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-10-31 (session 12) — An evaluable metric; B-to-A experiments
+
+**Decisions**
+
+- **Base.** PR #2's head `7c4bff6` (newest research work; CI green). New branch
+  `claude/bl-metric-evaluator`, with a draft PR against `claude/route-j-ck-certificate`.
+- **Evaluator in Cartesian jets with exact (ball or rational) coefficients.** This chart is the
+  chart of the CK proof and is regular on the axis. The cylindrical float code stays as an
+  independent check.
+  - The jets are sparse dicts over (X, Y, Z, s) monomials.
+  - Generic coefficients: arb, or fmpq at rational-distance points.
+- **Derivative bounds.**
+  - First spatial derivatives use the g-block, so there is no Cauchy loss.
+  - Second derivatives use Cauchy estimates with spatial loss $s$, optimised on a grid.
+  - $\partial_t^2\gamma$ is also enclosed through the field equation, and the intersection is kept.
+- **Audit result.** The certificate's scalar bounds had used round-to-nearest. They are now
+  repaired with outward rounding, exact cells and an exact $d$-hull. The session-11 number stands.
+- **The certified domain is the set the cells actually cover:** the profile boxes inflated
+  componentwise. It contains the tube.
+- **Sharper certificate.** It uses exact principal-part norms, found by an integer
+  characteristic-polynomial computation. Its parameters, $s_0 = 0.014$ and weights
+  $(0.25, 22, 10)$, came from a 24-point search.
+- **Experiments were chosen to be decisive in exact or ball arithmetic** (A, C1, C2), with
+  Schwarzschild controls. Padé is labelled exploratory. Experiment B was not run.
+
+**Progress**
+
+- New files:
+  - `research/calc/bl_metric.py`, `research/calc/bl_structure.py`;
+  - `research/calc/data/ck_bound_sharp.json`, `bl_metric_demo.json`, `bl_structure.json`;
+  - `tests/test_bl_metric.py`, extended `tests/test_ck_bound.py`;
+  - notes/16, `research/report_bl_metric.md`.
+- Updated: ledger claims 82–92, status, route map, the READMEs, and note 15's pointer.
+- **Tested and not pursued:** localisation to the waist (no gain), and $s_0 \ge 0.05$ (complex
+  singular cones $q_\pm = 0$ of the puncture terms; $\lvert\psi\rvert$ stays $\ge 1.75$).
+
+**Next**
+
+- A validated energy-estimate continuation beyond the CK ceiling.
+- For A: maximal-slicing variants of C1 and C2, two-vector Kerr–Schild, and Experiment B.
+
 ## 2026-10-31 (session 11) — Route J: certified convergence time near the critical surface
 
 **Decisions**

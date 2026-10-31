@@ -12,7 +12,10 @@ nonspinning, axisymmetric, head-on. Result categories (A–E) and levels (1–5)
 - **promising**: an executable plan with an identified next calculation.
 - **untested**: only screened.
 
-No route has produced a category-A metric. **No new exact solution was found.**
+No route has produced a category-A metric. **No new exact solution was found.** *Session 12:* route E now gives an
+**evaluable** category-B metric with certified errors (`research/calc/bl_metric.py`, notes/16). Three further
+closed-form classes are excluded for the BL head-on spacetime: algebraically special (B), conformally flat
+geodesic slices, and silent flow (notes/16 §5).
 
 ## Summary
 
@@ -22,11 +25,11 @@ No route has produced a category-A metric. **No new exact solution was found.**
 | B. Kerr–Schild-type decompositions | A | **rejected** (single KS, any algebraically special form) | BL head-on spacetime is Petrov type I on an open dense set (proved, exact) |
 | C. Interaction corrections to two-hole seeds | A/D | untested beyond literature | superposed KS data are not vacuum (literature); first correction is an unrestricted PDE |
 | D. Matched asymptotic zones | D | untested | finite-order matching is not exact; the transition-region residual is $O(\epsilon^n)$, not zero |
-| E. Time series from exact data | **B** (local) | **tested, works** | BL development in geodesic gauge = convergent series (Cauchy–Kovalevskaya), coefficients computed to $t^{14}$, validated; certified convergence time $T_{\min} = 2.988\times10^{-4}$ near $S_c$ (session 11) |
+| E. Time series from exact data | **B** (local) | **tested, works** | BL development in geodesic gauge = convergent series (Cauchy–Kovalevskaya), coefficients computed to $t^{14}$, validated; certified convergence time $T_{\min} = 5.556\times10^{-4}$ near $S_c$ (sessions 11–12); **evaluator** with certified enclosures of $g$, $g^{-1}$, $\partial g$, $\partial^2g$ (session 12) |
 | F. Characteristic / tetrad formulations | B/C | screened | exact null data exist (Wessels 1998), but they are data, not a spacetime |
 | G. Solution-generating methods (Ernst, inverse scattering, Bäcklund) | A | **rejected** for regular AF radiating binaries (literature) | need 2 commuting Killing fields; AF radiative ⇒ boost-rotation symmetric ⇒ struts or negative mass |
 | H. Resummation of expansions | B | untested | no convergence theorem for PN/PM; formal |
-| I. Numerical/symbolic discovery | E | started (route E data) | ratio estimates of the convergence radius in $t$ (numerical evidence only) |
+| I. Numerical/symbolic discovery | E | **tested** (session 12) | exact universal $t^4$ coefficient; conformally flat slices and silent flow excluded (certified); Padé exploratory (notes/16 §5) |
 | J. Near-critical BL as the explicit example | B + C | **partly done** (session 11) | Proposition T: certified $T_{\min}$ on a tube about $S_c$, uniform in $d \in [d_c, 0.767578]$; Corollary J: local MOTS formation inside it for $d - d_c < \delta_1$, $\delta_1$ not explicit (notes/15) |
 
 ## A · Symmetry reduction with retained radiation
@@ -188,3 +191,24 @@ promoted to a claim.
     not shown to be the first common apparent horizon.
 - **Next decisive calculation.** The $m \ge 0$ spectral gap of $L_{S_c}$ (validated ODE
   eigenvalue enclosures on the profile), then the validated shooting solver on $\Sigma_t$.
+
+## E → A · Using the evaluable metric to search for a closed form (session 12)
+
+The B-class representation is now evaluable, and its coefficients are computed exactly (rational arithmetic
+at rational-distance points) or in balls. Four experiments were run (notes/16 §5):
+
+| Experiment | Candidate class | Result |
+| --- | --- | --- |
+| A | the $t^4$ coefficient is a universal covariant expression in $\mathrm{Ric}$, $\Delta\mathrm{Ric}$ | holds (proved): $\tfrac56\mathrm{Ric}\cdot\mathrm{Ric} - \tfrac16\lvert\mathrm{Ric}\rvert^2\gamma_0 - \tfrac1{12}\Delta\mathrm{Ric}$; structural, not a closed form |
+| C1 | geodesic slices stay conformally flat ($-dt^2 + \Phi^4\cdot$ flat) | **excluded** at order $t^2$ (Cotton tensor $\ne 0$, certified) |
+| C2 | silent flow ($B_{ij} = 0$; ODEs along worldlines; contains every local-free-fall ansatz) | **excluded** at order $t^3$ (certified) |
+| D | Padé in $t^2$ | exploratory; see notes/16 §5 |
+
+**Next for A.** Untested classes, each with a bounded test:
+
+- conformally flat or silent *maximal* slicings (a different foliation);
+- two-centre Kerr–Schild with two null vectors (route B);
+- a variable change built from the Weyl invariants (Experiment B).
+
+**Next for B.** A validated energy-estimate continuation step: the abstract-CK route is capped
+near $T \approx 10^{-3}$ (notes/16 §2).
