@@ -231,6 +231,11 @@ So, **on the whole tube** the certified time rises from the corrected baseline
 $5.115\times10^{-4}$ to $8.683\times10^{-4}$ (×1.70). **On the waist region** it rises to $1.545\times10^{-3}$
 (×3.02), passing the stretch target $2T_0$.
 
+**Replay.** `python -m research.calc.ck_replay waist ext` recomputed both certificates in a fresh
+process at commit `b0f80c1`, with a clean `research/calc` tree. Every certified field and the
+profile boxes are identical to the stored records (`ck_bound_replay.json`: waist 350 s, ext 321 s,
+4 processes, 128-bit balls, cell 0.005).
+
 These are certified extensions of one and the same analytic solution: the CK solutions on $U$ and
 on $U_w$ agree on the common domain, by uniqueness of analytic solutions. A longer interval
 **does not certify a merger at any explicit $d$** (§8).
