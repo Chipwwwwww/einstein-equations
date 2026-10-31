@@ -150,3 +150,70 @@ def test_schwarzschild_benchmark():
     assert max(exact) <= r["K0"] <= 3 * max(exact)
     R_in = 0.98 * (1 + 0.5 / 0.98) ** 2
     assert r["T_min"] < math.pi * math.sqrt(R_in**3 / 8)
+
+
+def _A_matrix(G):
+    """The linear map D -> A(G, D) (9 x 81) from ck_bound.ricci_parts itself."""
+    cols = []
+    for n in range(81):
+        D = [0] * 81
+        D[n] = 1
+        Dg = [[[[D[((m * 3 + a) * 3 + b) * 3 + c] for c in R3] for b in R3] for a in R3] for m in R3]
+        g = [[[0.0 for _ in R3] for _ in R3] for _ in R3]
+        A, _ = ck.ricci_parts([[float(G[i][j]) for j in R3] for i in R3], g, Dg)
+        cols.append([A[i][j] for i in R3 for j in R3])
+    return np.array(cols).T
+
+
+def test_exact_norms_of_the_principal_part():
+    """||A(I, .)|| = 2 and |A(G, D)|_F <= (||T|| / 2) |G|_F |D|_F with ||T||^2 = 14 + 2 sqrt(33): the
+    characteristic polynomials of the integer matrices 4 L L^T and T^T T, with L and T read off
+    ck_bound.ricci_parts (A(E_kl, D)_ij = T_klij(D) / 2)."""
+    from flint import fmpz_mat, fmpz_poly
+    L = _A_matrix(np.eye(3))
+    M = np.rint(4 * L @ L.T).astype(int)
+    assert np.allclose(4 * L @ L.T, M)
+    x = fmpz_poly([0, 1])
+    assert fmpz_mat(M.tolist()).charpoly() == (x - 16) * (x - 10) ** 5 * (x - 6) ** 3
+    rows = []
+    for k in R3:
+        for l in R3:
+            E = np.zeros((3, 3))
+            E[k, l] = 1
+            rows.append(2 * _A_matrix(E))           # T_kl.. as a 9 x 81 block
+    T = np.vstack(rows)
+    TT = np.rint(T.T @ T).astype(int)
+    assert np.allclose(T.T @ T, TT)
+    assert fmpz_mat(TT.tolist()).charpoly() == x ** 54 * (x - 8) ** 15 * (x - 16) ** 6 * (x ** 2 - 28 * x + 64) ** 3
+    assert abs(float(ck._half_norm_T().mid()) - math.sqrt(14 + 2 * math.sqrt(33)) / 2) < 1e-15
+
+
+def test_sharp_principal_part_bounds_at_random_points():
+    """|A(G, D)|_F <= (2 |c| + (||T||/2) |E|_F) |D|_F for G = c I + E, and <= (||T||/2) |G|_F |D|_F."""
+    rng = np.random.default_rng(3)
+    half = float(ck._half_norm_T().upper())
+    for _ in range(50):
+        c = complex(rng.normal(), rng.normal())
+        E = (rng.normal(size=(3, 3)) + 1j * rng.normal(size=(3, 3))) * rng.uniform(0, 0.3)
+        G = c * np.eye(3) + E
+        D = rng.normal(size=81) + 1j * rng.normal(size=81)
+        Dg = D.reshape(3, 3, 3, 3)
+        A, _ = ck.ricci_parts([[G[i, j] for j in R3] for i in R3], [[[0j] * 3 for _ in R3] for _ in R3],
+                              [[[[Dg[m, a, b, cc] for cc in R3] for b in R3] for a in R3] for m in R3])
+        nA = np.linalg.norm(np.array([[A[i][j] for j in R3] for i in R3]))
+        nD = np.linalg.norm(D)
+        assert nA <= (2 * abs(c) + half * np.linalg.norm(E)) * nD * (1 + 1e-12)
+        assert nA <= half * np.linalg.norm(G) * nD * (1 + 1e-12)
+
+
+def test_outward_rounding_helpers_and_exact_cells():
+    with ck.working_precision(128):
+        x = arb(1) / 3
+        assert arb(ck.up(x)) >= x and arb(ck.down(x)) <= x
+        c = ck._cell(37, 0.005)
+        assert c.lower() <= arb(37) * arb(0.005) and c.upper() >= arb(38) * arb(0.005)
+        nxt = ck._cell(38, 0.005)
+        assert c.upper() >= nxt.lower()                    # adjacent cells leave no gap
+        cells = ck.covering_cells([(0.25, 0.26, 0.0, 0.01)], arb("0.032"), 0.005)
+        ks = {k for _, k in cells}
+        assert min(ks) * 0.005 <= -0.032 and (max(ks) + 1) * 0.005 >= 0.042
