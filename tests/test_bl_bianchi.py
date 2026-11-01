@@ -67,7 +67,9 @@ def test_t4_t6_laws_hold_for_all_conformally_flat_vacuum_data():
 
 def test_principal_symbols():
     """Frame form: C_xi antisymmetric (symmetric hyperbolic), speeds 0, +-1/2, +-1. Coordinate form
-    (Christoffels from gamma): Jordan block at eigenvalue 0 when E != 0, so not strongly hyperbolic."""
+    (Christoffels from gamma): at the sampled state and direction there is a Jordan block at eigenvalue 0,
+    so not strongly hyperbolic there (exact example in research/calc/curl_hierarchy_checks.py; no claim
+    for every state or direction)."""
     out = bs.main()
     assert out["C_antisymmetric"] < 1e-12
     assert sorted(abs(v) for v in out["frame_speeds"]) == [0, 0, 0.5, 0.5, 0.5, 0.5, 1, 1, 1, 1]

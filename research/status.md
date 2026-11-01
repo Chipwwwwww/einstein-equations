@@ -1,6 +1,31 @@
 # Status
 
-*Updated 2026-11-01 (sessions 1–15). Start here.*
+*Updated 2026-11-01 (sessions 1–15, axisymmetric sprint 01, curl-hierarchy sprint 01). Start here.*
+
+## Curl-hierarchy convergence sprint 01
+
+File: [`curl_hierarchy_convergence_sprint_01.md`](curl_hierarchy_convergence_sprint_01.md). Start
+`7a13442`.
+
+- **Question.** Does computing each curl-degree sector exactly in time enlarge the controllable
+  region? **Answer: no, beyond removing the zero-order constraints.**
+  - The difficulty moves into the sum over sectors. There the loss of one derivative per order of
+    coupling meets the complex analyticity width of the silent background, which shrinks to 0 at the
+    local collapse time.
+  - With the certified loss constants, the most an exact silent treatment can give within CK′ is
+    ×1.55 (tube) and ×1.80 (waist).
+  - The certified region is **unchanged**.
+- **Session-15 corrections.**
+  - Truncation error is $O(t^{2J+6})$; coefficients are exact through $t^{2J+4}$.
+  - Fixed-order sector ratios are not convergence evidence.
+  - First-sector boundedness is automatic; that next task is withdrawn.
+  - Symbol statement replaced by an exact example (Jordan block along $(3/5,0,4/5)$, none along $e_3$).
+  - Claim 105 is CGR 2017 eq. (59), a **known** result; checked exactly for all conformally flat data.
+- **Proved.**
+  - Lemma 3: finite-sector regularity, not uniform in $m$.
+  - Proposition 4: geometric bound for the linear principal hierarchy on holomorphic strips.
+- **Next.** Certify the complex analyticity width $s_{\max}(T)$ and the complex propagator bound
+  $B(T)$ of the BL silent ODE near the tube.
 
 ## Session 15: the spatial coupling in Einstein–Bianchi form
 
@@ -14,7 +39,7 @@ Branch `claude/bl-bianchi-formulation`, from `bbc2368` (PR #5's head). Note:
   - It reproduces the evaluator's coefficients **exactly** through $t^8$, and the constraints hold
     along the solution.
   - The frame form is symmetric hyperbolic (speeds $0, \pm\tfrac12, \pm1$). The coordinate form is
-    **not** strongly hyperbolic (Jordan block). This corrects note 17's wording.
+    **not** strongly hyperbolic (exact example of a Jordan block; see the curl-hierarchy sprint §2.4 for the corrected quantifiers). This corrects note 17's wording.
 - **Theorem 1 (proved).** The $\Delta\mathrm{Ric}$, $t^4$ and $t^6$ laws hold for **all** conformally
   flat time-symmetric vacuum data.
   - The proof is a reduction (naturality, Möbius/Kelvin normalisation, weighted homogeneity) plus 72
@@ -27,7 +52,7 @@ Branch `claude/bl-bianchi-formulation`, from `bbc2368` (PR #5's head). Note:
     order. Whether the sectors stay analytic up to the local collapse is undecided.
 - **Alternative route.** The energy identity with flux bound (Lemma 3) is proved and checked exactly
   on jets. Commuted energies are not done.
-- **Next decisive task:** integrate the $j = 1$ sector as an ODE in $t$ to the silent collapse time.
+- **Next decisive task:** *(withdrawn by the curl-hierarchy sprint: first-sector boundedness is automatic)*.
 - **No category-A metric. No certified merger. No structural breakthrough in the metric itself.**
 
 | Item | Label | How checked |

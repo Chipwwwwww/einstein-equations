@@ -23,7 +23,7 @@ study.
 | --- | --- |
 | E–H system in Gauss gauge, repo conventions (§2.1) | derived; agrees term by term with Ellis–van Elst (40)–(41) and, after converting the signature, with Friedrich–Rendall's $P_{ij}$, $Q_{kl}$; reproduces the ADM coefficients **exactly** through $t^8$ |
 | frame form symmetric hyperbolic, speeds $0, \pm\tfrac12, \pm1$ | inherited (Friedrich–Rendall §4.4), symbol recomputed here |
-| coordinate form ($\gamma$, $K$, $E$, $H$, Christoffels from $\gamma$) **not** strongly hyperbolic | computed here: Jordan block at speed 0 whenever $E \ne 0$ |
+| coordinate form ($\gamma$, $K$, $E$, $H$, Christoffels from $\gamma$) **not** strongly hyperbolic | computed (exact): at $E = \mathrm{diag}(-1,-1,2)$, $H = 0$, a Jordan block at speed 0 along $(3/5,0,4/5)$, none along $e_3$. *(Session 15 wrote "whenever $E \ne 0$" from one float sample; corrected in the curl-hierarchy sprint, §2.4.)* |
 | $\Delta\mathrm{Ric}$, $t^4$ and $t^6$ laws for all conformally flat time-symmetric vacuum data | **proved** (reduction §3.3 plus 72 exact evaluations) |
 | $(\mathrm{curl}\,H)_3$ law (claim 105) | proved (follows from §3 and claims 103–104) |
 | lag lemma: the curl-degree-$2j$ sector of $\gamma$ is $O(t^{2j+4})$ for conformally flat data | proved (induction, §4.1); exact checks |
@@ -132,7 +132,7 @@ Gauss constraint through $t^5$ hold **exactly**.
 | Form | Unknowns | Principal part | Result |
 | --- | --- | --- | --- |
 | frame [FR00] | $e_a{}^i$, $\Gamma$, $K$, $E$, $H$ | only $(E, H)$: $P(\xi) = \begin{pmatrix}0 & C_\xi\\ -C_\xi & 0\end{pmatrix}$ | $C_\xi$ antisymmetric on STF, so symmetric hyperbolic; speeds $0, 0, \pm\tfrac12, \pm\tfrac12, \pm1, \pm1$ (computed) |
-| coordinate (this note's jet engine) | $\gamma$, $K$, $E$, $H$ | as above **plus** $\partial\gamma$ entering through the Christoffels in $\mathrm{curl}$ | at any state with $E \ne 0$: eigenvalue 0 with algebraic multiplicity 16, geometric 15 — a Jordan block, so **not strongly hyperbolic**; diagonalisable only at $E = H = 0$ |
+| coordinate (this note's jet engine) | $\gamma$, $K$, $E$, $H$ | as above **plus** $\partial\gamma$ entering through the Christoffels in $\mathrm{curl}$ | exact example $E = \mathrm{diag}(-1,-1,2)$, $H = 0$: along $\xi = (3/5,0,4/5)$ eigenvalue 0 has algebraic multiplicity 16, geometric 15 (Jordan block), so **not strongly hyperbolic**; along $\xi = e_3$ the symbol is diagonalisable (16/16). No statement for all states or all directions is made. *(Corrected in research/curl_hierarchy_convergence_sprint_01.md §2.4.)* |
 
 `python -m research.calc.bianchi_symbol` computes the table.
 
@@ -277,6 +277,16 @@ The evidence category is a proof whose finite part is an exact rational computat
 computer-assisted. It contains no floating point and no sampling. This promotes **claim 98**. With
 claims 103–104 it also promotes **claim 105**: the $(\mathrm{curl}\,H)_3$ law.
 
+*Literature (curl-hierarchy sprint §2.5).* Claim 105 is the **known** result of Clifton, Gregoris and
+Rosquist (Gen. Rel. Grav. 2017, eq. 59), $\partial_t^3(\mathrm{curl}\,H)\vert_0 = 4\,\mathrm{curl}\,\mathrm{curl}(E^2)$,
+under the same assumptions. In Taylor coefficients it reads
+$(\mathrm{curl}\,H)_3 = \tfrac23\mathrm{curl}\,\mathrm{curl}(\mathrm{Ric}^2)$, and it is expanded here with the
+conformally flat identities. The equality is checked exactly, for all conformally flat vacuum data.
+
+So $\gamma_3 = -\tfrac{13}{180}\lvert\mathrm{Ric}\rvert^2\mathrm{Ric} - \tfrac{41}{540}\mathrm{tr}(\mathrm{Ric}^3)\gamma_0 - \tfrac1{90}\mathrm{curl}\,\mathrm{curl}(\mathrm{Ric}^2)$.
+This metric-level form and its universal verification are this project's; their novelty is not
+established.
+
 ### 3.4 What it reveals about higher orders
 
 - **No term linear in curvature survives beyond $t^2$.** At linear order around flat space,
@@ -382,10 +392,13 @@ coefficient split by curl degree $2j$.
 
 1. **Ratios at fixed order.** From $j = 1$ on, successive ratios are 0.27, 0.23, 0.31 (P1) and
    0.72, 0.34, 0.24 (P2). At P3 they are 0.41, 0.96, 0.24, so one step is not monotone.
-   - At the coefficient level the curl-degree expansion decreases roughly geometrically once past
-     $j = 1$.
-   - Near the holes it is dominated by $j = 0, 1$: at $t^{12}$, $j = 1$ is 3.2 % of the silent
-     part and $j \ge 2$ adds 1.1 %.
+   - At the coefficient level, the finitely many sectors present at $t^{12}$ decrease past $j = 1$.
+     By the lag lemma only $j \le k - 2$ can occur at a fixed order. So this decrease is *not*
+     evidence that the series over $j$ converges, and it is not necessary for convergence
+     (curl-hierarchy sprint §2.2).
+   - At P1, the coefficient of $t^{12}$ in $j = 1$ is 3.2 % of that in the silent part, and
+     $j \ge 2$ adds 1.1 %. These are coefficient ratios at one point and one power of $t$, **not
+     metric errors**.
    - At the waist the first three sectors are comparable.
 2. **Radius of each sector in $t$.** Each sector's coefficient sequence in $k$ starts at
    $k = j + 2$. Its single-step radius estimates *increase* with $k$, for example P3, $j = 1$: 2.74,
@@ -456,8 +469,9 @@ M1 and M2 were selected: one constructive, one analytic. M1's first decisive cal
   orders for any conformally flat vacuum data. It gives an exact local initial layer, valid for all
   such data, against which approximations and restart data can be checked.
 - **Lemma 2** (proved). It enables a sharp bookkeeping of where spatial coupling enters. Truncating
-  the curl-degree expansion at $j$ is exact through $t^{2j+6}$, which justifies a hierarchy of
-  transport problems with known error order.
+  the curl-degree expansion at $J$ is exact through $t^{2J+4}$, with error $O(t^{2J+6})$. It gives a
+  hierarchy of transport problems with known error order. *(Session 15 wrote "through $t^{2j+6}$",
+  which is wrong. With $J = 0$, the silent solution fails at $t^6$.)*
 - **The frame/coordinate hyperbolicity distinction** (computed). An energy method must use frame
   and connection unknowns; it rules out a coordinate implementation.
 - **Lemma 3** (proved). It is the base energy of the alternative route; with commuted versions it
@@ -479,7 +493,13 @@ M1 and M2 were selected: one constructive, one analytic. M1's first decisive cal
   - Tools: `bl_bianchi.py` (E–H jets with $\varepsilon$, energy check), `cf_universal.py`
     (harmonic-jet proofs), `bianchi_symbol.py` (symbols).
 
-**Next single decisive task.** Integrate the first curl-degree sector ($j = 1$) as a function of
+*(Withdrawn in the curl-hierarchy sprint, §2.3. Boundedness of a fixed sector on an interval where
+the silent background is regular is automatic: it solves a linear forced ODE with bounded
+coefficients. So the test below cannot decide uniform control, convergence at $\varepsilon = 1$, or
+passage beyond the Taylor radius. The replacement task is in
+research/curl_hierarchy_convergence_sprint_01.md §8.)*
+
+**Next single decisive task (superseded).** Integrate the first curl-degree sector ($j = 1$) as a function of
 $t$ at a near-hole point. Use the transport equation of §4.2: solve the silent ODE together with its
 spatial 2-jet (variational equations), feed $\mathrm{curl}^2$ of it as the source, and integrate
 numerically up to the silent collapse time.
