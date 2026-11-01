@@ -444,6 +444,16 @@ def _hull(lo, hi):
     return arb(lo).union(arb(hi))
 
 
+def parameter_endpoints(value, radius=None):
+    """Outward binary64 endpoints enclosing the SAME Arb parameter ball.
+
+    In particular, float('6.5e-6') is not the exact decimal 6.5e-6.
+    Use this bridge when one certificate hands a parameter to another.
+    """
+    ball = arb(value) if radius is None else arb(value, radius)
+    return _down(ball.lower()), _up(ball.upper())
+
+
 def polar(rho, z):
     r = (rho * rho + z * z).sqrt()
     phi = arb.atan2(rho, z)
@@ -483,7 +493,8 @@ def certify_barrier(d, t, h, z0, delta, side, m_check=4, m_geo=32, prec=128, log
         for c in bm.load_certificates():
             if not (d.lower() >= arb(c["d_lo"]) and d.upper() <= arb(c["d_hi"])):
                 continue
-            tb1, tb2 = bm.tail_bounds(c, float(abs(t).upper()), 1), bm.tail_bounds(c, float(abs(t).upper()), 2)
+            t_abs = _up(abs(t).upper())
+            tb1, tb2 = bm.tail_bounds(c, t_abs, 1), bm.tail_bounds(c, t_abs, 2)
             if tb1 is None or tb2 is None:
                 continue
             certs.append((c, tb1, tb2))
@@ -537,12 +548,15 @@ NBINS = 4000
 def radial_profile(g, nbins=NBINS):
     """Per angular bin of [0, pi/2]: outward-rounded (min r, max r) over the boxes of a profile
     (g["_geo"]: float boxes (rho_lo, rho_hi, z_lo, z_hi); g["_z0ball"]: the axis point)."""
-    width = float(arb.pi().upper()) / 2 / nbins
+    # Bins have exact dyadic width. Cover pi/2 outward and select every
+    # intersected bin using interval division, never a rounded float ratio.
+    width = _up(arb.pi().upper() / (2 * nbins))
     lo, hi = [math.inf] * nbins, [-math.inf] * nbins
     for (r0, r1, z0, z1) in g["_geo"]:
         phi, r = polar(_hull(r0, r1), _hull(z0, z1))
-        a = max(0, int(float(phi.lower()) / width))
-        b = min(nbins - 1, int(float(phi.upper()) / width))
+        ratio = phi / arb(width)
+        a = max(0, int(ratio.lower().floor().fmpz()))
+        b = min(nbins - 1, int(ratio.upper().floor().fmpz()))
         for k in range(a, b + 1):
             lo[k] = min(lo[k], _down(r.lower()))
             hi[k] = max(hi[k], _up(r.upper()))
@@ -561,7 +575,7 @@ def radial_gap(inner, outer, nbins=NBINS):
     radial graphs)."""
     _, ih, _ = radial_profile(inner, nbins)
     ol, _, _ = radial_profile(outer, nbins)
-    return min(o - i for o, i in zip(ol, ih))
+    return min(_down((arb(o) - arb(i)).lower()) for o, i in zip(ol, ih))
 
 
 def nesting_and_domain(inner, outer, nbins=NBINS, prec=128):
@@ -573,7 +587,7 @@ def nesting_and_domain(inner, outer, nbins=NBINS, prec=128):
     try:
         r_in_lo, r_in_hi, width = radial_profile(inner, nbins)
         r_out_lo, r_out_hi, _ = radial_profile(outer, nbins)
-        gap = min(o - i for o, i in zip(r_out_lo, r_in_hi))
+        gap = min(_down((arb(o) - arb(i)).lower()) for o, i in zip(r_out_lo, r_in_hi))
         certs = [c for c in bm.load_certificates() if c.get("region") == "tube"]
         worst, dom_ok = math.inf, True
         coarse = 200
@@ -582,7 +596,7 @@ def nesting_and_domain(inner, outer, nbins=NBINS, prec=128):
             ks = range(j * per, (j + 1) * per)
             rl = min(r_in_lo[k] for k in ks)
             rh = max(r_out_hi[k] for k in ks)
-            phi = _hull(j * per * width, (j + 1) * per * width)
+            phi = _hull(arb(j * per) * arb(width), arb((j + 1) * per) * arb(width))
             r = _hull(rl, rh)
             rho, z = r * phi.sin(), r * phi.cos()
             ins = [bm.in_domain(c, rho, arb(0), z) for c in certs]
@@ -752,7 +766,7 @@ def main(d="0.7662", t="1.2e-5", h_in=-0.75e-6, h_out=2e-6, z_in=None, z_out=Non
     # by wrapping to ~6e-3 at the plane): Lohner sets over the same brackets (bl_foliate)
     from research.calc import bl_foliate as bf
     with mp.get_context("fork").Pool(2) as pool:
-        lj = [pool.apply_async(bf._barrier_geometry_job, ((d, float(t), h, g["z0"], delta),))
+        lj = [pool.apply_async(bf._barrier_geometry_job, ((d, t, h, g["z0"], delta),))
               for h, g in ((h_in, inner), (h_out, outer))]
         lin, lout = (j.get() for j in lj)
     for g, lg, name in ((inner, lin, "in"), (outer, lout, "out")):

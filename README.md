@@ -29,7 +29,7 @@ Curvature of spacetime on the left, energy and momentum of matter on the right.
 | [`notes/11-event-horizon-merger.md`](notes/11-event-horizon-merger.md) | Event horizons of Hintz's extreme-mass-ratio mergers: merger and connected black-hole region (Λ ≥ 0, escape-defined); with null infinity for Λ = 0 (the textbook black-hole region equals the escape-defined one), resting on our reading of the far-field structure in Hintz 2026. |
 | [`notes/12-no-common-horizon.md`](notes/12-no-common-horizon.md) | Computer-assisted proof that Brill–Lindquist data just beyond the critical separation have no common apparent horizon anywhere: at $d = 0.78$ (Theorem F), and for every $d$ from $d_c$ to $0.7676$ (Theorem F′). Lohner-validated shooting, a thin-neck instability lemma, and a local lemma at the fold. |
 | [`notes/13-head-on-collision.md`](notes/13-head-on-collision.md) | One head-on collision, constructed: near-critical Brill–Lindquist data whose vacuum evolution has two apparent horizons at first and a common one at a time linear in $d - d_c$ with a certified slope (Theorem H), with what it does and does not show. |
-| [`notes/14-explicit-binaries.md`](notes/14-explicit-binaries.md) | Toward an explicit dynamical binary metric: what counts as a result, which routes are blocked (Petrov type I of the head-on spacetime; integrable methods need struts), and an exact convergent series for the BL head-on spacetime near the merger. No explicit binary metric is known. |
+| [`notes/14-explicit-binaries.md`](notes/14-explicit-binaries.md) | Toward an explicit dynamical binary metric: what counts as a result, which routes are blocked (Petrov type I of the head-on spacetime; integrable methods need struts), and an exact convergent series for the BL head-on spacetime near the merger. No global closed-form vacuum binary metric is supplied here; exact existence constructions are distinct. |
 | [`notes/15-route-j-convergence.md`](notes/15-route-j-convergence.md) | A certified time of validity for that series: near the critical surface, for every separation from $d_c$ to $0.7676$, the BL spacetime equals its convergent time series for $\lvert t\rvert < 2.885\times10^{-4}M$ (corrected in note 17 from $2.988\times10^{-4}$, and extended there to $8.683\times10^{-4}M$) (abstract Cauchy–Kovalevskaya with Arb-certified constants). The local common-horizon birth lies inside it for $d$ close enough to $d_c$; how close is not yet explicit. |
 | [`notes/16-bl-metric.md`](notes/16-bl-metric.md) | The near-critical BL spacetime as an evaluable metric: every component of $g_{\mu\nu}$, its inverse and its first and second derivatives, with certified errors, for $\lvert t\rvert < 5.1\times10^{-4}M$ near the critical surface (corrected in note 17 from $5.6\times10^{-4}$; extended there to $8.7\times10^{-4}M$); and four experiments using it to look for a closed form (none found; conformally flat and silent foliations excluded). |
 | [`notes/17-certified-extension.md`](notes/17-certified-extension.md) | A misread constant in the convergence certificate, found and corrected; a proved generalisation of the abstract Cauchy–Kovalevskaya theorem that extends the certified evolution; sharper derivative bounds; and the series' geometry: algebraic laws at low order, certified exclusions of pointwise-closed tidal evolutions, and what the convergence time means for one hole. |
@@ -85,3 +85,14 @@ geometrized units $G = c = 1$ unless stated. Details in
 - C. Misner, K. Thorne, J. Wheeler, *Gravitation* (1973).
 - R. Wald, *General Relativity* (1984).
 - B. Schutz, *A First Course in General Relativity* (2nd ed., 2009).
+
+
+## Current research audit
+
+- [Note21: integrated critical all-mode spectral gap](notes/21-horizon-spectral-gap.md)
+- [Note22: corrected global-exclusion tools and remaining lemma](notes/22-global-mots-audit.md)
+- [Checkpoint report and honest replay status](research/report_global_mots_audit_2026-11-01.md)
+- [Primary-literature matrix](research/literature_matrix.md), [references](research/references.bib), [next research gates](research/research_gaps.md)
+
+The local common-MOTS bracket remains audit-qualified, not a global
+first-apparent-horizon or event-horizon merger theorem.

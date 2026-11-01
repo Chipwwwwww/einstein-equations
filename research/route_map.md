@@ -1,5 +1,22 @@
 # Route map: explicit dynamical binary-black-hole spacetimes
 
+## 2026-11-01 global-exclusion audit checkpoint
+
+Read the [current audit report](report_global_mots_audit_2026-11-01.md) and
+[literature matrix](literature_matrix.md) before interpreting historical claims.
+The new [note22](../notes/22-global-mots-audit.md) rejects the constant-residual
+global shooting shortcut and supplies exact evolved-data replacements.
+The critical all-mode gap from the independent branch is integrated as
+[note21](../notes/21-horizon-spectral-gap.md) and independently replayed.
+Arithmetic handoffs are repaired; corrected full M/M'/N verification remains
+pending. The inherited local bracket is neither global nor newly revalidated.
+No global equal-mass merger metric or event-horizon theorem is established.
+Priorities and precise missing lemmas: [research_gaps.md](research_gaps.md).
+
+The following sections retain the historical programme description, subject
+to this audit and the current claim ledger.
+
+
 *Created session 10 (2026-10-31). Target: an explicit dynamical binary-black-hole metric of 4D,
 asymptotically flat (AF) vacuum GR, $R_{\mu\nu} = 0$, $\Lambda = 0$, $G = c = 1$. First restriction:
 nonspinning, axisymmetric, head-on. Result categories (A–E) and levels (1–5) as defined in

@@ -2,6 +2,20 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-11-01 — Global-exclusion audit and mandatory literature integration
+
+Base `368fe68`, new branch `research/global-mots-audit-2026-11-01`; preserve
+all remote branches. Integrate the independently developed spectral gap
+selectively and replay it; do not merge unrelated histories blindly.
+Reject constant-residual enumeration after an exact counterexample. Use
+true evolved-data shooting and symmetry-restricted stability instead.
+Repair decimal and interval handoffs before promoting inherited certificates.
+Record the interrupted barrier replay as partial; no final certificate inferred.
+Read the mandatory primary papers and compare known shooting/bifurcation
+results before claiming novelty. Exact merger constructions in Hintz's work
+are part of the baseline. Proofs/verification: research/report_global_mots_audit_2026-11-01.md.
+
+
 ## 2026-11-01 (session 16) — An explicit apparent-horizon merger
 
 **Decisions**
