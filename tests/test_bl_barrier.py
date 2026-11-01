@@ -156,12 +156,52 @@ def test_integrator_copy_reproduces_fold_proof():
     assert all(a.mid() == b.mid() and a.rad() == b.rad() for a, b in zip(F1.c, F2.c))
 
 
-@pytest.mark.slow
-def test_stored_certificate_record():
-    """The stored record of the replay says certified, with the margins quoted in notes/20."""
-    with open(os.path.join(DATA, "bl_barrier.json")) as f:
+@pytest.mark.parametrize("name, t, theta_in_hi", [("bl_barrier.json", "1.2e-5", -7.42e-7),
+                                                    ("bl_barrier_near.json", "6.5e-6", -3.83e-8)])
+def test_stored_certificate_records(name, t, theta_in_hi):
+    """The stored Theorem M records (notes/20 §3) say certified, with the margins quoted there: sign
+    changes of F at both ends of each bracket, the barrier inequalities on the Moore boxes and on the
+    Lohner re-check, nesting and Omega in U."""
+    with open(os.path.join(DATA, name)) as f:
         rec = json.load(f)
-    assert rec["certified"]
-    assert rec["inner"]["theta_hi"] < 0 < rec["outer"]["theta_lo"]
-    assert rec["inner"]["F_minus"][0] * rec["inner"]["F_plus"][1] < 0
-    assert rec["geometry"]["nested"] and rec["geometry"]["Omega_in_U"]
+    assert rec["certified"] and rec["d"] == "0.7662" and rec["t"] == t
+    assert rec["inner"]["theta_hi"] < theta_in_hi < 0 < 1.99e-6 < rec["outer"]["theta_lo"]
+    assert rec["inner"]["lohner"]["theta_hi"] < 0 < rec["outer"]["lohner"]["theta_lo"]
+    for side in ("inner", "outer"):
+        fm, fp_ = rec[side]["F_minus"], rec[side]["F_plus"]
+        assert (fm[1] < 0 < fp_[0]) or (fp_[1] < 0 < fm[0])
+        assert rec[side]["x_dot_n_min"] > 0 and rec[side]["sin_alpha_max"] < 0 and rec[side]["R_max"] < 1e-8
+    g = rec["geometry"]
+    assert g["nested"] and g["min_radial_gap"] > 0 and g["Omega_in_U"] and g["lohner_recheck"]
+    assert g["largest_inflation_needed"] < g["w_tube"]
+
+
+def test_lohner_substep_enclosures_contain_exact_rotation():
+    """bl_foliate.step_param_sub on x' = -w y, y' = w x with the rate w a set parameter: every
+    sub-step box contains the exact solution at its time for corner initial points and rates, and the
+    final set agrees with lohner.step_param."""
+    from flint import arb
+    from research.calc import bl_foliate as bf
+    from research.calc import lohner
+
+    def f(y):
+        x, yy, w = y
+        return [-(w * yy), w * x, w * 0]
+    S = lohner.PSet.from_box([arb(1, 1e-6), arb(0, 1e-6)], [arb(1, 1e-6)])
+    h = 0.3
+    S2, _ = lohner.step_param(f, S, h, 14)
+    S1, _, subs = bf.step_param_sub(f, S, h, 14, None, 6)
+    for a, b in zip(S1.hull(), S2.hull()):
+        assert a.overlaps(b) and abs(float(a.rad()) - float(b.rad())) < 1e-12
+    for u, st in subs:
+        for x0 in (1 - 1e-6, 1 + 1e-6):
+            for y0 in (-1e-6, 1e-6):
+                for w in (1 - 1e-6, 1 + 1e-6):
+                    for frac in (0.0, 0.5, 1.0):
+                        tt = arb(float(u.lower()) + frac * float(u.rad()) * 2)
+                        c, s = (w * tt).cos(), (w * tt).sin()
+                        ex = (x0 * c - y0 * s, x0 * s + y0 * c)
+                        assert st[0].contains(ex[0]) and st[1].contains(ex[1])
+        # a sub-box covers a time interval of length h/6 = 0.05 (the point moves by ~0.05 along the
+        # unit circle), plus the 1e-6 spread: radius about 0.025
+        assert max(float(v.rad()) for v in st) < 0.026

@@ -23,7 +23,14 @@ level-h equation,
 
 and the time t as a third set parameter (t' = 0), so that one run covers every t in [0, t0].
 
-Run: python -m research.calc.bl_foliate   (writes research/calc/data/bl_foliate.json)
+Status (session 16): NOT COMPLETED. On test pieces, (b) and (c) are certified for all t in [0, t0], but
+(a) fails on z0-pieces near the fold: the Lohner remainder A r inflates like (piece width)^2 times
+steps (9.6e-6 on a 6e-5 piece, against a true second-order term ~3e-8), so u_end > 0 is not certified
+there. A single leaf (z0 a point, t the whole interval) passes. The fix is a convexity argument in
+z0 with second jets, F >= F(z_c) - F_z(z_c)^2 / (2 inf F_zz) (notes/20 §4). barrier_geometry (used by
+bl_barrier for the nesting test) and step_param_sub are complete and tested.
+
+Run: python -m research.calc.bl_foliate   (would write research/calc/data/bl_foliate.json)
 """
 
 import json
@@ -217,10 +224,8 @@ class Collector:
 
 def step_param_sub(f, S, h, L, blocks, m_sub):
     """lohner.step_param (same computation), also returning enclosures of the state on m_sub equal
-    sub-intervals [u_i, u_i+1] of [0, h]:
-        x(u) in sum_{k<=p} c_k(m) u^k + c_{p+1}(B) u^{p+1} + Phi_box (x0 - m, q),
-    the centre trajectory's Taylor polynomial with Lagrange remainder over the a-priori box B, plus the
-    flow Jacobian enclosure Phi_box (Picard, over B and t in [0, h]) applied to the set's spread."""
+    sub-intervals [u_i, u_i+1] of [0, h]: the centre trajectory's Taylor polynomial with Lagrange
+    remainder over the a-priori box B, plus the Lohner mean-value term at the sub-time (see below)."""
     from flint import arb_mat
     import numpy as np
     n, k, p = len(S.m), len(S.p0), L - 2
@@ -272,20 +277,35 @@ def step_param_sub(f, S, h, L, blocks, m_sub):
             acc += Ainv[i, j] * (xm[j] - m_new[j])
         r_new.append(acc)
     S_new = lohner.PSet(m_new, A_new, r_new, P_new, S.p0, S.q)
-    # sub-step enclosures
-    hull = S.hull()
-    spread = [hull[i] - S.m[i] for i in range(n)] + list(S.q)
+    # sub-step enclosures, in Lohner form at the sub-time u:
+    #   x(u) in phi_u(m) + Jx(u) (A r) + (Jx(u) P + Jp(u)) q,
+    # Jx, Jp the gradient Taylor series of the flow over the set's hull (the same series as for the step
+    # map), evaluated at u, with the Lagrange term through Pbox. The correlations of the set are kept, so
+    # quantities like v ~ rho^2 near the axis stay relatively tight.
+    RemB = arb_mat([[lohner._coef(TBg[i].g[j], p + 1) for j in range(N)] for i in range(n)]) * Pbox
     subs = []
-    for i in range(m_sub):
-        u = arb((i + 0.5) * h / m_sub, 0.5 * h / m_sub)
+    for isub in range(m_sub):
+        u = arb((isub + 0.5) * h / m_sub, 0.5 * h / m_sub)
         up = u ** (p + 1)
+        Ju = arb_mat(n, N)
+        for i in range(n):
+            for j in range(N):
+                acc = arb(0)
+                for kk in range(p, -1, -1):
+                    acc = acc * u + lohner._coef(TX[i].g[j], kk)
+                Ju[i, j] = acc + RemB[i, j] * up
+        Jxu = arb_mat([[Ju[i, j] for j in range(n)] for i in range(n)])
+        Jpu = arb_mat([[Ju[i, n + l] for l in range(k)] for i in range(n)])
+        C1u = Jxu * S.A
+        C2u = Jxu * S.P + Jpu
         st = []
-        for j in range(n):
+        for i in range(n):
             acc = arb(0)
             for kk in range(p, -1, -1):
-                acc = acc * u + lohner._coef(Tm[j], kk)
-            acc += lohner._coef(TB[j], p + 1) * up
-            acc += sum((Pbox[j, l] * spread[l] for l in range(N)), arb(0))
+                acc = acc * u + lohner._coef(Tm[i], kk)
+            acc += lohner._coef(TB[i], p + 1) * up
+            acc += sum((C1u[i, j] * S.r[j] for j in range(n)), arb(0))
+            acc += sum((C2u[i, l] * S.q[l] for l in range(k)), arb(0))
             st.append(acc)
         subs.append((u, st))
     return S_new, B, subs

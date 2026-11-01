@@ -30,7 +30,7 @@ geodesic slices, and silent flow (notes/16 §5).
 | G. Solution-generating methods (Ernst, inverse scattering, Bäcklund) | A | **rejected** for regular AF radiating binaries (literature) | need 2 commuting Killing fields; AF radiative ⇒ boost-rotation symmetric ⇒ struts or negative mass |
 | H. Resummation of expansions | B | untested | no convergence theorem for PN/PM; formal |
 | I. Numerical/symbolic discovery | E | **tested** (session 12) | exact universal $t^4$ coefficient; conformally flat slices and silent flow excluded (certified); Padé exploratory (notes/16 §5) |
-| J. Near-critical BL as the explicit example | B + C | **partly done** (session 11) | Proposition T: certified $T_{\min}$ on a tube about $S_c$, uniform in $d \in [d_c, 0.767578]$; Corollary J: local MOTS formation inside it for $d - d_c < \delta_1$, $\delta_1$ not explicit (notes/15) |
+| J. Near-critical BL as the explicit example | B + C | **done at an explicit separation** (session 16) | Theorem M: at $d = 0.7662$ a common MOTS on $\Sigma_t$, $t = 6.5\times10^{-6}$ and $1.2\times10^{-5}$, inside the certified series metric; with Theorem F′, an explicit apparent-horizon merger. Theorem N (local exclusion before the merger) not completed. Barriers replace the spectral gap (notes/20) |
 
 ## A · Symmetry reduction with retained radiation
 
@@ -272,3 +272,27 @@ near $T \approx 10^{-3}$ (notes/16 §2).
     problems along the silent flow (main route M1).
   - The first experiment did not falsify M1.
   - *Next decisive experiment:* the $j = 1$ sector as an ODE in $t$ up to the silent collapse.
+
+## Session 16 · Route J completed at an explicit separation (notes/20)
+
+- **Method.** Existence of a MOTS by Andersson–Metzger barriers; exclusion in a shell by a foliation
+  with $\theta_+ > 0$ (convex ridges allowed). Both are built from level sets of the first-order
+  expansion, on which the true expansion is $h + R$, with $R$ a certified mean-value remainder.
+  The quantitative Lyapunov–Schmidt programme (spectral gap, $C^{2,\alpha}$ bounds, MOTS solver on
+  $\Sigma_t$) is no longer needed.
+- **Result.** At $d = 0.7662$:
+  - no common MOTS at $t = 0$ (F′);
+  - one at $t = 6.5\times10^{-6}$ (Theorem M), $1.06$ times the linear-law onset.
+
+  The matching exclusion before $t_0 = 5\times10^{-6}$ (Theorem N) is built but not certified: the
+  ridge condition over $z_0$-pieces needs a convexity argument (notes/20 §4).
+- **Next decisive calculation.** Theorem N by convexity in $z_0$ (second jets). Then Theorem F′ for
+  $0 < t \le t_0$: a CK certificate on
+  $B(0, 1.05)$ minus the throat balls, needed only for $t \lesssim 10^{-5}$, plus the F′ sweep for the
+  perturbed (level-$h$, $\lvert h\rvert \le \sup\lvert R\rvert$) shooting curves. That makes the birth time of
+  the first common apparent horizon of the whole slice explicit.
+- **Then.** A $d$-interval version (Lohner brackets in $(z_0, d)$), and the time range of the CK
+  certificate (larger $d - d_c$).
+- **Unchanged.**
+  - Category A: no candidate.
+  - Event horizons: need the global development.

@@ -386,3 +386,35 @@ stop condition for each, is in notes/18 §5.
   are wider than the old `LAM_MAX` $= 0.04$. Fix: widen the window to
   $\zeta \in [-0.234, -0.133]$ and raise `LAM_MAX` to 0.05. Lesson: map the
   necks in floating point before choosing certificate windows.
+
+## Session 16 (2026-11-01): barriers and foliations instead of a spectral gap
+
+- **Existence of a common MOTS needs only $C^0$ data on two surfaces** (Andersson–Metzger
+  Thm 3.1/4.1). Taking the barriers to be level sets $\theta_+^{(1)} = h$ of the first-order
+  expansion makes the cancellation exact: on them the true expansion is $h + R$, with $R$ a
+  mean-value remainder of size $t^2$ that needs only crude enclosures. This replaces the
+  quantitative Lyapunov–Schmidt programme of notes/15 §7.3 (spectral gap, $C^{2,\alpha}$ bounds,
+  validated MOTS solver on $\Sigma_t$) for the existence half. **Tested, works** (notes/20,
+  Theorem M): margin $7.5\times10^{-7}$ against a certified $\lvert R\rvert$ of order $10^{-8}$.
+- **Exclusion in a shell needs only $C^0$ data on a foliation** (comparison principle). Leaves that
+  do not close smoothly are fine if the equatorial ridge is convex ($F > 0$): a smooth surface
+  inside cannot touch a convex ridge. So no closing condition is needed per leaf.
+  **Not completed.** On $z_0$-pieces near the fold the Lohner remainder inflates like (width)²,
+  about 350 times the true second-order term, so $F > 0$ (the convex ridge) cannot be certified on a
+  piece of width $6\times10^{-5}$, while $\theta_+ > 0$, the Jacobi field and embeddedness pass.
+  Next: convexity in $z_0$, $F \ge F(z_c) - F_z(z_c)^2/(2\inf F_{zz})$, from second jets and
+  point-$z_0$ runs.
+- **Wide parameter balls blow up in the Moore integrator.** A $z_0$-ball of radius $5\times10^{-5}$
+  with a $t$-ball fails in the $\mu$-segment ($\sqrt{1 - \sin^2\alpha}$ of a ball containing 0).
+  The existence certificate therefore uses $\delta = 10^{-8}$ brackets. Anything over an interval
+  of $z_0$ (the foliation) or of $d$ needs Lohner sets (gap3_fold's machinery).
+- **Creased barriers** (shooting curves with $F \ne 0$, no closing condition) would make Theorem M
+  hold for whole $d$-intervals in one run. A re-entrant crease is the right sign for an inner
+  barrier, but AM's Lemma 2.14 (Kriele–Hayward) needs the two normals at least $90°$ apart, which a
+  shallow crease is not. A direct smoothing lemma for shallow creases looks elementary (a fillet of
+  width $\varepsilon$ adds curvature $\sim\lvert F\rvert/\varepsilon$ of the right sign) but was
+  **not written out**. Untested.
+- **Near $S_c$ at small $t$, surfaces are outer trapped but not trapped.** $\mathrm{tr}_S K = tp + O(t^3)$
+  with $p = \mathrm{Ric}(\nu,\nu)$ ranging over about $[-0.58, 0.11]$ on $S_c$ (floating point). So
+  $\theta_- = 2tp - h > 0$ on a band of the inner barrier, and the newborn common MOTS has
+  $\theta_- > 0$ somewhere (numerical observation).

@@ -278,6 +278,25 @@ python -m research.calc.bl_bianchi sectors
 
 Tests: `python -m pytest tests/test_bl_bianchi.py` (about 75 s).
 
+### Session 16: the explicit merger (notes/20)
+
+```bash
+python -m research.calc.bl_barrier
+```
+
+1. **`bl_barrier`** (about 40 min on two cores). Theorem M at $d = 0.7662$, $t = 1.2\times10^{-5}$: the two
+   barrier surfaces (validated secant refinement, sign change of $F$, $\theta_+$ on every box),
+   their Lohner enclosures, nesting and $\Omega \subset U$. It writes `calc/data/bl_barrier.json`.
+   `bl_barrier.main(t='6.5e-6', h_in=-4e-8, out_path=...)` gives the near-onset record
+   `calc/data/bl_barrier_near.json`.
+2. **`bl_foliate`** (library; used by `bl_barrier` for its Lohner enclosures). It holds Lohner sets with the
+   level-$h$ source, $t$ as a set parameter and sub-step enclosures. `bl_foliate.run(z_lo, z_hi, d, t0, h)`
+   checks one piece of the foliation of notes/20 §4. `bl_foliate.main` would certify Theorem N, but the
+   ridge condition fails on $z_0$-pieces near the fold, so Theorem N is **not completed** (notes/20 §4).
+
+Tests: `python -m pytest tests/test_bl_barrier.py` (about 10 s; includes the checks of the stored records).
+The slow test reproduces `fold_proof.shoot` bit for bit (about 5 min).
+
 ## What counts as proof here
 
 - A SymPy identity reduced to `0` by `cancel` on rational expressions, or by

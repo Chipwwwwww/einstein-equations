@@ -2,6 +2,52 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-11-01 (session 16) — An explicit apparent-horizon merger
+
+**Decisions**
+
+- **Base and branch.** `main` at `90f023b` (PRs #1–#6 merged). Work on
+  `claude/hopeful-euler-w9ghbg`; nothing is merged into `main`.
+- **Target chosen.** The single most-cited gap was "no certified merger at any explicit $d$".
+  It sits between Theorem H (qualitative $\delta_0$) and the certified series metric.
+  - A closed-form metric was not re-attempted: notes 14–19 exclude every ansatz class tried, and no
+    new structural candidate appeared.
+  - The event horizon needs the global development and is out of reach.
+- **Barriers instead of a spectral gap.** The planned route (notes/15 §7.3: spectral gap over all
+  modes, $C^{2,\alpha}$ bounds, a validated MOTS solver on $\Sigma_t$) was replaced:
+  - existence of a MOTS by Andersson–Metzger barriers (Thms 3.1 and 4.1, read in the PDF);
+  - exclusion in a shell by a foliation with $\theta_+ > 0$ (new elementary lemma, with convex
+    ridges allowed).
+
+  Both need only $C^0$ control of the true expansion.
+- **Level sets of the first-order expansion** as barriers and leaves. On them the cancellation is
+  exact by construction, and the true expansion is $h + R$, with $R$ a mean-value remainder enclosed
+  crudely (jets plus CK tails).
+- **Integrators.**
+  - Moore/Picard (fold_proof's code, copied with the source as a parameter, regression-tested bit
+    for bit) for point runs and the $10^{-10}$ brackets.
+  - Lohner sets (gap3_fold's machinery), with new sub-step enclosures, for every enclosure that must
+    be thin (nesting) or cover an interval of $z_0$ and $t$ (the foliation).
+- **Separation $d = 0.7662$**: the standard near-critical example of notes 12–16. Its times are
+  $t_1 = 1.2\times10^{-5}$ (robust) and $t_1' = 6.5\times10^{-6}$ ($1.06$ times the linear-law
+  onset). Theorem N was attempted with $t_0 = 5\times10^{-6}$ and is not completed.
+
+**Progress**
+
+- Claims 122–131.
+- Tools: `research/calc/bl_barrier.py`, `research/calc/bl_foliate.py`; tests `tests/test_bl_barrier.py`.
+- Records: `bl_barrier.json`, `bl_barrier_near.json`. There is no `bl_foliate.json`: Theorem N is not completed.
+- Note 20, report `research/report_session16.md`. Status gains a one-paragraph summary of the whole
+  programme at the top.
+
+**Next**
+
+- Complete Theorem N by convexity in $z_0$ (second jets on Lohner pieces, point-$z_0$ runs), notes/20 §4.
+- Theorem F′ for $0 < t \le t_0$ (global exclusion), so that the bracket for the birth of the common
+  apparent horizon holds for the whole slice. This needs a CK certificate on $B(0, 1.05)$ minus the
+  throat balls (for $t \lesssim 10^{-5}$ only) and a perturbed F′ sweep.
+- A $d$-interval version of Theorem M (Lohner brackets in $(z_0, d)$).
+
 ## 2026-11-01 (session 15) — Einstein–Bianchi form, the $t^6$ theorem, curl-degree hierarchy
 
 **Decisions**

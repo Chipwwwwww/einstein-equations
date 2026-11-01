@@ -1,6 +1,72 @@
 # Status
 
-*Updated 2026-11-01 (sessions 1–15). Start here.*
+*Updated 2026-11-01 (sessions 1–16). Start here.*
+
+## State of the programme in one paragraph
+
+The target, an exact (closed-form) vacuum binary-black-hole merger metric, has **not** been found,
+and no candidate exists. Notes 14–19 exclude every algebraically special or integrable ansatz for the
+head-on Brill–Lindquist (BL) spacetime, as well as several slicing-adapted closed forms. What exists
+is the strongest rigorous substitute found so far, for equal-mass BL data at $d = 0.7662$:
+
+- an **explicit, certified, convergent-series metric** on a tube about the critical surface, for
+  $\lvert t\rvert < 8.7\times10^{-4}M$ (category B, notes 15–17);
+- inside it, a **certified apparent-horizon merger** in the geodesic slicing (session 16, notes/20):
+  - no common apparent horizon at $t = 0$ (Theorem F′);
+  - a common MOTS at $t = 6.5\times10^{-6}M$ (Theorem M);
+  - the matching local exclusion before the merger (Theorem N) is **not completed**. The foliation
+    certificate exists and passes on test pieces, but its ridge condition over $z_0$-pieces needs a
+    convexity argument (notes/20 §4).
+
+Event horizons, the first common apparent horizon of the whole slice, and any closed form remain open.
+The precise blocking items are in notes/20 §6.
+
+## Session 16: an explicit apparent-horizon merger
+
+Branch `claude/hopeful-euler-w9ghbg`, from `main` at `90f023b`. Note:
+[`notes/20-explicit-merger.md`](../notes/20-explicit-merger.md). Report:
+[`report_session16.md`](report_session16.md).
+
+- **Method.**
+  - Existence of a MOTS needs only $C^0$ bounds of $\theta_+$ on two barrier surfaces
+    (Andersson–Metzger Thms 3.1 and 4.1, read in the PDF).
+  - Exclusion in a shell needs only $C^0$ bounds on a foliation. A proved comparison lemma allows
+    convex equatorial ridges.
+  - Barriers and leaves are level sets of the first-order expansion, built exactly by validated
+    shooting. On them the true expansion is $h + R$, and $R$ is enclosed by a mean-value form with
+    the CK tails.
+  - No spectral gap and no validated MOTS solver are needed, which replaces the plan of notes/15 §7.3.
+- **Theorem M (computer-assisted).** At $d = 0.7662$, $\Sigma_t$ contains a smooth, embedded, stable
+  common MOTS:
+  - at $t_1 = 1.2\times10^{-5}$, with margins $\theta_+[S_{\rm in}] \le -7.42\times10^{-7}$,
+    $\theta_+[S_{\rm out}] \ge 1.99\times10^{-6}$ and $\lvert R\rvert \le 7.95\times10^{-9}$;
+  - at $t_1' = 6.5\times10^{-6}$, which is $1.06$ times the linear-law onset.
+- **Theorem N (not completed).** The aim is no MOTS in a shell about $S_c$ for $t \le 5\times10^{-6}$, by a
+  foliation.
+  - The Lohner foliation (`bl_foliate.py`, with new sub-step enclosures) certifies $\theta_+ > 0$, the
+    Jacobi field, and embeddedness on test pieces, for all $t \in [0, 5\times10^{-6}]$.
+  - The ridge condition $F > 0$ fails on $z_0$-pieces near the fold. The Lohner remainder inflates
+    like (width)², to about 350× the true second-order term.
+  - The fix: a convexity argument with second $z_0$-jets.
+- **Corollary.** A certified apparent-horizon merger at an explicit separation, inside the certified
+  metric. This is new for this programme. We know of no earlier one for vacuum binary data, but no
+  systematic literature search was made (claim category N, candidate). The birth time is bounded above by $6.5\times10^{-6}$ ($1.06\,t_*^{\rm lin}$). No lower bound beyond
+  $t > 0$ is certified.
+- **Not achieved:**
+  - a global exclusion for $0 < t \le t_0$ (needs a CK certificate on a larger domain and a perturbed
+    F′ sweep);
+  - a $d$-interval version;
+  - event horizons;
+  - a closed form.
+
+| Item | Label | How checked |
+| --- | --- | --- |
+| Lemmas 1–3 | derived / proved | SymPy level-set check; written proofs |
+| Theorem M ($t_1$, $t_1'$) | computer-assisted | `python -m research.calc.bl_barrier`; records `bl_barrier.json`, `bl_barrier_near.json` |
+| Theorem N | **not certified** (tools, test pieces, diagnosis) | `bl_foliate.run` on pieces; notes/20 §4 |
+| integrator copy | bit-identical to `fold_proof.shoot` | slow test |
+| Theorems C, F′, Proposition T, CK′ certificates | inherited | not rerun (fast tests of the modules rerun: 43 passed) |
+
 
 ## Session 15: the spatial coupling in Einstein–Bianchi form
 
