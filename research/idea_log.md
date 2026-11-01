@@ -418,3 +418,6 @@ stop condition for each, is in notes/18 §5.
   with $p = \mathrm{Ric}(\nu,\nu)$ ranging over about $[-0.58, 0.11]$ on $S_c$ (floating point). So
   $\theta_- = 2tp - h > 0$ on a band of the inner barrier, and the newborn common MOTS has
   $\theta_- > 0$ somewhere (numerical observation).
+- **Cheapest completion of Theorem N.** Away from the fold, $F$ is monotone on each $z_0$-piece. The sign
+  of $F_z$ comes from the slot-1 jets, so one tight point run at the right end certifies $F > 0$.
+  Only the piece containing the fold needs a mean-value or convexity bound. Untested.

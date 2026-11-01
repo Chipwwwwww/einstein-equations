@@ -302,6 +302,18 @@ $t = 0$:
 With the measured values ($F(z_c) \approx 5.9\times10^{-7}$, $F_z^2/(2F_{zz}) \le 2.2\times10^{-7}$) this
 closes on pieces of width $6\times10^{-5}$.
 
+A cheaper variant needs only first jets:
+
+- On a piece that does not contain the fold, $F_z$ has one sign. Its sign follows from the
+  slot-1 jets, $F_z = (u v_z - v u_z)/(u^2 + v^2)$, which are large there compared with their
+  enclosure widths.
+- So $F$ is monotone on the piece, and $F > 0$ follows from one tight point run at the
+  appropriate end (point $z_0$, the whole $t$-interval).
+- Only the piece containing the fold needs the mean-value bound,
+  $F \ge F(z_c) - w\,\sup\lvert F_z\rvert$, with $z_c$ the fold and a half-width $w \lesssim 1.5\times10^{-5}$.
+
+That is about two runs per piece, at about 17 minutes each.
+
 ## 5 · The explicit merger
 
 > **Corollary (an explicit apparent-horizon merger).** In the geodesic-slicing development of
