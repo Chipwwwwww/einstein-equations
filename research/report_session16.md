@@ -15,6 +15,10 @@ The complementary exclusion is also certified (**Theorem N**): no MOTS in a shel
 about $S_c$ for any $t \in [0, 5\times10^{-6}]$. So the common MOTS near $S_c$ is born at a time in
 $[5.0, 6.5]\times10^{-6}M$, that is $[0.81, 1.06]$ times the linear-law value.
 
+The existence also holds for a whole interval of separations (**Theorem M′**). For every
+$d \in [d_c + 2.2\times10^{-13}, 0.7662]$ the slice at $t = 1.2\times10^{-5}M$ contains a common MOTS. So the
+existence half of Theorem H holds with an explicit $\delta_0 \ge 2.57\times10^{-6}$.
+
 No closed-form (category-A) metric was found, and nothing is claimed about event horizons.
 
 ## Obstacle investigated
@@ -105,7 +109,7 @@ needed.
 
 ## Next single decisive task
 
-**Theorem F′ for $0 < t \le t_0$.** This turns the local bracket into a global one: the common
+**Theorem F′ for $0 < t \le t_0$.** This is a multi-session project. It turns the local bracket into a global one: the common
 apparent horizon of the whole slice is born in $[t_0, t_1']$. It needs two things:
 
 1. a CK certificate on $B(0, 1.05)$ minus the throat balls, needed only for $t \lesssim 10^{-5}$;
