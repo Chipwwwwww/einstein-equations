@@ -52,7 +52,7 @@ from contextlib import contextmanager
 from flint import arb, arb_mat, ctx, fmpq
 
 DATA = os.path.join(os.path.dirname(__file__), "data")
-CERTS = ("ck_bound_sharp.json", "ck_bound.json")      # preferred first
+CERTS = ("ck_bound_waist.json", "ck_bound_ext.json", "ck_bound_sharp.json", "ck_bound.json")
 
 
 @contextmanager
@@ -240,7 +240,7 @@ def bl_centres(d, one, x0=None, exact_r=None):
         if exact_r is not None:
             r0 = exact_r[n]
         else:
-            q = sum(((x0[i] - p[i]) ** 2 for i in range(3)), 0 * one)
+            q = sum(((x0[i] - p[i]) * (x0[i] - p[i]) for i in range(3)), 0 * one)   # not ** 2 (nan at mid 0)
             r0 = q.sqrt()
         out.append((one / 4, p, r0))
     return out
@@ -327,6 +327,21 @@ def trace_prod(J, A, B):
         for j in range(3):
             acc = J.add_(acc, J.mul(sym_get(A, i, j), sym_get(B, j, i)))
     return acc
+
+
+_JET_CACHE = {}
+_JET_CACHE_MAX = 64
+
+
+def series_jets_cached(x0, d, N, one, prec):
+    """series_jets for arb inputs, memoised on (x0, d, N, precision): the jets do not depend on t, so a
+    scan over times reuses them."""
+    key = (tuple(str(v) for v in x0), str(d), N, prec)
+    if key not in _JET_CACHE:
+        if len(_JET_CACHE) >= _JET_CACHE_MAX:
+            _JET_CACHE.pop(next(iter(_JET_CACHE)))
+        _JET_CACHE[key] = series_jets(x0, d, N, one)
+    return _JET_CACHE[key]
 
 
 def series_jets(x0, d, N, one, exact_r=None, centres=None, W=None):
@@ -506,8 +521,26 @@ def first_order_coefficients(x0, d, W, one):
 # ---------------------------------------------------------------------------
 # The certified domain and the tail bounds
 # ---------------------------------------------------------------------------
+def load_certificates():
+    """Every valid certificate in research/calc/data (each certifies its own compact region U_c, its
+    d-interval and its times). The evaluator combines all that apply to a point (notes/17 §4)."""
+    out = []
+    for fn in CERTS:
+        path = os.path.join(DATA, fn)
+        if os.path.exists(path):
+            with open(path) as f:
+                c = json.load(f)
+            if c.get("ok"):
+                c["file"] = fn
+                out.append(c)
+    if not out:
+        raise FileNotFoundError("no valid ck_bound certificate in research/calc/data")
+    return out
+
+
 def load_certificate(name=None):
-    """Constants of the Proposition T certificate (imported, with their replay command)."""
+    """Constants of one certificate (imported, with their replay command); by default the first of
+    CERTS that exists."""
     for fn in ([name] if name else CERTS):
         path = os.path.join(DATA, fn)
         if os.path.exists(path):
@@ -550,46 +583,83 @@ def _dgeom_odd(q, j):
     return ((2 * j + 1) * q ** (2 * j) * (1 - q * q) + 2 * q ** (2 * j + 2)) / (1 - q * q) ** 2
 
 
-def tail_bounds(cert, t_abs, N):
-    """Upper bounds (Frobenius norms of the coordinate components) of the series tails left out by
-    evaluate_metric at order N (metric values from g_0..g_N, derivatives from g_0..g_(N-1)), for
-    |t| <= t_abs < T_min. Derived in notes/16 §3 from |u_n|_w <= B T_s^-n on Omega_s(U),
-    T_s = T_min (1 - s/s0), with Cauchy estimates in x (spatial loss s, optimised on a grid of s).
-    Returns None if t_abs >= T_min."""
-    T, B = arb(cert["T_min"]), arb(cert["sup_u_weighted_bound"])
+def _dgeom_even(q, N):
+    """sum_{j >= N} 2j q^(2j-1) = d/dq [q^(2N) / (1 - q^2)]."""
+    return (2 * N * q ** (2 * N - 1) * (1 - q * q) + 2 * q ** (2 * N + 1)) / (1 - q * q) ** 2
+
+
+def _tails_one(T, B, cert, ta, N):
+    """Tail bounds for one certified pair (a = T, B): sup_{Omega_s(U)} |u(t)|_w <= B for complex
+    |t| < T (1 - s/s0). See tail_bounds."""
     Rgam, Rg, RK = (arb(r) for r in cert["radii"])
     s0 = arb(cert["s0"])
-    ta = arb(t_abs)
-    if not ta < T:
-        return None
     q = ta / T
     out = {
-        # gamma tail: even n >= 2N + 2
+        # gamma: even n >= 2N + 2 (gamma block)
         "value": Rgam * B * _geom_even(q, 2 * N + 2),
-        # d_x gamma = the g block: even n >= 2N
+        # d_x gamma = the g block (no Cauchy loss): even n >= 2N
         "d_space": Rg * B * _geom_even(q, 2 * N),
         # d_t gamma = 2 K: odd n >= 2N + 1
         "d_time": 2 * RK * B * _geom_even(q, 2 * N + 1),
-        # d_t^2 gamma = 2 d_t K = 2 sum n K_n t^(n-1), odd n >= 2N + 1 (termwise, Cauchy in t)
+        # d_t^2 gamma = 2 sum n K_n t^(n-1), odd n >= 2N + 1 (Cauchy in t on the K block)
         "d2_time": 2 * RK * B / T * _dgeom_odd(q, N),
+        # d_t d_x gamma = d_t g = sum n g_n t^(n-1), even n >= 2N (Cauchy in t on the g block)
+        "d2_time_space": Rg * B / T * _dgeom_even(q, N),
     }
     best_ss, best_ts = None, None
-    for f in (1 / 64, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2, 3 / 4):
-        s = s0 * f
+    qf = float(q.upper())
+    for f in (1 / 64, 1 / 32, 1 / 16, 1 / 8, 3 / 16, 1 / 4, 3 / 8, 1 / 2, 5 / 8, 3 / 4, (1 - qf) / 2):
+        if not 0 < f < 1:
+            continue
+        s = s0 * arb(f)
         Ts = T * (1 - arb(f))
         if not ta < Ts:
             continue
         qs = ta / Ts
-        # d_x d_x gamma: Cauchy (radius s, per direction) on the g block, even n >= 2N
+        # d_x d_x gamma: Cauchy in x (radius s, per direction) on the g block, even n >= 2N
         ss = arb(3).sqrt() * Rg * B / s * _geom_even(qs, 2 * N)
-        # d_t d_x gamma = 2 d_x K: Cauchy on the K block, odd n >= 2N - 1
+        # d_t d_x gamma = 2 d_x K: Cauchy in x on the K block, odd n >= 2N - 1
         ts = 2 * arb(3).sqrt() * RK * B / s * _geom_even(qs, 2 * N - 1)
         if best_ss is None or ss.upper() < best_ss.upper():
             best_ss = ss
         if best_ts is None or ts.upper() < best_ts.upper():
             best_ts = ts
-    out["d2_space"], out["d2_time_space"] = best_ss, best_ts
-    return {k: math.nextafter(float(v.upper()), math.inf) for k, v in out.items()}
+    out["d2_space"] = best_ss if best_ss is not None else arb("inf")
+    if best_ts is not None and best_ts.upper() < out["d2_time_space"].upper():
+        out["d2_time_space"] = best_ts
+    return out
+
+
+def certified_pairs(cert):
+    """The certified (a, B) pairs: every pair of the CK' schedule (notes/17), or the single
+    (T_min, B) of older certificates."""
+    if "schedule" in cert:
+        return [(e["a"], e["B"]) for e in cert["schedule"]]
+    return [(cert["T_min"], cert["sup_u_weighted_bound"])]
+
+
+def tail_bounds(cert, t_abs, N):
+    """Upper bounds (Frobenius norms of the coordinate components) of the series tails left out by
+    evaluate_metric at order N (metric values from g_0..g_N, derivatives from g_0..g_(N-1)), for
+    |t| <= t_abs. Each certified pair (a, B) gives |u_n|_w <= B T_s^-n on Omega_s(U), T_s = a (1 - s/s0)
+    (notes/16 §3, notes/17 §3); spatial derivatives use Cauchy estimates in x with spatial loss s
+    (optimised on a grid), time derivatives Cauchy estimates in t, and every quantity takes the
+    minimum over all valid pairs and methods (each bound is valid by itself). Returns None if
+    t_abs is not below any certified a."""
+    ta = arb(t_abs)
+    best = None
+    for a, B in certified_pairs(cert):
+        T = arb(a)
+        if not ta < T:
+            continue
+        one = _tails_one(T, arb(B), cert, ta, N)
+        if best is None:
+            best = one
+        else:
+            best = {k: (one[k] if one[k].upper() < best[k].upper() else best[k]) for k in best}
+    if best is None:
+        return None
+    return {k: math.nextafter(float(v.upper()), math.inf) for k, v in best.items()}
 
 
 # ---------------------------------------------------------------------------
@@ -628,7 +698,7 @@ def evaluate_metric(t, x, y, z, d, tolerance=None, precision=128, order=None, ma
       order, precision, domain, certificate, seconds
     """
     t0 = time.time()
-    cert = certificate or load_certificate()
+    cert = certificate or load_certificates()
     if order is None and tolerance is None:
         order = 3
     orders = [order] if order is not None else list(range(1, max_order + 1))
@@ -647,23 +717,38 @@ def evaluate_metric(t, x, y, z, d, tolerance=None, precision=128, order=None, ma
                       f"{worst:.3g}; error budget {budget}")
 
 
-def _evaluate(t, x, y, z, d, N, precision, allow_uncertified, cert):
+def _evaluate(t, x, y, z, d, N, precision, allow_uncertified, certs):
+    if isinstance(certs, dict):
+        certs = [certs]
     with working_precision(precision):
         t, x, y, z, d = (_ball(v) for v in (t, x, y, z, d))
-        reasons = []
-        if not (d.lower() >= arb(cert["d_lo"]) and d.upper() <= arb(cert["d_hi"])):
-            reasons.append(f"d outside the certified interval [{cert['d_lo']}, {cert['d_hi']}]")
-        inside, dist = in_domain(cert, x, y, z)
-        if not inside:
-            reasons.append(f"point not certified inside U (needs inflation {dist:.4g} > {cert['w_tube']})")
         t_abs = math.nextafter(float(abs(t).upper()), math.inf)
-        tails = tail_bounds(cert, t_abs, N) if not reasons else None
-        if not reasons and tails is None:
-            reasons.append(f"|t| = {t_abs:.4g} not below T_min = {cert['T_min']:.6g}")
+        reasons, tails, used, dist = [], None, [], math.inf
+        for cert in certs:
+            why = []
+            if not (d.lower() >= arb(cert["d_lo"]) and d.upper() <= arb(cert["d_hi"])):
+                why.append(f"d outside [{cert['d_lo']}, {cert['d_hi']}]")
+            inside, dc = in_domain(cert, x, y, z)
+            dist = min(dist, dc)
+            if not inside:
+                why.append(f"point not inside U (needs inflation {dc:.4g} > {cert['w_tube']})")
+            tc = tail_bounds(cert, t_abs, N) if not why else None
+            if not why and tc is None:
+                why.append(f"|t| = {t_abs:.4g} not below the certified time {cert['T_min']:.6g}")
+            if why:
+                reasons.append(f"{cert.get('file', 'certificate')}: " + "; ".join(why))
+                continue
+            used.append(cert)
+            tails = tc if tails is None else {k: min(tails[k], tc[k]) for k in tails}
+        if used:
+            reasons = []
+            cert = used[0]
+        else:
+            cert = certs[0]
         if reasons and not allow_uncertified:
-            raise DomainError("; ".join(reasons))
+            raise DomainError(" | ".join(reasons))
         one = arb(1)
-        J, g, kap = series_jets((x, y, z), d, N, one)
+        J, g, kap = series_jets_cached((x, y, z), d, N, one, precision)
         zero = arb(0)
         vals, d1, d2 = coefficients(J, g, zero, N)
         if any(v.rad() > 0 for v in (x, y, z)):
@@ -673,7 +758,7 @@ def _evaluate(t, x, y, z, d, N, precision, allow_uncertified, cert):
             # overestimation of the recursion on a box.
             xc = [arb(v.mid()) for v in (x, y, z)]
             h = [arb(0, float(arb(v.rad()).upper())) for v in (x, y, z)]
-            Jc, gc, _ = series_jets(tuple(xc), d, N, one)
+            Jc, gc, _ = series_jets_cached(tuple(xc), d, N, one, precision)
             vc, d1c, _ = coefficients(Jc, gc, zero, N)
             for k in range(N):
                 for pq in PAIRS:
@@ -755,12 +840,13 @@ def _evaluate(t, x, y, z, d, N, precision, allow_uncertified, cert):
                 "spatial_approximation": 0.0,
                 "time_truncation": tails,
                 "parameter_d_radius": float(d.rad()),
-                "certificate": cert["file"],
+                "certificate": [c.get("file", "?") for c in used],
             },
             "max_radius": max_rad,
             "max_radius_by": {"metric": r_metric, "first": r_first, "all": r_all},
-            "domain": {"inflation_needed": dist, "w_tube": cert["w_tube"],
-                       "t_abs": t_abs, "T_min": cert["T_min"], "d_interval": [cert["d_lo"], cert["d_hi"]]},
+            "domain": {"inflation_needed": dist, "w_tube": cert["w_tube"], "t_abs": t_abs,
+                       "certified_times": {c.get("file", "?"): c["T_min"] for c in used},
+                       "d_interval": [cert["d_lo"], cert["d_hi"]]},
             "coordinates": "t = proper time along the normal geodesics of the initial slice; "
                            "(x, y, z) Cartesian comoving labels; punctures at (0, 0, +-d/2); G = c = M_ADM = 1",
         }
@@ -822,7 +908,7 @@ ORDER_DEMO = 5      # metric through t^10, derivatives through t^8
 
 
 def demo(out_path=os.path.join(DATA, "bl_metric_demo.json")):
-    cert = load_certificate()
+    cert = load_certificate("ck_bound_ext.json")       # times are fractions of the whole-tube certificate
     d = "0.7662"
     T = cert["T_min"]
     pts = {"axis, near the top of S_c": ("0", "0", "0.62"),
@@ -831,7 +917,8 @@ def demo(out_path=os.path.join(DATA, "bl_metric_demo.json")):
     rows = []
     for name, (x, y, z) in pts.items():
         for frac in ("0.1", "0.25", "0.5"):
-            t = arb(frac) * arb(T)
+            with working_precision(128):
+                t = arb(frac) * arb(T)
             t1 = time.time()
             r = evaluate_metric(t, x, y, z, d, order=ORDER_DEMO)
             rows.append({"point": name, "x": [x, y, z], "t_over_T": frac, "t": str(t),
@@ -878,5 +965,55 @@ def demo(out_path=os.path.join(DATA, "bl_metric_demo.json")):
     return out
 
 
+def compare(out_path=os.path.join(DATA, "bl_metric_compare.json"), orders=(5, 7)):
+    """Before/after comparison of notes/17 §4, at fixed fractions of the session-12 T0 = 5.557e-4.
+    'before_corrected': the session-12 constants (ck_bound_sharp.json) with the corrected
+    Baouendi-Goulaouic time (one certified pair); 'after': every certificate, CK' schedules, combined.
+    The session-12 numbers as originally claimed (invalid time constant) are in
+    bl_metric_baseline_session12.json (produced at the start of session 13 by the session-12 code)."""
+    import resource
+    T0 = 5.556996340950146e-4
+    sharp = load_certificate("ck_bound_sharp.json")
+    corrected = {k: v for k, v in sharp.items() if k != "schedule"}
+    corrected["T_min"], corrected["sup_u_weighted_bound"] = sharp["T_bg"], sharp["B_bg"]
+    corrected["file"] = "ck_bound_sharp.json (BG (12) time only)"
+    configs = {"before_corrected": [corrected], "after": load_certificates()}
+    pts = {"generic (0.17, 0.11, 0.5)": ("0.17", "0.11", "0.5"), "axis (0, 0, 0.62)": ("0", "0", "0.62"),
+           "waist (0.26, 0, 0.05)": ("0.26", "0", "0.05"),
+           "box (0.17, 0.11, 0.5) +- 1e-4": (arb("0.17", "0.0001"), arb("0.11", "0.0001"), arb("0.5", "0.0001"))}
+    rows = []
+    for cname, certs in configs.items():
+        for N in orders:
+            if cname != "after" and N != orders[0]:
+                continue
+            for pname, (x, y, z) in pts.items():
+                for f in ("0.1", "0.25", "0.5", "1.0", "2.0"):
+                    with working_precision(128):
+                        t = arb(f) * arb(T0)
+                    t1 = time.time()
+                    try:
+                        r = evaluate_metric(t, x, y, z, "0.7662", order=N, certificate=certs)
+                    except DomainError as e:
+                        rows.append({"config": cname, "order": N, "point": pname, "t/T0": f, "status": "refused",
+                                     "reason": str(e)[:200]})
+                        continue
+                    rows.append({"config": cname, "order": N, "point": pname, "t/T0": f, "status": r["status"],
+                                 "metric": r["max_radius_by"]["metric"], "first": r["max_radius_by"]["first"],
+                                 "second": r["max_radius_by"]["all"], "tails": r["error_budget"]["time_truncation"],
+                                 "arith": r["error_budget"]["coefficient_arithmetic"],
+                                 "certs": r["error_budget"]["certificate"], "seconds": round(time.time() - t1, 2)})
+                    print(cname, N, pname, f, {k: f"{rows[-1][k]:.2e}" for k in ("metric", "first", "second")},
+                          rows[-1]["seconds"], flush=True)
+    out = {"T0_reference": T0, "rows": rows, "maxrss_MB": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024,
+           "replay": "python -m research.calc.bl_metric compare"}
+    with open(out_path, "w") as fh:
+        json.dump(out, fh, indent=1)
+    return out
+
+
 if __name__ == "__main__":
-    demo()
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "compare":
+        compare()
+    else:
+        demo()

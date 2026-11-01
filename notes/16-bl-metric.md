@@ -1,5 +1,21 @@
 # 16 · The near-critical BL spacetime as an evaluable metric
 
+> **Correction (session 13, [note 17](17-certified-extension.md)).** Proposition T′ below and every
+> number derived from it are superseded:
+>
+> - $T_{\min} = 5.556\times10^{-4}$;
+> - $B = 0.04322$;
+> - the demonstration's error radii;
+> - the "$1.25\times10^{-4}$" heuristic.
+>
+> They used a misread form of the abstract Cauchy–Kovalevskaya constant (note 15 §3). For the same
+> certified $C$ and $K_0$, Baouendi–Goulaouic's condition (12) gives $T = 5.115\times10^{-4}$.
+> Note 17 proves a generalised theorem (CK′) and certifies $7.6\times10^{-4}$ on the whole tube
+> and $1.5\times10^{-3}$ on the waist region; the exact figures are there. It also corrects §7's
+> statement about the geodesic crunch.
+>
+> The evaluator, the jets, the $t^4$ identity and the exclusions C1 and C2 are unaffected.
+
 Note 15 proved that near the critical surface $S_c$ the Brill–Lindquist development *equals*
 its convergent time series, for a certified time. This note turns that into a usable object:
 a **metric evaluator**. Given $(t, x, y, z, d)$, it returns every component of $g_{\mu\nu}$, its
@@ -371,10 +387,15 @@ $R_{\mu\nu} = 0$ rests on the analytic construction (note 15 §§2–3), not on 
   - But the range $\delta_1$ in note 15's Corollary J is not explicit, and the quadratic
     remainder is not bounded.
   - So $d = 0.7662$ is a **certified local BL development**, not a certified merger example.
-- **Gauge vs physics.** Geodesic slicing crunches at $t \approx \pi M$ (Schwarzschild throat).
-  That is a gauge breakdown, not a curvature singularity. Experiment D's real positive Padé poles
-  are consistent with such a crunch scale. The certified slab is four orders of magnitude shorter
-  than either.
+- **Gauge vs physics** *(corrected in note 17 §7).*
+  - For one hole, geodesic slicing from rest ends at $t = \pi\sqrt{R_0^3/8M}$ ($\pi M$ at the throat)
+    because each comoving observer reaches the $r = 0$ **curvature singularity**. The Kretschmann
+    scalar diverges there, and the congruence has no caustic before it.
+  - So the "crunch" is a physical singularity reached by this slicing. Other slicings, such as
+    maximal slicing, avoid it.
+  - Padé poles alone cannot tell such a singularity from a caustic or a gauge failure. For BL the
+    real positive poles at $t \approx 2$–$3$ are left uninterpreted.
+  - The certified slab is three to four orders of magnitude shorter than these times.
 
 ## 8 · Literature and novelty
 

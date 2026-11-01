@@ -114,8 +114,12 @@ geodesic slices, and silent flow (notes/16 §5).
   - $g_1$ agrees with the independent Cartesian formula.
 - **What it is not.** It is not a closed form, and it does not cover a substantial pre-merger
   interval. Geodesic slicing reaches the crunch at finite $t$: for Schwarzschild,
-  $T = \pi\sqrt{R_0^3/8M}$, which is $\pi M$ at the throat. The radius $T(x)$ is a gauge-dependent
-  domain, not a physical time limit.
+  $T = \pi\sqrt{R_0^3/8M}$, which is $\pi M$ at the throat.
+  - *Corrected in session 13 (note 17 §7):* at that time the comoving observer reaches the $r = 0$
+    curvature singularity, with no caustic before it. The *event* is physical.
+  - What is gauge-dependent is that this slicing reaches it, and when.
+  - For BL the meaning of the numerical $T \approx 2.1$–$2.8$ is undetermined: it could be a
+    curvature singularity, a caustic, or a complex singularity.
 - **Next.** *Done near $S_c$ (session 11):* an abstract Cauchy–Kovalevskaya bound with constants
   certified in Arb. A sharper scale would be needed to reach the numerical $T \approx 2.7$.
 
@@ -212,3 +216,59 @@ at rational-distance points) or in balls. Four experiments were run (notes/16 §
 
 **Next for B.** A validated energy-estimate continuation step: the abstract-CK route is capped
 near $T \approx 10^{-3}$ (notes/16 §2).
+
+## Session 13 · Correction, extension, geometric variables
+
+- **E (the representation).**
+  - The certified time of sessions 11–12 used a misread abstract-CK constant. It is corrected, and
+    extended with the proved Theorem CK′.
+  - Now $T = 8.683\times10^{-4}$ on the whole tube and $1.545\times10^{-3}$ on the waist region (notes/17 §3).
+  - The CK route's apparent "ceiling" of session 12 was conditional, not a theorem.
+- **Toward an energy method** (the next route for B): Einstein–Bianchi in Gauss gauge, which is
+  symmetric hyperbolic in the present chart, with an a posteriori $H^s$ estimate. Inspected and not
+  executed; the requirements are in notes/17 §3.
+- **A (closed form).** Two more bounded classes are excluded for BL:
+  - pointwise algebraic dependence on the tidal tensor (at $t^6$);
+  - closed isotropic tidal laws $E' = f(E)$ (at $t^4$).
+
+  The first orders are algebraic and universal for conformally flat time-symmetric data (notes/17
+  §§5–6). Still untested: two-vector Kerr–Schild; maximal-slicing analogues of C1, C2; a recurrence
+  in the order (needs more exact orders).
+
+## Session 14 · Bottlenecks, local/nonlocal split, foliations
+
+- **Map.** notes/18 §3 gives six bottlenecks with evidence, and §4 audits the scope of every
+  earlier exclusion.
+- **E → A (H1).** The geodesic development is exactly silent through $t^4$. The first nonlocal
+  source $(\mathrm{curl}\,H)_3$ has a covariant law. Near the holes the local (silent) collapse
+  dominates; elsewhere the nonlocal part does (exploratory).
+  - *Status:* tested. The silent part is kept as a local model; a global silent factorisation is
+    rejected (exploratory).
+- **Gauge (H2).** Conformally flat leaves are excluded for every bounded maximal-type lapse at three
+  separations (certified, Proposition L). Pointwise, a conformally flat lapse exists, because there
+  are only two conditions per point.
+  - *Status:* tested, rejected for that family.
+  - *Open:* arbitrary lapses, an overdetermined 2×1 fifth-order system.
+- **Not executed, ranked** (notes/18 §5):
+  - H8, the $m_+m_-$ interaction sector;
+  - H6, the Geroch-reduced 2+1 test;
+  - H4, two-vector Kerr–Schild;
+  - H7, Misner data;
+  - H5, the energy step.
+- **Next decisive experiment.** The singular set $t = \tau(x)$ of the series, from the coefficients
+  to $t^{24}$ along a ray. A real, smoothly varying $\tau$ favours a resummation in $s/\tau(x)^2$;
+  a complex one needs nonlocal continuation.
+
+## Session 15 · Spatial coupling in Einstein–Bianchi form
+
+- **Formulation (route E, toward energy methods).**
+  - The Gauss-gauge E–H system is derived and verified exactly against the series.
+  - Only the frame form is symmetric hyperbolic.
+  - The $L^2$ curvature energy identity is proved.
+  - *Open:* commuted energies, the domain of dependence of the tube, restart errors.
+- **E → A / B (coefficient hierarchy).**
+  - The $t^6$ law is a theorem for all conformally flat vacuum data.
+  - The curl-degree grading, with its proved lag lemma, organises all orders into linear transport
+    problems along the silent flow (main route M1).
+  - The first experiment did not falsify M1.
+  - *Next decisive experiment:* the $j = 1$ sector as an ODE in $t$ up to the silent collapse.

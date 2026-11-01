@@ -40,6 +40,12 @@ convergence of the series representation near the critical surface (route J) is 
 | [`idea_log.md`](idea_log.md) | Hypotheses, the tests run on them, and how they failed or survived. |
 | [`literature.md`](literature.md) | Primary sources, what was checked in each and what could not be. |
 | [`route_map.md`](route_map.md) | Routes toward explicit dynamical binary metrics (A–J): question, decisive test, status (session 10). |
+| [`../notes/19-bianchi-coupling.md`](../notes/19-bianchi-coupling.md) | Session 15: Einstein–Bianchi form in Gauss gauge (verified, hyperbolicity corrected), the $t^6$ law proved for all conformally flat vacuum data, the curl-degree hierarchy and lag lemma, the energy identity. |
+| [`report_session15.md`](report_session15.md) | Session 15 report. |
+| [`../notes/18-structure-discovery.md`](../notes/18-structure-discovery.md) | Session 14: bottleneck map, hypothesis portfolio, silent/nonlocal split (H1), conformally flat foliations for maximal-type lapses (H2). |
+| [`report_session14.md`](report_session14.md) | Session 14 report: what was tested, what decided it, what failed and in what scope. |
+| [`../notes/17-certified-extension.md`](../notes/17-certified-extension.md) | Session 13: corrected certificate constant, Theorem CK′ and the extension, derivative bounds, $t^6$ and Weyl structure. |
+| [`report_session13.md`](report_session13.md) | Session 13 report: corrected and extended certificate, derivative errors before/after, B-to-A results. |
 | [`report_bl_metric.md`](report_bl_metric.md) | Session 12 report: the metric evaluator, the sharp certificate, B-to-A experiments, what was rerun. |
 | [`report_route_j.md`](report_route_j.md) | Session 11 report: Proposition T (certified convergence time near $S_c$), baseline audit, what was rerun, blocking estimate. |
 | [`calc/`](calc/) | Executable calculations (numerical and computer-assisted). |
@@ -192,6 +198,85 @@ r["g"], r["dg"], r["ddg"], r["error_budget"], r["status"]
 ```
 
 Tests: `python -m pytest tests/test_bl_metric.py tests/test_ck_bound.py` (about 1 minute).
+
+### Session 13: corrected and extended certificates
+
+```bash
+python -m research.calc.ck_bound classic
+```
+
+```bash
+python -m research.calc.ck_bound sharp
+```
+
+```bash
+python -m research.calc.ck_bound ext
+```
+
+```bash
+python -m research.calc.ck_bound waist
+```
+
+```bash
+python -m research.calc.bl_metric compare
+```
+
+1. **The four certificates.** They write `calc/data/ck_bound{,_sharp,_ext,_waist}.json`, using 4
+   processes. Each record carries:
+   - the corrected Baouendi–Goulaouic time (`T_bg`);
+   - the Theorem CK′ schedule of $(\beta, a, B)$ triples (notes/17 §2);
+   - the source commit.
+
+   Wall times and peak memory are in notes/17 §3.
+2. **The before/after table** of notes/17 §4. It writes `calc/data/bl_metric_compare.json`.
+
+The evaluator now loads every certificate and uses all that apply to a point.
+
+Tests: `python -m pytest tests/test_bl_metric.py tests/test_ck_bound.py tests/test_bl_structure.py`.
+
+### Session 14: structure experiments
+
+```bash
+python -m research.calc.bl_silent
+```
+
+```bash
+python -m research.calc.bl_foliation
+```
+
+1. **H1** (notes/18 §6). It writes `calc/data/bl_silent.json`: the exact low-order checks, the
+   $(\mathrm{curl}\,H)_3$ law at held-out points, and the coefficient comparison to $t^{16}$ at six
+   generic points. It takes about 20 minutes on one core.
+
+   `python -m research.calc.bl_silent long` adds the two runs to $t^{20}$
+   (`calc/data/bl_silent_N10.json`). It takes about 20 minutes on two cores.
+2. **H2** (notes/18 §7). It writes `calc/data/bl_foliation.json`: the two-point certificates at three
+   separations, plus the gauge and Schwarzschild controls. It takes about one minute.
+
+Tests: `python -m pytest tests/test_bl_silent.py tests/test_bl_foliation.py` (about 35 s).
+
+### Session 15: Einstein–Bianchi form and the $t^6$ theorem
+
+```bash
+python -m research.calc.cf_universal
+```
+
+```bash
+python -m research.calc.bianchi_symbol
+```
+
+```bash
+python -m research.calc.bl_bianchi sectors
+```
+
+1. **`cf_universal`** (about 6 s). It runs the 72 exact evaluations of the proof of Theorem 1 and
+   writes `calc/data/cf_universal.json`.
+2. **`bianchi_symbol`**. It computes the principal symbols: the frame form is symmetric hyperbolic,
+   and the coordinate form has a Jordan block.
+3. **`bl_bianchi sectors`** (about 14 min on three cores). It writes the curl-degree sector norms to
+   $t^{12}$, `calc/data/bl_bianchi_sectors.json`.
+
+Tests: `python -m pytest tests/test_bl_bianchi.py` (about 75 s).
 
 ## What counts as proof here
 
