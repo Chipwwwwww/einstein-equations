@@ -1,5 +1,10 @@
 # Einstein's Equations
 
+**Current merger research:** [consolidated progress](research/status.md) ·
+[active roadmap](research/route_map.md) ·
+[all-mode critical-horizon spectral bound](notes/20-horizon-spectral-gap.md).
+The project has not constructed a complete explicit vacuum merger metric.
+
 A shared workspace for discussing the Einstein field equations of general
 relativity: what they say, where they come from, what their solutions mean, and
 what is still open. It has three parts: notes you can argue with, a

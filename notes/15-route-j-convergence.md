@@ -447,6 +447,14 @@ merger for all of that interval.
 
 ### 7.3 The blocking estimate
 
+**2026-11-01 update:** [note 20](20-horizon-spectral-gap.md) now proves the
+all-mode bound $\lambda_2(L_{S_c})\ge1/(16M^2)$ in the one-based indexing
+used below, with an $L^2$ inverse norm at most $16M^2$. Thus the spectral-gap
+subproblem of (i) is resolved. The nonlinear $C^{2,\alpha}$ estimates, true
+evolved shooting derivatives in (ii), and explicit $\delta$ remain open.
+The historical requirements below are retained to show exactly which part
+has been discharged.
+
 An explicit $\delta$ with $\lvert t_*(d) - c(d - d_c)\rvert \le C_2(d - d_c)^2$ on
 $(d_c, d_c + \delta)$ needs quantitative versions of two steps of Proposition B.
 

@@ -1,0 +1,86 @@
+{
+  "kind": "computer-assisted; analytic ground-state comparison plus validated fold ODE",
+  "precision_bits": 256,
+  "series_cap": 64,
+  "fine_schedule": false,
+  "python": "3.12.14",
+  "python_flint": "0.9.0",
+  "centre_exact_binary64_hex": [
+    "0x1.43ebf3f19b292p-1",
+    "0x1.884b078123f32p-1"
+  ],
+  "box_radius_exact_binary64_hex": "0x1.19799812dea11p-40",
+  "krawczyk_verified": true,
+  "krawczyk_image": [
+    "[0.632659552806 +/- 2.75e-13]",
+    "[0.766197428240 +/- 1.05e-13]"
+  ],
+  "contraction_rows": [
+    "[0.0820044438587502782095279638398 +/- 3.00e-32]",
+    "[0.0559792758140248854733776533327 +/- 4.62e-33]"
+  ],
+  "point_steps": [
+    1344,
+    64,
+    128
+  ],
+  "box_steps": [
+    1344,
+    64,
+    128
+  ],
+  "phase_counts": {
+    "axis": 1,
+    "mu": 1344,
+    "alpha": 64,
+    "tau": 128
+  },
+  "weight_enclosures": {
+    "c": {
+      "lower_decimal_diagnostic": "0.668864331586519256234169109745",
+      "upper_decimal_diagnostic": "1.00067568421945907175540934412"
+    },
+    "phi": {
+      "lower_decimal_diagnostic": "5.05296858082916706495508792697",
+      "upper_decimal_diagnostic": "18.5048096669783827631972754270"
+    },
+    "energy_weight": {
+      "lower_decimal_diagnostic": "25.4793189138647250918348944357",
+      "upper_decimal_diagnostic": "342.659354028153055169959894436"
+    },
+    "mass_weight": {
+      "lower_decimal_diagnostic": "260.198862314224243164062499793",
+      "upper_decimal_diagnostic": "716.423700571060180664062499793"
+    },
+    "axial_radius_squared": {
+      "lower_decimal_diagnostic": "-5.37599063156836064658070827357e-7",
+      "upper_decimal_diagnostic": "1.86503630574550604940172831068"
+    }
+  },
+  "assertions": {
+    "energy_weight_ge_24": true,
+    "mass_weight_le_768": true,
+    "axial_radius_squared_le_2": true,
+    "positive_phi": true,
+    "positive_c": true
+  },
+  "fold_jet": {
+    "F": "[+/- 4.19e-4]",
+    "F_z": "[+/- 0.0480]",
+    "F_d": "[1.2 +/- 0.0552]",
+    "F_t": "[-0.5 +/- 0.0244]",
+    "F_zz/2": "[1.2e+2 +/- 4.91]",
+    "F_zd": "[-1.5e+2 +/- 8.09]"
+  },
+  "elapsed_seconds": 218.8720770650002,
+  "source_sha256": {
+    "horizon_gap.py": "5470b63c7abc450b2592d971d67d1eb922af1cd9eb1c0f6c8a64fbec08ed481b",
+    "fold_proof.py": "ad24da3e43826b610054d4efb3524541b4398f388eeddb0a0647dd45549cdb18"
+  },
+  "proved_bounds_M_ADM_1": {
+    "lambda_gap_ge": "1/16",
+    "inverse_L2_norm_le": "16",
+    "nonaxisymmetric_m_gap_ge": "m^2/2",
+    "axisymmetric_equator_even_gap_ge": "3/16"
+  }
+}

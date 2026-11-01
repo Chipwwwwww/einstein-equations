@@ -2,6 +2,30 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-11-01 — All-mode horizon coercivity and consolidated roadmap
+
+- Created `research/horizon-stability-2026-11-01` from the existing
+  `claude/nonlinear-silent-flow` head `3c13047`. Main and the source branch
+  are preserved; no merge is authorized or performed.
+- Read the main and unmerged research before choosing a new direction.
+  Fixed-sector boundedness and silent-flow conjugation had already been
+  investigated, with no certified continuation gain.
+- Chose the explicit all-mode Jacobi gap left open in note 15. Proved a
+  ground-state/min–max comparison with the unit sphere and certified its
+  geometric weights over the full critical BL surface, including its poles.
+- Result: gap at least $1/(16M^2)$, inverse norm at most $16M^2$; stronger
+  bounds in the equator-even and nonzero-azimuthal sectors. The detailed
+  proof, trust base, scope, and verification are in note 20 and `research/status.md`.
+- Kept novelty narrow: standard spectral tools, a concrete new certificate
+  for this repository, no established literature-priority claim.
+- Replaced fragmented current planning with one `research/route_map.md`
+  and one consolidated `research/status.md`; preserved their earlier
+  contents verbatim as historical files.
+- Next obstruction: explicit nonlinear/elliptic regularity constants and
+  pointwise expansion bounds in true evolved data. A strict trapped-surface
+  witness may be cheaper than certifying the exact fold time. Neither this
+  estimate nor such a witness would complete the event-horizon merger problem.
+
 ## 2026-11-01 (session 15) — Einstein–Bianchi form, the $t^6$ theorem, curl-degree hierarchy
 
 **Decisions**

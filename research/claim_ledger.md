@@ -214,3 +214,14 @@ Every claim made in notes/07–09, with its status. Categories:
 | 130 | Theorem 3: under background bounds (B1)–(B4), the full nonlinear sector series converges at $\varepsilon = 1$ for $t < \rho_0R(1-s)/(16RC_1 + 8M_Q)$, with tails, derivatives and reconstruction through $F_t$; physical on the ADM CK domain | conditional (B1–B4 not certified; beyond the ADM domain also gap G1) | sprint 02 §4 |
 | 131 | The metric-variation term first changes $H$ at $\varepsilon^3t^7$ and $E$ at $\varepsilon^4t^8$, and $\gamma$ not before $t^{10}$ | derived + checked (BL generic point, balls) | `python -m research.calc.silent_flow_checks` (ratios 8.000000, 16.000000) |
 | 132 | The conjugation does not change the CK scale; the decisive constant is the principal bound $B_*$ (curl part $\gtrsim\lvert\psi\rvert^{-2} \approx 0.243$ on the tube). An idealised ceiling is about ×10 the certified time. Complex-ODE certification of $J$, $D^2F$ is not decisive | analysis + inherited constants | sprint 02 §5 |
+
+
+## All-mode horizon spectral bound (notes/20; 2026-11-01)
+
+| # | Claim | Status | Evidence |
+| --- | --- | --- | --- |
+| 133 | If $L\phi=0$, $\phi>0$ on a closed sphere and the pulled-back ground-state energy and mass weights satisfy (1), then $\lambda_k(L)\ge(a/b)\mu_k(-\Delta_{\mathbb S^2})$ | proved analytically; standard methods, no novelty claim for the comparison principle | note 20 Theorem 1; exact induced-metric and ground-state operator checks |
+| 134 | For the critical equal-mass BL sphere, $\phi^2c\ge24$, $\phi^2\psi^4r^2/c\le768$, and $\psi^4\rho^2\le2$ in $M=1$ units; $c>0$ certifies star-shapedness | computer-assisted proof; new certificate in this repository, literature priority unestablished | `research/calc/horizon_gap.py`; full validated profile and polar collar; fresh Krawczyk fold verification; certificate JSON and replay details in `status.md` |
+| 135 | All-mode gap $\lambda_{\rm gap}\ge1/(16M^2)$, kernel-complement $L^2$ inverse norm $\le16M^2$; equator-even axisymmetric gap $\ge3/(16M^2)$; nonzero Fourier-$m$ gap $\ge m^2/(2M^2)$ | proved from 133–134 | note 20 Theorem 2 and corollaries; no spectral discretisation or mode cutoff |
+| 136 | This supplies an explicit nonlinear neighbourhood, an explicit later common MOTS, or a complete event-horizon merger metric | **not achieved** | the $L^2$ inverse is insufficient for the nonlinear graph estimates; spacetime continuation and global causal control remain open |
+| 137 | For any positive trial $\varphi$ and self-adjoint $L$, if the comparison weights are bounded and $r=(L\varphi)/\varphi$, then $\lambda_k\ge(a/b)\mu_k+\inf r$ and $\lambda_1-\lambda_0\ge2a/b-\operatorname{osc}r$ | proved analytically; standard ground-state/Barta method; application to evolved surfaces not certified | note 20 (5a); exact nonconstant-mode residual identity test |

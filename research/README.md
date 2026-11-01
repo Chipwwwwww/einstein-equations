@@ -1,5 +1,11 @@
 # Research project: exact and rigorous results on black-hole mergers
 
+**Current entry points:** [consolidated progress](status.md) and the
+[single active roadmap](route_map.md). The newest result is the
+[all-mode spectral bound for the critical BL surface](../notes/20-horizon-spectral-gap.md).
+The older session summaries below are historical; their next-task statements
+are superseded by the active roadmap.
+
 A bounded, reproducible attempt to find new routes to exact binary-black-hole
 merger solutions or rigorous existence results, with the honest bookkeeping
 needed to tell a result from a hope.
