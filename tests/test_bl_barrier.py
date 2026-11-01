@@ -245,3 +245,22 @@ def test_stored_foliation_record():
     assert chain[0][0] == rec["z_a"] and chain[-1][1] == rec["z_b"]
     assert all(a[1] == b[0] for a, b in zip(chain, chain[1:]))
     assert rec["gap_leaf_a_to_S_in"] > 0 and rec["gap_S_out_to_leaf_b"] > 0 and rec["checks"]["W_contains_Omega"]
+
+
+def test_stored_interval_record():
+    """The stored Theorem M' record (notes/20 §3.1): IVT signs at the bracket ends for every d in the
+    interval, barrier inequalities and nesting of both bracket families, the comparison of the extreme
+    members, and the region in U."""
+    with open(os.path.join(DATA, "bl_barrier_interval.json")) as f:
+        rec = json.load(f)
+    assert rec["certified"] and rec["d_interval"] == ["0.76619742824011", "0.7662"]
+    from decimal import Decimal
+    # d_lo is the upper end of Theorem C's enclosure d_c = 0.766197428240 +- 1.1e-13 (exact decimals)
+    assert Decimal(rec["d_interval"][0]) >= Decimal("0.766197428240") + Decimal("1.1e-13")
+    bi, bo, p0, p1, q0, q1 = rec["runs"]
+    assert bi["theta_hi"] < 0 < bo["theta_lo"]
+    assert p0["F"][0] > 0 > p1["F"][1] and q0["F"][1] < 0 < q1["F"][0]
+    for r in (bi, bo):
+        assert r["jacobi_min"] > 0 and r["x_dot_n_min"] > 0 and r["sin_alpha_max_sign"] < 0
+    c = rec["checks"]
+    assert c["nesting_gap"] > 0 and c["domain"]["Omega_in_U"]

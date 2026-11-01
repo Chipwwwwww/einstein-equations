@@ -13,7 +13,8 @@ is the strongest rigorous substitute found so far, for equal-mass BL data at $d 
   $\lvert t\rvert < 8.7\times10^{-4}M$ (category B, notes 15–17);
 - inside it, a **certified apparent-horizon merger** in the geodesic slicing (session 16, notes/20):
   - no common apparent horizon at $t = 0$ (Theorem F′);
-  - a common MOTS at $t = 6.5\times10^{-6}M$ (Theorem M);
+  - a common MOTS at $t = 6.5\times10^{-6}M$ (Theorem M), and at $t = 1.2\times10^{-5}M$ for **every**
+    $d \in [d_c + 2.2\times10^{-13}, 0.7662]$ (Theorem M′);
   - no MOTS in the shell $\Omega'$ about the critical surface for any $t \le 5\times10^{-6}M$ (Theorem N).
 
   So the common MOTS near the critical surface is born at a time in $[5.0, 6.5]\times10^{-6}M$, that is
@@ -42,6 +43,12 @@ Branch `claude/hopeful-euler-w9ghbg`, from `main` at `90f023b`. Note:
   - at $t_1 = 1.2\times10^{-5}$, with margins $\theta_+[S_{\rm in}] \le -7.42\times10^{-7}$,
     $\theta_+[S_{\rm out}] \ge 1.99\times10^{-6}$ and $\lvert R\rvert \le 7.95\times10^{-9}$;
   - at $t_1' = 6.5\times10^{-6}$, which is $1.06$ times the linear-law onset.
+- **Theorem M′ (computer-assisted).** The same at $t_1 = 1.2\times10^{-5}$ for every
+  $d \in [0.76619742824011, 0.7662]$ at once.
+  - $d$ is a Lohner set parameter.
+  - The barriers come from fixed $z_0$-brackets by the IVT.
+  - Nesting follows from the extreme members of each bracket family.
+  - This makes the existence half of Theorem H explicit, with $\delta_0 \ge 2.57\times10^{-6}$.
 - **Theorem N (computer-assisted).** For every $t \in [0, 5\times10^{-6}]$ no MOTS lies in a shell
   $W_t \supset \Omega'$ about $S_c$. The proof is a foliation by level-$h$ leaves ($h = 5\times10^{-8}$)
   certified with Lohner sets over 11 $z_0$-pieces, with $t$ as a set parameter.
@@ -65,6 +72,7 @@ Branch `claude/hopeful-euler-w9ghbg`, from `main` at `90f023b`. Note:
 | --- | --- | --- |
 | Lemmas 1–3 | derived / proved | SymPy level-set check; written proofs |
 | Theorem M ($t_1$, $t_1'$) | computer-assisted | `python -m research.calc.bl_barrier`; records `bl_barrier.json`, `bl_barrier_near.json` |
+| Theorem M′ ($d$-interval) | computer-assisted | `bl_foliate.main_interval()`; record `bl_barrier_interval.json` |
 | Theorem N | computer-assisted | `python -m research.calc.bl_foliate` (about 77 min on four cores); record `bl_foliate.json` |
 | integrator copy | bit-identical to `fold_proof.shoot` | slow test |
 | Theorems C, F′, Proposition T, CK′ certificates | inherited | not rerun (fast tests of the modules rerun: 43 passed) |

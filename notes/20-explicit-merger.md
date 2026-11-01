@@ -35,6 +35,7 @@ Neither argument uses the spectrum of the Jacobi operator.
 | barrier theorem | literature: Andersson–Metzger 2009, Thms 3.1 and 4.1, **read on the page** this session |
 | foliation exclusion with convex ridges (Lemma 3) | proved here (elementary comparison argument) |
 | **Theorem M**: common MOTS on $\Sigma_t$, $d = 0.7662$, $t = 1.2\times10^{-5}$ and $6.5\times10^{-6}$ | **computer-assisted** (new) |
+| **Theorem M′**: the same at $t = 1.2\times10^{-5}$ for **every** $d \in [d_c + 2.2\times10^{-13}, 0.7662]$ | **computer-assisted** (new) |
 | **Theorem N**: no MOTS in a shell $W_t \supset \Omega'$ for $0 \le t \le t_0 = 5\times10^{-6}$ | **computer-assisted** (new) |
 | **Corollary**: explicit apparent-horizon merger at $d = 0.7662$; the common MOTS in $\Omega'$ is born at $t_b \in [5.0, 6.5]\times10^{-6}$ | computer-assisted, combining F′, M and N |
 | first common apparent horizon of the slicing; event horizons | **open** (§6) |
@@ -250,6 +251,36 @@ the CK tail of $\partial\gamma$ ($6.3\times10^{-8}$ on the tube at $t_1$, $3\tim
 Both enter multiplied by $\partial\Theta/\partial(\partial\gamma) = O(\psi^{-6}) \approx 10^{-2}$.
 
 
+### 3.1 · Theorem M′: the same for a whole interval of separations
+
+> **Theorem M′ (computer-assisted).** For **every** separation $d \in [d_\ell, 0.7662]$, where
+> $d_\ell = 0.76619742824011$ is the upper end of Theorem C's enclosure of $d_c$, the slice
+> $\Sigma_{t_1}$, $t_1 = 1.2\times10^{-5}$, of the geodesic-slicing development contains a smooth,
+> embedded, stable MOTS enclosing both punctures.
+
+**Proof.** One certificate for all $d$ at once, with $d$ a parameter of the Lohner sets
+(`bl_foliate.main_interval`, record `bl_barrier_interval.json`). Levels and brackets:
+
+- inner level $h_{\rm in} = -7.5\times10^{-7}$, bracket $z_0 \in [0.632420, 0.632590]$;
+- outer level $h_{\rm out} = 2\times10^{-6}$, bracket $z_0 \in [0.632880, 0.632990]$.
+
+| Step | Certified (for all $d \in [d_\ell, 0.7662]$) |
+| --- | --- |
+| IVT for the inner barrier | $F(0.632420) \ge 2.29\times10^{-6} > 0$ and $F(0.632590) \le -7.93\times10^{-7} < 0$; so each $d$ has a closed level-$h_{\rm in}$ surface $S_{\rm in}(d)$ with $z_0$ in the bracket |
+| IVT for the outer barrier | $F(0.632880) \le -1.39\times10^{-6} < 0$ and $F(0.632990) \ge 2.51\times10^{-6} > 0$, giving $S_{\rm out}(d)$ |
+| barrier inequalities | every curve of the inner bracket has $\theta_+ \le -7.412\times10^{-7}$; every curve of the outer one $\theta_+ \ge 1.992\times10^{-6}$ ($\lvert R\rvert \le 8.85\times10^{-9}$) |
+| nesting | the Jacobi field is positive on both brackets, so each family is nested in $z_0$. Then $S_{\rm in}(d)$ lies inside the curve from $0.632590$, which lies inside the curve from $0.632880$ (radial gap $2.01\times10^{-4}$, all $d$), which lies inside $S_{\rm out}(d)$ |
+| $\Omega(d) \subset U$ | the region between the curves from $0.632420$ and $0.632990$ lies in $U$ (inflation $0.0031$ of $0.02$) |
+
+The barrier theorem and the separation argument of §3 then apply for each $d$. ∎
+
+Since Theorem F′ covers every $d \in (d_c, 0.767578]$ and $d_\ell \ge d_c$, this gives an explicit
+apparent-horizon merger for a whole interval of separations: for every $d \in (d_\ell, 0.7662]$, the apparent horizon of the
+geodesic slicing has two components at $t = 0$ and a component enclosing both holes by
+$t = 1.2\times10^{-5}M$. This makes the existence half of Theorem H explicit, with
+$\delta_0 \ge 0.7662 - d_\ell = 2.57\times10^{-6}$ for "a common MOTS forms by $1.2\times10^{-5}M$". Only the
+sliver $(d_c, d_\ell]$, of width below $2.2\times10^{-13}$, is not covered by the merger statement.
+
 ## 4 · Theorem N: no MOTS in the shell before $t_0$
 
 > **Theorem N (computer-assisted).** Same data, $d = 0.7662$. Let $t_0 = 5\times10^{-6}$ and
@@ -310,8 +341,9 @@ At $t = 0$, part 3 is a local version of Theorem F′ near $S_c$. For $0 < t \le
 
 What this adds to Theorem H:
 
-- at this separation, $\delta_0$ is no longer needed;
-- the birth time is bracketed with explicit numbers;
+- the existence half holds with an explicit $\delta_0 \ge 2.57\times10^{-6}$: a common MOTS by $1.2\times10^{-5}M$ for every
+  $d \in [d_c + 2.2\times10^{-13}, 0.7662]$ (Theorem M′);
+- at $d = 0.7662$ the birth time is bracketed with explicit numbers;
 - the bracket agrees with the onset slope of Theorem C to within 6 % above and 19 % below.
 
 As in Theorem H, the exclusion before the birth is local (in $\Omega'$). Globally, for
@@ -362,11 +394,11 @@ $0 < t \le t_0$, it is open (§6).
      perturbation away from $S_c$. Near $S_c$, Theorem N takes over.
 
    The cost is of the order of the F′ sweep (hours on four cores).
-2. **An interval of separations.** Theorem M holds at one $d$. Wide $z_0$- or $d$-brackets blow up
-   in the Moore integrator (radius $5\times10^{-5}$ fails; $10^{-8}$ fails in the last segment), so
-   an interval needs Lohner sets (`gap3_fold`'s machinery, extended in `bl_foliate`), with the same
-   width control of the $z_0$-spread as Theorem N (§4). Alternatively
-   a smoothing lemma for shallow creases would remove the closing condition (idea log, session 16).
+2. **Theorem N for an interval of separations.** Theorem M′ covers an interval of $d$, by the
+   bracket-family argument of §3.1 with Lohner sets (wide brackets blow up in the Moore integrator).
+   A uniform Theorem N cannot reach $d \to d_c$, because $t_*(d) \to 0$ there. But for
+   $d \in [d_1, 0.7662]$ with $d_1 > d_c$ the same monotone-piece certificate applies, with $d$ as a set
+   parameter and $t_0 < t_*(d_1)$.
 3. **Event horizons.** These need global existence and the final state, i.e. nonlinear stability of
    Schwarzschild for these large data. Out of reach. The only rigorous event-horizon mergers known
    to us are the extreme-mass-ratio ones (notes/11, conditional on our reading of Hintz).

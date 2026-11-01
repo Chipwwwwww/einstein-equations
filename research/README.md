@@ -298,6 +298,14 @@ python -m research.calc.bl_foliate
    $W_t \supset \Omega'$. It uses Lohner sets with the level-$h$ source, $t$ as a set parameter and
    sub-step enclosures; monotone $z_0$-pieces; and a mean-value bound on the fold piece. It writes
    `calc/data/bl_foliate.json`. `bl_barrier` also uses it for its thin enclosures.
+3. **`bl_foliate.main_interval()`** (about 50 min on four cores). Theorem M′: a common MOTS at
+   $t = 1.2\times10^{-5}$ for every $d \in [0.76619742824011, 0.7662]$. Here $d$ is a Lohner set parameter,
+   the barriers come from fixed $z_0$-brackets by the IVT, and nesting follows from the extreme members.
+   It writes `calc/data/bl_barrier_interval.json`. Run it with:
+
+   ```bash
+   python -c "from research.calc import bl_foliate as bf; bf.main_interval()"
+   ```
 
 Tests: `python -m pytest tests/test_bl_barrier.py` (about 10 s; includes the checks of the stored records).
 The slow test reproduces `fold_proof.shoot` bit for bit (about 5 min).

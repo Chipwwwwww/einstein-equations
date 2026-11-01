@@ -30,7 +30,7 @@ geodesic slices, and silent flow (notes/16 §5).
 | G. Solution-generating methods (Ernst, inverse scattering, Bäcklund) | A | **rejected** for regular AF radiating binaries (literature) | need 2 commuting Killing fields; AF radiative ⇒ boost-rotation symmetric ⇒ struts or negative mass |
 | H. Resummation of expansions | B | untested | no convergence theorem for PN/PM; formal |
 | I. Numerical/symbolic discovery | E | **tested** (session 12) | exact universal $t^4$ coefficient; conformally flat slices and silent flow excluded (certified); Padé exploratory (notes/16 §5) |
-| J. Near-critical BL as the explicit example | B + C | **done at an explicit separation** (session 16) | At $d = 0.7662$: no common MOTS at $t = 0$ (F′); none in the shell $\Omega'$ for $t \le 5\times10^{-6}$ (Theorem N); one at $t = 6.5\times10^{-6}$ (Theorem M). All inside the certified series metric. Barriers and foliations replace the spectral gap (notes/20) |
+| J. Near-critical BL as the explicit example | B + C | **done at an explicit separation** (session 16) | At $d = 0.7662$: no common MOTS at $t = 0$ (F′); none in the shell $\Omega'$ for $t \le 5\times10^{-6}$ (Theorem N); one at $t = 6.5\times10^{-6}$ (Theorem M), and at $t = 1.2\times10^{-5}$ for every $d \in [d_c^+, 0.7662]$ (Theorem M′). All inside the certified series metric. Barriers and foliations replace the spectral gap (notes/20) |
 
 ## A · Symmetry reduction with retained radiation
 

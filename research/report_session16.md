@@ -57,6 +57,7 @@ needed.
 | Lemma 3: foliation exclusion with convex ridges | proved (elementary) | notes/20 §2.3 |
 | barrier theorem (AM 2009, Thms 3.1 and 4.1) | literature, **read in the PDF** | hypotheses recorded in notes/20 §2.3 and `research/literature.md` |
 | **Theorem M** at $t_1 = 1.2\times10^{-5}$ and $t_1' = 6.5\times10^{-6}$ | computer-assisted | `bl_barrier.json`, `bl_barrier_near.json` |
+| **Theorem M′**, every $d \in [0.76619742824011, 0.7662]$ at $t = 1.2\times10^{-5}$ | computer-assisted | `bl_barrier_interval.json` |
 | **Theorem N**, $t \in [0, 5\times10^{-6}]$ | computer-assisted | `bl_foliate.json`: 11 pieces; $\theta_+ \ge 4.907\times10^{-8}$; $F \ge 4.03\times10^{-7}$ on the fold piece; $F_z$ signs elsewhere; $W_t \supset \Omega'$ |
 | near $S_c$, small $t$: outer trapped but not trapped | numerical observation | $p = \mathrm{Ric}(\nu,\nu) \in [-0.58, 0.11]$ on $S_c$ |
 
@@ -98,9 +99,9 @@ needed.
 | Status | Items |
 | --- | --- |
 | proved | Lemmas 1–3; the topological step (the MOTS separates the shell) |
-| computer-assisted (new) | Theorem M ($t_1$, $t_1'$); Theorem N |
+| computer-assisted (new) | Theorem M ($t_1$, $t_1'$); Theorem M′ ($d$-interval); Theorem N |
 | inherited | Theorems C, F′; Proposition T, CK′ certificates; AM barrier theorem |
-| open | the first common apparent horizon of the whole slice; event horizons; a $d$-interval version; a closed form |
+| open | the first common apparent horizon of the whole slice; Theorem N for a $d$-interval; event horizons; a closed form |
 
 ## Next single decisive task
 

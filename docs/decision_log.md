@@ -41,7 +41,10 @@ Newest first. Each entry: what was decided, why, and where things stand.
 
 - Claims 122–131.
 - Tools: `research/calc/bl_barrier.py`, `research/calc/bl_foliate.py`; tests `tests/test_bl_barrier.py`.
-- Records: `bl_barrier.json`, `bl_barrier_near.json`, `bl_foliate.json`.
+- Records: `bl_barrier.json`, `bl_barrier_near.json`, `bl_foliate.json`, `bl_barrier_interval.json` (Theorem M′).
+- **Theorem M′ via bracket families.** The barrier for each $d$ comes from the IVT on fixed $z_0$-brackets. Nesting follows
+  from the extreme members of the two families plus the Jacobi field. This avoids comparing the wide enclosures of the
+  brackets themselves.
 - Note 20, report `research/report_session16.md`. Status gains a one-paragraph summary of the whole
   programme at the top.
 
@@ -50,7 +53,7 @@ Newest first. Each entry: what was decided, why, and where things stand.
 - Theorem F′ for $0 < t \le t_0$ (global exclusion), so that the bracket for the birth of the common
   apparent horizon holds for the whole slice. This needs a CK certificate on $B(0, 1.05)$ minus the
   throat balls (for $t \lesssim 10^{-5}$ only) and a perturbed F′ sweep.
-- A $d$-interval version of Theorem M (Lohner brackets in $(z_0, d)$).
+- Theorem N for a $d$-interval.
 
 ## 2026-11-01 (session 15) — Einstein–Bianchi form, the $t^6$ theorem, curl-degree hierarchy
 

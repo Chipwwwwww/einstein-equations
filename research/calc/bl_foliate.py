@@ -639,5 +639,77 @@ def main(d="0.7662", t0=5.0e-6, h=5e-8, margin=2e-4, w0=1.5e-5, m_extreme=32, pr
     return rec
 
 
+D_LO_INTERVAL = "0.76619742824011"   # the upper end of Theorem C's enclosure of d_c: every d >= this is > d_c;
+                                     # (d_c, D_LO) has width < 2.2e-13 and is not covered
+
+
+def _barrier_job(args):
+    kind, z_lo, z_hi, d_lo, d_hi, t, h = args
+    t1 = time.time()
+    d = arb(d_lo).union(arb(d_hi))          # every d in [d_lo, d_hi] (strings: arb balls do not pickle)
+    try:
+        # point runs feed the radial comparison: fine sub-steps (a sub-box spans ~ step / m_sub of arclength)
+        r = run(z_lo, z_hi, d, t, h, t_lo=t, keep_geo=(kind == "point"), m_sub=64 if kind == "point" else 8)
+    except AssertionError as e:
+        r = {"error": str(e)}
+    r["seconds"] = time.time() - t1
+    r["job"] = [kind, z_lo, z_hi, h]
+    return r
+
+
+def main_interval(d_lo=D_LO_INTERVAL, d_hi="0.7662", t=1.2e-5, h_in=-0.75e-6, h_out=2e-6,
+                  inner=(0.632420, 0.632590), outer=(0.632880, 0.632990), processes=4,
+                  out_path=os.path.join(DATA, "bl_barrier_interval.json")):
+    """Theorem M' (notes/20 §3): for EVERY d in [d_lo, d_hi], Sigma_t contains a common MOTS. One set of
+    runs with d a Lohner set parameter over the whole interval:
+
+      * inner barrier: F(inner[0]) > 0 > F(inner[1]) at level h_in for all d (point runs), so by the
+        IVT each d has a closed level-h_in surface S_in(d) with z0 in the bracket; the bracket run gives
+        theta_+ < 0, Jacobi > 0 (the family is nested in z0), x.n > 0 for all its curves and all d;
+      * outer barrier likewise, F(outer[0]) < 0 < F(outer[1]) at level h_out, theta_+ > 0;
+      * S_in(d) lies inside the curve from inner[1] (nesting of the h_in family), which lies inside the
+        curve from outer[0] (radial comparison of the point runs, all d), which lies inside S_out(d);
+      * the region between the curve from inner[0] and the one from outer[1] lies in U.
+    Then Andersson-Metzger gives a common MOTS in Omega(d) for every d."""
+    from multiprocessing import get_context
+    D = (d_lo, d_hi)
+    jobs = [("bracket", inner[0], inner[1], *D, t, h_in), ("bracket", outer[0], outer[1], *D, t, h_out),
+            ("point", inner[0], inner[0], *D, t, h_in), ("point", inner[1], inner[1], *D, t, h_in),
+            ("point", outer[0], outer[0], *D, t, h_out), ("point", outer[1], outer[1], *D, t, h_out)]
+    print(f"Theorem M': d in [{d_lo}, {d_hi}], t = {t}, h_in = {h_in}, h_out = {h_out}, brackets {inner}, {outer}",
+          flush=True)
+    T0 = time.time()
+    with get_context("fork").Pool(processes) as pool:
+        res = pool.map(_barrier_job, jobs, chunksize=1)
+    for r in res:
+        print(f"  {r['job']}: " + (f"F in {r['F']}, theta in [{r['theta_lo']:.4e}, {r['theta_hi']:.4e}], "
+                                  f"|R| <= {r['R_max']:.2e}, Jacobi >= {r['jacobi_min']:.3e}, x.n >= {r['x_dot_n_min']:.3e}"
+                                  if "F" in r else r.get("error", "?")) + f"  ({r['seconds']:.0f} s)", flush=True)
+    bi, bo, p0, p1, q0, q1 = res
+    geom = lambda r: "F" in r and r["jacobi_min"] > 0 and r["x_dot_n_min"] > 0 and r["rho_min"] > 0 \
+        and r["sin_alpha_max_sign"] < 0  # noqa: E731
+    ok_in = bool(geom(bi) and bi["theta_hi"] < 0)
+    ok_out = bool(geom(bo) and bo["theta_lo"] > 0)
+    ok_ivt = bool("F" in p0 and p0["F"][0] > 0 and "F" in p1 and p1["F"][1] < 0
+                  and "F" in q0 and q0["F"][1] < 0 and "F" in q1 and q1["F"][0] > 0)
+    gap = bb.radial_gap(p1, q0) if "_geo" in p1 and "_geo" in q0 else -math.inf
+    dom = bb.nesting_and_domain(p0, q1) if "_geo" in p0 and "_geo" in q1 else {"Omega_in_U": False}
+    certified = bool(ok_in and ok_out and ok_ivt and gap > 0 and dom.get("Omega_in_U"))
+    print(f"  inner family: {ok_in}; outer family: {ok_out}; IVT signs: {ok_ivt}; curve(inner[1]) inside "
+          f"curve(outer[0]): gap {gap:.3e}; region inside U: {dom.get('Omega_in_U')} (inflation needed "
+          f"{dom.get('largest_inflation_needed', float('nan')):.4f})", flush=True)
+    strip = lambda r: {k: v for k, v in r.items() if not k.startswith("_")}  # noqa: E731
+    rec = {"theorem": "notes/20, Theorem M'", "d_interval": [d_lo, d_hi], "t": t, "h_in": h_in, "h_out": h_out,
+           "inner_bracket": list(inner), "outer_bracket": list(outer), "runs": [strip(r) for r in res],
+           "checks": {"inner_family": ok_in, "outer_family": ok_out, "ivt_signs": ok_ivt, "nesting_gap": gap,
+                      "domain": dom}, "certified": certified, "seconds": time.time() - T0,
+           "replay": "python -c 'from research.calc import bl_foliate as bf; bf.main_interval()'"}
+    print(f"RESULT: Theorem M' certified: {certified} ({rec['seconds']:.0f} s)", flush=True)
+    if out_path:
+        with open(out_path, "w") as f:
+            json.dump(rec, f, indent=1)
+    return rec
+
+
 if __name__ == "__main__":
     main()
