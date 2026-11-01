@@ -23,14 +23,20 @@ level-h equation,
 
 and the time t as a third set parameter (t' = 0), so that one run covers every t in [0, t0].
 
-Status (session 16): NOT COMPLETED. On test pieces, (b) and (c) are certified for all t in [0, t0], but
-(a) fails on z0-pieces near the fold: the Lohner remainder A r inflates like (piece width)^2 times
-steps (9.6e-6 on a 6e-5 piece, against a true second-order term ~3e-8), so u_end > 0 is not certified
-there. A single leaf (z0 a point, t the whole interval) passes. The fix is a convexity argument in
-z0 with second jets, F >= F(z_c) - F_z(z_c)^2 / (2 inf F_zz) (notes/20 §4). barrier_geometry (used by
-bl_barrier for the nesting test) and step_param_sub are complete and tested.
+The ridge condition (a). A direct enclosure of u_end over a z0-piece fails near the fold: the Lohner
+remainder A r inflates like (piece width)^2 times steps (9.6e-6 on a 6e-5 piece, against a true
+second-order term ~3e-8). So (a) is proved by monotonicity (main):
+  * F_z = (u v_z - v u_z) / (u^2 + v^2) at the crossing, from the slot-1 jets (crossing_Fz), has a
+    certified sign on every piece off the fold (> 0 to the right, < 0 to the left). So on each side F is
+    smallest at the end next to the fold piece.
+  * On the fold piece, F(z0, t) >= F(z_f, t) - w0 sup |F_z|, with F(z_f, t) from a point-z0 run over the
+    whole t-interval.
+  * Piece widths grow like distance^0.4 (piece_width), matching the measured growth of the F_z enclosure
+    width (~w^2.4) against |F_z| ~ F_zz * distance.
 
-Run: python -m research.calc.bl_foliate   (would write research/calc/data/bl_foliate.json)
+Result (session 16): certified (record research/calc/data/bl_foliate.json, notes/20 Theorem N).
+
+Run: python -m research.calc.bl_foliate   (writes research/calc/data/bl_foliate.json; ~77 min, 4 cores)
 """
 
 import json
@@ -321,6 +327,32 @@ def _step_sub(f, S, hh, L, blocks, m_sub, what):
                 raise AssertionError(f"{what}: Lohner step fails")
 
 
+def _Fz_of(y):
+    """F_z = alpha_x . x_z at tau = 1, alpha = atan2(v, u): (u v_z - v u_z) / (u^2 + v^2). tau-phase layout:
+    slot 0 = (rho, zt, u, v, z_sw), slot 1 = their z0-derivatives."""
+    u, v, uz, vz = y[2], y[3], y[7], y[8]
+    return (u * vz - v * uz) / (u * u + v * v)
+
+
+def crossing_Fz(S):
+    """F_z over the final (tau = 1) set: the hull evaluation intersected with the mean-value form
+    G(c) + grad G(Y) . (A r + P q, q) (as gap3_fold.crossing_enclosure); both are valid."""
+    n, k = len(S.m), len(S.p0)
+    hull = S.hull()
+    direct = _Fz_of(hull + S.params())
+    c = S.m + S.p0
+    Y = [a.union(b) for a, b in zip(hull + S.params(), c)]
+    seeded = [lohner.D(b, [arb(1 if i == j else 0) for j in range(n + k)]) for i, b in enumerate(Y)]
+    gc, gY = _Fz_of(c), _Fz_of(seeded)
+    g = gY.g
+    acc = gc + sum((g[n + l] * S.q[l] for l in range(k)), arb(0))
+    for j in range(n):
+        acc += sum((g[i] * S.A[i, j] for i in range(n)), arb(0)) * S.r[j]
+    for l in range(k):
+        acc += sum((g[i] * S.P[i, l] for i in range(n)), arb(0)) * S.q[l]
+    return acc.intersection(direct) if acc.overlaps(direct) else acc
+
+
 def run(z_lo, z_hi, d, t0, h, ds=0.004, L=14, hmax=0.25, sigma_max=60.0, z_switch=0.1, h_tau=2.0**-5,
         keep_geo=False, t_lo=0.0, h_axis=2.0**-5, rho_axis=1e-3, m_sub=8):
     """One piece: z0 in [z_lo, z_hi], t in [t_lo, t0]. Returns a dict with the certified bounds (or raises
@@ -363,9 +395,14 @@ def run(z_lo, z_hi, d, t0, h, ds=0.004, L=14, hmax=0.25, sigma_max=60.0, z_switc
         tau, n = tau + hh, n + 1
     Y = S.hull()
     u_end, v_end = Y[2], Y[3]
+    F_end = arb.atan2(v_end, u_end) + arb.pi() / 2
+    Fz = crossing_Fz(S)
     ok = bool(u_end > 0 and v_end < 0 and col.theta_lo > 0 and col.jac_min > 0 and col.xn_min > 0
               and col.rho_min > 0 and col.v_max < 0)
     out = {"z0": [z_lo, z_hi], "t": [t_lo, t0], "u_end": [float(u_end.lower()), float(u_end.upper())],
+           "F": [bb._down(F_end.lower()), bb._up(F_end.upper())], "F_z": [bb._down(Fz.lower()), bb._up(Fz.upper())],
+           "inner_ok": bool(v_end < 0 and col.theta_lo > 0 and col.jac_min > 0 and col.xn_min > 0
+                            and col.rho_min > 0 and col.v_max < 0),
            "u_end_lo": float(u_end.lower()), "theta_lo": col.theta_lo, "theta_hi": col.theta_hi, "R_max": col.R_max,
            "jacobi_min": col.jac_min, "x_dot_n_min": col.xn_min, "rho_min": col.rho_min,
            "sin_alpha_max_sign": col.v_max, "steps": n, "certified": ok}
@@ -455,61 +492,147 @@ def _profile_job(args):
     return barrier_geometry(rec["d"], float(rec["t"]), h, g["z0"], rec["delta"])
 
 
-def main(d="0.7662", t0=5.0e-6, h=5e-8, margin=2e-4, m_extreme=32,
+def piece_width(s_, w0):
+    """Width of the monotone piece starting at distance s_ from the fold. The excess width of the F_z
+    enclosure grows like w^2.4 (measured: 0.003 at w = 3e-5, 0.55 at 2.55e-4) and |F_z| >= ~240 s_, so
+    w = 2 w0 (s_ / w0)^0.4 keeps a factor ~2.6 of safety."""
+    return 2 * w0 * (s_ / w0) ** 0.4
+
+
+def plan_monotone(z_a, z_b, z_f, w0):
+    """The fold piece [z_f - w0, z_f + w0] and, on each side, pieces [s, s + piece_width(s)] in
+    |z0 - z_f|, from s = w0 out to the ends of [z_a, z_b] (shared endpoints are identical floats)."""
+    fold = (z_f - w0, z_f + w0)
+    right, a = [], fold[1]
+    while a < z_b:
+        b = min(z_b, a + piece_width(a - z_f, w0))
+        right.append((a, b))
+        a = b
+    left, b = [], fold[0]
+    while b > z_a:
+        a = max(z_a, b - piece_width(z_f - b, w0))
+        left.append((a, b))
+        b = a
+    return fold, right, left
+
+
+def _job(args):
+    kind, payload = args
+    t1 = time.time()
+    try:
+        if kind == "piece":
+            lo, hi, d, t0, h = payload
+            r = run(lo, hi, d, t0, h)
+        elif kind == "point":
+            z, d, t0, h = payload
+            r = run(z, z, d, t0, h)
+        elif kind == "extreme":
+            r = _extreme_job(payload)
+        else:
+            r = _profile_job(payload)
+    except AssertionError as e:
+        r = {"error": str(e), "certified": False}
+    r["seconds"] = time.time() - t1
+    r["job"] = [kind, list(payload) if kind in ("piece", "point") else None]
+    return r
+
+
+def main(d="0.7662", t0=5.0e-6, h=5e-8, margin=2e-4, w0=1.5e-5, m_extreme=32, processes=4,
          barrier_record=os.path.join(DATA, "bl_barrier_near.json"), out_path=os.path.join(DATA, "bl_foliate.json")):
-    """Theorem N: the foliation of [z_a, z_b] = [z_in - margin, z_out + margin] for t in [0, t0], and
-    W_t contains Omega (the region of the Theorem M record barrier_record): S_t(z_a) inside S_in and S_out
-    inside S_t(z_b), by radial comparison of Lohner sub-step boxes. All runs go through one pool."""
+    """Theorem N (notes/20 §4). Leaves: level-h curves from (0, z0), z0 in [z_a, z_b] = [z_in - margin,
+    z_out + margin] (the barriers of the Theorem M record), every t in [0, t0]. Certified:
+
+      * every piece (Lohner, z0 and t intervals): theta_+ > 0, Jacobi field > 0, x.n > 0, rho > 0, v < 0
+        (the hypotheses of Lemma 3 other than the ridge condition);
+      * the ridge condition F > 0 for every leaf, by monotonicity: on the pieces right of the fold
+        F_z > 0, on those left of it F_z < 0 (certified signs of the crossing jets), so on each side F is
+        smallest at the end nearest the fold; on the fold piece [z_f - w0, z_f + w0],
+        F(z0, t) >= F(z_f, t) - w0 sup |F_z| > 0 (point run at z_f). By induction F > 0 on [z_a, z_b];
+      * W_t contains Omega': S_t(z_a) inside S_in and S_out inside S_t(z_b) (radial comparison)."""
     from multiprocessing import get_context
+    from scipy.optimize import minimize_scalar
     with open(barrier_record) as f:
         brec = json.load(f)
     assert brec["d"] == d and brec["certified"], "needs a certified Theorem M record at the same d"
-    z_in, z_out = brec["inner"]["z0"], brec["outer"]["z0"]
-    z_a, z_b = z_in - margin, z_out + margin
-    # the fold of the h-level family at t0 (floating point, only to place the fine pieces)
-    from scipy.optimize import minimize_scalar
-    z_fold = minimize_scalar(bb.level_shooter(float(d), t0, h).mismatch, bounds=(bb.Z0_FOLD - 1e-3, bb.Z0_FOLD + 1e-3),
-                             method="bounded", options={"xatol": 1e-10}).x
-    todo = plan_pieces(z_a, z_b, z_fold)
-    print(f"Foliation certificate: d = {d}, t in [0, {t0}], level h = {h}, z0 in [{z_a!r}, {z_b!r}], "
-          f"{len(todo)} pieces (fold of the level family at {z_fold:.9f})", flush=True)
+    z_a, z_b = brec["inner"]["z0"] - margin, brec["outer"]["z0"] + margin
+    # the fold of the level-h family (floating point, at t0/2; it moves by < 1e-6 over [0, t0]); only
+    # used to place the pieces
+    z_f = minimize_scalar(bb.level_shooter(float(d), t0 / 2, h).mismatch,
+                          bounds=(bb.Z0_FOLD - 1e-3, bb.Z0_FOLD + 1e-3), method="bounded",
+                          options={"xatol": 1e-10}).x
+    fold, right, left = plan_monotone(z_a, z_b, z_f, w0)
+    jobs = [("piece", (fold[0], fold[1], d, t0, h)), ("point", (z_f, d, t0, h))]
+    jobs += [("piece", (lo, hi, d, t0, h)) for lo, hi in right + left]
+    jobs += [("extreme", (z_a, d, t0, h, m_extreme)), ("extreme", (z_b, d, t0, h, m_extreme)),
+             ("profile", (brec, "in")), ("profile", (brec, "out"))]
+    print(f"Theorem N: d = {d}, t in [0, {t0}], h = {h}, z0 in [{z_a!r}, {z_b!r}], fold at {z_f:.9f}; "
+          f"{1 + len(right) + len(left)} pieces, {len(jobs)} runs", flush=True)
     T0 = time.time()
-    log = lambda m: print(m, flush=True)  # noqa: E731
-    with get_context("fork").Pool(4) as pool:
-        side = [pool.apply_async(_extreme_job, ((z_a, d, t0, h, m_extreme),)),
-                pool.apply_async(_extreme_job, ((z_b, d, t0, h, m_extreme),)),
-                pool.apply_async(_profile_job, ((brec, "in"),)),
-                pool.apply_async(_profile_job, ((brec, "out"),))]
-        pieces, nxt = [], []
-        for r in pool.imap_unordered(_piece_job, [(lo, hi, d, t0, h) for lo, hi in todo]):
-            lo, hi = r["z0"]
-            log(f"  [{lo!r}, {hi!r}] certified {r['certified']}  "
-                + (f"u_end >= {r['u_end_lo']:.3e}, theta >= {r['theta_lo']:.3e}, |R| <= {r['R_max']:.2e}, "
-                   f"Jacobi >= {r['jacobi_min']:.3e}, x.n >= {r['x_dot_n_min']:.3e}" if "u_end_lo" in r
-                   else r.get("error", "")) + f"  ({r['seconds']:.0f} s)")
-            (pieces if r["certified"] else nxt).append(r)
-        la, lb, pin, pout = (j.get() for j in side)
-    if nxt:
-        log(f"  {len(nxt)} pieces failed; bisecting")
-        pieces += certify(z_a, z_b, d, t0, h, todo=[tuple(r["z0"]) for r in nxt], log=log)
-    pieces.sort(key=lambda r: r["z0"][0])
-    tiled = pieces[0]["z0"][0] == z_a and pieces[-1]["z0"][1] == z_b and all(
-        a["z0"][1] == b["z0"][0] for a, b in zip(pieces, pieces[1:]))
-    gap_a = bb.radial_gap(la, pin)      # S_t(z_a) inside S_in
-    gap_b = bb.radial_gap(pout, lb)     # S_out inside S_t(z_b)
-    leaves_ok = la["certified"] and lb["certified"]
-    contains = bool(leaves_ok and gap_a > 0 and gap_b > 0)
-    print(f"  pieces tile [z_a, z_b]: {tiled}; extreme leaves certified: {leaves_ok}; W_t contains Omega: "
-          f"{contains} (radial gaps {gap_a:.3e}, {gap_b:.3e}); barrier re-check: S_in theta <= {pin['theta_hi']:.3e}, "
-          f"S_out theta >= {pout['theta_lo']:.3e}", flush=True)
-    rec = {"theorem": "notes/20, Theorem N", "d": d, "t0": t0, "h": h, "z_a": z_a, "z_b": z_b, "z_fold": z_fold,
-           "pieces": pieces, "pieces_tile": bool(tiled),
-           "extreme_leaves": [{k: v for k, v in x.items() if not k.startswith("_")} for x in (la, lb)],
-           "gap_leaf_a_to_S_in": gap_a, "gap_S_out_to_leaf_b": gap_b, "W_contains_Omega": contains,
-           "certified": bool(all(p["certified"] for p in pieces) and tiled and contains),
-           "barrier_record": os.path.basename(barrier_record), "seconds": time.time() - T0,
-           "replay": "python -m research.calc.bl_foliate"}
-    print(f"RESULT: Theorem N certified: {rec['certified']} ({rec['seconds']:.0f} s)", flush=True)
+    with get_context("fork").Pool(processes) as pool:
+        res = pool.map(_job, jobs, chunksize=1)
+        # a monotone piece whose sign of F_z (or other condition) fails is bisected and rerun
+        def bad(r, side):
+            if not r.get("inner_ok") or "F_z" not in r:
+                return True
+            return not (r["F_z"][0] > 0 if side == "right" else r["F_z"][1] < 0)
+        for side, lst, first in (("right", right, 2), ("left", left, 2 + len(right))):
+            pieces_res = list(zip(lst, res[first:first + len(lst)]))
+            for _round in range(3):
+                todo = [pr for pr in pieces_res if bad(pr[1], side)]
+                if not todo:
+                    break
+                print(f"  {side}: {len(todo)} pieces fail; bisecting", flush=True)
+                halves = []
+                for (lo, hi), _ in todo:
+                    m = (lo + hi) / 2
+                    halves += [(lo, m), (m, hi)]
+                new_res = pool.map(_job, [("piece", (lo, hi, d, t0, h)) for lo, hi in halves], chunksize=1)
+                keep = [pr for pr in pieces_res if not bad(pr[1], side)]
+                pieces_res = sorted(keep + list(zip(halves, new_res)), key=lambda pr: pr[0][0])
+            lst[:] = [pr[0] for pr in pieces_res]
+            if side == "left":
+                lst.sort(key=lambda iv: -iv[0])
+            res_side = [pr[1] for pr in sorted(pieces_res, key=lambda pr: pr[0][0] if side == "right" else -pr[0][0])]
+            if side == "right":
+                rights_final = res_side
+            else:
+                lefts_final = res_side
+    for r in res:
+        if r["job"][0] in ("piece", "point"):
+            print(f"  {r['job'][0]} {r['job'][1][:2]}: " + (
+                f"F in {r['F']}, F_z in {r['F_z']}, theta >= {r['theta_lo']:.3e}, |R| <= {r['R_max']:.2e}, "
+                f"inner conditions {r['inner_ok']}" if "F" in r else r.get("error", "?"))
+                + f"  ({r['seconds']:.0f} s)", flush=True)
+    fold_r, point_r = res[0], res[1]
+    rights, lefts = rights_final, lefts_final
+    la, lb, pin, pout = res[-4:]
+    ok_inner = all(r.get("inner_ok") for r in [fold_r] + rights + lefts)
+    ok_signs = all(r.get("F_z", [0])[0] > 0 for r in rights) and all(r.get("F_z", [0, 0])[1] < 0 for r in lefts)
+    sup_fz = max(abs(fold_r["F_z"][0]), abs(fold_r["F_z"][1])) if "F_z" in fold_r else math.inf
+    F_fold_lo = (arb(point_r["F"][0]) - arb(w0) * arb(sup_fz)).lower() if "F" in point_r else arb(-1)
+    ok_fold = bool(F_fold_lo > 0)
+    tiled = (not right or right[0][0] == fold[1]) and (not left or left[0][1] == fold[0]) \
+        and all(a[1] == b[0] for a, b in zip(right, right[1:])) and all(a[0] == b[1] for a, b in zip(left, left[1:])) \
+        and (right[-1][1] if right else fold[1]) >= z_b and (left[-1][0] if left else fold[0]) <= z_a
+    for iv, r in zip(right + left, rights + lefts):
+        assert tuple(r["z0"]) == tuple(iv), "piece results out of order"
+    gap_a = bb.radial_gap(la, pin) if "_geo" in la and "_geo" in pin else -math.inf
+    gap_b = bb.radial_gap(pout, lb) if "_geo" in lb and "_geo" in pout else -math.inf
+    ok_contain = bool(la.get("inner_ok") and lb.get("inner_ok") and gap_a > 0 and gap_b > 0)
+    certified = bool(ok_inner and ok_signs and ok_fold and tiled and ok_contain)
+    print(f"  inner conditions on all pieces: {ok_inner}; F_z signs: {ok_signs}; fold piece: F >= "
+          f"{float(F_fold_lo):.3e} ({ok_fold}); tiling: {tiled}; W_t contains Omega': {ok_contain} "
+          f"(gaps {gap_a:.3e}, {gap_b:.3e})", flush=True)
+    strip = lambda r: {k: v for k, v in r.items() if not k.startswith("_")}  # noqa: E731
+    rec = {"theorem": "notes/20, Theorem N", "d": d, "t0": t0, "h": h, "z_a": z_a, "z_b": z_b, "z_f": z_f,
+           "w0": w0, "fold_piece": strip(fold_r), "fold_point": strip(point_r), "right_pieces": [strip(r) for r in rights],
+           "left_pieces": [strip(r) for r in lefts], "F_lower_bound_on_fold_piece": float(F_fold_lo),
+           "extreme_leaves": [strip(la), strip(lb)], "gap_leaf_a_to_S_in": gap_a, "gap_S_out_to_leaf_b": gap_b,
+           "checks": {"inner": ok_inner, "F_z_signs": ok_signs, "fold": ok_fold, "tiled": bool(tiled),
+                      "W_contains_Omega": ok_contain},
+           "certified": certified, "barrier_record": os.path.basename(barrier_record),
+           "seconds": time.time() - T0, "replay": "python -m research.calc.bl_foliate"}
+    print(f"RESULT: Theorem N certified: {certified} ({rec['seconds']:.0f} s)", flush=True)
     if out_path:
         with open(out_path, "w") as f:
             json.dump(rec, f, indent=1)

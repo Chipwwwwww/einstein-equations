@@ -30,19 +30,23 @@ Newest first. Each entry: what was decided, why, and where things stand.
     be thin (nesting) or cover an interval of $z_0$ and $t$ (the foliation).
 - **Separation $d = 0.7662$**: the standard near-critical example of notes 12–16. Its times are
   $t_1 = 1.2\times10^{-5}$ (robust) and $t_1' = 6.5\times10^{-6}$ ($1.06$ times the linear-law
-  onset). Theorem N was attempted with $t_0 = 5\times10^{-6}$ and is not completed.
+  onset). Theorem N uses $t_0 = 5\times10^{-6}$ and $h = 5\times10^{-8}$.
+- **Theorem N by monotone pieces, not by direct enclosures of $F$.** A direct enclosure of the ridge
+  angle over a $z_0$-piece fails near the fold (the Lohner remainder grows like the square of the
+  width). The derivative $F_z$ from first jets is tighter. So: monotone pieces whose widths grow like
+  the $0.4$ power of the distance from the fold, plus one mean-value bound on the fold piece.
+  That is 16 runs in total.
 
 **Progress**
 
 - Claims 122–131.
 - Tools: `research/calc/bl_barrier.py`, `research/calc/bl_foliate.py`; tests `tests/test_bl_barrier.py`.
-- Records: `bl_barrier.json`, `bl_barrier_near.json`. There is no `bl_foliate.json`: Theorem N is not completed.
+- Records: `bl_barrier.json`, `bl_barrier_near.json`, `bl_foliate.json`.
 - Note 20, report `research/report_session16.md`. Status gains a one-paragraph summary of the whole
   programme at the top.
 
 **Next**
 
-- Complete Theorem N by convexity in $z_0$ (second jets on Lohner pieces, point-$z_0$ runs), notes/20 §4.
 - Theorem F′ for $0 < t \le t_0$ (global exclusion), so that the bracket for the birth of the common
   apparent horizon holds for the whole slice. This needs a CK certificate on $B(0, 1.05)$ minus the
   throat balls (for $t \lesssim 10^{-5}$ only) and a perturbed F′ sweep.

@@ -11,10 +11,9 @@ Brill–Lindquist data at $d = 0.7662$:
   (**Theorem M**);
 - the whole event takes place where the spacetime metric is the certified convergent series of route E.
 
-The complementary exclusion (no MOTS in the shell before $t_0 = 5\times10^{-6}$, Theorem N) is **not
-completed**. The foliation certificate works on test pieces except for the ridge condition over
-$z_0$-pieces near the fold, and the fix is identified (notes/20 §4). So the birth time has an
-explicit upper bound, $1.06$ times the linear law, but no certified lower bound.
+The complementary exclusion is also certified (**Theorem N**): no MOTS in a shell $W_t \supset \Omega'$
+about $S_c$ for any $t \in [0, 5\times10^{-6}]$. So the common MOTS near $S_c$ is born at a time in
+$[5.0, 6.5]\times10^{-6}M$, that is $[0.81, 1.06]$ times the linear-law value.
 
 No closed-form (category-A) metric was found, and nothing is claimed about event horizons.
 
@@ -58,7 +57,7 @@ needed.
 | Lemma 3: foliation exclusion with convex ridges | proved (elementary) | notes/20 §2.3 |
 | barrier theorem (AM 2009, Thms 3.1 and 4.1) | literature, **read in the PDF** | hypotheses recorded in notes/20 §2.3 and `research/literature.md` |
 | **Theorem M** at $t_1 = 1.2\times10^{-5}$ and $t_1' = 6.5\times10^{-6}$ | computer-assisted | `bl_barrier.json`, `bl_barrier_near.json` |
-| Theorem N, $t \in [0, 5\times10^{-6}]$ | **not completed**: Lemma 3's hypotheses certified on test pieces, except $F > 0$ over $z_0$-pieces near the fold | `bl_foliate.run`; diagnosis in notes/20 §4 |
+| **Theorem N**, $t \in [0, 5\times10^{-6}]$ | computer-assisted | `bl_foliate.json`: 11 pieces; $\theta_+ \ge 4.907\times10^{-8}$; $F \ge 4.03\times10^{-7}$ on the fold piece; $F_z$ signs elsewhere; $W_t \supset \Omega'$ |
 | near $S_c$, small $t$: outer trapped but not trapped | numerical observation | $p = \mathrm{Ric}(\nu,\nu) \in [-0.58, 0.11]$ on $S_c$ |
 
 ## Tools
@@ -74,9 +73,10 @@ needed.
   - gap3_fold's Lohner machinery with the level-$h$ source, $t$ as a set parameter, and
     **sub-step enclosures** (centre polynomial plus the Picard flow-Jacobian applied to the
     spread);
-  - the foliation certificate and the extreme-leaf comparison (not completed: notes/20 §4).
-- `tests/test_bl_barrier.py`: 8 fast tests and 1 slow one. The fast ones cover the formulas, the
-  conventions, the Lohner sub-steps on an exact flow, and the stored records. The slow one checks
+  - the foliation certificate: monotone pieces in $z_0$ (width $\propto$ distance$^{0.4}$), a mean-value
+    bound on the fold piece, and the extreme-leaf comparison.
+- `tests/test_bl_barrier.py`: 10 fast tests and 1 slow one. The fast ones cover the formulas, the
+  conventions, the Lohner sub-steps on an exact flow, the piece plan, and the three stored records. The slow one checks
   that the integrator copy is bit-identical.
 
 ## Lessons
@@ -98,15 +98,14 @@ needed.
 | Status | Items |
 | --- | --- |
 | proved | Lemmas 1–3; the topological step (the MOTS separates the shell) |
-| computer-assisted (new) | Theorem M ($t_1$, $t_1'$) |
+| computer-assisted (new) | Theorem M ($t_1$, $t_1'$); Theorem N |
 | inherited | Theorems C, F′; Proposition T, CK′ certificates; AM barrier theorem |
-| open | Theorem N (local lower bound); the first common apparent horizon of the whole slice; event horizons; a $d$-interval version; a closed form |
+| open | the first common apparent horizon of the whole slice; event horizons; a $d$-interval version; a closed form |
 
 ## Next single decisive task
 
-**First, Theorem N** by the convexity argument of notes/20 §4: second $z_0$-jets on Lohner pieces plus
-point-$z_0$ runs, about 15 runs. **Then Theorem F′ for $0 < t \le t_0$.** This turns the local bracket into a global statement: the common
-apparent horizon of the whole slice is born in $(t_0, t_1']$. It needs two things:
+**Theorem F′ for $0 < t \le t_0$.** This turns the local bracket into a global one: the common
+apparent horizon of the whole slice is born in $[t_0, t_1']$. It needs two things:
 
 1. a CK certificate on $B(0, 1.05)$ minus the throat balls, needed only for $t \lesssim 10^{-5}$;
 2. the F′ sweep rerun for the level-$h$ curves with $\lvert h\rvert \le \sup\lvert R\rvert$ and $t$ as a parameter.

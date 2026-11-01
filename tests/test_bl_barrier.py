@@ -205,3 +205,43 @@ def test_lohner_substep_enclosures_contain_exact_rotation():
         # a sub-box covers a time interval of length h/6 = 0.05 (the point moves by ~0.05 along the
         # unit circle), plus the 1e-6 spread: radius about 0.025
         assert max(float(v.rad()) for v in st) < 0.026
+
+
+def test_monotone_plan_tiles_the_window():
+    """bl_foliate.plan_monotone: the fold piece and the growing pieces tile [z_a, z_b] exactly (shared
+    endpoints are identical floats), and each off-fold piece has the width piece_width(distance), or
+    less where it is clipped at the window's end."""
+    from research.calc import bl_foliate as bf
+    z_a, z_b, z_f, w0 = 0.632432142085469, 0.6330511544633266, 0.6326615, 1.5e-5
+    fold, right, left = bf.plan_monotone(z_a, z_b, z_f, w0)
+    assert right[0][0] == fold[1] and left[0][1] == fold[0]
+    assert all(a[1] == b[0] for a, b in zip(right, right[1:]))
+    assert all(a[0] == b[1] for a, b in zip(left, left[1:]))
+    assert right[-1][1] == z_b and left[-1][0] == z_a
+    for lo, hi in right:
+        assert hi - lo <= bf.piece_width(lo - z_f, w0) * (1 + 1e-12)
+    for lo, hi in left:
+        assert hi - lo <= bf.piece_width(z_f - hi, w0) * (1 + 1e-12)
+
+
+def test_stored_foliation_record():
+    """The stored Theorem N record (notes/20 §4): every piece satisfies the hypotheses of Lemma 3 other
+    than the ridge condition; the ridge condition by the certified F_z signs and the fold-piece
+    mean-value bound; the pieces tile the window; W_t contains Omega'."""
+    with open(os.path.join(DATA, "bl_foliate.json")) as f:
+        rec = json.load(f)
+    assert rec["certified"] and rec["d"] == "0.7662" and rec["t0"] == 5.0e-6
+    pieces = [rec["fold_piece"]] + rec["right_pieces"] + rec["left_pieces"]
+    assert all(p["inner_ok"] and p["theta_lo"] > 0 and p["t"] == [0.0, 5.0e-6] for p in pieces)
+    assert all(p["F_z"][0] > 0 for p in rec["right_pieces"])
+    assert all(p["F_z"][1] < 0 for p in rec["left_pieces"])
+    w0 = rec["w0"]
+    sup_fz = max(abs(x) for x in rec["fold_piece"]["F_z"])
+    assert rec["fold_point"]["F"][0] - w0 * sup_fz > 0
+    assert abs(rec["fold_piece"]["z0"][0] - (rec["z_f"] - w0)) < 1e-15
+    right = sorted(p["z0"] for p in rec["right_pieces"])
+    left = sorted(p["z0"] for p in rec["left_pieces"])
+    chain = left + [rec["fold_piece"]["z0"]] + right
+    assert chain[0][0] == rec["z_a"] and chain[-1][1] == rec["z_b"]
+    assert all(a[1] == b[0] for a, b in zip(chain, chain[1:]))
+    assert rec["gap_leaf_a_to_S_in"] > 0 and rec["gap_S_out_to_leaf_b"] > 0 and rec["checks"]["W_contains_Omega"]

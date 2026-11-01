@@ -399,11 +399,9 @@ stop condition for each, is in notes/18 §5.
 - **Exclusion in a shell needs only $C^0$ data on a foliation** (comparison principle). Leaves that
   do not close smoothly are fine if the equatorial ridge is convex ($F > 0$): a smooth surface
   inside cannot touch a convex ridge. So no closing condition is needed per leaf.
-  **Not completed.** On $z_0$-pieces near the fold the Lohner remainder inflates like (width)²,
-  about 350 times the true second-order term, so $F > 0$ (the convex ridge) cannot be certified on a
-  piece of width $6\times10^{-5}$, while $\theta_+ > 0$, the Jacobi field and embeddedness pass.
-  Next: convexity in $z_0$, $F \ge F(z_c) - F_z(z_c)^2/(2\inf F_{zz})$, from second jets and
-  point-$z_0$ runs.
+  On $z_0$-pieces near the fold the Lohner remainder inflates like (width)², about 350 times the
+  true second-order term, so a direct enclosure of $F$ cannot certify the convex ridge on a piece of
+  width $6\times10^{-5}$. **Done by monotonicity instead** (next item): Theorem N certified.
 - **Wide parameter balls blow up in the Moore integrator.** A $z_0$-ball of radius $5\times10^{-5}$
   with a $t$-ball fails in the $\mu$-segment ($\sqrt{1 - \sin^2\alpha}$ of a ball containing 0).
   The existence certificate therefore uses $\delta = 10^{-8}$ brackets. Anything over an interval
@@ -418,6 +416,10 @@ stop condition for each, is in notes/18 §5.
   with $p = \mathrm{Ric}(\nu,\nu)$ ranging over about $[-0.58, 0.11]$ on $S_c$ (floating point). So
   $\theta_- = 2tp - h > 0$ on a band of the inner barrier, and the newborn common MOTS has
   $\theta_- > 0$ somewhere (numerical observation).
-- **Cheapest completion of Theorem N.** Away from the fold, $F$ is monotone on each $z_0$-piece. The sign
-  of $F_z$ comes from the slot-1 jets, so one tight point run at the right end certifies $F > 0$.
-  Only the piece containing the fold needs a mean-value or convexity bound. Untested.
+- **Completion of Theorem N.** Away from the fold, $F$ is monotone on each $z_0$-piece, with the sign of
+  $F_z$ certified by the slot-1 jets. By induction from the fold piece, $F > 0$ everywhere.
+  - The fold piece $\lvert z_0 - z_f\rvert \le 1.5\times10^{-5}$ uses $F \ge F(z_f) - w\sup\lvert F_z\rvert$:
+    $4.80\times10^{-7} - 7.7\times10^{-8} > 0$.
+  - The excess width of the $F_z$ enclosure grows like $w^{2.4}$, while $\lvert F_z\rvert$ grows linearly
+    with the distance. So piece widths $\propto$ distance$^{0.4}$: 11 pieces, no bisection needed.
+  - **Tested, works.**

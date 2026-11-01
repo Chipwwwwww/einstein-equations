@@ -22,8 +22,7 @@ This note closes the gap by a different and much cheaper argument.
   remainder controlled pointwise by the CK certificate.
 - **Non-existence in a shell needs only $C^0$ information on a foliation** (Lemma 3). By the
   comparison principle, no MOTS lies in a region foliated by surfaces with $\theta_+ > 0$. The
-  leaves may have convex ridges, so no closing condition is needed. Its certificate is not
-  completed (§4).
+  leaves may have convex ridges, so no closing condition is needed.
 
 Neither argument uses the spectrum of the Jacobi operator.
 
@@ -36,8 +35,8 @@ Neither argument uses the spectrum of the Jacobi operator.
 | barrier theorem | literature: Andersson–Metzger 2009, Thms 3.1 and 4.1, **read on the page** this session |
 | foliation exclusion with convex ridges (Lemma 3) | proved here (elementary comparison argument) |
 | **Theorem M**: common MOTS on $\Sigma_t$, $d = 0.7662$, $t = 1.2\times10^{-5}$ and $6.5\times10^{-6}$ | **computer-assisted** (new) |
-| Theorem N (no MOTS in the shell for $t \le t_0$) | **not certified**: all hypotheses of Lemma 3 hold on test pieces except the ridge condition $F > 0$ over $z_0$-pieces (§4) |
-| **Corollary**: explicit apparent-horizon merger at $d = 0.7662$ (two components at $t = 0$, a common MOTS by $t = 6.5\times10^{-6}$) | computer-assisted, combining F′ and M |
+| **Theorem N**: no MOTS in a shell $W_t \supset \Omega'$ for $0 \le t \le t_0 = 5\times10^{-6}$ | **computer-assisted** (new) |
+| **Corollary**: explicit apparent-horizon merger at $d = 0.7662$; the common MOTS in $\Omega'$ is born at $t_b \in [5.0, 6.5]\times10^{-6}$ | computer-assisted, combining F′, M and N |
 | first common apparent horizon of the slicing; event horizons | **open** (§6) |
 | category-A metric | **no** |
 
@@ -251,68 +250,46 @@ the CK tail of $\partial\gamma$ ($6.3\times10^{-8}$ on the tube at $t_1$, $3\tim
 Both enter multiplied by $\partial\Theta/\partial(\partial\gamma) = O(\psi^{-6}) \approx 10^{-2}$.
 
 
-## 4 · Toward Theorem N: excluding a MOTS from the shell before the merger (not completed)
+## 4 · Theorem N: no MOTS in the shell before $t_0$
 
-The aim was the complementary statement:
+> **Theorem N (computer-assisted).** Same data, $d = 0.7662$. Let $t_0 = 5\times10^{-6}$ and
+> $h = 5\times10^{-8}$. For $z_0 \in [z_a, z_b] = [0.6324321, 0.6330512]$ and $t \in [0, t_0]$, let $S_t(z_0)$
+> be the leaf of level $h$ from the axis point $(0, z_0)$: the curve of §2.2 up to its first crossing
+> of $z = 0$, reflected and rotated. Let $W_t$ be the shell swept by these leaves. Then for every
+> $t \in [0, t_0]$:
+>
+> 1. the leaves foliate $W_t$: they are embedded radial graphs, strictly nested in $z_0$, smooth except
+>    for a convex equatorial ridge;
+> 2. $\theta_+ \ge 4.907\times10^{-8} > 0$ on every leaf;
+> 3. hence $\Sigma_t$ contains **no** closed embedded MOTS inside $W_t$;
+> 4. $W_t$ contains $\Omega'$, the shell between the barriers of Theorem M at $t_1' = 6.5\times10^{-6}$.
 
-> **Theorem N (target, not certified).** For $t_0 = 5\times10^{-6}$ and $h = 5\times10^{-8}$, the leaves
-> $S_t(z_0)$, $z_0 \in [z_a, z_b] \supset [z_{\rm in}, z_{\rm out}]$, $t \in [0, t_0]$ (the level-$h$
-> shooting curves, reflected), foliate a shell $W_t \supset \Omega'$ and satisfy the hypotheses of
-> Lemma 3. Hence no MOTS lies in $\Omega'$ for $t \le t_0$.
+**Proof.** Lemma 3, with the following inputs certified by `research/calc/bl_foliate.py` (record
+`bl_foliate.json`).
 
-Combined with Theorem M at $t_1'$, that would bracket the local birth time:
-$t_b \in [0.81, 1.06]\,t_*^{\rm lin}$.
+| Input | How | Certified |
+| --- | --- | --- |
+| leaves for all $z_0$ in a piece and all $t \in [0, t_0]$ at once | Lohner sets in the $\sigma$-system (`gap3_fold`'s block frames, $z_0$ a dummy parameter, $z$ as the clock before the plane), level-$h$ source, $t$ a set parameter, sub-step enclosures in Lohner form (tested on an exact flow) | 11 pieces tile $[z_a, z_b]$ |
+| $\theta_+ = h + R > 0$ on every leaf | Lemma 2 on every sub-box, CK tails at $\lvert t\rvert \le t_0$ | $\theta_+ \ge 4.907\times10^{-8}$, $\lvert R\rvert \le 9.33\times10^{-10}$ |
+| embedded, star-shaped, nested | $\rho > 0$, $\sin\alpha < 0$, $x\cdot n > 0$; normal component of $\partial X/\partial z_0$ (slot-1 jets) $> 0$ on every sub-box and on the axis segment, so $r(\varphi; z_0)$ is strictly increasing | all pieces |
+| ridge convex, $F > 0$, on the fold piece $\lvert z_0 - z_f\rvert \le w_0 = 1.5\times10^{-5}$ | mean-value theorem in $z_0$: $F(z_0, t) \ge F(z_f, t) - w_0\sup\lvert F_z\rvert$, with $F(z_f, t)$ from a point-$z_0$ run over all $t$ and $F_z$ from the crossing jets | $F(z_f, \cdot) \ge 4.797\times10^{-7}$, $\sup\lvert F_z\rvert \le 5.13\times10^{-3}$, so $F \ge 4.03\times10^{-7}$ |
+| $F > 0$ off the fold piece | $F_z > 0$ on every piece to the right of the fold and $< 0$ to the left (certified signs of the crossing jets), so on each side $F$ is smallest at the end next to the fold piece, where it is $> 0$ | $F_z \ge 2.13\times10^{-3}$ on the right, $F_z \le -2.13\times10^{-3}$ on the left |
+| $W_t \supset \Omega'$ | radial comparison on sub-step boxes: $S_t(z_a)$ inside $S_{\rm in}$, $S_{\rm out}$ inside $S_t(z_b)$ | gaps $5.31\times10^{-6}$, $3.67\times10^{-6}$ |
 
-**What was built and checked.** `research/calc/bl_foliate.py` carries the leaves as Lohner sets.
+The leaves sweep $W_t$, since at each angle $r(\varphi; z_0)$ is continuous and increasing in $z_0$.
+Every leaf box lies in the certified domain $U$, so $W_t \subset U$ and the data on it are the slice
+data. ∎
 
-- **Machinery.** It reuses `gap3_fold`'s $\sigma$-system, block frames, $z_0$ as a dummy parameter
-  and $z$ as the clock before the plane. To that it adds the level-$h$ source, $t$ as a set
-  parameter, and **sub-step enclosures in Lohner form**,
-  $x(u) \in \varphi_u(m) + J_x(u)(Ar) + (J_x(u)P + J_p(u))q$. These are tested against an exact rotation
-  flow with a parameter.
-- **The conditions of Lemma 3**, checked on two test pieces of width $6\times10^{-5}$ and
-  $1.35\times10^{-4}$ (the first next to the fold), for all $t \in [0, t_0]$:
-  - $\theta_+ \in [4.90, 5.10]\times10^{-8}$ (so $\lvert R\rvert \le 1.03\times10^{-9}$);
-  - the Jacobi field is positive;
-  - $x\cdot n > 0$, $\rho > 0$, $\sin\alpha < 0$.
+**How the ridge condition was made certifiable.** A direct enclosure of $F$ over a $z_0$-piece fails
+near the fold. On a piece of width $6\times10^{-5}$ the Lohner remainder of the final set is
+$9.6\times10^{-6}$, about 350 times the true second-order term, because the interval Jacobian
+re-boxes the second-order dependence at every step. The derivative $F_z$ from the first jets is
+much better behaved: its excess width grows like $w^{2.4}$ (measured $0.003$ at $w = 3\times10^{-5}$ and
+$0.55$ at $2.55\times10^{-4}$). Meanwhile $\lvert F_z\rvert \approx F_{zz}\lvert z_0 - z_f\rvert$ grows linearly
+away from the fold. So the pieces grow like $w(s) = 2w_0(s/w_0)^{0.4}$ with the distance $s$, and only
+one point run (at the fold) is needed.
 
-  For a single leaf $z_0 = 0.632632$ and all $t \in [0, t_0]$, the ridge condition holds as well:
-  $u_{\rm end} \in [1.48, 8.01]\times10^{-7} > 0$.
-
-**What fails, precisely.** The ridge condition $u_{\rm end} > 0$ ($F > 0$) cannot be certified on a
-$z_0$-piece of width $6\times10^{-5}$ near the fold. The enclosure is $u_{\rm end} \in [-9.5, 10.5]\times10^{-6}$,
-against the true range $[1.5, 2.3]\times10^{-7}$. A decomposition of the final set shows why:
-
-- the $t$-interval is harmless;
-- the $z_0$-spread inflates the Lohner remainder $Ar$ to $9.6\times10^{-6}$, about 350 times the
-  true second-order term $\tfrac12\rho F_{zz}w^2 \approx 3\times10^{-8}$. The interval Jacobian over the
-  set re-boxes the second-order dependence at every step, so the inflation grows like (width)² ×
-  steps.
-
-Pieces about ten times narrower near the fold would pass, which means about 100 runs of a quarter
-of an hour each.
-
-**The fix**, which is the next task, is a convexity argument in $z_0$, as `gap3_fold` used at
-$t = 0$:
-
-- carry the second jet ($z_0^2$, slot 4) on each piece, and get $\inf F_{zz} > 0$;
-- get $F(z_c, t)$ and $F_z(z_c, t)$ from tight point-$z_0$ runs with the $t$-interval;
-- conclude $F \ge F(z_c) - F_z(z_c)^2/(2\inf F_{zz})$ on the piece.
-
-With the measured values ($F(z_c) \approx 5.9\times10^{-7}$, $F_z^2/(2F_{zz}) \le 2.2\times10^{-7}$) this
-closes on pieces of width $6\times10^{-5}$.
-
-A cheaper variant needs only first jets:
-
-- On a piece that does not contain the fold, $F_z$ has one sign. Its sign follows from the
-  slot-1 jets, $F_z = (u v_z - v u_z)/(u^2 + v^2)$, which are large there compared with their
-  enclosure widths.
-- So $F$ is monotone on the piece, and $F > 0$ follows from one tight point run at the
-  appropriate end (point $z_0$, the whole $t$-interval).
-- Only the piece containing the fold needs the mean-value bound,
-  $F \ge F(z_c) - w\,\sup\lvert F_z\rvert$, with $z_c$ the fold and a half-width $w \lesssim 1.5\times10^{-5}$.
-
-That is about two runs per piece, at about 17 minutes each.
+At $t = 0$, part 3 is a local version of Theorem F′ near $S_c$. For $0 < t \le t_0$ it is new.
 
 ## 5 · The explicit merger
 
@@ -320,20 +297,25 @@ That is about two runs per piece, at about 17 minutes each.
 > equal-mass Brill–Lindquist data with $d = 0.7662$:
 >
 > - $\Sigma_0$ contains no closed embedded MOTS enclosing both punctures (Theorem F′);
-> - $\Sigma_{t}$ contains a smooth, embedded, stable MOTS enclosing both punctures, for
->   $t = 6.5\times10^{-6}M$ and for $t = 1.2\times10^{-5}M$ (Theorem M).
+> - for every $t \in [0, 5\times10^{-6}]$, $\Sigma_t$ contains no closed embedded MOTS in the shell
+>   $\Omega'$ (Theorem N);
+> - $\Sigma_{6.5\times10^{-6}}$ contains a smooth, embedded, stable MOTS in $\Omega'$ enclosing both
+>   punctures (Theorem M). The same holds at $t = 1.2\times10^{-5}$, in the shell $\Omega$.
 >
-> This happens where the spacetime metric is the certified convergent series of route E: an explicit
-> metric representation with certified errors. So the apparent horizon of the geodesic slicing
-> changes from two components to one enclosing both holes within $6.5\times10^{-6}M$, that is
-> $1.06$ times the linear-law onset time.
+> So the common MOTS near the critical surface is born at
+> $t_b = \inf\{t \ge 0 : \Sigma_t \text{ has a MOTS in } \Omega'\} \in [5.0, 6.5]\times10^{-6}M$. That is
+> $[0.81, 1.06]$ times the linear-law value $t_*^{\rm lin} \in [6.113, 6.156]\times10^{-6}$. All of it
+> happens where the spacetime metric is the certified convergent series of route E: an explicit
+> metric representation with certified errors.
 
 What this adds to Theorem H:
 
-- at this separation, $\delta_0$ is no longer needed for the existence half;
-- the upper bound on the birth time is explicit and within 6 % of the linear law;
-- the lower bound $t_b > t_0$ is not certified (§4);
-- the exclusion of other common MOTSs at $0 < t < t_1'$ is open everywhere on the slice, as before.
+- at this separation, $\delta_0$ is no longer needed;
+- the birth time is bracketed with explicit numbers;
+- the bracket agrees with the onset slope of Theorem C to within 6 % above and 19 % below.
+
+As in Theorem H, the exclusion before the birth is local (in $\Omega'$). Globally, for
+$0 < t \le t_0$, it is open (§6).
 
 ## 6 · What is and is not proved, and what blocks the rest
 
@@ -358,10 +340,9 @@ What this adds to Theorem H:
    to be connected already on $\Sigma_0$ (numerical relativity; not proved here).
 3. *Gauge.* "Two components at $t = 0$, one by $t_1$" refers to the geodesic slicing. The common
    MOTS on $\Sigma_{t_1}$ is a spacetime object. Which slice first carries one is gauge dependent.
-4. *Not the first common apparent horizon.* For $0 < t < t_1'$, no common MOTS is excluded
-   anywhere: not near $S_c$, since Theorem N is not completed (§4), and not elsewhere, where
-   Theorem F′ covers only $t = 0$. So $6.5\times10^{-6}$ is an upper bound for the birth time of the
-   common apparent horizon, not a bracket.
+4. *Not the first common apparent horizon of the whole slice.* For $0 < t \le t_0$, common MOTSs
+   are excluded only in the shell $W_t \supset \Omega'$ (Theorem N). Elsewhere they are excluded only
+   at $t = 0$ (Theorem F′). The bracket $[5.0, 6.5]\times10^{-6}$ is for the birth in $\Omega'$.
 5. *Not trapped.* The inner barrier is outer trapped but not trapped. On $S_c$,
    $\mathrm{tr}_SK = tp + O(t^3)$ with $p = \mathrm{Ric}(\nu,\nu)$ positive on a band (floating point:
    $p \in [-0.58, 0.11]$). So $\theta_- = 2tp - \theta_+ > 0$ there, and no surface $C^1$-close to
@@ -369,25 +350,22 @@ What this adds to Theorem H:
 
 **What blocks the next steps**, in order of value.
 
-1. **A lower bound for the birth time.**
-   - *Near $S_c$:* complete Theorem N with the convexity argument of §4. This needs second
-     $z_0$-jets on Lohner pieces plus point-$z_0$ runs; roughly 15 runs of 20–30 minutes.
-   - *Globally* (so that the birth time is bracketed for the whole slice), two ingredients are
-     needed:
-     - a CK certificate on the region where Theorem F′ works, $B(0, 1.05)$ minus the throat balls,
-       instead of the tube $U$ of radius $0.02$. Only $t \lesssim 10^{-5}$ is needed, so crude
-       constants suffice.
-     - a perturbed Theorem F′ sweep. The outermost common MOTS of $\Sigma_t$, if any, is unique,
-       hence axisymmetric and reflection symmetric, so the reduction of notes/12 §1 still applies.
-       Run the same exclusion events for the level-$h$ curves with $\lvert h\rvert \le \sup\lvert R\rvert$,
-       and $t$ as a parameter. Every exclusion event of F′ is an open condition, so it survives the
-       perturbation away from $S_c$. Near $S_c$, Theorem N takes over.
+1. **A global lower bound for the birth time**, so that the bracket holds for the whole slice.
+   Near $S_c$ this is Theorem N. Away from $S_c$ two ingredients are needed:
+   - a CK certificate on the region where Theorem F′ works, $B(0, 1.05)$ minus the throat balls,
+     instead of the tube $U$ of radius $0.02$. Only $t \lesssim 10^{-5}$ is needed, so crude
+     constants suffice.
+   - a perturbed Theorem F′ sweep. The outermost common MOTS of $\Sigma_t$, if any, is unique,
+     hence axisymmetric and reflection symmetric, so the reduction of notes/12 §1 still applies.
+     Run the same exclusion events for the level-$h$ curves with $\lvert h\rvert \le \sup\lvert R\rvert$,
+     and $t$ as a parameter. Every exclusion event of F′ is an open condition, so it survives the
+     perturbation away from $S_c$. Near $S_c$, Theorem N takes over.
 
-     The cost is of the order of the F′ sweep (hours on four cores).
+   The cost is of the order of the F′ sweep (hours on four cores).
 2. **An interval of separations.** Theorem M holds at one $d$. Wide $z_0$- or $d$-brackets blow up
    in the Moore integrator (radius $5\times10^{-5}$ fails; $10^{-8}$ fails in the last segment), so
    an interval needs Lohner sets (`gap3_fold`'s machinery, extended in `bl_foliate`), with the same
-   convexity treatment of the $z_0$-spread as Theorem N. Alternatively
+   width control of the $z_0$-spread as Theorem N (§4). Alternatively
    a smoothing lemma for shallow creases would remove the closing condition (idea log, session 16).
 3. **Event horizons.** These need global existence and the final state, i.e. nonlinear stability of
    Schwarzschild for these large data. Out of reach. The only rigorous event-horizon mergers known

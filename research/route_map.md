@@ -30,7 +30,7 @@ geodesic slices, and silent flow (notes/16 §5).
 | G. Solution-generating methods (Ernst, inverse scattering, Bäcklund) | A | **rejected** for regular AF radiating binaries (literature) | need 2 commuting Killing fields; AF radiative ⇒ boost-rotation symmetric ⇒ struts or negative mass |
 | H. Resummation of expansions | B | untested | no convergence theorem for PN/PM; formal |
 | I. Numerical/symbolic discovery | E | **tested** (session 12) | exact universal $t^4$ coefficient; conformally flat slices and silent flow excluded (certified); Padé exploratory (notes/16 §5) |
-| J. Near-critical BL as the explicit example | B + C | **done at an explicit separation** (session 16) | Theorem M: at $d = 0.7662$ a common MOTS on $\Sigma_t$, $t = 6.5\times10^{-6}$ and $1.2\times10^{-5}$, inside the certified series metric; with Theorem F′, an explicit apparent-horizon merger. Theorem N (local exclusion before the merger) not completed. Barriers replace the spectral gap (notes/20) |
+| J. Near-critical BL as the explicit example | B + C | **done at an explicit separation** (session 16) | At $d = 0.7662$: no common MOTS at $t = 0$ (F′); none in the shell $\Omega'$ for $t \le 5\times10^{-6}$ (Theorem N); one at $t = 6.5\times10^{-6}$ (Theorem M). All inside the certified series metric. Barriers and foliations replace the spectral gap (notes/20) |
 
 ## A · Symmetry reduction with retained radiation
 
@@ -284,10 +284,10 @@ near $T \approx 10^{-3}$ (notes/16 §2).
   - no common MOTS at $t = 0$ (F′);
   - one at $t = 6.5\times10^{-6}$ (Theorem M), $1.06$ times the linear-law onset.
 
-  The matching exclusion before $t_0 = 5\times10^{-6}$ (Theorem N) is built but not certified: the
-  ridge condition over $z_0$-pieces needs a convexity argument (notes/20 §4).
-- **Next decisive calculation.** Theorem N by convexity in $z_0$ (second jets). Then Theorem F′ for
-  $0 < t \le t_0$: a CK certificate on
+  - none in the shell $\Omega'$ for $t \le 5\times10^{-6}$ (Theorem N).
+
+  The local birth time is bracketed in $[0.81, 1.06]\,t_*^{\rm lin}$.
+- **Next decisive calculation.** Theorem F′ for $0 < t \le t_0$: a CK certificate on
   $B(0, 1.05)$ minus the throat balls, needed only for $t \lesssim 10^{-5}$, plus the F′ sweep for the
   perturbed (level-$h$, $\lvert h\rvert \le \sup\lvert R\rvert$) shooting curves. That makes the birth time of
   the first common apparent horizon of the whole slice explicit.

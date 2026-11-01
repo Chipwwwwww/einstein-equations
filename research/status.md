@@ -14,9 +14,10 @@ is the strongest rigorous substitute found so far, for equal-mass BL data at $d 
 - inside it, a **certified apparent-horizon merger** in the geodesic slicing (session 16, notes/20):
   - no common apparent horizon at $t = 0$ (Theorem F′);
   - a common MOTS at $t = 6.5\times10^{-6}M$ (Theorem M);
-  - the matching local exclusion before the merger (Theorem N) is **not completed**. The foliation
-    certificate exists and passes on test pieces, but its ridge condition over $z_0$-pieces needs a
-    convexity argument (notes/20 §4).
+  - no MOTS in the shell $\Omega'$ about the critical surface for any $t \le 5\times10^{-6}M$ (Theorem N).
+
+  So the common MOTS near the critical surface is born at a time in $[5.0, 6.5]\times10^{-6}M$, that is
+  $[0.81, 1.06]$ times the linear-law onset.
 
 Event horizons, the first common apparent horizon of the whole slice, and any closed form remain open.
 The precise blocking items are in notes/20 §6.
@@ -41,17 +42,18 @@ Branch `claude/hopeful-euler-w9ghbg`, from `main` at `90f023b`. Note:
   - at $t_1 = 1.2\times10^{-5}$, with margins $\theta_+[S_{\rm in}] \le -7.42\times10^{-7}$,
     $\theta_+[S_{\rm out}] \ge 1.99\times10^{-6}$ and $\lvert R\rvert \le 7.95\times10^{-9}$;
   - at $t_1' = 6.5\times10^{-6}$, which is $1.06$ times the linear-law onset.
-- **Theorem N (not completed).** The aim is no MOTS in a shell about $S_c$ for $t \le 5\times10^{-6}$, by a
-  foliation.
-  - The Lohner foliation (`bl_foliate.py`, with new sub-step enclosures) certifies $\theta_+ > 0$, the
-    Jacobi field, and embeddedness on test pieces, for all $t \in [0, 5\times10^{-6}]$.
-  - The ridge condition $F > 0$ fails on $z_0$-pieces near the fold. The Lohner remainder inflates
-    like (width)², to about 350× the true second-order term.
-  - The fix: a convexity argument with second $z_0$-jets.
+- **Theorem N (computer-assisted).** For every $t \in [0, 5\times10^{-6}]$ no MOTS lies in a shell
+  $W_t \supset \Omega'$ about $S_c$. The proof is a foliation by level-$h$ leaves ($h = 5\times10^{-8}$)
+  certified with Lohner sets over 11 $z_0$-pieces, with $t$ as a set parameter.
+  - On every leaf, $\theta_+ \ge 4.907\times10^{-8}$; the leaves are nested and embedded.
+  - The ridge condition $F > 0$ holds by monotonicity in $z_0$. On the fold piece,
+    $F \ge 4.03\times10^{-7}$ by the mean-value theorem; elsewhere the signs of $F_z$ are certified.
+  - The piece widths grow like the $0.4$ power of the distance from the fold, matching the measured
+    growth of the jets' enclosure widths.
 - **Corollary.** A certified apparent-horizon merger at an explicit separation, inside the certified
   metric. This is new for this programme. We know of no earlier one for vacuum binary data, but no
-  systematic literature search was made (claim category N, candidate). The birth time is bounded above by $6.5\times10^{-6}$ ($1.06\,t_*^{\rm lin}$). No lower bound beyond
-  $t > 0$ is certified.
+  systematic literature search was made (claim category N, candidate). The local birth time is
+  bracketed in $[5.0, 6.5]\times10^{-6}$.
 - **Not achieved:**
   - a global exclusion for $0 < t \le t_0$ (needs a CK certificate on a larger domain and a perturbed
     F′ sweep);
@@ -63,7 +65,7 @@ Branch `claude/hopeful-euler-w9ghbg`, from `main` at `90f023b`. Note:
 | --- | --- | --- |
 | Lemmas 1–3 | derived / proved | SymPy level-set check; written proofs |
 | Theorem M ($t_1$, $t_1'$) | computer-assisted | `python -m research.calc.bl_barrier`; records `bl_barrier.json`, `bl_barrier_near.json` |
-| Theorem N | **not certified** (tools, test pieces, diagnosis) | `bl_foliate.run` on pieces; notes/20 §4 |
+| Theorem N | computer-assisted | `python -m research.calc.bl_foliate` (about 77 min on four cores); record `bl_foliate.json` |
 | integrator copy | bit-identical to `fold_proof.shoot` | slow test |
 | Theorems C, F′, Proposition T, CK′ certificates | inherited | not rerun (fast tests of the modules rerun: 43 passed) |
 
