@@ -2,6 +2,38 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-11-01 (session 15) — Einstein–Bianchi form, the $t^6$ theorem, curl-degree hierarchy
+
+**Decisions**
+
+- **Base.** PR #5's head `bbc2368`, which is newer than the `c26cb9f` named in the task. New branch
+  `claude/bl-bianchi-formulation`, with a draft PR against `claude/bl-structure-discovery`.
+- **Primary sources read on the page.** Ellis–van Elst gr-qc/9812046 (34), (40)–(46); Friedrich–Rendall
+  gr-qc/0002074 §4.4.
+  - Friedrich–Rendall use $(+,-,-,-)$. Their $P$ and $Q$ match ours only after conversion.
+  - An unconverted transcription is kept as a negative control that the jet comparison detects at $t^8$.
+- **Hyperbolicity claim of note 17 narrowed.** Symbol computation shows the coordinate form (γ, K, E,
+  H) is weakly hyperbolic. Only the frame form is symmetric hyperbolic. Note 17 is marked.
+- **The $t^6$ law proved rather than re-fitted.** By naturality plus Möbius/Kelvin normalisation the
+  check reduces to finitely many exact evaluations on harmonic jets (weighted homogeneity).
+- **Main route M1:** the curl-degree hierarchy (transport ODEs per sector). **Alternative M2:**
+  energy estimates for the frame form. M1's first decisive calculation was run; M2's base identity
+  was proved.
+
+**Progress**
+
+- Claims 112–121.
+- Tools: `research/calc/bl_bianchi.py`, `cf_universal.py`, `bianchi_symbol.py`; tests
+  `tests/test_bl_bianchi.py` (5).
+- Records: `cf_universal.json`, `bl_bianchi_sectors.json`.
+- Note 19, report `research/report_session15.md`.
+
+**Next**
+
+- Integrate the $j = 1$ curl-degree sector as an ODE in $t$ (silent solution with spatial 2-jet as
+  source) up to the silent collapse time at a near-hole point.
+- M2: commuted (frame-derivative) energies and their constants.
+
 ## 2026-10-31 (session 14) — Bottlenecks, a local/nonlocal split, foliations
 
 **Decisions**

@@ -1,6 +1,44 @@
 # Status
 
-*Updated 2026-10-31 (sessions 1–14). Start here.*
+*Updated 2026-11-01 (sessions 1–15). Start here.*
+
+## Session 15: the spatial coupling in Einstein–Bianchi form
+
+Branch `claude/bl-bianchi-formulation`, from `bbc2368` (PR #5's head). Note:
+[`notes/19-bianchi-coupling.md`](../notes/19-bianchi-coupling.md). Report:
+[`report_session15.md`](report_session15.md).
+
+- **Formulation.** The Gauss-gauge Einstein–Bianchi system was derived in repo conventions.
+  - It was checked against Ellis–van Elst (40)–(41) and against Friedrich–Rendall §4.4, read on the
+    page and converted from $(+,-,-,-)$.
+  - It reproduces the evaluator's coefficients **exactly** through $t^8$, and the constraints hold
+    along the solution.
+  - The frame form is symmetric hyperbolic (speeds $0, \pm\tfrac12, \pm1$). The coordinate form is
+    **not** strongly hyperbolic (Jordan block). This corrects note 17's wording.
+- **Theorem 1 (proved).** The $\Delta\mathrm{Ric}$, $t^4$ and $t^6$ laws hold for **all** conformally
+  flat time-symmetric vacuum data.
+  - The proof is a reduction (naturality, Möbius/Kelvin normalisation, weighted homogeneity) plus 72
+    exact evaluations.
+  - Claims 98 and 105 are now proved. No linear-in-curvature term survives beyond $t^2$.
+- **Curl-degree hierarchy (main route).**
+  - Lemma 2 (lag, proved): the curl-degree-$2j$ sector of $\gamma$ is $O(t^{2j+4})$.
+  - Each sector is a linear transport ODE along the silent flow.
+  - Experiment (exploratory): past $j = 1$ the sectors decrease roughly geometrically at fixed
+    order. Whether the sectors stay analytic up to the local collapse is undecided.
+- **Alternative route.** The energy identity with flux bound (Lemma 3) is proved and checked exactly
+  on jets. Commuted energies are not done.
+- **Next decisive task:** integrate the $j = 1$ sector as an ODE in $t$ to the silent collapse time.
+- **No category-A metric. No certified merger. No structural breakthrough in the metric itself.**
+
+| Item | Label | How checked |
+| --- | --- | --- |
+| E–H system | derived + primary sources + exact jet comparison | `tests/test_bl_bianchi.py` |
+| symbols | inherited (frame) / computed (coordinate) | `python -m research.calc.bianchi_symbol` |
+| Theorem 1 | proved (computer-assisted exact) | `python -m research.calc.cf_universal` |
+| lag lemma, transport form | proved | exact checks |
+| sector sizes | exploratory | `python -m research.calc.bl_bianchi sectors` |
+| energy identity | proved | exact jet check |
+| certificates, Theorems C, F, F′, H, CK′ | inherited | not rerun |
 
 ## Session 14: bottleneck map, a local/nonlocal split, and foliations
 
