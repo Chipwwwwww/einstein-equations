@@ -8,13 +8,13 @@ Checker: `research/calc/curl_hierarchy_checks.py`.*
 >
 > 1. Proposition 4 controls an *auxiliary linear hierarchy* with frozen curl coefficients. It does not
 >    control the full nonlinear hierarchy, whose linearisation also contains the metric-variation loss
->    term $-D_\gamma(\mathrm{curl}\,ar E)[Y_\gamma]$ (sprint 02 §2). The "$C_L + C_N$" sentence below is
+>    term $-D_\gamma(\mathrm{curl}\,\bar E)[Y_\gamma]$ (sprint 02 §2). The "$C_L + C_N$" sentence below is
 >    withdrawn.
 > 2. The ×1.55 / ×1.80 ceilings are arithmetic bounds within fixed CK′ norms, weights, width, loss rows
 >    and sufficient-condition formula, with zero-order and source constraints idealised away. They are
 >    not the intrinsic gain of the method, not a bound on all resummations, and not a limit of BL.
 >    Removing $A$ does not remove the curl forcing.
-> 3. "$t_{m sil}(z) \le T$" for complex $z$ is undefined and is withdrawn. Read $s_{\max}$ as the width
+> 3. "$t_{\rm sil}(z) \le T$" for complex $z$ is undefined and is withdrawn. Read $s_{\max}$ as the width
 >    of a common regularity domain on which the background, the inverse metric and the needed variations
 >    are holomorphic with uniform bounds for $0 \le t \le T$. That this width shrinks to 0 at a definite
 >    rate is a **conjecture**, not a consequence of the different real collapse times.
