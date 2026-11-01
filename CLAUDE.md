@@ -9,7 +9,8 @@ a small SymPy toolkit (`einstein/`) and tests that check the notes' claims.
 - `einstein/tensors.py` — `Spacetime` class: Christoffel, Riemann, Ricci, Einstein, Kretschmann, divergence.
 - `einstein/metrics.py` — the metrics from the notes, plus a `REGISTRY` for the CLI.
 - `einstein/__main__.py` — `python -m einstein <metric>` prints the curvature.
-- `tests/` — pytest; every exact solution in `notes/04` has a test.
+- `tests/` — pytest; every exact solution in `notes/04` has a test. `-m slow` marks long checks.
+- `research/` — black-hole merger project: `status.md` (start here), claim ledger, idea log, literature; `research/calc/` holds calculations run as `python -m research.calc.<name>`.
 - `docs/decision_log.md` — decisions and current progress (keep it updated so another machine can pick up).
 
 ## Commands

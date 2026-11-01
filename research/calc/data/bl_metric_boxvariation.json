@@ -1,0 +1,17 @@
+{
+ "g_xx": {
+  "box_radius": 0.04210893309209496,
+  "half_range_over_27_points": 0.04207116238668007,
+  "overestimation_factor": 1.0008977813607272
+ },
+ "d_x g_xx": {
+  "box_radius": 0.4576861346140504,
+  "half_range_over_27_points": 0.4543148871064062,
+  "overestimation_factor": 1.0074205085576573
+ },
+ "d_x d_x g_xx": {
+  "box_radius": 13.740035682916641,
+  "half_range_over_27_points": 5.20302454094076,
+  "overestimation_factor": 2.640778565390411
+ }
+}

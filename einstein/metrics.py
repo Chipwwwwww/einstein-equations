@@ -19,6 +19,11 @@ beta = sp.Function("beta")(r)
 Phi = sp.Function("Phi")(x, y, z)            # Newtonian potential
 f = sp.Function("f")                         # gravitational-wave profile
 epsilon = sp.Symbol("epsilon")               # bookkeeping parameter: expand to first order
+Q = sp.Symbol("Q", real=True)                # electric charge (Gaussian units)
+a_kerr = sp.Symbol("a", real=True)           # Kerr spin parameter, J = a M
+chi = sp.Symbol("chi", real=True)            # chi = cos(theta), keeps Kerr rational
+tau = sp.Symbol("tau", real=True)            # Kastor-Traschen time coordinate
+H = sp.Symbol("H", real=True)                # Hubble rate, H**2 = Lambda / 3; H < 0 contracts
 
 SPHERICAL = (t, r, theta, phi)
 CARTESIAN = (t, x, y, z)
@@ -48,6 +53,79 @@ def de_sitter_static():
 def flrw():
     """Homogeneous, isotropic cosmology with scale factor a(t) and curvature k (notes/04)."""
     return Spacetime(sp.diag(-1, a**2 / (1 - k * r**2), *_sphere(a**2 * r**2)), SPHERICAL)
+
+
+def reissner_nordstrom():
+    """Charged black hole: Einstein-Maxwell with A = -Q/r dt (fields.py conventions)."""
+    h = 1 - 2 * M / r + Q**2 / r**2
+    return Spacetime(sp.diag(-h, 1 / h, *_sphere(r**2)), SPHERICAL)
+
+
+def reissner_nordstrom_potential():
+    """A_a for reissner_nordstrom(): electric potential Q/r, A_t = -Q/r."""
+    return [-Q / r, 0, 0, 0]
+
+
+def kerr(simplify=sp.cancel):
+    """Kerr in Boyer-Lindquist coordinates (t, r, chi = cos theta, phi) (notes/04).
+
+    Using chi instead of theta makes every component a rational function, so
+    sp.cancel decides identities exactly and quickly.
+    """
+    sigma = r**2 + a_kerr**2 * chi**2
+    delta = r**2 - 2 * M * r + a_kerr**2
+    s2 = 1 - chi**2  # sin^2 theta
+    g = sp.zeros(4, 4)
+    g[0, 0] = -(1 - 2 * M * r / sigma)
+    g[0, 3] = g[3, 0] = -2 * M * a_kerr * r * s2 / sigma
+    g[1, 1] = sigma / delta
+    g[2, 2] = sigma / s2
+    g[3, 3] = (r**2 + a_kerr**2 + 2 * M * a_kerr**2 * r * s2 / sigma) * s2
+    return Spacetime(g, (t, r, chi, phi), simplify=simplify)
+
+
+def kerr_de_sitter(simplify=sp.cancel):
+    """Kerr-de Sitter in Boyer-Lindquist form (Carter), coordinates (t, r, chi = cos theta, phi)
+    (notes/11). Solves Ric = Lambda g; Lambda = 0 gives `kerr`.
+
+        Delta_r = (r^2 + a^2)(1 - Lambda r^2 / 3) - 2 M r,  Delta_chi = 1 + Lambda a^2 chi^2 / 3,
+        Xi = 1 + Lambda a^2 / 3,  rho^2 = r^2 + a^2 chi^2.
+    """
+    rho2 = r**2 + a_kerr**2 * chi**2
+    delta_r = (r**2 + a_kerr**2) * (1 - Lambda * r**2 / 3) - 2 * M * r
+    delta_chi = 1 + Lambda * a_kerr**2 * chi**2 / 3
+    xi = 1 + Lambda * a_kerr**2 / 3
+    s2 = 1 - chi**2
+    w = xi**2 * rho2
+    g = sp.zeros(4, 4)
+    g[0, 0] = (-delta_r + delta_chi * a_kerr**2 * s2) / w
+    g[0, 3] = g[3, 0] = a_kerr * s2 * (delta_r - delta_chi * (r**2 + a_kerr**2)) / w
+    g[1, 1] = rho2 / delta_r
+    g[2, 2] = rho2 / (delta_chi * s2)
+    g[3, 3] = s2 * (delta_chi * (r**2 + a_kerr**2) ** 2 - delta_r * a_kerr**2 * s2) / w
+    return Spacetime(g, (t, r, chi, phi), simplify=simplify)
+
+
+def conformastatic(U, simplify=False):
+    """ds^2 = -U^-2 dtau^2 + U^2 (dx^2 + dy^2 + dz^2) for any function U(tau, x, y, z).
+
+    U = sum m_i / r_i is Majumdar-Papapetrou; U = H tau + sum m_i / r_i is
+    Kastor-Traschen (notes/08). Pair with conformastatic_potential(U).
+    """
+    return Spacetime(sp.diag(-U**-2, U**2, U**2, U**2), (tau, x, y, z), simplify=simplify)
+
+
+def conformastatic_potential(U):
+    """A = U^-1 dtau: the electric potential that goes with conformastatic(U)."""
+    return [1 / U, 0, 0, 0]
+
+
+def kastor_traschen_U(masses, centers):
+    """U = H tau + sum_i m_i / |x - x_i| (Brill-Horowitz-Kastor-Traschen 1994 form)."""
+    return H * tau + sum(
+        m / sp.sqrt((x - cx) ** 2 + (y - cy) ** 2 + (z - cz) ** 2)
+        for m, (cx, cy, cz) in zip(masses, centers)
+    )
 
 
 def static_spherical():
@@ -84,5 +162,6 @@ REGISTRY = {
     "schwarzschild": schwarzschild,
     "de-sitter": de_sitter_static,
     "flrw": flrw,
+    "reissner-nordstrom": reissner_nordstrom,
     "static-spherical": static_spherical,
 }
