@@ -279,6 +279,18 @@ stop condition for each, is in notes/18 §5.
   - Do not read a radius off a single coefficient ratio. At P3 the ratios oscillate (3.81, 3.58,
     2.41, 3.06, 4.13); use fits over several orders.
 
+### Session 15: Einstein–Bianchi form (M1, M2)
+
+- **M1, the curl-degree hierarchy as a constructive scheme.**
+  - *Test:* sector sizes to $t^{12}$ at three points.
+  - *Result:* the lag lemma holds; past $j = 1$ the sectors decrease roughly geometrically.
+  - *Verdict:* not falsified, not confirmed. Next: the $j = 1$ sector as a function of $t$.
+- **M2, energy continuation.** The base identity is proved. Commuted energies are open.
+- **Lessons.**
+  - Converting a source's signature is not optional. The unconverted Friedrich–Rendall $Q_{kl}$
+    looked like a different equation, and the exact jet comparison caught it.
+  - "Symmetric hyperbolic in this chart" depends on the choice of unknowns, not on the chart.
+
 ## Ideas considered and not pursued (this session)
 
 - **Self-similar mergers.** A homothety rescales the ADM mass, so an

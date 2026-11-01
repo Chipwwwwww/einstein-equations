@@ -258,3 +258,17 @@ near $T \approx 10^{-3}$ (notes/16 §2).
 - **Next decisive experiment.** The singular set $t = \tau(x)$ of the series, from the coefficients
   to $t^{24}$ along a ray. A real, smoothly varying $\tau$ favours a resummation in $s/\tau(x)^2$;
   a complex one needs nonlocal continuation.
+
+## Session 15 · Spatial coupling in Einstein–Bianchi form
+
+- **Formulation (route E, toward energy methods).**
+  - The Gauss-gauge E–H system is derived and verified exactly against the series.
+  - Only the frame form is symmetric hyperbolic.
+  - The $L^2$ curvature energy identity is proved.
+  - *Open:* commuted energies, the domain of dependence of the tube, restart errors.
+- **E → A / B (coefficient hierarchy).**
+  - The $t^6$ law is a theorem for all conformally flat vacuum data.
+  - The curl-degree grading, with its proved lag lemma, organises all orders into linear transport
+    problems along the silent flow (main route M1).
+  - The first experiment did not falsify M1.
+  - *Next decisive experiment:* the $j = 1$ sector as an ODE in $t$ up to the silent collapse.

@@ -249,6 +249,10 @@ available with the present representation, for four reasons:
    harmonic gauge (which needs a coordinate change from the geodesic chart, with a Jacobian to
    control), or the Einstein–Bianchi system in Gauss gauge, which is symmetric hyperbolic in this
    same chart.
+
+   *Session 15 correction (notes/19 §2.3):* this holds for the frame form of Friedrich–Rendall
+   (frame and connection coefficients as independent unknowns). With unknowns $\gamma$, $K$, $E$,
+   $H$ and Christoffels from $\gamma$, the system is not strongly hyperbolic.
 2. *Norms.* Pointwise bounds on $\partial^2g$ need $H^s$ with $s > 7/2$ on shrinking
    domain-of-dependence regions, with explicit Sobolev and commutator constants.
 3. *Residual.* The defect of the truncated series must be bounded in that norm over the whole
@@ -493,7 +497,8 @@ certified bound exists there.
 | category-A metric; merger at explicit $d$ | **no**; **no** |
 
 **Next decisive calculation.** The Einstein–Bianchi system in Gauss gauge is symmetric hyperbolic
-in the present chart, so no coordinate change is needed. Use the certified series at a time
+in the present chart, so no coordinate change is needed. *(Session 15: true for the frame form only; see
+notes/19 §2.3. The $L^2$ energy identity is proved in notes/19 §5.)* Use the certified series at a time
 $t_1 < T$ as an approximate solution, and carry out one validated energy-estimate step for that
 system. That needs two things:
 
