@@ -12,7 +12,10 @@ nonspinning, axisymmetric, head-on. Result categories (A–E) and levels (1–5)
 - **promising**: an executable plan with an identified next calculation.
 - **untested**: only screened.
 
-No route has produced a category-A metric. **No new exact solution was found.**
+No route has produced a category-A metric. **No new exact solution was found.** *Session 12:* route E now gives an
+**evaluable** category-B metric with certified errors (`research/calc/bl_metric.py`, notes/16). Three further
+closed-form classes are excluded for the BL head-on spacetime: algebraically special (B), conformally flat
+geodesic slices, and silent flow (notes/16 §5).
 
 ## Summary
 
@@ -22,11 +25,11 @@ No route has produced a category-A metric. **No new exact solution was found.**
 | B. Kerr–Schild-type decompositions | A | **rejected** (single KS, any algebraically special form) | BL head-on spacetime is Petrov type I on an open dense set (proved, exact) |
 | C. Interaction corrections to two-hole seeds | A/D | untested beyond literature | superposed KS data are not vacuum (literature); first correction is an unrestricted PDE |
 | D. Matched asymptotic zones | D | untested | finite-order matching is not exact; the transition-region residual is $O(\epsilon^n)$, not zero |
-| E. Time series from exact data | **B** (local) | **tested, works** | BL development in geodesic gauge = convergent series (Cauchy–Kovalevskaya), coefficients computed to $t^{14}$, validated; certified convergence time $T_{\min} = 2.988\times10^{-4}$ near $S_c$ (session 11) |
+| E. Time series from exact data | **B** (local) | **tested, works** | BL development in geodesic gauge = convergent series (Cauchy–Kovalevskaya), coefficients computed to $t^{14}$, validated; certified convergence time $T_{\min} = 5.556\times10^{-4}$ near $S_c$ (sessions 11–12); **evaluator** with certified enclosures of $g$, $g^{-1}$, $\partial g$, $\partial^2g$ (session 12) |
 | F. Characteristic / tetrad formulations | B/C | screened | exact null data exist (Wessels 1998), but they are data, not a spacetime |
 | G. Solution-generating methods (Ernst, inverse scattering, Bäcklund) | A | **rejected** for regular AF radiating binaries (literature) | need 2 commuting Killing fields; AF radiative ⇒ boost-rotation symmetric ⇒ struts or negative mass |
 | H. Resummation of expansions | B | untested | no convergence theorem for PN/PM; formal |
-| I. Numerical/symbolic discovery | E | started (route E data) | ratio estimates of the convergence radius in $t$ (numerical evidence only) |
+| I. Numerical/symbolic discovery | E | **tested** (session 12) | exact universal $t^4$ coefficient; conformally flat slices and silent flow excluded (certified); Padé exploratory (notes/16 §5) |
 | J. Near-critical BL as the explicit example | B + C | **partly done** (session 11) | Proposition T: certified $T_{\min}$ on a tube about $S_c$, uniform in $d \in [d_c, 0.767578]$; Corollary J: local MOTS formation inside it for $d - d_c < \delta_1$, $\delta_1$ not explicit (notes/15) |
 
 ## A · Symmetry reduction with retained radiation
@@ -111,8 +114,12 @@ No route has produced a category-A metric. **No new exact solution was found.**
   - $g_1$ agrees with the independent Cartesian formula.
 - **What it is not.** It is not a closed form, and it does not cover a substantial pre-merger
   interval. Geodesic slicing reaches the crunch at finite $t$: for Schwarzschild,
-  $T = \pi\sqrt{R_0^3/8M}$, which is $\pi M$ at the throat. The radius $T(x)$ is a gauge-dependent
-  domain, not a physical time limit.
+  $T = \pi\sqrt{R_0^3/8M}$, which is $\pi M$ at the throat.
+  - *Corrected in session 13 (note 17 §7):* at that time the comoving observer reaches the $r = 0$
+    curvature singularity, with no caustic before it. The *event* is physical.
+  - What is gauge-dependent is that this slicing reaches it, and when.
+  - For BL the meaning of the numerical $T \approx 2.1$–$2.8$ is undetermined: it could be a
+    curvature singularity, a caustic, or a complex singularity.
 - **Next.** *Done near $S_c$ (session 11):* an abstract Cauchy–Kovalevskaya bound with constants
   certified in Arb. A sharper scale would be needed to reach the numerical $T \approx 2.7$.
 
@@ -188,3 +195,80 @@ promoted to a claim.
     not shown to be the first common apparent horizon.
 - **Next decisive calculation.** The $m \ge 0$ spectral gap of $L_{S_c}$ (validated ODE
   eigenvalue enclosures on the profile), then the validated shooting solver on $\Sigma_t$.
+
+## E → A · Using the evaluable metric to search for a closed form (session 12)
+
+The B-class representation is now evaluable, and its coefficients are computed exactly (rational arithmetic
+at rational-distance points) or in balls. Four experiments were run (notes/16 §5):
+
+| Experiment | Candidate class | Result |
+| --- | --- | --- |
+| A | the $t^4$ coefficient is a universal covariant expression in $\mathrm{Ric}$, $\Delta\mathrm{Ric}$ | holds (proved): $\tfrac56\mathrm{Ric}\cdot\mathrm{Ric} - \tfrac16\lvert\mathrm{Ric}\rvert^2\gamma_0 - \tfrac1{12}\Delta\mathrm{Ric}$; structural, not a closed form |
+| C1 | geodesic slices stay conformally flat ($-dt^2 + \Phi^4\cdot$ flat) | **excluded** at order $t^2$ (Cotton tensor $\ne 0$, certified) |
+| C2 | silent flow ($B_{ij} = 0$; ODEs along worldlines; contains every local-free-fall ansatz) | **excluded** at order $t^3$ (certified) |
+| D | Padé in $t^2$ | exploratory; see notes/16 §5 |
+
+**Next for A.** Untested classes, each with a bounded test:
+
+- conformally flat or silent *maximal* slicings (a different foliation);
+- two-centre Kerr–Schild with two null vectors (route B);
+- a variable change built from the Weyl invariants (Experiment B).
+
+**Next for B.** A validated energy-estimate continuation step: the abstract-CK route is capped
+near $T \approx 10^{-3}$ (notes/16 §2).
+
+## Session 13 · Correction, extension, geometric variables
+
+- **E (the representation).**
+  - The certified time of sessions 11–12 used a misread abstract-CK constant. It is corrected, and
+    extended with the proved Theorem CK′.
+  - Now $T = 8.683\times10^{-4}$ on the whole tube and $1.545\times10^{-3}$ on the waist region (notes/17 §3).
+  - The CK route's apparent "ceiling" of session 12 was conditional, not a theorem.
+- **Toward an energy method** (the next route for B): Einstein–Bianchi in Gauss gauge, which is
+  symmetric hyperbolic in the present chart, with an a posteriori $H^s$ estimate. Inspected and not
+  executed; the requirements are in notes/17 §3.
+- **A (closed form).** Two more bounded classes are excluded for BL:
+  - pointwise algebraic dependence on the tidal tensor (at $t^6$);
+  - closed isotropic tidal laws $E' = f(E)$ (at $t^4$).
+
+  The first orders are algebraic and universal for conformally flat time-symmetric data (notes/17
+  §§5–6). Still untested: two-vector Kerr–Schild; maximal-slicing analogues of C1, C2; a recurrence
+  in the order (needs more exact orders).
+
+## Session 14 · Bottlenecks, local/nonlocal split, foliations
+
+- **Map.** notes/18 §3 gives six bottlenecks with evidence, and §4 audits the scope of every
+  earlier exclusion.
+- **E → A (H1).** The geodesic development is exactly silent through $t^4$. The first nonlocal
+  source $(\mathrm{curl}\,H)_3$ has a covariant law. Near the holes the local (silent) collapse
+  dominates; elsewhere the nonlocal part does (exploratory).
+  - *Status:* tested. The silent part is kept as a local model; a global silent factorisation is
+    rejected (exploratory).
+- **Gauge (H2).** Conformally flat leaves are excluded for every bounded maximal-type lapse at three
+  separations (certified, Proposition L). Pointwise, a conformally flat lapse exists, because there
+  are only two conditions per point.
+  - *Status:* tested, rejected for that family.
+  - *Open:* arbitrary lapses, an overdetermined 2×1 fifth-order system.
+- **Not executed, ranked** (notes/18 §5):
+  - H8, the $m_+m_-$ interaction sector;
+  - H6, the Geroch-reduced 2+1 test;
+  - H4, two-vector Kerr–Schild;
+  - H7, Misner data;
+  - H5, the energy step.
+- **Next decisive experiment.** The singular set $t = \tau(x)$ of the series, from the coefficients
+  to $t^{24}$ along a ray. A real, smoothly varying $\tau$ favours a resummation in $s/\tau(x)^2$;
+  a complex one needs nonlocal continuation.
+
+## Session 15 · Spatial coupling in Einstein–Bianchi form
+
+- **Formulation (route E, toward energy methods).**
+  - The Gauss-gauge E–H system is derived and verified exactly against the series.
+  - Only the frame form is symmetric hyperbolic.
+  - The $L^2$ curvature energy identity is proved.
+  - *Open:* commuted energies, the domain of dependence of the tube, restart errors.
+- **E → A / B (coefficient hierarchy).**
+  - The $t^6$ law is a theorem for all conformally flat vacuum data.
+  - The curl-degree grading, with its proved lag lemma, organises all orders into linear transport
+    problems along the silent flow (main route M1).
+  - The first experiment did not falsify M1.
+  - *Next decisive experiment:* the $j = 1$ sector as an ODE in $t$ up to the silent collapse.

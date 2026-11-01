@@ -1,0 +1,56 @@
+{
+ "commit": "b0f80c16631aea6359cfb0bdfd762f4686ff5771",
+ "research_calc_clean": true,
+ "runs": {
+  "waist": {
+   "identical_fields": [
+    "ok",
+    "cells",
+    "C",
+    "K0",
+    "K0w",
+    "T_bg",
+    "B_bg",
+    "T_min",
+    "sup_u_weighted_bound",
+    "c",
+    "c_loss",
+    "c_zero",
+    "rows_C",
+    "rows_L",
+    "schedule",
+    "psi_abs_lower",
+    "gam_op_upper"
+   ],
+   "differing_fields": [],
+   "profile_identical": true,
+   "T_min": 0.0015452537709672546,
+   "seconds": 350.24723052978516
+  },
+  "ext": {
+   "identical_fields": [
+    "ok",
+    "cells",
+    "C",
+    "K0",
+    "K0w",
+    "T_bg",
+    "B_bg",
+    "T_min",
+    "sup_u_weighted_bound",
+    "c",
+    "c_loss",
+    "c_zero",
+    "rows_C",
+    "rows_L",
+    "schedule",
+    "psi_abs_lower",
+    "gam_op_upper"
+   ],
+   "differing_fields": [],
+   "profile_identical": true,
+   "T_min": 0.0008683578800502657,
+   "seconds": 321.18302869796753
+  }
+ }
+}

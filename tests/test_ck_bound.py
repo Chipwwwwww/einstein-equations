@@ -150,3 +150,133 @@ def test_schwarzschild_benchmark():
     assert max(exact) <= r["K0"] <= 3 * max(exact)
     R_in = 0.98 * (1 + 0.5 / 0.98) ** 2
     assert r["T_min"] < math.pi * math.sqrt(R_in**3 / 8)
+
+
+def _A_matrix(G):
+    """The linear map D -> A(G, D) (9 x 81) from ck_bound.ricci_parts itself."""
+    cols = []
+    for n in range(81):
+        D = [0] * 81
+        D[n] = 1
+        Dg = [[[[D[((m * 3 + a) * 3 + b) * 3 + c] for c in R3] for b in R3] for a in R3] for m in R3]
+        g = [[[0.0 for _ in R3] for _ in R3] for _ in R3]
+        A, _ = ck.ricci_parts([[float(G[i][j]) for j in R3] for i in R3], g, Dg)
+        cols.append([A[i][j] for i in R3 for j in R3])
+    return np.array(cols).T
+
+
+def test_exact_norms_of_the_principal_part():
+    """||A(I, .)|| = 2 and |A(G, D)|_F <= (||T|| / 2) |G|_F |D|_F with ||T||^2 = 14 + 2 sqrt(33): the
+    characteristic polynomials of the integer matrices 4 L L^T and T^T T, with L and T read off
+    ck_bound.ricci_parts (A(E_kl, D)_ij = T_klij(D) / 2)."""
+    from flint import fmpz_mat, fmpz_poly
+    L = _A_matrix(np.eye(3))
+    M = np.rint(4 * L @ L.T).astype(int)
+    assert np.allclose(4 * L @ L.T, M)
+    x = fmpz_poly([0, 1])
+    assert fmpz_mat(M.tolist()).charpoly() == (x - 16) * (x - 10) ** 5 * (x - 6) ** 3
+    rows = []
+    for k in R3:
+        for l in R3:
+            E = np.zeros((3, 3))
+            E[k, l] = 1
+            rows.append(2 * _A_matrix(E))           # T_kl.. as a 9 x 81 block
+    T = np.vstack(rows)
+    TT = np.rint(T.T @ T).astype(int)
+    assert np.allclose(T.T @ T, TT)
+    assert fmpz_mat(TT.tolist()).charpoly() == x ** 54 * (x - 8) ** 15 * (x - 16) ** 6 * (x ** 2 - 28 * x + 64) ** 3
+    assert abs(float(ck._half_norm_T().mid()) - math.sqrt(14 + 2 * math.sqrt(33)) / 2) < 1e-15
+
+
+def test_sharp_principal_part_bounds_at_random_points():
+    """|A(G, D)|_F <= (2 |c| + (||T||/2) |E|_F) |D|_F for G = c I + E, and <= (||T||/2) |G|_F |D|_F."""
+    rng = np.random.default_rng(3)
+    half = float(ck._half_norm_T().upper())
+    for _ in range(50):
+        c = complex(rng.normal(), rng.normal())
+        E = (rng.normal(size=(3, 3)) + 1j * rng.normal(size=(3, 3))) * rng.uniform(0, 0.3)
+        G = c * np.eye(3) + E
+        D = rng.normal(size=81) + 1j * rng.normal(size=81)
+        Dg = D.reshape(3, 3, 3, 3)
+        A, _ = ck.ricci_parts([[G[i, j] for j in R3] for i in R3], [[[0j] * 3 for _ in R3] for _ in R3],
+                              [[[[Dg[m, a, b, cc] for cc in R3] for b in R3] for a in R3] for m in R3])
+        nA = np.linalg.norm(np.array([[A[i][j] for j in R3] for i in R3]))
+        nD = np.linalg.norm(D)
+        assert nA <= (2 * abs(c) + half * np.linalg.norm(E)) * nD * (1 + 1e-12)
+        assert nA <= half * np.linalg.norm(G) * nD * (1 + 1e-12)
+
+
+def test_outward_rounding_helpers_and_exact_cells():
+    with ck.working_precision(128):
+        x = arb(1) / 3
+        assert arb(ck.up(x)) >= x and arb(ck.down(x)) <= x
+        c = ck._cell(37, 0.005)
+        assert c.lower() <= arb(37) * arb(0.005) and c.upper() >= arb(38) * arb(0.005)
+        nxt = ck._cell(38, 0.005)
+        assert c.upper() >= nxt.lower()                    # adjacent cells leave no gap
+        cells = ck.covering_cells([(0.25, 0.26, 0.0, 0.01)], arb("0.032"), 0.005)
+        ks = {k for _, k in cells}
+        assert min(ks) * 0.005 <= -0.032 and (max(ks) + 1) * 0.005 >= 0.042
+
+
+def test_baouendi_goulaouic_time_formula_is_the_corrected_one():
+    """Baouendi-Goulaouic (12) reads a < R / (16 R C + 8 M) (s0 = 1). For the session-12 constants
+    (C = 1.5745916, K0 = 194.45955, R_K = 10, s0 = 0.014) this is 5.115e-4, below the 5.557e-4 that the
+    misread min(s0 / (16 C), R_K / (8 K0)) gave (notes/17 §1)."""
+    a, B = ck.time_bg(1.5745916432444342, 19.445954549021442, 0.014)
+    assert 5.11e-4 < a < 5.12e-4
+    assert a < min(0.014 / (16 * 1.5745916432444342), 10 / (8 * 194.45954549021442))
+    assert abs(B - 4 * a * 19.445954549021442) < 1e-12
+
+
+def test_ck_prime_conditions_and_its_reduction_to_the_original():
+    """Theorem CK' (notes/17 §2): with beta = 1/2 and no zero-order part, a_max = 1 / (16 C / s0 + 6 M)
+    (the original structure with the invariant ball's radius optimised); every returned (a, B)
+    satisfies 2 a k < 1 and 3 a M < (1 - beta)(1 - 2 a k), and B = a M / ((1 - beta)(1 - a k))."""
+    C, M, s0 = 1.5, 20.0, 0.014
+    a, B = ck.time_ck2({"g": C, "K": 0.0, "gamma": 0.0}, {"g": 0.0, "K": 0.0, "gamma": 0.0}, M, s0, 0.5, 0.999999)
+    amax = 1 / (16 * C / s0 + 6 * M)
+    assert 0.999 * amax < a <= amax
+    for beta in (0.3, 0.6, 0.9):
+        Crow, Lrow = {"gamma": 0.0, "g": 1.4, "K": 0.5}, {"gamma": 80.0, "g": 0.0, "K": 75.0}
+        a, B = ck.time_ck2(Crow, Lrow, M, s0, beta, 0.95)
+        with ck.working_precision(128):          # exact balls, not floats (B is an outward-rounded bound)
+            ab, bb, Mb = arb(a), arb(beta), arb(M)
+            k = max(4 * arb(Crow[A]) / (bb * arb(s0)) + arb(Lrow[A]) / (1 - bb) for A in Crow)
+            assert 2 * ab * k < 1 and 3 * ab * Mb < (1 - bb) * (1 - 2 * ab * k)
+            assert arb(B) >= ab * Mb / ((1 - bb) * (1 - ab * k)) or abs(B / float((ab * Mb / ((1 - bb) * (1 - ab * k))).mid()) - 1) < 1e-12
+
+
+def test_lemma_constants_of_ck_prime_numerically():
+    """Sampled diagnostic of the two integrals behind CK' (A = a(1 - s), 0 <= t < A):
+    Lemma 1': int_0^t (1 - u/A)^(-beta) du <= A / (1 - beta);
+    Lemma 2': (A/a)(1 - t/A)^beta * int_0^t 4 a^2 (A + u)^(beta - 1) (A - u)^(-1 - beta) du <= 4 a / beta."""
+    from scipy.integrate import quad
+    a = 1.0
+    for beta in (0.3, 0.5, 0.8, 0.95):
+        for s in (0.0, 0.3):
+            A = a * (1 - s)
+            for frac in (0.2, 0.9, 0.999):
+                t = frac * A
+                i1 = quad(lambda u: (1 - u / A) ** (-beta), 0, t)[0]
+                assert i1 <= A / (1 - beta) * (1 + 1e-9)
+                i2 = quad(lambda u: 4 * a * a * (A + u) ** (beta - 1) * (A - u) ** (-1 - beta), 0, t, limit=200)[0]
+                assert (A / a) * (1 - t / A) ** beta * i2 <= 4 * a / beta * (1 + 1e-7)
+
+
+def test_imaginary_quadrant_boxes_cover_the_hermitian_ball():
+    """Every imaginary part with Im x, Im y >= 0 and |Im| < s0 lies in some box of imaginary_boxes."""
+    rng = np.random.default_rng(5)
+    s0 = 0.03
+    with ck.working_precision(128):
+        boxes = ck.imaginary_boxes(s0, 3)
+        for _ in range(300):
+            v = rng.normal(size=3)
+            v = v / np.linalg.norm(v) * s0 * rng.uniform(0, 0.999)
+            v[0], v[1] = abs(v[0]), abs(v[1])
+            assert any(all(b[i].lower() <= v[i] <= b[i].upper() for i in range(3)) for b in boxes)
+
+
+def test_zero_midpoint_squares_are_finite():
+    """python-flint returns nan for x ** 2 when mid(x) = 0; frob_upper must not (it multiplies)."""
+    assert math.isfinite(ck.frob_upper([acb(arb(0, 1e-5)), acb(0, arb(0, 1e-5)), acb(1)]))

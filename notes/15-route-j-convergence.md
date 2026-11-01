@@ -15,6 +15,34 @@ replaces it by a **certified** bound.
   region. This is only *qualitative*: the range of $d$ for which it holds is not computed.
 - The estimate that would make it quantitative is stated in §7.3. It is the blocking inequality.
 
+> **Correction (session 13, [note 17](17-certified-extension.md) §1).** The constants of the abstract
+> Cauchy–Kovalevskaya theorem in §3 below were reconstructed from a garbled text extraction of
+> Baouendi–Goulaouic. The printed condition (12), read on the page, is
+>
+> ```math
+> a < \frac{R}{16RC + 8M} \qquad (s_0 = 1),
+> ```
+>
+> not $a < \min(1/(16C), R/(8M))$. The invariant ball lives in $E_{2a}$; that is the step the
+> reconstruction missed.
+>
+> - The certified constants $C$ and $K_0$ remain valid. The time does not: for them it is
+>   $T = 2.885\times10^{-4}$, not $2.988\times10^{-4}$.
+> - Statements below that use $T_{\min} = 2.988\times10^{-4}$, or the derived $B$, $\delta_1$ and
+>   bounds, are superseded by note 17. There a corrected and generalised theorem (CK′) is proved in
+>   full, and new certificates are computed.
+
+*Session 12 ([note 16](16-bl-metric.md)).*
+
+- **Audit.** The certificate's scalar bounds are now outward rounded. The stored $T_{\min}$ had
+  been formed with round-to-nearest; the repaired replay is $5.6\times10^{-12}$ (relative)
+  smaller, so the rounded-down $2.988\times10^{-4}$ below stands.
+- **Domain.** The proof covers the compact set $U$ of note 16 §1, the componentwise inflation of
+  the profile boxes, which contains the tube used below.
+- **A longer time.** Exact norms of the principal part give $T_{\min} = 5.556\times10^{-4}$
+  (Proposition T′).
+- **An evaluator.** `research/calc/bl_metric.py` evaluates the metric with certified errors.
+
 Conventions are those of [note 00](00-conventions.md) and `research/README.md`:
 
 - signature $(-,+,+,+)$;

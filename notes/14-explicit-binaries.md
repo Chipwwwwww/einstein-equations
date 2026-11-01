@@ -245,9 +245,11 @@ merger, with a category-C proof of the merger.
 - Proposition P rules out algebraically special forms for the BL collision. Is there a natural
   *non*-algebraically-special exact-solution technique left that does not need a second Killing
   field?
-- The convergence radius of the time series is set by the crunch of geodesic slicing, which is a
-  gauge effect. Would maximal slicing give a series that reaches much further in time? What
-  would replace Cauchy–Kovalevskaya there, given that the lapse solves an elliptic equation?
+- For one hole, the convergence radius of the time series at a comoving point is the proper time
+  at which that observer reaches the $r = 0$ curvature singularity (note 17 §7). Whether a slicing
+  reaches the singularity is gauge-dependent; the singularity itself is not. Would maximal
+  slicing, which avoids it, give a series that reaches much further in time? What would replace
+  Cauchy–Kovalevskaya there, given that the lapse solves an elliptic equation?
 - For conformally flat time-symmetric data, the gravitomagnetic field starts at order $t^3$. Is
   there a physical reading of the $t^3$ coefficient, for example as the onset of the radiation
   the data were hiding?
