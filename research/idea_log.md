@@ -255,6 +255,42 @@ section. Full write-ups of H1–H4 are in [`notes/09`](../notes/09-merger-hypoth
     which is not integrable. The cut-off $\chi_K$ vanishes there, so this
     does not occur.
 
+### Session 14: silent/nonlocal split (S14-H1) and maximal-type foliations (S14-H2)
+
+The full portfolio of eight hypotheses, with mechanism, tool, precedent, decisive calculation and
+stop condition for each, is in notes/18 §5.
+
+- **S14-H1. The development is the silent ODE plus a small, smoother nonlocal remainder.**
+  - *Test:* the true coefficients versus the silent ones to $t^{16}$ at six generic points.
+  - *Result:* exact through $t^4$; one source at $t^6$, with a covariant law. Near the holes the
+    remainder is ≤ 13 %. Elsewhere it dominates. Everywhere its fitted radius is the smallest.
+  - *Verdict:* **revised.** Keep the silent part as a local model near the holes; a global
+    factorisation is rejected (exploratory).
+- **S14-H2. Some bounded maximal-type lapse gives conformally flat leaves.**
+  - *Test:* conics $DC[h_c]$ and a box covering of $\mathbb{RP}^2$.
+  - *Result:* certified absence at three separations, using two points each.
+  - *Verdict:* **failed** for that family. A one-point exclusion is impossible (parity: two
+    conditions per point).
+- **Lessons.**
+  - Make every arb input inside `working_precision`. A 53-bit input ball reached radius 0.14 after
+    16 derivatives.
+  - When a single-point certificate fails, look for a pointwise solution before refining boxes.
+    Here the failure was real, not numerical.
+  - Do not read a radius off a single coefficient ratio. At P3 the ratios oscillate (3.81, 3.58,
+    2.41, 3.06, 4.13); use fits over several orders.
+
+### Session 15: Einstein–Bianchi form (M1, M2)
+
+- **M1, the curl-degree hierarchy as a constructive scheme.**
+  - *Test:* sector sizes to $t^{12}$ at three points.
+  - *Result:* the lag lemma holds; past $j = 1$ the sectors decrease roughly geometrically.
+  - *Verdict:* not falsified, not confirmed. Next: the $j = 1$ sector as a function of $t$.
+- **M2, energy continuation.** The base identity is proved. Commuted energies are open.
+- **Lessons.**
+  - Converting a source's signature is not optional. The unconverted Friedrich–Rendall $Q_{kl}$
+    looked like a different equation, and the exact jet comparison caught it.
+  - "Symmetric hyperbolic in this chart" depends on the choice of unknowns, not on the chart.
+
 ## Ideas considered and not pursued (this session)
 
 - **Self-similar mergers.** A homothety rescales the ADM mass, so an
