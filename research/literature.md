@@ -83,6 +83,15 @@ A broad search (extended web search, plus the reviews above) found no claimed ex
 dynamical two-black-hole vacuum solution. A 2021 Phys. Lett. B paper (search result, not read)
 states that no exact analytic solution of the merger phase is available.
 
+## Cauchy–Kovalevskaya with constants, constraint propagation (session 11)
+
+| Source | What it gives | Checked |
+| --- | --- | --- |
+| T. Nishida, *A note on a theorem of Nirenberg*, J. Differential Geom. 12 (1977) 629–633 (cited by Baouendi–Goulaouic as "to appear") | abstract nonlinear CK theorem in a scale of Banach spaces, hypotheses (H1) Lipschitz with loss $1/(s - s')$ and (H2) $\lVert F(0)\rVert_s \le M/(s_0 - s)$ | cited; the statement is read via Baouendi–Goulaouic |
+| M. S. Baouendi, C. Goulaouic, *Le théorème de Nishida pour le problème de Cauchy abstrait par une méthode de point fixe*, Journées Équations aux dérivées partielles (1977), 1–8, numdam JEDP_1977____1_0 | short proof of Nishida's theorem: weighted norm, Lemmas 1–3, inequalities (10)–(11), smallness condition (12) $a < \min(1/(16C), R/(8M))$ for $s_0 = 1$; holomorphic solutions (Remark) | **read** (PDF text; (12) garbled in extraction, re-derived in notes/15 §3) |
+| L. Nirenberg, *An abstract form of the nonlinear Cauchy–Kowalewski theorem*, J. Differential Geom. 6 (1972) 561–576 | the original abstract theorem | cited |
+| S. Frittelli, *Note on the propagation of the constraints in standard 3+1 general relativity*, Phys. Rev. D 55 (1997) 5992 | eqs. (12)–(13): the Hamiltonian and momentum constraints evolve by a linear homogeneous first-order system when the ADM evolution equations hold | **read** |
+
 ## Not covered
 
 Gluing constructions of initial data (Corvino, Chruściel–Delay,

@@ -2,6 +2,217 @@
 
 Newest first. Each entry: what was decided, why, and where things stand.
 
+## 2026-11-01 (session 15) — Einstein–Bianchi form, the $t^6$ theorem, curl-degree hierarchy
+
+**Decisions**
+
+- **Base.** PR #5's head `bbc2368`, which is newer than the `c26cb9f` named in the task. New branch
+  `claude/bl-bianchi-formulation`, with a draft PR against `claude/bl-structure-discovery`.
+- **Primary sources read on the page.** Ellis–van Elst gr-qc/9812046 (34), (40)–(46); Friedrich–Rendall
+  gr-qc/0002074 §4.4.
+  - Friedrich–Rendall use $(+,-,-,-)$. Their $P$ and $Q$ match ours only after conversion.
+  - An unconverted transcription is kept as a negative control that the jet comparison detects at $t^8$.
+- **Hyperbolicity claim of note 17 narrowed.** Symbol computation shows the coordinate form (γ, K, E,
+  H) is weakly hyperbolic. Only the frame form is symmetric hyperbolic. Note 17 is marked.
+- **The $t^6$ law proved rather than re-fitted.** By naturality plus Möbius/Kelvin normalisation the
+  check reduces to finitely many exact evaluations on harmonic jets (weighted homogeneity).
+- **Main route M1:** the curl-degree hierarchy (transport ODEs per sector). **Alternative M2:**
+  energy estimates for the frame form. M1's first decisive calculation was run; M2's base identity
+  was proved.
+
+**Progress**
+
+- Claims 112–121.
+- Tools: `research/calc/bl_bianchi.py`, `cf_universal.py`, `bianchi_symbol.py`; tests
+  `tests/test_bl_bianchi.py` (5).
+- Records: `cf_universal.json`, `bl_bianchi_sectors.json`.
+- Note 19, report `research/report_session15.md`.
+
+**Next**
+
+- Integrate the $j = 1$ curl-degree sector as an ODE in $t$ (silent solution with spatial 2-jet as
+  source) up to the silent collapse time at a near-hole point.
+- M2: commuted (frame-derivative) energies and their constants.
+
+## 2026-10-31 (session 14) — Bottlenecks, a local/nonlocal split, foliations
+
+**Decisions**
+
+- **Base.** PR #4's head `c26cb9f`. New branch `claude/bl-structure-discovery`, with a draft PR
+  against `claude/bl-metric-extension`.
+- **No large certificate rerun.** The baseline was the structure tests plus one certified evaluator
+  call.
+- **Definition of essential progress** (notes/18 §2): a finite rule for infinitely many
+  coefficients; a certified simplifying reduction or slicing; a no-go for a whole natural class; or
+  a domain extension by a new mechanism. Tighter constants and one more fitted order count as
+  incremental.
+- **Portfolio of eight hypotheses** (notes/18 §5), ranked by information per cost. H1
+  (silent/nonlocal split, the discovery experiment) and H2 (conformally flat leaves for
+  maximal-type lapses, the gauge experiment) were executed. They are of different kinds, and both
+  are cheap with the existing jet engines.
+- **H2 point choice.** The single-point certificate failed because pointwise common zeros exist.
+  This was diagnosed as Cotton–York parity in axisymmetry (rank 2), not a numerical problem, so the
+  certificate pairs two points per separation.
+- **No $d$-interval claim for H2.** The $d$-ball enclosures were too wide, so the statement is made
+  at three separations only (claim 110 records the gap).
+
+**Progress**
+
+- H1 exact results: claims 103–105. H1 exploratory result: claim 106.
+- H2: claims 107–109 (Proposition L).
+- Tools: `research/calc/bl_silent.py`, `research/calc/bl_foliation.py`; tests
+  `tests/test_bl_silent.py` (5), `tests/test_bl_foliation.py` (3).
+- Note 18, report `research/report_session14.md`.
+- Status, ledger, route map and READMEs updated.
+
+**Next**
+
+- The singular set $t = \tau(x)$ of the series: coefficients to $t^{24}$ ($N = 12$) along a ray from
+  a throat to the far zone. Is it real or complex, and does it vary smoothly?
+- **Correction made during the session.** A far-zone "radius 2.4" read off one ratio was an
+  oscillation dip. It is replaced by least-squares fits, and the $t^{20}$ run at P3 showed the dip.
+- The general-lapse foliation system: formal (jet) compatibility of $DC[N\,DDN - N^2\mathrm{Ric}] = 0$
+  for axisymmetric $N$.
+- H8: the $m_+m_-$ sector of the coefficients.
+
+## 2026-10-31 (session 13) — Correcting and extending the certificate; geometric structure
+
+**Decisions**
+
+- **Base.** PR #3's head `aabde39`. New branch `claude/bl-metric-extension`, with a draft PR against
+  `claude/bl-metric-evaluator`.
+- **Audit before building.** The BG proof was read on the page, not from extracted text.
+  - Its condition (12) is $a < R/(16RC + 8M)$, with the ball in $E_{2a}$. Sessions 11–12 had used
+    $\min(1/(16C), R/(8M))$.
+  - Notes 15 and 16 are marked superseded. The corrected baseline is $5.115\times10^{-4}$.
+- **Extension method.** The analytic route was chosen, not an energy method. Fixed-lapse ADM is only
+  weakly hyperbolic, and an energy step needs a reduction, $H^s$ residual bounds and explicit
+  constants that are not available yet. CK′ (a proved generalisation: exponent $\beta$, zero-order
+  split) plus a symmetric quadrant covering with sub-boxes extends the time in the same chart, for
+  the same solution.
+- **Regions.** The whole tube and the waist region (profile boxes with $z \le 0.15$). $s_0$ is capped
+  by the punctures' singular cones, which are farther from the waist.
+- **Bounded B→A experiments with fixed candidate classes:** a $t^6$ covariant basis of 14 natural
+  tensors, and Weyl variables along the observers. Decisions were by exact rationals and balls,
+  with Schwarzschild controls.
+- **Gauge vs physics.** The single-hole control shows the series' convergence time is the time to
+  the $r = 0$ curvature singularity. The earlier "gauge breakdown" wording is corrected.
+- **Tooling lessons.** `pgrep -f` patterns matched their own wait loops twice. python-flint `x**2`
+  is NaN at zero midpoint. A pool worker must be referenced by module path when the module runs
+  as `__main__`.
+
+**Progress**
+
+- Certificates: classic and sharp (corrected times plus CK′ schedules), ext ($8.683\times10^{-4}$), waist
+  ($1.545\times10^{-3}$).
+- The evaluator combines certificates and has the extra derivative bound; comparison table.
+- New: notes/17; `tests/test_bl_structure.py`; ledger claims 93–102.
+
+**Next**
+
+- One validated energy-estimate step for the Einstein–Bianchi system in Gauss gauge.
+
+## 2026-10-31 (session 12) — An evaluable metric; B-to-A experiments
+
+**Decisions**
+
+- **Base.** PR #2's head `7c4bff6` (newest research work; CI green). New branch
+  `claude/bl-metric-evaluator`, with a draft PR against `claude/route-j-ck-certificate`.
+- **Evaluator in Cartesian jets with exact (ball or rational) coefficients.** This chart is the
+  chart of the CK proof and is regular on the axis. The cylindrical float code stays as an
+  independent check.
+  - The jets are sparse dicts over (X, Y, Z, s) monomials.
+  - Generic coefficients: arb, or fmpq at rational-distance points.
+- **Derivative bounds.**
+  - First spatial derivatives use the g-block, so there is no Cauchy loss.
+  - Second derivatives use Cauchy estimates with spatial loss $s$, optimised on a grid.
+  - $\partial_t^2\gamma$ is also enclosed through the field equation, and the intersection is kept.
+- **Audit result.** The certificate's scalar bounds had used round-to-nearest. They are now
+  repaired with outward rounding, exact cells and an exact $d$-hull. The session-11 number stands.
+- **The certified domain is the set the cells actually cover:** the profile boxes inflated
+  componentwise. It contains the tube.
+- **Sharper certificate.** It uses exact principal-part norms, found by an integer
+  characteristic-polynomial computation. Its parameters, $s_0 = 0.014$ and weights
+  $(0.25, 22, 10)$, came from a 24-point search.
+- **Experiments were chosen to be decisive in exact or ball arithmetic** (A, C1, C2), with
+  Schwarzschild controls. Padé is labelled exploratory. Experiment B was not run.
+
+**Progress**
+
+- New files:
+  - `research/calc/bl_metric.py`, `research/calc/bl_structure.py`;
+  - `research/calc/data/ck_bound_sharp.json`, `bl_metric_demo.json`, `bl_structure.json`;
+  - `tests/test_bl_metric.py`, extended `tests/test_ck_bound.py`;
+  - notes/16, `research/report_bl_metric.md`.
+- Updated: ledger claims 82–92, status, route map, the READMEs, and note 15's pointer.
+- **Tested and not pursued:** localisation to the waist (no gain), and $s_0 \ge 0.05$ (complex
+  singular cones $q_\pm = 0$ of the puncture terms; $\lvert\psi\rvert$ stays $\ge 1.75$).
+
+**Next**
+
+- A validated energy-estimate continuation beyond the CK ceiling.
+- For A: maximal-slicing variants of C1 and C2, two-vector Kerr–Schild, and Experiment B.
+
+## 2026-10-31 (session 11) — Route J: certified convergence time near the critical surface
+
+**Decisions**
+
+- **Branching.**
+  - Work is on `claude/route-j-ck-certificate`, branched from the research head `afe0bed` of
+    `claude/black-hole-merger-solutions-rpa9hj`. It goes to a draft PR against that branch.
+  - The research branch has draft PR #1 against `main`; it was not touched.
+- **Method: the abstract Cauchy–Kovalevskaya theorem, not interval jets plus a majorant tail.**
+  The session-10 plan, interval jets of the recursion, would bound finitely many coefficients
+  but not the tail. The abstract theorem (Nishida; Baouendi–Goulaouic's proof, read) gives the
+  whole solution from two explicit constants:
+  - a Lipschitz constant $C$ in a scale of holomorphic sup-norm spaces;
+  - a source bound $K_0$.
+
+  Both are certified in Arb.
+- **First-order reduction in $(\gamma, \partial\gamma, K)$.** This makes $F$ first order, as the
+  theorem needs. $g = \partial\gamma$ propagates exactly, and the symmetric part and time
+  reflection follow by uniqueness.
+- **Block-weighted norm, radii $(1, 20, 10)$.**
+  - With the unweighted max norm, $C \sim 10^3$, because of the mismatch of scales between blocks.
+  - The weights and $s_0 = 0.012$ come from a small search. Any choice is valid; the search only
+    selects.
+  - $s_0 = 0.05$ fails in practice: the complex singular cones of the punctures make the bounds blow up.
+- **Covering reduced by symmetry.** Rotations and $z \to -z$ act unitarily on all the norms. So
+  cells are taken in the meridian half-plane, with imaginary parts in $[-s_0, s_0]^3$.
+- **The garbled constant (12) of Baouendi–Goulaouic is re-derived**, not trusted
+  (notes/15 §3). Constraint propagation is cited to Frittelli 1997 eqs. (12)–(13) (read).
+- **Honest scope.** An explicit $\delta$ was *not* obtained.
+  - The blocking estimates (notes/15 §7.3) are a certified spectral gap of $L_{S_c}$ over all modes,
+    and certified second derivatives of the true shooting function on $\Sigma_t$.
+  - The local branch is not shown to be the first common apparent horizon.
+  - Nothing is said about event horizons.
+
+**Progress**
+
+- Proposition T:
+  - $T_{\min} = 2.988\times10^{-4}$ on the tube of radius $0.02$ about $S_c$, for every
+    $d \in [d_c - 10^{-13}, 0.767578125]$;
+  - $C = 2.510$, $K_0 = 148.77$, 2,815 cells, 128-bit balls;
+  - replayed bit-identically; 128 vs 192 bits agree to $7\times10^{-10}$.
+- Corollary J (qualitative). New files: note 15, `research/calc/ck_bound.py`,
+  `research/calc/data/ck_bound.json` and `tests/test_ck_bound.py` (6 tests). `bl_series` gained a
+  momentum-constraint check and its test. Ledger entries 76–81.
+- Stale summaries reconciled:
+  - status: the gap-3 item and the next calculation;
+  - ledger claims 35, 72, 74;
+  - route map E/J;
+  - notes 10, 13, 14;
+  - the READMEs.
+- Baseline: 111 fast tests pass at `afe0bed` (13 min). CI was green on PR #1.
+
+**Next**
+
+- The spectral gap $\lambda_2(L_{S_c})$ over all Fourier modes (validated ODE eigenvalue
+  enclosures).
+- A validated MOTS shooting solver on $\Sigma_t$, fed by the Proposition T enclosures. With it,
+  an explicit $\delta$.
+- Optional: a sharper scale, to cover the whole Theorem F′ interval ($T \gtrsim 0.0033$).
+
 ## 2026-10-31 (session 10) — Explicit binaries: route screening, Petrov obstruction, time series
 
 **Decisions**

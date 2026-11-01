@@ -315,3 +315,49 @@ def magnetic_weyl(rho0, z0, centres, W):
         sym = 0.5 * (B(i, j) + B(j, i))
         out[name] = [sym[0, 0, k] for k in range((W - 3) // 2 + 1)]
     return out
+
+
+def momentum_constraint(rho0, z0, centres, W):
+    """The momentum constraint M_i = D_j K^j_i - D_i K of the series solution at the point, by order
+    (coefficients of t * s^k, valid for k <= (W - 3) / 2). The recursion uses only the evolution
+    equations, so these vanishing (to rounding) is a check of the code and of constraint
+    propagation at the orders computed. Returns {"r": [...], "z": [...]}; M_phi = 0 by symmetry."""
+    J = JetSpace(W)
+    g = initial_metric(J, rho0, z0, centres)
+    kap = {c: J.zero() for c in g}
+    shift = lambda a: np.concatenate([np.zeros_like(a[:, :, :1]), a[:, :, :-1]], axis=2)  # noqa: E731
+    pairs = {"rr": (0, 0), "rz": (0, 1), "zz": (1, 1), "pp": (2, 2)}
+    for k in range(J.N):
+        Ric = ricci(J, g)
+        Gi = inverse(J, g)
+        K = _mat(J, kap)
+        KK = _matmul(J, _matmul(J, K, Gi), K)
+        trK = sum((J.mul(Gi[i][j], K[j][i]) for i in range(3) for j in range(3)), J.zero())
+        quad = {c: 2 * KK[i][j] - J.mul(trK, K[i][j]) for c, (i, j) in pairs.items()}
+        for c in g:
+            rhs = -Ric[c] + shift(quad[c])
+            kap[c][:, :, k] = rhs[:, :, k] / (2 * k + 1)
+            if k + 1 <= J.N:
+                g[c][:, :, k + 1] = kap[c][:, :, k] / (k + 1)
+        for c in g:
+            g[c] = np.where(J.mask, g[c], 0.0)
+            kap[c] = np.where(J.mask, kap[c], 0.0)
+    G, Gi, K = _full(g), inverse(J, g), _mat(J, kap)
+
+    def dd(a, k):
+        return J.d(a, k) if k < 2 else np.zeros_like(a)
+    dG = [[[dd(G[i][j], k) for k in range(3)] for j in range(3)] for i in range(3)]
+    Gam = [[[0.5 * sum((J.mul(Gi[a][e], dG[e][c][b] + dG[e][b][c] - dG[b][c][e]) for e in range(3)),
+                       J.zero()) for c in range(3)] for b in range(3)] for a in range(3)]
+    DK = [[[dd(K[l][j], k) - sum((J.mul(Gam[m][k][l], K[m][j]) + J.mul(Gam[m][k][j], K[l][m])
+                                  for m in range(3)), J.zero())
+            for j in range(3)] for l in range(3)] for k in range(3)]
+    out = {}
+    for name, i in (("r", 0), ("z", 1)):
+        acc = J.zero()
+        for j in range(3):
+            for k in range(3):
+                if Gi[j][k].any():
+                    acc = acc + J.mul(Gi[j][k], DK[k][j][i] - DK[i][j][k])
+        out[name] = [acc[0, 0, k] for k in range((W - 3) // 2 + 1)]
+    return out

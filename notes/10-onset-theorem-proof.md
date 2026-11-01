@@ -212,7 +212,8 @@ components at $t = 0$ and a component enclosing both by $t = t_*(d)$.
 | Step 2 (smoothness of $\Theta$, $D_u\Theta = L$) | standard |
 | Steps 3–6 | written out above |
 | other lapses | same proof. For $N = \psi^{-2}$: $\partial_t F \in [-0.11612, -0.11574]$, so $c \in [10.606, 10.682]$ (`certify_slopes()`) |
-| no common MOTS **anywhere** on $\Sigma_0$ (not just in $\mathcal U$) | **computer-assisted proof at $d = 0.78$** (Theorem F, [note 12](12-no-common-horizon.md)): Lohner-validated shooting, plus a thin-neck instability lemma for the necked surfaces that hug the individual horizons. Open for every other $d > d_c$, in particular for the $d$ close to $d_c$ where the onset theorem applies ($d = 0.78$ may lie beyond its unspecified $\delta_0$) |
+| no common MOTS **anywhere** on $\Sigma_0$ (not just in $\mathcal U$) | **computer-assisted proofs** ([note 12](12-no-common-horizon.md)): at $d = 0.78$ (Theorem F) and for every $d \in (d_c, 0.767578]$ (Theorem F′, sessions 9–10), which covers the $d$ where the onset theorem applies once $\delta_0$ is shrunk. Lohner-validated shooting, a thin-neck instability lemma for the necked surfaces that hug the individual horizons, and a local lemma at the fold. Open for $0 < t < t_*$ away from $\mathcal U$ |
+| explicit $\delta_0$, $t_0$ | **not computed**. Session 11 certifies the development near $S_c$ for $\lvert t\rvert < 2.988\times10^{-4}$ ([note 15](15-route-j-convergence.md)); the remaining blocking estimates are in its §7.3 |
 | anything about event horizons | **not addressed** |
 
 So the vacuum development of near-critical Brill–Lindquist data contains an

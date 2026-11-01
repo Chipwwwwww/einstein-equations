@@ -7,7 +7,11 @@ simulated. This note assembles it. The ingredients are proved in notes 09,
 10 and 12; here they are put together, with each one's status.
 
 *Status:* part 1 of the theorem rests on Theorem F′ (note 12 §7). Theorem F′
-was verified in session 10 for every $d \in (d_c, 0.767578]$.
+was verified in session 10 for every $d \in (d_c, 0.767578]$. Session 11
+([note 15](15-route-j-convergence.md)) certifies that near $S_c$ the development
+equals its convergent time series for $\lvert t\rvert < 2.988\times10^{-4}M$, for every $d$
+in that interval. So for $d$ close enough to $d_c$, part 2 happens inside an explicit
+convergent representation. "Close enough" is still not explicit.
 
 No closed-form metric is known for such a collision ([note 07](07-the-merger-problem.md) §4).
 So "constructing" the example means three steps:
@@ -112,7 +116,7 @@ $d_c + \delta_0 \le 0.767578$ gives the theorem. ∎
 | a genuine two-body vacuum collision, AF, axisymmetric, nonspinning? | yes |
 | the common apparent horizon is created by the dynamics, not present in the data? | yes (parts 1–2) |
 | when it is born? | $t_* = c(d - d_c) + O((d - d_c)^2)$, $c \in [2.3768, 2.3936]$, geodesic slicing; for lapse $\psi^{-2}$, $c \in [10.606, 10.682]$ |
-| a specific numerical $d$ for which all this holds? | **no**: $\delta_0$ comes from an implicit-function argument and is not computed |
+| a specific numerical $d$ for which all this holds? | **no**: $\delta_0$ comes from an implicit-function argument and is not computed. Note 15 §7.3 states the missing estimates. The certified convergence region of note 15 contains the birth of the common horizon for $d - d_c \lesssim 1.25\times10^{-4}$, but only by the linear law (heuristic) |
 | two components on a whole interval of times before $t_*$, as note 07's definition asks? | **not written out**. Proved at $t = 0$; for $0 < t < t_*$, part 2 excludes common MOTSs only in $\mathcal U$. A compactness argument for stable MOTSs (Andersson–Metzger) should give two components for $0 \le t < t_1(d)$, but has not been checked |
 | event horizons (two components, then one)? | **no**. This needs the global development: complete $\mathscr I^+$ and the final state. Out of reach for these data |
 | independent review of the computer-assisted parts? | not done (trust base listed in notes 09 and 12) |
@@ -132,10 +136,11 @@ $d_c + \delta_0 \le 0.767578$ gives the theorem. ∎
 
 ## Discussion prompts
 
-- The whole proof lives in a time interval of length $O(d - d_c)$. What
-  would it take to make $\delta_0$ explicit? One route is Cauchy–Kovalevskaya
-  majorants for the analytic data near $S_c$. What would a numerical value of
-  $\delta_0$ say physically?
+- The whole proof lives in a time interval of length $O(d - d_c)$. Note 15
+  bounds the time of validity of the analytic development near $S_c$
+  ($T_{\min} = 2.988\times10^{-4}M$). What else is needed to make $\delta_0$
+  explicit (note 15 §7.3), and what would a numerical value of $\delta_0$ say
+  physically?
 - Numerical relativity finds that the event horizon of a head-on collision
   encloses both holes long before the common apparent horizon appears. Is
   there a quasi-local quantity on $\Sigma_0$ that would show this early
