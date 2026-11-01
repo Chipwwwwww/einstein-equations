@@ -9,6 +9,11 @@
 off-axis, off-plane points, at two separations. Two other candidates were rejected at selection, because
 results already in the repository exclude them.
 
+> **Scope correction (sprint 02 §1.4).** KFA excludes only the tested Killing-norm-gradient frame;
+> claim 100 excludes alignment with the tidal frame. Other symmetry-adapted frames are not excluded.
+> In §8 below, "its meridian orientation is a genuine third function" means that describing $S$ needs
+> an angle. The angle is not an independent physical degree of freedom.
+
 ## 1 · Baseline and files used
 
 - **Commit.** `90f023b` (`main`). It contains sessions 1–15.

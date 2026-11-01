@@ -4,6 +4,21 @@
 the reviewed baseline `90f023b` plus the axisymmetric sprint, which does not touch this question.
 Checker: `research/calc/curl_hierarchy_checks.py`.*
 
+> **Scope corrections (sprint 02, `research/nonlinear_silent_flow_sprint_02.md` §1).**
+>
+> 1. Proposition 4 controls an *auxiliary linear hierarchy* with frozen curl coefficients. It does not
+>    control the full nonlinear hierarchy, whose linearisation also contains the metric-variation loss
+>    term $-D_\gamma(\mathrm{curl}\,ar E)[Y_\gamma]$ (sprint 02 §2). The "$C_L + C_N$" sentence below is
+>    withdrawn.
+> 2. The ×1.55 / ×1.80 ceilings are arithmetic bounds within fixed CK′ norms, weights, width, loss rows
+>    and sufficient-condition formula, with zero-order and source constraints idealised away. They are
+>    not the intrinsic gain of the method, not a bound on all resummations, and not a limit of BL.
+>    Removing $A$ does not remove the curl forcing.
+> 3. "$t_{m sil}(z) \le T$" for complex $z$ is undefined and is withdrawn. Read $s_{\max}$ as the width
+>    of a common regularity domain on which the background, the inverse metric and the needed variations
+>    are holomorphic with uniform bounds for $0 \le t \le T$. That this width shrinks to 0 at a definite
+>    rate is a **conjecture**, not a consequence of the different real collapse times.
+
 ## 1 · Question, scope, labels
 
 **Question.** Suppose each curl-degree sector $\Phi_m$ of the session-15 hierarchy (notes/19 §4) is
@@ -297,7 +312,7 @@ $m^m/m! \le e^m$. $\square$
 
 **Conditional extension (C).** The full hierarchy adds the nonlinear mixing $\mathcal N_m$ and the
 dependence of the curl coefficients on $\gamma_{\ge1}$. A Cauchy–Kovalevskaya majorant for these terms
-would give a bound of the same form, with $C_L$ replaced by $C_L + C_N(\lVert\Phi_0\rVert_{s_0}, \delta_*)$.
+would give a bound of the same form, with $C_L$ replaced by $C_L + C_N(\lVert\Phi_0\rVert_{s_0}, \delta_*)$ *(withdrawn: see the scope corrections above)*.
 This is not proved here; it is the standard majorant step, but its constants were not computed.
 
 *If the conditional extension holds:*

@@ -2,6 +2,24 @@
 
 *Updated 2026-11-01 (sessions 1–15, axisymmetric sprint 01, curl-hierarchy sprint 01). Start here.*
 
+## Nonlinear silent-flow sprint 02
+
+File: [`nonlinear_silent_flow_sprint_02.md`](nonlinear_silent_flow_sprint_02.md). Branch
+`claude/nonlinear-silent-flow`, from `c6e7aa8`.
+
+- **Conjugating with the exact silent flow** removes all algebraic dynamics. What remains is a purely
+  quasi-linear first-order system: similar principal symbols, no zero-order term, source $O(t^2)$.
+- **Theorem 3 (conditional)** gives full nonlinear sector convergence, tails and reconstruction. Its
+  time has the same CK scale: analytic width over loss constant.
+- **The decisive constant** is the principal bound $B_*$ (curl speed $\gtrsim\lvert\psi\rvert^{-2}$);
+  $J$ and $D^2F$ are not decisive. The idealised ceiling is about ×10 the certified time, still local.
+  **Complex-ODE certification is not recommended.**
+- **Check run:** the metric-variation term acts first at $\varepsilon^3t^7$ ($H$) and
+  $\varepsilon^4t^8$ ($E$), as predicted.
+- **Scope corrections** to sprint 01 and to the axisymmetric sprint.
+- **Certified region unchanged.**
+- **Next direction:** Sobolev energy estimates for the frame form, replacing the analytic loss.
+
 ## Curl-hierarchy convergence sprint 01
 
 File: [`curl_hierarchy_convergence_sprint_01.md`](curl_hierarchy_convergence_sprint_01.md). Start
