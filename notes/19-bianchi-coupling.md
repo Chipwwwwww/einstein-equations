@@ -484,6 +484,28 @@ $t$ at a near-hole point. Use the transport equation of §4.2: solve the silent 
 spatial 2-jet (variational equations), feed $\mathrm{curl}^2$ of it as the source, and integrate
 numerically up to the silent collapse time.
 
+*Exact system for that task.* Truncate at $\varepsilon^2$ and write
+$(\gamma, K, E) = (\gamma^{(0)}, K^{(0)}, E^{(0)}) + \varepsilon^2(\gamma^{(2)}, K^{(2)}, E^{(2)})$ and
+$H = \varepsilon H^{(1)}$. Then:
+
+```math
+\begin{aligned}
+&\text{silent:}\ \ \dot\gamma^{(0)} = 2K^{(0)},\ \dot K^{(0)} = -E^{(0)} + K^{(0)}\!\cdot K^{(0)},\
+\dot E^{(0)} = -2\theta^{(0)}E^{(0)} + \tfrac52\{K^{(0)}, E^{(0)}\} - \gamma^{(0)}\mathrm{tr}(K^{(0)}E^{(0)}),\\
+&\dot H^{(1)} = -\mathrm{curl}_{\gamma^{(0)}}E^{(0)} - 2\theta^{(0)}H^{(1)} + \tfrac52\{K^{(0)}, H^{(1)}\} - \gamma^{(0)}\mathrm{tr}(K^{(0)}H^{(1)}),\\
+&\dot\Phi^{(2)} = DA(\Phi^{(0)})\,\Phi^{(2)} + \bigl(0,\ 0,\ \mathrm{curl}_{\gamma^{(0)}}H^{(1)}\bigr),\qquad \Phi^{(2)}(0) = 0,\ H^{(1)}(0) = 0 .
+\end{aligned}
+```
+
+Here $\{A, B\} = A\cdot B + B\cdot A$, the dot products use $\gamma^{(0)}$, and $DA$ is the
+linearisation of the algebraic right-hand side.
+
+- The silent system is pointwise. Carried with spatial jets of order 2 it loses no order.
+- $H^{(1)}$ then needs the 2-jet of $E^{(0)}$ and is exact to order 1, so the source of $\Phi^{(2)}$
+  is exact at the point.
+- So the $j = 1$ sector at a point is an ODE system of fixed finite size in $t$. It can be
+  integrated numerically, or expanded in $t$ to high order with spatial jets of weight 2 only.
+
 The test: does the $j = 1$ sector stay bounded until $t_{\rm sil}(x) \approx 2.1$?
 
 - **If yes**, the sectors carry only local singularities, the smaller radius of the full series is
