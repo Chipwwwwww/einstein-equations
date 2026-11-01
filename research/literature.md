@@ -1,5 +1,10 @@
 # Literature baseline
 
+Current verified source/version comparison: [literature_matrix.md](literature_matrix.md);
+references: [references.bib](references.bib). The entries below retain their
+historical session-specific verification labels.
+
+
 Bounded on purpose: enough to know what is established and what a result here
 would add. "Checked" says what was actually read this session. Statements
 marked *not re-checked* come from memory of standard texts and should be

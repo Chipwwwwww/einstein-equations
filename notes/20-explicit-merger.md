@@ -1,5 +1,13 @@
 # 20 · An explicit apparent-horizon merger: barrier certificates in the certified development
 
+> **Audit qualification (2026-11-01):** see [note22](22-global-mots-audit.md)
+> and the [replay report](../research/report_global_mots_audit_2026-11-01.md).
+> A decimal-time handoff has been repaired; corrected end-to-end M/M'/N
+> replays are pending. Historical certificate claims below are inherited.
+> The proposed constant-residual global sweep in §6 is invalid and replaced
+> by a true evolved-data shooting route.
+
+
 Notes 13 and 15 left one gap between the two halves of the near-critical Brill–Lindquist (BL)
 programme:
 
@@ -277,14 +285,16 @@ The barrier theorem and the separation argument of §3 then apply for each $d$. 
 Since Theorem F′ covers every $d \in (d_c, 0.767578]$ and $d_\ell \ge d_c$, this gives an explicit
 apparent-horizon merger for a whole interval of separations: for every $d \in (d_\ell, 0.7662]$, the apparent horizon of the
 geodesic slicing has two components at $t = 0$ and a component enclosing both holes by
-$t = 1.2\times10^{-5}M$. This makes the existence half of Theorem H explicit, with
-$\delta_0 \ge 0.7662 - d_\ell = 2.57\times10^{-6}$ for "a common MOTS forms by $1.2\times10^{-5}M$". Only the
-sliver $(d_c, d_\ell]$, of width below $2.2\times10^{-13}$, is not covered by the merger statement.
+$t = 1.2\times10^{-5}M$. This supplies the stated closed interval of separations, but **does not** compute
+a full neighbourhood $(d_c,d_c+\delta_0)$ for Theorem H: the sliver
+$(d_c,d_\ell]$, of width below $2.2\times10^{-13}$, is not covered by this
+merger statement. An unquantified local theorem cannot fill it automatically.
 
 ## 4 · Theorem N: no MOTS in the shell before $t_0$
 
 > **Theorem N (computer-assisted).** Same data, $d = 0.7662$. Let $t_0 = 5\times10^{-6}$ and
-> $h = 5\times10^{-8}$. For $z_0 \in [z_a, z_b] = [0.6324321, 0.6330512]$ and $t \in [0, t_0]$, let $S_t(z_0)$
+> $h = 5\times10^{-8}$. For $z_0 \in [z_a, z_b] \simeq [0.632432142085469, 0.6330511544633266]$ and $t \in [0, t_0]$, let $S_t(z_0)$
+> (the exact binary64 endpoints stored as `z_a`, `z_b` in `bl_foliate.json`)
 > be the leaf of level $h$ from the axis point $(0, z_0)$: the curve of §2.2 up to its first crossing
 > of $z = 0$, reflected and rotated. Let $W_t$ be the shell swept by these leaves. Then for every
 > $t \in [0, t_0]$:
@@ -341,8 +351,8 @@ At $t = 0$, part 3 is a local version of Theorem F′ near $S_c$. For $0 < t \le
 
 What this adds to Theorem H:
 
-- the existence half holds with an explicit $\delta_0 \ge 2.57\times10^{-6}$: a common MOTS by $1.2\times10^{-5}M$ for every
-  $d \in [d_c + 2.2\times10^{-13}, 0.7662]$ (Theorem M′);
+- the existence conclusion is instantiated on the explicit interval
+  $[d_\ell,0.7662]$ (Theorem M′), without filling the sliver above $d_c$;
 - at $d = 0.7662$ the birth time is bracketed with explicit numbers;
 - the bracket agrees with the onset slope of Theorem C to within 6 % above and 19 % below.
 
@@ -389,11 +399,13 @@ $0 < t \le t_0$, it is open (§6).
      constants suffice.
    - a perturbed Theorem F′ sweep. The outermost common MOTS of $\Sigma_t$, if any, is unique,
      hence axisymmetric and reflection symmetric, so the reduction of notes/12 §1 still applies.
-     Run the same exclusion events for the level-$h$ curves with $\lvert h\rvert \le \sup\lvert R\rvert$,
-     and $t$ as a parameter. Every exclusion event of F′ is an open condition, so it survives the
-     perturbation away from $S_c$. Near $S_c$, Theorem N takes over.
+     The old proposal to sweep constant $h$ with $|h|\le\sup|R|$ does
+     **not** cover true MOTSs: their residual is a variable function. Use
+     the exact evolved-metric ODE and true Jacobi variation in note22, or
+     a validated differential inclusion. Cover shell-straddling candidates
+     as well as wholly exterior ones. No cost or successful exclusion is
+     established before these domain and coverage obligations are met.
 
-   The cost is of the order of the F′ sweep (hours on four cores).
 2. **Theorem N for an interval of separations.** Theorem M′ covers an interval of $d$, by the
    bracket-family argument of §3.1 with Lohner sets (wide brackets blow up in the Moore integrator).
    A uniform Theorem N cannot reach $d \to d_c$, because $t_*(d) \to 0$ there. But for

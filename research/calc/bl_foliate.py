@@ -200,7 +200,9 @@ class Collector:
             # cos(alpha) >= 0 here, so cos = sqrt(1 - sin^2): much tighter than u / rho when the step
             # hull is long in rho (near the axis); both are valid, keep the intersection
             c2 = (1 - sa * sa).sqrt()
-            ca = ca.intersection(c2) if ca.overlaps(c2) else c2
+            if not ca.overlaps(c2):
+                raise ArithmeticError("inconsistent enclosures of cos(alpha)")
+            ca = ca.intersection(c2)
         k2 = v / (rho * rho)
         R, _ = bb.remainder((rho, z, sa, ca, k2), self.d, self.tb, self.h, self.G, self.certs)
         self.theta_lo = min(self.theta_lo, float((self.h + R).lower()))
@@ -350,7 +352,9 @@ def crossing_Fz(S):
         acc += sum((g[i] * S.A[i, j] for i in range(n)), arb(0)) * S.r[j]
     for l in range(k):
         acc += sum((g[i] * S.P[i, l] for i in range(n)), arb(0)) * S.q[l]
-    return acc.intersection(direct) if acc.overlaps(direct) else acc
+    if not acc.overlaps(direct):
+        raise ArithmeticError("inconsistent enclosures of crossing F_z")
+    return acc.intersection(direct)
 
 
 def run(z_lo, z_hi, d, t0, h, ds=0.004, L=14, hmax=0.25, sigma_max=60.0, z_switch=0.1, h_tau=2.0**-5,
@@ -472,7 +476,10 @@ def barrier_geometry(d, t, h, z0, delta, m_sub=32):
     """Fine Lohner enclosure of every barrier curve with z0' in [z0 - delta, z0 + delta] at the single time
     t (level h): no wrapping blow-up, so the boxes are short (arclength <= ds) and thin. Also re-checks
     the barrier inequality on its own boxes (theta_lo, theta_hi), the Jacobi field, x.n and rho."""
-    r = run(z0 - delta, z0 + delta, d, float(t), float(h), keep_geo=True, t_lo=float(t), m_sub=m_sub)
+    z_lo, z_hi = bb.parameter_endpoints(z0, delta)
+    t_lo, t_hi = bb.parameter_endpoints(t)
+    r = run(z_lo, z_hi, d, t_hi, arb(h), keep_geo=True, t_lo=t_lo, m_sub=m_sub)
+    r["parameter_bridge"] = "outward endpoints of the input Arb balls"
     return r
 
 
@@ -489,7 +496,7 @@ def _profile_job(args):
     rec, side = args
     g = rec["inner"] if side == "in" else rec["outer"]
     h = rec["h_in"] if side == "in" else rec["h_out"]
-    return barrier_geometry(rec["d"], float(rec["t"]), h, g["z0"], rec["delta"])
+    return barrier_geometry(rec["d"], rec["t"], h, g["z0"], rec["delta"])
 
 
 def piece_width(s_, w0):

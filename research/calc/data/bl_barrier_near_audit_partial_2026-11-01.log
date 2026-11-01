@@ -1,0 +1,7 @@
+Barrier certificate: d = 0.7662, t = 6.5e-6, levels h_in = -4e-08, h_out = 2e-06
+  [out] z0 = 0.6328511544633266: F(z0 - delta) = [-1.6e-12 +/- 5.40e-14], F(z0 + delta) = [7.4e-12 +/- 5.69e-14]: sign change True (241 s)
+  [in] z0 = 0.632632142085469: F(z0 - delta) = [7e-13 +/- 5.10e-14], F(z0 + delta) = [-7e-13 +/- 5.10e-14]: sign change True (243 s)
+  [out] ball run: 1536 steps (361 s)
+  [in] ball run: 1536 steps (363 s)
+  [out] 6148 boxes: theta_+ in [1.998388e-06, 2.001607e-06], |R| <= 1.612e-09, first-order check contains 0: True; after the axis segment sin(alpha) <= -5.634e-08, rho >= 1.490e-08; x.n >= 0.2398; certified: True (457 s)
+  [in] 6148 boxes: theta_+ in [-4.161537e-08, -3.838958e-08], |R| <= 1.615e-09, first-order check contains 0: True; after the axis segment sin(alpha) <= -5.641e-08, rho >= 1.490e-08; x.n >= 0.2386; certified: True (460 s)

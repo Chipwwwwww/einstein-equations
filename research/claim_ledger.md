@@ -1,5 +1,13 @@
 # Claim ledger
 
+> **2026-11-01 audit override:** historical entries125–132 require the
+> qualifications in [the audit report](report_global_mots_audit_2026-11-01.md).
+> M's decimal-time handoff is repaired, but the corrected full geometry replay
+> is pending. M'/N remain inherited; N's endpoints mean the stored exact
+> binary64 window. The local birth bracket is not a global or newly revalidated
+> bracket. M' does not compute H's full delta0-neighbourhood.
+
+
 Every claim made in notes/07–09, with its status. Categories:
 
 - **E** established in the literature (source and hypotheses given; "checked" says what was read);
@@ -185,7 +193,7 @@ Every claim made in notes/07–09, with its status. Categories:
 | --- | --- | --- | --- |
 | 112 | In Gauss gauge (comoving chart, $K = \tfrac12\partial_t\gamma$) the vacuum equations are $\partial_t\gamma = 2K$, $\partial_tK = -E + K\cdot K$, $\partial_tE = \mathrm{curl}\,H - 2\theta E + \tfrac52(KE + EK) - \gamma\,\mathrm{tr}(KE)$, $\partial_tH = -\mathrm{curl}\,E - 2\theta H + \tfrac52(KH + HK) - \gamma\,\mathrm{tr}(KH)$, with $H = \mathrm{curl}\,K$ | R (derived from [EvE98] (40)–(41); agrees with [FR00] $P_{ij}$, $Q_{kl}$ after converting the signature) + exact check | `bl_bianchi.py` reproduces `bl_metric.series_jets` exactly through $t^8$ at a rational BL point; constraints $H = \mathrm{curl}\,K$ (to $t^6$) and Gauss (to $t^5$) hold exactly along the jets (`tests/test_bl_bianchi.py`) |
 | 113 | An unconverted transcription of Friedrich–Rendall's $Q_{kl}$ (their signature $(+,-,-,-)$) gives a wrong $H$-equation; the jet comparison detects it at $t^8$ | R (convention audit) | the page read in the rendered PDF; conversion in notes/19 §2.1; the test asserts the failure at $t^8$ |
-| 114 | The frame form of the Gauss-gauge Einstein–Bianchi system (unknowns $e_a{}^i$, $\Gamma$, $E$, $B$) is symmetric hyperbolic with speeds $0, \pm\tfrac12, \pm1$ | E (Friedrich–Rendall 2000, §4.4, read on the page) + symbol recomputed | `research/calc/bianchi_symbol.py` |
+| 114 | The frame form of the Gauss-gauge Einstein–Bianchi system (unknowns $e_a{}^i$, $\Gamma$, $E$, $B$) is symmetric hyperbolic with speeds $0, \pm\tfrac12, \pm1$ | E (Friedrich–Rendall 2000; corrected locator: §§4.2–4.3, equations (4.48), (4.80)–(4.94) in arXiv v1) + symbol recomputed | `research/calc/bianchi_symbol.py` |
 | 115 | The coordinate form (unknowns $\gamma$, $K$, $E$, $H$, Christoffels from $\gamma$) is **not** strongly hyperbolic at any state with $E \ne 0$ (Jordan block at speed 0). The note-17 phrase "symmetric hyperbolic in this same chart" holds only for the frame form | N (computed symbol; small) | `bianchi_symbol.jordan_test`: algebraic multiplicity 16, geometric 15 |
 | 116 | **Theorem 1**: for every conformally flat time-symmetric vacuum data set, $\Delta\mathrm{Ric} = 3\mathrm{Ric}^2 - \lvert\mathrm{Ric}\rvert^2\gamma_0$, the $t^4$ law, and the $t^6$ law of claim 98 hold. **Claim 98 is proved**, and with claims 103–104 so is claim 105 | proved (computer-assisted, exact) | reduction (naturality, Kelvin/Möbius normalisation, weighted homogeneity, polarisation; notes/19 §3.3) + 72 exact evaluations (`python -m research.calc.cf_universal`); non-harmonic controls fail |
 | 117 | For conformally flat time-symmetric vacuum data, no term linear in curvature appears in $\gamma(t)$ beyond $-t^2\mathrm{Ric}$ | R (proved) | linearisation: $\Delta^m\mathrm{Ric}_{\rm lin} = 0$, $E_{\rm lin}$ constant, $H_{\rm lin} = 0$ (notes/19 §3.4) |
@@ -207,5 +215,20 @@ Every claim made in notes/07–09, with its status. Categories:
 | 128 | **Corollary**: explicit apparent-horizon merger at $d = 0.7662$ in the geodesic slicing: no common MOTS on $\Sigma_0$ (Theorem F′), a common MOTS on $\Sigma_{6.5\times10^{-6}}$, inside the certified series metric. The common MOTS in $\Omega'$ is born at $t_b \in [5.0, 6.5]\times10^{-6}$, i.e. $[0.81, 1.06]\,t_*^{\rm lin}$ | N (computer-assisted) | claims 66, 125–127 |
 | 129 | Along the BL shooting curves the Moore/Picard integrator amplifies a $z_0$-bracket by $\sim 3\times10^7$ (a $10^{-8}$ bracket blows up in the last segment; $10^{-10}$ reaches the plane with $\rho$-widths $6\times10^{-3}$); Lohner sets keep widths $\sim 10^{-10}$ | R (observation) | session-16 runs; idea log |
 | 130 | Near $S_c$ at small $t$, surfaces are outer trapped but not trapped: $\mathrm{tr}_SK = tp + O(t^3)$ with $p = \mathrm{Ric}(\nu,\nu)$ positive on a band of $S_c$ ($p \in [-0.58, 0.11]$) | C (floating point) | `bl_fold` geometry; idea log, session 16 |
-| 131 | The first common apparent horizon of the whole slice for $0 < t \le t_0$; a $d$-interval version of Theorem M; event horizons; a category-A metric | G / G / G / **not found** | notes/20 §6 |
-| 132 | **Theorem M′**: for every $d \in [0.76619742824011, 0.7662]$ (all $d > d_c$ there; the sliver $(d_c, 0.76619742824011)$, width $< 2.2\times10^{-13}$, is not covered), $\Sigma_{1.2\times10^{-5}}$ contains a smooth embedded stable common MOTS. With F′: an explicit apparent-horizon merger for the whole interval, so the existence half of Theorem H holds with $\delta_0 \ge 2.57\times10^{-6}$ | N (computer-assisted) | `bl_foliate.main_interval()` (record `bl_barrier_interval.json`): Lohner sets with $d$ a set parameter; IVT signs at the bracket ends; barrier inequalities on the bracket families; nesting by the extreme members; region in $U$ |
+| 131 | The first common apparent horizon of the whole slice for $0 < t \le t_0$; a $d$-interval version of Theorem M; event horizons; a category-A metric | G / inherited M′ (audit-qualified) / G / **not found** | notes/20 §6 |
+| 132 | **Theorem M′**: for every $d \in [0.76619742824011, 0.7662]$ (all $d > d_c$ there; the sliver $(d_c, 0.76619742824011)$, width $< 2.2\times10^{-13}$, is not covered), $\Sigma_{1.2\times10^{-5}}$ contains a smooth embedded stable common MOTS. With F′: an explicit apparent-horizon merger for the whole interval, but this does not supply a full explicit $\delta_0$-neighbourhood for Theorem H | N (computer-assisted) | `bl_foliate.main_interval()` (record `bl_barrier_interval.json`): Lohner sets with $d$ a set parameter; IVT signs at the bracket ends; barrier inequalities on the bracket families; nesting by the extreme members; region in $U$ |
+
+
+## Global-exclusion audit checkpoint (note22; namespace GS avoids branch numbering collisions)
+
+| ID | Claim | Status and evidence |
+| --- | --- | --- |
+| GS-F | Constant residual-level shooting does not enclose arbitrary variable residual forcing | Exact counterexample, note22 §2; symbolic falsification test |
+| GS-ODE | Exact evolved-metric MOTS ODE and upper-pole curvature | Derived, note22 §3; symbolic conformal/anisotropic tests and one CK interval point. Known geometric method specialized; no certified collar |
+| GS-S | O(2)-invariant smooth MOTS sphere has exact stability drift; similarity to -Delta+Q | Analytic proof, note22 §4; standard transformation, reflection and topology essential |
+| GS-G | All-mode bound from metric weights and approximate ground-state residual | Conditional analytic theorem, note22 §4.1; positive-time inputs not certified |
+| GS-N | Two consecutive annular zeros of a true MOTS normal variation imply instability | Conditional analytic corollary, note22 §4.2; old first-order variation cannot be substituted |
+| GS-Q | Quadratic fold-time formula and uniform conditional remainder | Exact implicit differentiation and contraction proof, note22 §5; no uniform BL numerical constants |
+| GS-I | Critical all-mode gap>=1/16, inverse L² norm<=16 | Inherited from d124cb5, independently replayed256bits; horizon_gap_audit_2026-11-01.json |
+| GS-A | Decimal/set parameter bridges and outward geometric bin arithmetic repaired | Regression tests pass; near-M replay partial; complete M/M'/N replay pending |
+| GS-L | No global positive-time exclusion or global equal-mass merger metric established | Open; explicit remaining lemma note22 §6 and research_gaps.md |
