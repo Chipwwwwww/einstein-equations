@@ -1,0 +1,1215 @@
+{
+  "classification": "EXECUTED / NUMERICAL",
+  "physical_evolution_interval": null,
+  "common_horizon_formation_tested": false,
+  "files": {
+    "BbhReductions.h5": {
+      "bytes": 12077512,
+      "sha256": "de2bb4f3944300def7e434879e206783a850e1bda00e79b1f99b8b7f8ed8f97f"
+    },
+    "BbhVolume0.h5": {
+      "bytes": 20351695,
+      "sha256": "337097246b72d30672e2c137ccaeee41b9493f4cc32e1d280db5a73d186ee03d"
+    },
+    "Horizons.h5": {
+      "bytes": 124904,
+      "sha256": "ca3248a6d9700d0fd490a0e397983448bf568499b28aacbe61cee08acd31cb90"
+    }
+  },
+  "observations": [
+    {
+      "path": "/VolumeData.vol/ObservationId4817489997503763368",
+      "AMR_iteration_label_NOT_time": 0.0,
+      "elements": 84,
+      "grid_points": 20304,
+      "extents_present": [
+        [
+          6,
+          6,
+          6
+        ],
+        [
+          6,
+          6,
+          7
+        ],
+        [
+          6,
+          6,
+          10
+        ]
+      ],
+      "datasets": {
+        "BlockId": {
+          "shape": [
+            12000
+          ],
+          "dtype": "uint64"
+        },
+        "ConformalFactor": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ElementId": {
+          "shape": [
+            12000
+          ],
+          "dtype": "uint64"
+        },
+        "ExtrinsicCurvature_xx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_yx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_yy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_zx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_zy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_zz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "HamiltonianConstraint": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InertialCoordinates_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InertialCoordinates_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InertialCoordinates_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_xx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_yx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_yy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_zx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_zy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_zz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "Lapse": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "MomentumConstraint_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "MomentumConstraint_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "MomentumConstraint_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "RadiallyCompressedCoordinates_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "RadiallyCompressedCoordinates_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "RadiallyCompressedCoordinates_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ShiftExcess_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ShiftExcess_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ShiftExcess_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "Shift_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "Shift_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "Shift_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xxx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xyx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xyy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xzx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xzy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xzz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yxx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yyx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yyy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yzx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yzy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yzz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zxx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zyx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zyy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zzx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zzy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zzz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_xx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_yx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_yy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_zx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_zy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_zz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_xx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_yx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_yy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_zx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_zy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_zz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "bases": {
+          "shape": [
+            252
+          ],
+          "dtype": "int32"
+        },
+        "connectivity": {
+          "shape": [
+            108000
+          ],
+          "dtype": "int32"
+        },
+        "functions_of_time": {
+          "shape": [
+            42742
+          ],
+          "dtype": "int8"
+        },
+        "grid_names": {
+          "shape": [
+            2173
+          ],
+          "dtype": "int8"
+        },
+        "quadratures": {
+          "shape": [
+            252
+          ],
+          "dtype": "int32"
+        },
+        "total_extents": {
+          "shape": [
+            252
+          ],
+          "dtype": "uint64"
+        }
+      },
+      "fields_present": {
+        "SpacetimeMetric": false,
+        "Pi": false,
+        "Phi": false,
+        "GaugeH": false,
+        "SpacetimeDerivGaugeH": false,
+        "Lapse": true,
+        "Shift": true,
+        "SpatialMetric": true,
+        "ExtrinsicCurvature": true
+      },
+      "min_lapse": 0.7075837551935946,
+      "min_spatial_metric_eigenvalue": 0.999999999999999,
+      "reconstructed_metric_shift": "ShiftExcess (pipeline inertial-shift convention)",
+      "nodes_with_signature_minus_plus_plus_plus": 20304,
+      "all_metric_values_finite": true,
+      "max_abs_hamiltonian_constraint": 0.17209272509596768
+    },
+    {
+      "path": "/VolumeData.vol/ObservationId16264117511411387898",
+      "AMR_iteration_label_NOT_time": 1.0,
+      "elements": 84,
+      "grid_points": 20304,
+      "extents_present": [
+        [
+          6,
+          6,
+          6
+        ],
+        [
+          6,
+          6,
+          7
+        ],
+        [
+          6,
+          6,
+          10
+        ]
+      ],
+      "datasets": {
+        "BlockId": {
+          "shape": [
+            12000
+          ],
+          "dtype": "uint64"
+        },
+        "ConformalFactor": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ElementId": {
+          "shape": [
+            12000
+          ],
+          "dtype": "uint64"
+        },
+        "ExtrinsicCurvature_xx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_yx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_yy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_zx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_zy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ExtrinsicCurvature_zz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "HamiltonianConstraint": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InertialCoordinates_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InertialCoordinates_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InertialCoordinates_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_xx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_yx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_yy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_zx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_zy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "InverseSpatialMetric_zz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "Lapse": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "MomentumConstraint_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "MomentumConstraint_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "MomentumConstraint_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "RadiallyCompressedCoordinates_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "RadiallyCompressedCoordinates_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "RadiallyCompressedCoordinates_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ShiftExcess_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ShiftExcess_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "ShiftExcess_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "Shift_x": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "Shift_y": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "Shift_z": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xxx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xyx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xyy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xzx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xzy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_xzz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yxx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yyx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yyy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yzx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yzy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_yzz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zxx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zyx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zyy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zzx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zzy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialChristoffelSecondKind_zzz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_xx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_yx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_yy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_zx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_zy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialMetric_zz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_xx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_yx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_yy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_zx": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_zy": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "SpatialRicci_zz": {
+          "shape": [
+            20304
+          ],
+          "dtype": "float64"
+        },
+        "bases": {
+          "shape": [
+            252
+          ],
+          "dtype": "int32"
+        },
+        "connectivity": {
+          "shape": [
+            108000
+          ],
+          "dtype": "int32"
+        },
+        "functions_of_time": {
+          "shape": [
+            42742
+          ],
+          "dtype": "int8"
+        },
+        "grid_names": {
+          "shape": [
+            2173
+          ],
+          "dtype": "int8"
+        },
+        "quadratures": {
+          "shape": [
+            252
+          ],
+          "dtype": "int32"
+        },
+        "total_extents": {
+          "shape": [
+            252
+          ],
+          "dtype": "uint64"
+        }
+      },
+      "fields_present": {
+        "SpacetimeMetric": false,
+        "Pi": false,
+        "Phi": false,
+        "GaugeH": false,
+        "SpacetimeDerivGaugeH": false,
+        "Lapse": true,
+        "Shift": true,
+        "SpatialMetric": true,
+        "ExtrinsicCurvature": true
+      },
+      "min_lapse": 0.6052010356096055,
+      "min_spatial_metric_eigenvalue": 1.0000210012365527,
+      "reconstructed_metric_shift": "ShiftExcess (pipeline inertial-shift convention)",
+      "nodes_with_signature_minus_plus_plus_plus": 20304,
+      "all_metric_values_finite": true,
+      "max_abs_hamiltonian_constraint": 0.10525351344973821
+    }
+  ],
+  "serialized_geometry": {
+    "domain": {
+      "shape": [
+        35475
+      ],
+      "dtype": "int8"
+    },
+    "global_functions_of_time": {
+      "shape": [
+        42742
+      ],
+      "dtype": "int8"
+    }
+  },
+  "compiled_library_versions": "SpECTRE Version: 2026.10.28\nGit description: ec2a358\nGit branch: HEAD\nGit hash: ec2a35874d4a5105521a563498fdc8f33d784a82\nHostname: buildkitsandbox\nHost system: Linux-7.0.0-1017-azure\nHost system version: 7.0.0-1017-azure\nHost system processor: x86_64\nBoost version: 1.90.0\nCharm++ version: 8.0.0\nCHARM_COMPILER: /sxscollaboration/charm/multicore-linux-x86_64-gcc/bin/charmc\nCHARM_SHARED_LIBS: OFF\nCHARM_BUILDING_BLOCKS:\nCHARM_CC='gcc'\nCHARM_CXX='g++'\nCHARM_LD='gcc'\nCHARM_LDXX='g++'\nCHARMBIN='/sxscollaboration/charm/multicore-linux-x86_64-gcc/bin'\nCHARMINC='/sxscollaboration/charm/multicore-linux-x86_64-gcc/include'\nCHARMLIB='/sxscollaboration/charm/multicore-linux-x86_64-gcc/lib'\nCHARMLIBSO='/sxscollaboration/charm/multicore-linux-x86_64-gcc/lib_so'\nCHARM_CC_FLAGS='-DCMK_GFORTRAN -DCMK_GFORTRAN -D_REENTRANT -I/sxscollaboration/charm/multicore-linux-x86_64-gcc/include -D__CHARMC__=1 -U_FORTIFY_SOURCE -fno-stack-protector'\nCHARM_CXX_FLAGS='-DCMK_GFORTRAN -DCMK_GFORTRAN -D_REENTRANT -I/sxscollaboration/charm/multicore-linux-x86_64-gcc/include -D__CHARMC__=1 -U_FORTIFY_SOURCE -fno-stack-protector -fno-lifetime-dse -std=gnu++11'\nCHARM_LD_FLAGS='-D_REENTRANT -rdynamic -L/sxscollaboration/charm/multicore-linux-x86_64-gcc/lib -lmoduleEveryLB -lckmetis -lck -lmemory-default -lthreads-default -lconverse -lm -lmemory-default -lthreads-default -lldb-rand -lconverse -lpthread -lckqt -lckqt -lz -ldl -lmoduleEveryLB -lmoduleNDMeshStreamer -lmodulecompletion -lz -lm /sxscollaboration/charm/multicore-linux-x86_64-gcc/lib/conv-static.o'\nCHARM_LDXX_FLAGS='-D_REENTRANT -rdynamic -L/sxscollaboration/charm/multicore-linux-x86_64-gcc/lib -lmoduleEveryLB -lckmetis -lck -lmemory-default -lthreads-default -lconverse -lm -lmemory-default -lthreads-default -lldb-rand -lconverse -lpthread -lckqt -lckqt -lz -ldl -lmoduleEveryLB -lmoduleNDMeshStreamer -lmodulecompletion -lz -lm /sxscollaboration/charm/multicore-linux-x86_64-gcc/lib/conv-static.o'\nSPECTRE_DEBUG: OFF\nSPECTRE_NAN_INIT: OFF\nBLAS_LIBRARIES: /usr/lib/x86_64-linux-gnu/libopenblas.so\nLAPACK_LIBRARIES: /usr/lib/x86_64-linux-gnu/libopenblas.so;-lm;-ldl\nGSL version: 2.8\nBlaze version: 3.9\nGoogle Benchmark found\nHDF5 version: 1.14.6\nxsimd version: 14.3.0\nNumPy version: 2.5.3\nCMake version: 4.2.3\nCMAKE_CXX_FLAGS: \nCMAKE_CXX_LINK_FLAGS:  -fuse-ld=lld\nCMAKE_CXX_FLAGS_DEBUG: -g0 -DSPECTRE_DEBUG\nCMAKE_CXX_FLAGS_RELEASE: -O3 -DNDEBUG\nCMAKE_C_FLAGS: \nCMAKE_C_FLAGS_DEBUG: -g\nCMAKE_C_FLAGS_RELEASE: -O3 -DNDEBUG\nCMAKE_Fortran_FLAGS: \nCMAKE_Fortran_FLAGS_DEBUG: -g\nCMAKE_Fortran_FLAGS_RELEASE: -O3\nCMAKE_EXE_LINKER_FLAGS: \nCMAKE_BUILD_TYPE: Release\nCMAKE_CXX_COMPILER: /usr/bin/clang++\nCMAKE_CXX_COMPILER_VERSION: 21.1.8\nCMAKE_C_COMPILER: /usr/bin/clang\nCMAKE_C_COMPILER_VERSION: 21.1.8\nCMAKE_Fortran_COMPILER: /usr/bin/gfortran\nCMAKE_Fortran_COMPILER_VERSION: 15.2.0\nPython version: 3.14.4",
+  "reductions": {
+    "ConstraintDiagnostics.dat": {
+      "legend": [
+        "IterationId(Amr)",
+        "NumberOfPoints",
+        "Volume",
+        "Min(Lapse)",
+        "L2Norm(HamiltonianConstraint)",
+        "L2Norm(MomentumConstraint_x)",
+        "L2Norm(MomentumConstraint_y)",
+        "L2Norm(MomentumConstraint_z)"
+      ],
+      "data": [
+        [
+          0.0,
+          20304.0,
+          8.722457515895365e+17,
+          0.7075837551935946,
+          0.030020793264613,
+          0.014794382478578599,
+          0.011263598306132262,
+          0.014798530443777136
+        ],
+        [
+          1.0,
+          20304.0,
+          8.722457515895365e+17,
+          0.6052010356096055,
+          0.007465810823616376,
+          0.0014476238328703652,
+          0.0014789225379495824,
+          0.001466714760087738
+        ]
+      ]
+    },
+    "NewtonRaphsonResiduals.dat": {
+      "legend": [
+        "Iteration",
+        "Walltime",
+        "GlobalizationStep",
+        "Residual",
+        "StepLength"
+      ],
+      "data": [
+        [
+          0.0,
+          1.234407701,
+          0.0,
+          18.541016118984658,
+          1.0
+        ],
+        [
+          1.0,
+          18.241637025,
+          0.0,
+          7.932187012047667,
+          1.0
+        ],
+        [
+          2.0,
+          30.142227793,
+          0.0,
+          0.24541704510471002,
+          1.0
+        ],
+        [
+          3.0,
+          43.247930464,
+          0.0,
+          0.21044544433759813,
+          1.0
+        ],
+        [
+          4.0,
+          54.325352808,
+          0.0,
+          0.0020267381488759694,
+          1.0
+        ],
+        [
+          5.0,
+          67.65390454,
+          0.0,
+          5.432039084173464e-07,
+          1.0
+        ],
+        [
+          6.0,
+          82.040020178,
+          0.0,
+          8.460949365323763e-10,
+          1.0
+        ]
+      ]
+    }
+  },
+  "individual_horizons": {
+    "AhA.dat": {
+      "legend": [
+        "Area",
+        "IrreducibleMass",
+        "MaxRicciScalar",
+        "MinRicciScalar",
+        "ChristodoulouMass",
+        "DimensionlessSpinMagnitude",
+        "DimensionlessSpinVector_x",
+        "DimensionlessSpinVector_y",
+        "DimensionlessSpinVector_z"
+      ],
+      "data": [
+        [
+          14.156788169305058,
+          0.5306979856106677,
+          1.7970569332002406,
+          1.7568945833019851,
+          0.5306984682689151,
+          0.0026973695369417175,
+          3.378537355516959e-17,
+          -7.998386241819553e-17,
+          -0.0026973695369417175
+        ]
+      ]
+    },
+    "AhB.dat": {
+      "legend": [
+        "Area",
+        "IrreducibleMass",
+        "MaxRicciScalar",
+        "MinRicciScalar",
+        "ChristodoulouMass",
+        "DimensionlessSpinMagnitude",
+        "DimensionlessSpinVector_x",
+        "DimensionlessSpinVector_y",
+        "DimensionlessSpinVector_z"
+      ],
+      "data": [
+        [
+          14.156745985257759,
+          0.5306971949297119,
+          1.796299984156031,
+          1.7578902162501648,
+          0.5306976998090253,
+          0.0027587647148993185,
+          -5.216507528712639e-17,
+          -5.513040807077343e-18,
+          -0.0027587647148993185
+        ]
+      ]
+    }
+  },
+  "map_checks": {
+    "blocks": 44,
+    "block_names": [
+      "ObjectAShellUpperZ",
+      "ObjectAShellLowerZ",
+      "ObjectAShellUpperY",
+      "ObjectAShellLowerY",
+      "ObjectAShellUpperX",
+      "ObjectAShellLowerX",
+      "ObjectACubeUpperZ",
+      "ObjectACubeLowerZ",
+      "ObjectACubeUpperY",
+      "ObjectACubeLowerY",
+      "ObjectACubeUpperX",
+      "ObjectACubeLowerX",
+      "ObjectBShellUpperZ",
+      "ObjectBShellLowerZ",
+      "ObjectBShellUpperY",
+      "ObjectBShellLowerY",
+      "ObjectBShellUpperX",
+      "ObjectBShellLowerX",
+      "ObjectBCubeUpperZ",
+      "ObjectBCubeLowerZ",
+      "ObjectBCubeUpperY",
+      "ObjectBCubeLowerY",
+      "ObjectBCubeUpperX",
+      "ObjectBCubeLowerX",
+      "EnvelopeUpperZLeft",
+      "EnvelopeUpperZRight",
+      "EnvelopeLowerZLeft",
+      "EnvelopeLowerZRight",
+      "EnvelopeUpperYLeft",
+      "EnvelopeUpperYRight",
+      "EnvelopeLowerYLeft",
+      "EnvelopeLowerYRight",
+      "EnvelopeUpperX",
+      "EnvelopeLowerX",
+      "OuterShell0UpperZLeft",
+      "OuterShell0UpperZRight",
+      "OuterShell0LowerZLeft",
+      "OuterShell0LowerZRight",
+      "OuterShell0UpperYLeft",
+      "OuterShell0UpperYRight",
+      "OuterShell0LowerYLeft",
+      "OuterShell0LowerYRight",
+      "OuterShell0UpperX",
+      "OuterShell0LowerX"
+    ],
+    "global_function_bounds": {
+      "ShapeB": [
+        0.0,
+        "inf"
+      ],
+      "SizeB": [
+        0.0,
+        "inf"
+      ],
+      "ShapeA": [
+        0.0,
+        "inf"
+      ],
+      "SizeA": [
+        0.0,
+        "inf"
+      ]
+    },
+    "observations": [
+      {
+        "AMR_iteration_label_NOT_time": 0.0,
+        "bases": [
+          "Basis.Legendre"
+        ],
+        "quadratures": [
+          "Quadrature.GaussLobatto"
+        ],
+        "observation_function_bounds": {
+          "SizeA": [
+            0.0,
+            2.220446049250313e-14
+          ],
+          "ShapeA": [
+            0.0,
+            2.220446049250313e-14
+          ],
+          "SizeB": [
+            0.0,
+            2.220446049250313e-14
+          ],
+          "ShapeB": [
+            0.0,
+            2.220446049250313e-14
+          ]
+        },
+        "max_coordinate_reconstruction_difference": 0.0,
+        "static_map_finite_difference_velocity_max_abs": 0.0,
+        "max_function_first_derivative_at_observation": 0.0
+      },
+      {
+        "AMR_iteration_label_NOT_time": 1.0,
+        "bases": [
+          "Basis.Legendre"
+        ],
+        "quadratures": [
+          "Quadrature.GaussLobatto"
+        ],
+        "observation_function_bounds": {
+          "SizeA": [
+            1.0,
+            1.0000000000000222
+          ],
+          "ShapeA": [
+            1.0,
+            1.0000000000000222
+          ],
+          "SizeB": [
+            1.0,
+            1.0000000000000222
+          ],
+          "ShapeB": [
+            1.0,
+            1.0000000000000222
+          ]
+        },
+        "max_coordinate_reconstruction_difference": 0.0,
+        "static_map_finite_difference_velocity_max_abs": 0.0,
+        "max_function_first_derivative_at_observation": 0.0
+      }
+    ]
+  }
+}

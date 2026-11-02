@@ -725,3 +725,43 @@ pull requests are open to all GitHub users.
 On Windows, a checkout at a deep path can push pip's vendored files past
 MAX_PATH and break `python -m venv`. Creating the venv at a short path
 (e.g. `%TEMP%\eeq-venv`) works.
+
+
+## 2026-11-02 — SpECTRE output pilot stops at the GH executable gate
+
+Independent branch `research/nr-to-exact-merger-validation` starts from PR #12
+head `f235eff91a862afe74d369b219f7fd151771d9c4`; prior mathematics is unchanged.
+SpECTRE 2026.10.28 (`ec2a35874d4a5105521a563498fdc8f33d784a82`) parsed and
+solved a coarse equal-mass, zero-target-spin XCTS configuration at input separation
+12 in 82 seconds on four threads. Actual HDF5 output, two elliptic iteration
+observations, individual horizons, coordinate reconstruction, and numerical
+constraint/signature checks are documented in
+[the focused report](../research/nr_output_pilot/README.md). These are not two
+physical times. The subsequent GH pipeline attempt stopped because the official
+prebuilt distribution lacks `EvolveGhBinaryBlackHole`. No evolution, common
+horizon formation, sampled GH residual or continuum certificate was obtained.
+The machine has a four-core quota, 16 GiB RAM and initially about 30 GiB free disk;
+no production merger or full source build was launched. Next gate: obtain/build
+the pinned GH executable and test three physical output times plus complete
+moving-map history before attempting a merger window. Large outputs stay outside Git.
+
+
+## 2026-11-02 — Actual BBH GH target built and parsed; startup fails before import
+
+Continuation on `research/nr-to-exact-merger-validation` from clean head
+`2f7ef4d56974a64a006fc7e902be5cb5d2c67bfb`. The actual pinned SpECTRE
+`EvolveGhBinaryBlackHole` target was built in 766 seconds within a 20-minute,
+12-GiB, single-compiler budget, reusing packaged archives and rebuilding only
+missing target dependencies. The packaged PCH CPU mismatch and link metadata
+ownership guard were resolved within that budget. Binary SHA256:
+`468efeedf0e0c7ec074a938ba1d7ba2e69979c398fb3cd90eda18e7ac9ccb2e6`.
+The pipeline-generated, minimally changed three-time input passed the actual
+C++ parser. The bounded four-thread run then segfaulted in the distorted-frame
+LockedPreviousSurface move constructor during GlobalCache construction. No
+successful numerical initial-data import or physical-time output was obtained;
+no GH HDF5 file exists. Dependent gates stopped, and root cause remains unknown.
+[Focused evidence and commands](../research/nr_output_pilot/gh_three_time/README.md).
+Separately, the earlier 0.00747 diagnostic was verified as unweighted nodal RMS
+of the conformally weighted XCTS Hamiltonian field, not a continuum ADM norm;
+[definition and numerical cross-check](../research/nr_output_pilot/gh_three_time/HAMILTONIAN.md).
+All prior XCTS output hashes and earlier mathematical work are unchanged.

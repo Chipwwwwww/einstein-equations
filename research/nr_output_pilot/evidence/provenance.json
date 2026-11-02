@@ -1,0 +1,33 @@
+{
+  "status": "EXECUTED XCTS initial-data output smoke; NO GH evolution; NO merger coverage",
+  "solver_release": "2026.10.28",
+  "solver_commit": "ec2a35874d4a5105521a563498fdc8f33d784a82",
+  "official_amd64_manifest": "sha256:2906ee3720535453985fb1935ded92407412e42ed4fb2b6423cc429cb7fc4fd1",
+  "official_deploy_amd64_index": "sha256:d6f49ac9188548cd3a3c6bb4ddecb8a2e5e3f86338cb52c51b13ea47d410c4c8",
+  "local_derived_image_id": "sha256:ca4e54573769dc118597b2102040b29effe4300eed591c85f0428f8cd963794b",
+  "solver_binary_sha256": "ca379639a9b62b4b365d9946408a7c7df76cea2db0e10ad191a9832d47211f10",
+  "host_limits": {
+    "cpu_max": "400000 100000",
+    "memory_max_bytes": 17179869184,
+    "initial_free_disk_approx_GiB": 30,
+    "hard_session_walltime": "not exposed; shell cpu-time limit unlimited"
+  },
+  "container_limits": {
+    "cpus": 4,
+    "memory_GiB": 10,
+    "solver_timeout_seconds": 300,
+    "horizon_timeout_seconds": 120
+  },
+  "sampled_container_memory_GiB": 1.444,
+  "elapsed_solver_seconds_reported": 82,
+  "source_repository_base": "f235eff91a862afe74d369b219f7fd151771d9c4",
+  "outputs_local_directory": "/workspace/scratch/spectre-pilot/id-smoke",
+  "runtime_preparation": "Official OCI layers streamed and SHA256-checked; runtime subset extracted and flattened to avoid vfs layer amplification. Compilers, documentation, static build artifacts and selected optional Python packages omitted. No numerical source or solver binary modified. Missing /lib64 loader path repaired by copying the identical official-image loader from /usr/lib/x86_64-linux-gnu. Full official-image reproduction is preferred on a machine with adequate Docker storage.",
+  "unmodified_external_log_sha256": {
+    "generate.log": "a38b1fd446d243f7a24c1d6e597f9246b97570ee8843ae50f332949aa1caef05",
+    "gh-start-attempt.log": "6007f1072b7b0fc0ebbe64a769e4d95480c99917694895d6c104366fc8053fd4",
+    "id-smoke/horizons.log": "0a3da5e6a25e230651ff85433cb58d341d815bdcfb1e4d53d73d8f75d8cc7ac8",
+    "id-smoke/solve.log": "f99e7c03b012f2335b9e3c09caee21de201fa9e81e973cf4e7715e6960bd7fd8"
+  },
+  "committed_logs": "Trailing whitespace removed; GH failure log is an explicitly labeled excerpt. Original logs remain outside Git at the recorded local paths."
+}

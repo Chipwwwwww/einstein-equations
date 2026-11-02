@@ -1,0 +1,162 @@
+[
+  {
+    "layer": 0,
+    "digest": "sha256:4e07a0f12b2c009f98326fa391e869bd52fc63728c482400af6cb752bc16744b",
+    "compressed_bytes": 41837521,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 1.34
+  },
+  {
+    "layer": 2,
+    "digest": "sha256:20bc585e22f6cb363f53ec54c20243c81b95888fa02a44836a16c95217e1d607",
+    "compressed_bytes": 117022504,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 2.84
+  },
+  {
+    "layer": 3,
+    "digest": "sha256:800d169079a2de75afdb112086bf335b8a3394bd3533baf87268a0e55439dfe6",
+    "compressed_bytes": 24903,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 0.43
+  },
+  {
+    "layer": 4,
+    "digest": "sha256:4a5e6a1019bff907899bc7bebd9643e90678be0a6fcb74130f289022cb3fcb48",
+    "compressed_bytes": 417051672,
+    "selected_bytes": 177795027,
+    "entries": 9678,
+    "seconds": 8.37
+  },
+  {
+    "layer": 5,
+    "digest": "sha256:0db3b6b255964413d5ce0d1eae027ac8ba74ccdf477a9c7de9266d1c9a3472da",
+    "compressed_bytes": 96723096,
+    "selected_bytes": 160955519,
+    "entries": 18186,
+    "seconds": 4.93
+  },
+  {
+    "layer": 6,
+    "digest": "sha256:39ff7e5348a09dbefc8fec5bc062e069907d0b02fb97557fab7ffd1c166b4bc9",
+    "compressed_bytes": 16970789,
+    "selected_bytes": 2060390,
+    "entries": 294,
+    "seconds": 0.83
+  },
+  {
+    "layer": 11,
+    "digest": "sha256:7aa89252913408b58f80cc693f1064104457578b849a94fc46384c85660d5fcc",
+    "compressed_bytes": 3171400,
+    "selected_bytes": 36354298,
+    "entries": 1736,
+    "seconds": 0.8
+  },
+  {
+    "layer": 12,
+    "digest": "sha256:5a81c97e6c4527c0191615f26770f98cbd8b7db0eec324de2275c01623a023df",
+    "compressed_bytes": 1931423,
+    "selected_bytes": 11283430,
+    "entries": 195,
+    "seconds": 0.45
+  },
+  {
+    "layer": 13,
+    "digest": "sha256:1c3bfaae2a8dcc4369e7e8140e1e713bd2c8ba8ef980423d60e5eba6a45a13bf",
+    "compressed_bytes": 1089080,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 0.57
+  },
+  {
+    "layer": 14,
+    "digest": "sha256:b85668d9cdf18de0712a7f4ab54c2bbc55ccebae660b2aa670263ae174a2586a",
+    "compressed_bytes": 9229839,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 0.75
+  },
+  {
+    "layer": 15,
+    "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+    "compressed_bytes": 32,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 0.3
+  },
+  {
+    "layer": 16,
+    "digest": "sha256:bdf1d7ed3e0c653c2b622eb13233fc60df11d1cfc8e69b96d58c77a2d14dadc4",
+    "compressed_bytes": 253391,
+    "selected_bytes": 769440,
+    "entries": 3,
+    "seconds": 0.41
+  },
+  {
+    "layer": 17,
+    "digest": "sha256:3550c23873eab4077f540904527e4121672854a1dddba9e2cf4e9a7f6e750270",
+    "compressed_bytes": 6840221,
+    "selected_bytes": 18379324,
+    "entries": 243,
+    "seconds": 0.56
+  },
+  {
+    "layer": 18,
+    "digest": "sha256:2e32ec389fb751f6f9e3bf97143c94d64ef6e834b11e3a1de66550c0bfc20628",
+    "compressed_bytes": 254095,
+    "selected_bytes": 2096879,
+    "entries": 124,
+    "seconds": 0.36
+  },
+  {
+    "layer": 19,
+    "digest": "sha256:3f5628f2fd3b4dc21170c79aecb6053a7e384193fed45223e7c2b14e55e0b669",
+    "compressed_bytes": 9682,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 0.37
+  },
+  {
+    "layer": 20,
+    "digest": "sha256:203c89d25fc70a9989d41a23ac50b1d3d4f3f7efbb948465ee6a6296b9460480",
+    "compressed_bytes": 106,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 0.38
+  },
+  {
+    "layer": 21,
+    "digest": "sha256:6e61b0d2628775314ce904078e7979e0816c17442b699cc6709bd2a6881c392f",
+    "compressed_bytes": 136224316,
+    "selected_bytes": 504032873,
+    "entries": 12713,
+    "seconds": 5.17
+  },
+  {
+    "layer": 26,
+    "digest": "sha256:70d5027361ae0c32fa6faceb1ecb331fd1cfe6161699740e3748a935d4fc0a1c",
+    "compressed_bytes": 26382103,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 0.96
+  },
+  {
+    "layer": 27,
+    "digest": "sha256:375d14058e5e9f232ffa681e8643cf9b4f5fac19d22656c446948fabed9e9e88",
+    "compressed_bytes": 6221458,
+    "selected_bytes": 34910006,
+    "entries": 8360,
+    "seconds": 1.41
+  },
+  {
+    "layer": 28,
+    "digest": "sha256:0d6840184bfb3523c80a540da5522fa14d5585574ab89ad688622d5688a8400a",
+    "compressed_bytes": 1011440629,
+    "selected_bytes": 759122646,
+    "entries": 1307,
+    "seconds": 21.93
+  }
+]

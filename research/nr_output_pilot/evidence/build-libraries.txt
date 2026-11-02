@@ -1,0 +1,55 @@
+SpECTRE Version: 2026.10.28
+Git description: ec2a358
+Git branch: HEAD
+Git hash: ec2a35874d4a5105521a563498fdc8f33d784a82
+Hostname: buildkitsandbox
+Host system: Linux-7.0.0-1017-azure
+Host system version: 7.0.0-1017-azure
+Host system processor: x86_64
+Boost version: 1.90.0
+Charm++ version: 8.0.0
+CHARM_COMPILER: /sxscollaboration/charm/multicore-linux-x86_64-gcc/bin/charmc
+CHARM_SHARED_LIBS: OFF
+CHARM_BUILDING_BLOCKS:
+CHARM_CC='gcc'
+CHARM_CXX='g++'
+CHARM_LD='gcc'
+CHARM_LDXX='g++'
+CHARMBIN='/sxscollaboration/charm/multicore-linux-x86_64-gcc/bin'
+CHARMINC='/sxscollaboration/charm/multicore-linux-x86_64-gcc/include'
+CHARMLIB='/sxscollaboration/charm/multicore-linux-x86_64-gcc/lib'
+CHARMLIBSO='/sxscollaboration/charm/multicore-linux-x86_64-gcc/lib_so'
+CHARM_CC_FLAGS='-DCMK_GFORTRAN -DCMK_GFORTRAN -D_REENTRANT -I/sxscollaboration/charm/multicore-linux-x86_64-gcc/include -D__CHARMC__=1 -U_FORTIFY_SOURCE -fno-stack-protector'
+CHARM_CXX_FLAGS='-DCMK_GFORTRAN -DCMK_GFORTRAN -D_REENTRANT -I/sxscollaboration/charm/multicore-linux-x86_64-gcc/include -D__CHARMC__=1 -U_FORTIFY_SOURCE -fno-stack-protector -fno-lifetime-dse -std=gnu++11'
+CHARM_LD_FLAGS='-D_REENTRANT -rdynamic -L/sxscollaboration/charm/multicore-linux-x86_64-gcc/lib -lmoduleEveryLB -lckmetis -lck -lmemory-default -lthreads-default -lconverse -lm -lmemory-default -lthreads-default -lldb-rand -lconverse -lpthread -lckqt -lckqt -lz -ldl -lmoduleEveryLB -lmoduleNDMeshStreamer -lmodulecompletion -lz -lm /sxscollaboration/charm/multicore-linux-x86_64-gcc/lib/conv-static.o'
+CHARM_LDXX_FLAGS='-D_REENTRANT -rdynamic -L/sxscollaboration/charm/multicore-linux-x86_64-gcc/lib -lmoduleEveryLB -lckmetis -lck -lmemory-default -lthreads-default -lconverse -lm -lmemory-default -lthreads-default -lldb-rand -lconverse -lpthread -lckqt -lckqt -lz -ldl -lmoduleEveryLB -lmoduleNDMeshStreamer -lmodulecompletion -lz -lm /sxscollaboration/charm/multicore-linux-x86_64-gcc/lib/conv-static.o'
+SPECTRE_DEBUG: OFF
+SPECTRE_NAN_INIT: OFF
+BLAS_LIBRARIES: /usr/lib/x86_64-linux-gnu/libopenblas.so
+LAPACK_LIBRARIES: /usr/lib/x86_64-linux-gnu/libopenblas.so;-lm;-ldl
+GSL version: 2.8
+Blaze version: 3.9
+Google Benchmark found
+HDF5 version: 1.14.6
+xsimd version: 14.3.0
+NumPy version: 2.5.3
+CMake version: 4.2.3
+CMAKE_CXX_FLAGS:
+CMAKE_CXX_LINK_FLAGS:  -fuse-ld=lld
+CMAKE_CXX_FLAGS_DEBUG: -g0 -DSPECTRE_DEBUG
+CMAKE_CXX_FLAGS_RELEASE: -O3 -DNDEBUG
+CMAKE_C_FLAGS:
+CMAKE_C_FLAGS_DEBUG: -g
+CMAKE_C_FLAGS_RELEASE: -O3 -DNDEBUG
+CMAKE_Fortran_FLAGS:
+CMAKE_Fortran_FLAGS_DEBUG: -g
+CMAKE_Fortran_FLAGS_RELEASE: -O3
+CMAKE_EXE_LINKER_FLAGS:
+CMAKE_BUILD_TYPE: Release
+CMAKE_CXX_COMPILER: /usr/bin/clang++
+CMAKE_CXX_COMPILER_VERSION: 21.1.8
+CMAKE_C_COMPILER: /usr/bin/clang
+CMAKE_C_COMPILER_VERSION: 21.1.8
+CMAKE_Fortran_COMPILER: /usr/bin/gfortran
+CMAKE_Fortran_COMPILER_VERSION: 15.2.0
+Python version: 3.14.4

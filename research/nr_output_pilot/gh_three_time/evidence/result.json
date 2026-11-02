@@ -1,0 +1,51 @@
+{
+  "classification": "EXECUTED build and C++ parser; EXECUTED startup failure before demonstrated numerical initial-data import; no physical GH times or HDF5 output",
+  "repository_head_at_start": "2f7ef4d56974a64a006fc7e902be5cb5d2c67bfb",
+  "solver_commit": "ec2a35874d4a5105521a563498fdc8f33d784a82",
+  "compiler": "Ubuntu clang 21.1.8 (6ubuntu1), C++20, Release -O3 -march=native -mno-avx512f",
+  "reused_dependencies": "Official pinned image manifest 2906ee3720535453985fb1935ded92407412e42ed4fb2b6423cc429cb7fc4fd1; previous pilot records package versions. Restored libraries/headers are digest-verified. Rebuilt native PCH, CharmModuleInit, AmrEvents, GeneralRelativityAnalyticData, ApparentHorizonFinderCriteria, ControlSystem and EvolutionTriggers; other static libraries reused. Scientific source unchanged.",
+  "binary_sha256": "468efeedf0e0c7ec074a938ba1d7ba2e69979c398fb3cd90eda18e7ac9ccb2e6",
+  "binary_host_path": "/workspace/scratch/spectre-pilot/gh-executable-gate/bin/EvolveGhBinaryBlackHole",
+  "binary_container_path": "/sxscollaboration/spectre/build/bin/EvolveGhBinaryBlackHole",
+  "binary_bytes": 434484680,
+  "build_budget_seconds": 1200,
+  "build_interval_UTC": [
+    "2026-11-02T06:33:07Z",
+    "2026-11-02T06:45:53Z"
+  ],
+  "build_total_elapsed_seconds_including_corrected_failures": 766,
+  "cgroup_recorded_build_peak_bytes": 8686776320,
+  "build_OOM_events": 0,
+  "run_budget": {
+    "walltime_seconds": 300,
+    "kill_grace_seconds": 10,
+    "CPU_threads": 4,
+    "container_memory_bytes": 12884901888,
+    "minimum_free_disk_bytes": 4294967296
+  },
+  "run_exit_code": 1,
+  "run_elapsed_seconds_to_logged_precision": 0,
+  "unresolved_failure": "Segmentation fault in ah::Storage::LockedPreviousSurface<Frame::Distorted> move constructor, reached via Parallel::GlobalCache construction. Root cause not established.",
+  "initial_data_import_success_demonstrated": false,
+  "expected_physical_times": [
+    0.0,
+    0.0001,
+    0.0002
+  ],
+  "actual_physical_times": [],
+  "gh_hdf5_files": [],
+  "raw_log_sha256": {
+    "gh-executable-gate/restore.log": "1ce847ca75198f21b2a9ae4ad1656fe6f3176af26ac68538dc05c8eb03beb4ca",
+    "gh-executable-gate/target-dry-run.log": "25547034680ec48541e640eca063126e2934d6af7cdc1c128455a84dcdc7ca34",
+    "gh-executable-gate/restore-linker.log": "fd48ded9e301fe12e546464244f3863d16b3312e20b3af8bf39ed43976c8c406",
+    "gh-executable-gate/build-attempt02-ownership.log": "7a3810a454a0403be9fca7f3273d2eda08e76c87938e201402a91deead721d8d",
+    "gh-executable-gate/gh-help.log": "add66df9e6a492d44ad0c302e50e93fb311d4cf4dc87bec79c2b0a226bc94723",
+    "gh-executable-gate/generate-inspiral.log": "a85b38c7097f58ad01b452206eaa2a1600a6d6cf8baf39a962c18da5d4da763c",
+    "gh-executable-gate/gh-parser.log": "c99f550b706b84a98042d7a9c31638845a2cc0583c2219c02b1b631342e92f7b",
+    "gh-executable-gate/build-support-check.log": "455fb77e01906c3baa0ea577c00201cd768e7e47752a3c7b6b33f879c2fd5d67",
+    "gh-executable-gate/build-attempt01-pch-cpu.log": "d7f0d8b5950f5dd292c51914e1a76ae0c19a32a2daf4c1e6a38ea5364add20ea",
+    "gh-executable-gate/build.log": "9d93f7489e6a4ae89afc76147378697d9af38ae9f41341cb6ac147b03f4e67fe",
+    "gh-three-time/run.log": "3c22fa338efac349274eaf1d686478c673563e42ada5ad4ed49e7c4d20608c52"
+  },
+  "no_rigorous_residual": true
+}

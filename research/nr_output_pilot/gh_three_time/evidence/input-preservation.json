@@ -1,0 +1,23 @@
+{
+  "classification": "EXECUTED configuration comparison, not an evolution test",
+  "unchanged_sections": {
+    "Parallelization": true,
+    "InitialData": true,
+    "DomainCreator": true,
+    "EvolutionSystem": true,
+    "SpatialDiscretization": true,
+    "Cce": true,
+    "Amr": true,
+    "PhaseChangeAndTriggers": true,
+    "EventsAndTriggersAtCheckpoints": true,
+    "EventsAndTriggersAtSteps": true,
+    "EventsRunAtCleanup": true,
+    "Interpolator": true,
+    "BbhCompletionCriteria": true,
+    "ApparentHorizons": true,
+    "InterpolationTargets": true,
+    "ControlSystems": true,
+    "ResourceInfo": true,
+    "Evolution_except_slab_and_step": true
+  }
+}

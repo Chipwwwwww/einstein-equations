@@ -1,0 +1,46 @@
+Building CXX object CMakeFiles/SpectrePch.dir/cmake_pch.hxx.pch
+Building CXX object CMakeFiles/SpectrePch.dir/SpectrePch.cpp.o
+Building CXX object src/ParallelAlgorithms/Amr/Events/CMakeFiles/AmrEvents.dir/RefineMesh.cpp.o
+Linking CXX static library ../../../../lib/libAmrEvents.a
+Building CXX object src/PointwiseFunctions/AnalyticData/GeneralRelativity/CMakeFiles/GeneralRelativityAnalyticData.dir/BrillLindquist.cpp.o
+Linking CXX static library ../../../../lib/libGeneralRelativityAnalyticData.a
+Building CXX object src/ParallelAlgorithms/ApparentHorizonFinder/Criteria/CMakeFiles/ApparentHorizonFinderCriteria.dir/IncreaseResolution.cpp.o
+Building CXX object src/ParallelAlgorithms/ApparentHorizonFinder/Criteria/CMakeFiles/ApparentHorizonFinderCriteria.dir/Residual.cpp.o
+Building CXX object src/ParallelAlgorithms/ApparentHorizonFinder/Criteria/CMakeFiles/ApparentHorizonFinderCriteria.dir/Shape.cpp.o
+Linking CXX static library ../../../../lib/libApparentHorizonFinderCriteria.a
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/Averager.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/CalculateMeasurementTimescales.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/CleanFunctionsOfTime.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/Controller.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ExpirationTimes.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/FutureMeasurements.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/TimescaleTuner.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/UpdateFunctionOfTime.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/Actions/GridCenters.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/ComovingCharSpeedDerivative.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/Info.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/AhSpeed.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/DeltaR.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/DeltaRDriftInward.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/DeltaRDriftOutward.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/DeltaRNoDrift.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/Error.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/Initial.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/RegisterDerivedWithCharm.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size/StateHistory.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/GridCenters.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Size.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/ControlErrors/Skew.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/Tags/FunctionsOfTimeInitialize.cpp.o
+Building CXX object src/ControlSystem/CMakeFiles/ControlSystem.dir/Tags/SystemTags.cpp.o
+Linking CXX static library ../../lib/libControlSystem.a
+Building CXX object src/Evolution/Triggers/CMakeFiles/EvolutionTriggers.dir/SeparationLessThan.cpp.o
+Linking CXX static library ../../../lib/libEvolutionTriggers.a
+Building CXX object src/Evolution/Executables/GeneralizedHarmonic/CMakeFiles/EvolveGhBinaryBlackHole.dir/EvolveGhBinaryBlackHole.cpp.o
+Linking CXX executable ../../../../bin/EvolveGhBinaryBlackHole
+fatal: detected dubious ownership in repository at '/sxscollaboration/spectre'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /sxscollaboration/spectre
+make[1]: *** [src/Evolution/Executables/GeneralizedHarmonic/CMakeFiles/EvolveGhBinaryBlackHole.dir/build.make:243: bin/EvolveGhBinaryBlackHole] Error 128
+make: *** [Makefile:1848: EvolveGhBinaryBlackHole/fast] Error 2

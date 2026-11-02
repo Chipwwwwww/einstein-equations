@@ -1,0 +1,15 @@
+{
+  "cpu_max": "400000 100000",
+  "memory_max": 17179869184,
+  "free_disk_bytes_after_support": 10030743552,
+  "source_commit": "ec2a35874d4a5105521a563498fdc8f33d784a82",
+  "repository_head_before_changes": "2f7ef4d56974a64a006fc7e902be5cb5d2c67bfb",
+  "host_architecture": "x86_64",
+  "hardware": {
+    "Architecture:": "x86_64",
+    "CPU(s):": "5",
+    "Vendor ID:": "AuthenticAMD",
+    "Model name:": "AMD EPYC 9V74 80-Core Processor"
+  },
+  "no_external_compute_capability_configured": true
+}

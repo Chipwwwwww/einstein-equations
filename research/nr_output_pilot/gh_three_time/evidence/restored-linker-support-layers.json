@@ -1,0 +1,18 @@
+[
+  {
+    "layer": 4,
+    "digest": "sha256:4a5e6a1019bff907899bc7bebd9643e90678be0a6fcb74130f289022cb3fcb48",
+    "compressed_bytes": 417051672,
+    "selected_bytes": 11010,
+    "entries": 7,
+    "seconds": 7.14
+  },
+  {
+    "layer": 5,
+    "digest": "sha256:0db3b6b255964413d5ce0d1eae027ac8ba74ccdf477a9c7de9266d1c9a3472da",
+    "compressed_bytes": 96723096,
+    "selected_bytes": 0,
+    "entries": 0,
+    "seconds": 2.6
+  }
+]

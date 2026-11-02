@@ -1,0 +1,6 @@
+Building CXX object CMakeFiles/CharmModuleInit.dir/CharmModuleInit.C.o
+Building CXX object src/ParallelAlgorithms/Amr/Events/CMakeFiles/AmrEvents.dir/RefineMesh.cpp.o
+error: precompiled file '/sxscollaboration/spectre/build/CMakeFiles/SpectrePch.dir/cmake_pch.hxx.pch' was compiled for the target CPU 'graniterapids' but the current translation unit is being compiled for target 'znver4'
+1 error generated.
+make[1]: *** [src/ParallelAlgorithms/Amr/Events/CMakeFiles/AmrEvents.dir/build.make:81: src/ParallelAlgorithms/Amr/Events/CMakeFiles/AmrEvents.dir/RefineMesh.cpp.o] Error 1
+make: *** [Makefile:3382: AmrEvents/fast] Error 2

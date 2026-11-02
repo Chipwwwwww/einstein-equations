@@ -1,0 +1,287 @@
+Charm++: standalone mode (not using charmrun)
+Charm++> Running in Multicore mode: 1 threads (PEs)
+Converse Machine Command-line Parameters:
+              Option: Parameter: Description:
+             ++quiet            Omit non-error runtime messages
+                +ppn    integer
+               ++ppn    integer
+                  +p    integer
+     +auto-provision            fully utilize available resources
+      +autoProvision            fully utilize available resources
+      +oneWthPerHost            assign one worker thread per host
+    +oneWthPerSocket            assign one worker thread per socket
+      +oneWthPerCore            assign one worker thread per core
+        +oneWthPerPU            assign one worker thread per PU
++networkProgressPeriod    integer
+          +truecrash            Do not install signal handlers
+            +netpoll            Do not use SIGIO--poll instead
+             +netint            Use SIGIO
+           +idlepoll            Do not sleep when idle
+          +idlesleep            Make sleep calls when idle
+          +syncprint            Flush each CmiPrintf to the terminal
+            +asyncio            Use async IO
+         +asynciooff            Don not use async IO
+         +commthread            Use communication thread
+                +atm            Tune for a low-latency ATM network
+                +eth            Tune for an ethernet network
+               +giga            Tune for a gigabit network
+     +max_dgram_size    integer Size of each UDP packet
+        +window_size    integer Number of unacknowledged packets
+     +os_buffer_size    integer UDP socket's SO_RCVBUF/SO_SNDBUF
+   +delay_retransmit    integer Milliseconds to wait before retransmit
+          +ack_delay    integer Milliseconds to wait before ack'ing
+              +stats            Print network statistics at shutdown
+         +partitions    integer number of partitions
+           +replicas    integer number of partitions
+   +master_partition            assign a process as master partition
+    +partition_sizes     string size of partitions
+ +partition_topology            topology aware partitions
++partition_topology_scheme    integer topology aware partitioning scheme
++use_custom_partition            custom partitioning scheme
+             +stdout     string base filename to redirect partition stdout to
+                +cpd            Used *only* in conjunction with parallel debugger
+          +stacksize     string Default user-level thread stack size
+      +io_flush_user            User Controls IO Flush
+Converse/Charm++ Commit ID: v8.0.0
+    +useAbsoluteTime            Use system's absolute time as wallclock time.
+       +idle-timeout    integer Abort if idle for this many seconds
+      +CmiSpinOnIdle            Force the runtime system to spin on message reception when idle, rather than sleeping
+     +CmiSleepOnIdle            Force the runtime system to sleep when idle, rather than spinning on message reception
++CmiNoProcForComThread            Is there an extra processor for the communication thread on each node(only for netlrts-smp-*) ?
+               +nice    integer Set the process priority level
+               +nice    integer Set the process priority level
+         +noCMAForZC            When Cross Memory Attach (CMA) is supported, the program does not use CMA when using the Zerocopy API
+        +csdLocalMax    integer Set the max number of local messages to process before forcing a check for remote messages.
+            ++server            Create a CCS server port
+       ++server-port    integer Listen on this TCP/IP port number
+       ++server-auth     string Use this CCS authentication file
+            +cldb_cs            Converse> Print seed load balancing statistics.
+        +noisomalloc            disable isomalloc
+    +isomalloc_probe            call mmap to probe the largest available isomalloc region
+     +isomalloc_test            mmap test common areas for the largest available isomalloc region
+  +no_isomalloc_sync            disable global synchronization of isomalloc region
+                 +qd    integer QD time in seconds
+
+Load Balancer Command-line Parameters:
+         +TreeLBFile     string TreeLB config file
+             +MetaLB            Turn on MetaBalancer
+     +MetaLBModelDir     string Use this directory to read model for MetaLB
+           +balancer     string Use this load balancer
+  +DistLBTargetRatio     number The max/avg load ratio that DistributedLB will attempt to achieve
+    +DistLBMaxPhases    integer The maximum number of phases that DistributedLB will attempt
+           +LBPeriod     number the minimum time period in seconds allowed for two consecutive automatic load balancing
+             +LBLoop            Use multiple load balancing strategies in loop
+             +LBTopo     string define load balancing topology
+        +LBPredictor            Turn on LB future predictor
+   +LBPredictorDelay    integer Number of balance steps before learning a model
+  +LBPredictorWindow    integer Number of steps to use to learn a model
+          +LBVersion    integer LB database file version number
+           +LBCentPE    integer CentralLB processor
+             +LBDump    integer Dump the LB state from this step
+        +LBDumpSteps    integer Dump the LB state for this amount of steps
+         +LBDumpFile     string Set the LB state file name
+              +LBSim    integer Read LB state from LBDumpFile since this step
+         +LBSimSteps    integer Read LB state for this number of steps
+         +LBSimProcs    integer Number of target processors.
+    +LBShowDecisions            Write to File: Load Balancing Object to Processor Map decisions during LB Simulation
+       +LBSyncResume            LB performs a barrier after migration is finished
+            +LBDebug    integer Turn on LB debugging printouts
+            +LBDebug            Turn on LB debugging printouts
+     +LBPrintSummary            Print load balancing result summary
+     +LBNoBackground            Load balancer ignores the background load.
+          +LBObjOnly            Only load balancing migratable objects, ignoring all others.
+      +LBTestPESpeed            Load balancer test all CPUs speed.
+         +LBSameCpus            Load balancer assumes all CPUs are of same speed.
+       +LBUseCpuTime            Load balancer uses CPU time instead of wallclock time.
+              +LBOff            Turn load balancer instrumentation off
+           +LBCommOn            Turn load balancer instrumentation of communication on
+          +LBCommOff            (No-op) Turn load balancer instrumentation of communication off
+            +LBAlpha     number per message send overhead
+             +LBBeta     number per byte send overhead
+CharmLB> Load balancer assumes all CPUs are same.
+   +MetaLBNoObjTimer     number Time in seconds before triggering reduction for no objs
+
+Record/Replay Command-line Parameters:
+        +recplay-crc            Enable CRC32 checksum for message record-replay
+        +recplay-xor            Enable simple XOR checksum for message record-replay
+    +recplay-logsize    integer Specify the size of the buffer used by the message recorder
+      +record-detail     string Record full message content for the specified processors
+             +record            Record message processing order
+      +replay-detail     string Replay the specified processors from recorded message content
+             +replay            Replay recorded message stream
+
+Charm++ Command-line Parameters:
+                 +cs            Print extensive statistics at shutdown
+                 +ss            Print summary statistics at shutdown
+               +fifo            Default to FIFO queuing
+               +lifo            Default to LIFO queuing
+              +ififo            Default to integer-prioritized FIFO queuing
+              +ilifo            Default to integer-prioritized LIFO queuing
+              +bfifo            Default to bitvector-prioritized FIFO queuing
+              +blifo            Default to bitvector-prioritized LIFO queuing
+               +objq            Default to use object queue for every obejct
+            +restart     string
+           +ringexit    integer Program exits in a ring fashion
++messageBufferingThreshold    integer Message size above which the runtime will buffer messages directed at unlocated array elements
+ +noAnytimeMigration            The program does not require support for anytime migration
++noNotifyChildInReduction            The program has at least one element per processor for each charm array created
+    +staticInsertion            DEPRECATED
+  +useNodeBlkMapping            Array elements are block-mapped in SMP-node level
+     +CPSamplePeriod
+   +CPSamplePeriodMs
+     +CPSchemeRandom
+ +CPExhaustiveSearch
++CPAlwaysUseDefaults
+      +CPSimulAnneal
+ +CPCriticalPathPrio
+        +CPBestKnown
+         +CPSteering
+      +CPMemoryAware
+          +CPSimplex
+    +CPDivideConquer
+        +CPLDBPeriod
+  +CPLDBPeriodLinear
++CPLDBPeriodQuadratic
+ +CPLDBPeriodOptimal
+    +CPDefaultValues
+        +CPGatherAll
++CPGatherMemoryUsage
++CPGatherUtilization
+         +CPSaveData
+     +CPNoFilterData
+         +CPLoadData
+     +CPDataFilename
+     +setcpuaffinity            set cpu affinity
+        +excludecore    integer avoid core when setting cpuaffinity
+          +pemapfile     string define pe to core mapping file
+              +pemap     string define pe to core mapping
+             +commap     string define comm threads to core mapping
+    +showcpuaffinity            print cpu affinity
+          +maffinity            memory affinity
+         +memnodemap     string define memory node mapping
+             +mempol     string define memory policy {bind, preferred or interleave}
++obtain_cpu_topology            obtain cpu topology info
+  +skip_cpu_topology            skip the processof getting cpu topology info
+  +show_cpu_topology            Show cpu topology info
+Charm++> Running on 1 hosts (1 sockets x 5 cores x 1 PUs = 5-way SMP)
+Charm++> cpu topology info is gathered in 0.000 seconds.
+          +printTopo     string topo file name
+
+Executing 'EvolveGhBinaryBlackHole' using 1 processors.
+Launch command line: EvolveGhBinaryBlackHole --help
+Charm++ startup time in seconds: 0.017294
+Date and time at startup: Mon Nov  2 06:46:29 2026
+
+SpECTRE Build Information:
+Version:                      2026.10.28
+Compiled on host:             buildkitsandbox
+Compiled in directory:        /sxscollaboration/spectre/build
+Source directory is:          /sxscollaboration/spectre
+Compiled on git branch:       HEAD
+Compiled on git revision:     ec2a358
+Linked on:                    2026-11-02T06:45:49+00:00
+Build type:                   Release
+
+  -h [ --help ]             Describe program options
+  --check-options           Check input file options
+  --dump-source-tree-as arg If specified, then a gzip archive of the source
+                            tree is dumped with the specified name. The archive
+                            can be expanded using 'tar -xzf ARCHIVE.tar.gz'
+  --dump-paths              Dump the PATH, CPATH, LD_LIBRARY_PATH,
+                            LIBRARY_PATH, and CMAKE_PREFIX_PATH at compile
+                            time.
+  --dump-environment        Dump the result of printenv at compile time.
+  --dump-build-info         Dump the contents of SpECTRE's BuildInfo.txt
+  --dump-only               Exit after dumping requested information.
+  --copyright-and-licenses  Returns all of the copyright and license info for
+                            SpECTRE and its dependencies.
+  --input-file arg          Input file name
+
+
+==== Description of expected options:
+Evolve a binary black hole using the Generalized Harmonic formulation
+
+
+Options:
+  ResourceInfo:
+    type=ResourceInfo
+    Options for allocating resources. This information will be used when
+    placing Array and Singleton parallel components on the requested
+    resources.
+
+  EvolutionSystem:
+    The system of hyperbolic PDEs
+
+  Amr:
+    Options for adaptive mesh refinement (AMR)
+
+  DomainCreator:
+    type=DomainCreator
+    The domain to create initially
+
+  Observers:
+    Options for recording data
+
+  BbhCompletionCriteria:
+    Options controlling inspiral termination based on global BBH criteria.
+
+  InterpolationTargets:
+    Options for interpolation targets
+
+  Cce:
+    Options for the Cce evolution system
+
+  Parallelization:
+    Options related to parallelization aspects of the simulation.
+
+  ApparentHorizons:
+    Options for apparent horizon finders
+
+  Interpolator:
+    Options related to the Interpolator parallel component
+
+  ControlSystems:
+    Options for all control systems used in a simulation.
+
+  Evolution:
+    Options for the time evolution
+
+  SpatialDiscretization:
+    Options controlling the spatial discretization of the PDE system.
+
+    In a DG-subcell hybrid scheme subgroups would hold options for the DG and
+    FD/FV method used. For example, the choice of basis functions for the DG
+    scheme would be specified.
+
+  InitialData:
+    type=InitialData
+    Options for initial data of evolution system
+
+  EventsAndTriggersAtCheckpoints:
+    type=EventsAndTriggers
+    Events to run at triggers
+
+  EventsAndTriggersAtSlabs:
+    type=EventsAndTriggers
+    Events to run at triggers
+
+  EventsAndTriggersAtSteps:
+    type=EventsAndTriggers
+    Events to run at triggers
+
+  PhaseChangeAndTriggers:
+    type=[TriggerAndPhaseChanges, ...]
+    A collection of pairs of triggers and collections of phase change objects
+    to determine runtime phase control-flow decisions. The order of the phase
+    change objects determines the order of the requests processed by the Main
+    chare during phase change arbitration.
+
+  EventsRunAtCleanup:
+    Options related to running events on failure.  This is generally intended
+    for dumping volume data to diagnose failure reasons.
+
+  EventsAndDenseTriggers:
+    type=EventsAndDenseTriggers
+    Events to run at arbitrary times
+
+[Partition 0][Node 0] End of program

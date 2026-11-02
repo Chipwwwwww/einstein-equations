@@ -1,0 +1,14 @@
+EXCERPT: first 5 and last 7 lines; complete raw log is outside Git (see provenance).
+[05:36:18] WARNING  The BBH pipeline is still experimental.      Inspiral.py:498
+                    Please review the generated input files.
+           INFO     Selected subfile VolumeData.vol (the only    Inspiral.py:220
+                    available one).
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+[traceback omitted]
+│ │      which_exec = None                                                   │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ValueError: Executable not found: EvolveGhBinaryBlackHole. Make sure it is
+compiled. To look for executables in a specific build directory make sure it is
+in the 'PATH' or use the 'spectre --build-dir / -b' option.
+exit_code=1

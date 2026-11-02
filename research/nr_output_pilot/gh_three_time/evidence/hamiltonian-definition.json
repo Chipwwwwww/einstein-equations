@@ -1,0 +1,12 @@
+{
+  "classification": "NUMERICAL with DOCUMENTED source definition",
+  "N": 20304,
+  "raw_saved_RMS": 0.007465810823616378,
+  "raw_saved_max_abs": 0.10525351344973821,
+  "physical_ADM_constraint_nodal_RMS": 0.00802192191930164,
+  "physical_ADM_constraint_max_abs": 0.10926214912428589,
+  "rescaled_saved_RMS": 0.008022960868554517,
+  "max_difference_C_ADM_minus_minus2H_over_psi5": 0.0011294279877320512,
+  "continuum_definition": "H_saved = -psi^5/2 * (R + K^2 - K_ij K^ij - 16 pi rho); vacuum rho=0. L2Norm is unweighted nodal RMS, not a continuum/proper-volume L2 norm.",
+  "reported_L2Norm": 0.007465810823616376
+}

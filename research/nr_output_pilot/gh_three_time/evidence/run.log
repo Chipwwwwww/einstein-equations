@@ -1,0 +1,62 @@
+Charm++: standalone mode (not using charmrun)
+Charm++> Running in Multicore mode: 4 threads (PEs)
+Converse/Charm++ Commit ID: v8.0.0
+CharmLB> Load balancer assumes all CPUs are same.
+Charm++> Running on 1 hosts (1 sockets x 5 cores x 1 PUs = 5-way SMP)
+Charm++> cpu topology info is gathered in 0.000 seconds.
+The following options differ from their suggested values:
+Terminated due to an uncaught exception:
+
+############ ERROR ############
+Stack trace:
+
+  0. [error handling]
+  1. EvolveGhBinaryBlackHole(+0xef80cb6) [0x55c4a749bcb6] - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xef80cb6
+  2. (anonymous namespace)::segfault_signal_handler(int) - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xef833d6
+  3. /usr/lib/x86_64-linux-gnu/libc.so.6(+0x45cb0) [0x7fa379794cb0] - Resolve source file and line with: addr2line -fCpe /usr/lib/x86_64-linux-gnu/libc.so.6 0x45cb0
+  4. ah::Storage::LockedPreviousSurface<Frame::Distorted>::LockedPreviousSurface(ah::Storage::LockedPreviousSurface<Frame::Distorted>&&) - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xe231b97
+  5. _ZN6tuples11TaggedTupleIJN8Parallel15MutableCacheTagIN2ah4Tags15PreviousSurfaceIN17EvolutionMetavars2AhILN6domain11ObjectLabelE0EN5Frame9DistortedEEEEEEENS2_INS5_INS7_ILS9_1ESB_EEEEEENS2_INS5_INS7_ILS9_2ENSA_8InertialEEEEEEENS2_INS5_IN14control_system12measurements12BothHorizons11FindHorizonILS9_0EE [...] aantsr19pack_is_TaggedTupleIDpT_EE5valueeqsZT_sZT_EEE15enable_implicitIS3O_EEEvE4typeELPv0EEEDpOS3N_ - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xcc5a9f7
+  6. auto Parallel::GlobalCache_detail::make_mutable_cache_tag_storage<ah::Tags::PreviousSurface<EvolutionMetavars::Ah<(domain::ObjectLabel)0, Frame::Distorted> >, ah::Tags::PreviousSurface<EvolutionMetavars::Ah<(domain::ObjectLabel)1, Frame::Distorted> >, ah::Tags::PreviousSurface<EvolutionMetavars::Ah< [...] ActiveMap, control_system::Tags::FunctionsOfTimeInitialize, gh::Tags::SetPiAndPhiFromConstraints>&&) - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xcc59a65
+  7. _ZN8Parallel11GlobalCacheI17EvolutionMetavarsEC1EN6tuples11TaggedTupleIJN2gh6gauges4Tags14GaugeConditionENS5_4Tags21DampingFunctionGamma0ILm3EN5Frame4GridEEENS9_21DampingFunctionGamma1ILm3ESC_EENS9_21DampingFunctionGamma2ILm3ESC_EEN3amr8Criteria4Tags8CriteriaENSI_4Tags9AmrBlocksILm3EEENSM_8PoliciesE [...] _25FunctionsOfTimeInitializeENS9_26SetPiAndPhiFromConstraintsEEEESt8optionalINS_11CProxy_MainIS1_EEE - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xcc56e8e
+  8. Parallel::CkIndex_GlobalCache<EvolutionMetavars>::_call_GlobalCache_marshall1(void*, void*) - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xcc54de6
+  9. CkDeliverMessageFree in /sxscollaboration/charm/src/ck-core/ck.C:661
+ 10. CkCreateLocalNodeGroup in /sxscollaboration/charm/src/ck-core/ck.C:846
+ 11. CkCreateNodeGroup in /sxscollaboration/charm/src/ck-core/ck.C:983
+ 12. _ZN8Parallel18CProxy_GlobalCacheI17EvolutionMetavarsE5ckNewERKN6tuples11TaggedTupleIJN2gh6gauges4Tags14GaugeConditionENS5_4Tags21DampingFunctionGamma0ILm3EN5Frame4GridEEENS9_21DampingFunctionGamma1ILm3ESC_EENS9_21DampingFunctionGamma2ILm3ESC_EEN3amr8Criteria4Tags8CriteriaENSI_4Tags9AmrBlocksILm3EEEN [...] itializeENS9_26SetPiAndPhiFromConstraintsEEEERKSt8optionalINS_11CProxy_MainIS1_EEEPK14CkEntryOptions - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xc50151b
+ 13. Parallel::Main<EvolutionMetavars>::Main(CkArgMsg*) - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xc4fe46b
+ 14. _initCharm(int, char**) in /sxscollaboration/charm/src/ck-core/init.C:1769
+ 15. ConverseRunPE(int) in /sxscollaboration/charm/src/arch/util/machine-common-core.C:1608
+ 16. ConverseInit in /sxscollaboration/charm/src/arch/util/machine-common-core.C:1524
+ 17. charm_main in /sxscollaboration/charm/src/ck-core/init.C:1820
+ 18. __libc_start_call_main in ../sysdeps/nptl/libc_start_call_main.h:83
+ 19. __libc_start_main in ../csu/libc-start.c:347
+ 20. _start - Resolve source file and line with: addr2line -fCpe EvolveGhBinaryBlackHole 0xb9dbbe5
+
+Wall time: 00:00:00
+Node: 0 Proc: 0
+void (anonymous namespace)::segfault_signal_handler(int) in /sxscollaboration/spectre/src/Utilities/ErrorHandling/SegfaultHandler.cpp:12
+
+Segmentation fault!
+############ ERROR ############
+
+
+
+Executing 'EvolveGhBinaryBlackHole' using 4 processors.
+Launch command line: EvolveGhBinaryBlackHole --input-file Inspiral.yaml
+Charm++ startup time in seconds: 0.017745
+Date and time at startup: Mon Nov  2 06:49:11 2026
+
+SpECTRE Build Information:
+Version:                      2026.10.28
+Compiled on host:             buildkitsandbox
+Compiled in directory:        /sxscollaboration/spectre/build
+Source directory is:          /sxscollaboration/spectre
+Compiled on git branch:       HEAD
+Compiled on git revision:     ec2a358
+Linked on:                    2026-11-02T06:45:49+00:00
+Build type:                   Release
+
+
+Option parsing completed.
+
+[Partition 0][Node 0] End of program

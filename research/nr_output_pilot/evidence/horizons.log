@@ -1,0 +1,14 @@
+[05:35:37] INFO     Selected observation step -1 at t = 1.         ReadH5.py:138
+[05:35:38] INFO     Found horizon around [6, 0, 0] with       FindHorizon.py:209
+                    0.831933 <= r <= 0.841977.
+           INFO     AhA has mass 0.530698 and spin          PostprocessId.py:154
+                    [3.37854e-17, -7.99839e-17,
+                    -0.00269737].
+           INFO     Found horizon around [-6, 0, 0] with      FindHorizon.py:209
+                    0.831934 <= r <= 0.841962.
+           INFO     AhB has mass 0.530698 and spin          PostprocessId.py:154
+                    [-5.21651e-17, -5.51304e-18,
+                    -0.00275876].
+           INFO     Horizons found and written to           PostprocessId.py:159
+                    /work/id-smoke/Horizons.h5.
+exit_code=0
