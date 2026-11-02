@@ -145,3 +145,25 @@ def test_independently_derived_all_Pi2_from_christoffel_variation():
     _,_,u2=initial_jets_from_p(p,q,diag(L,0,0),L)
     assert all(simplify(independently[a,b]-
         u2[10+PAIRS.index((a,b))])==0 for a,b in PAIRS)
+
+
+
+def test_majorant_graph_dominates_actual_complete_50_GH_source_graph():
+    """Independent implementation comparison: B-graph is not permitted to
+    omit a source contraction present in the real 50-field GH evaluator.
+    """
+    from research.calc.bl_sharp_certificate import B,graph
+    from research.calc.gh_full_source import full_source
+    U=22
+    fields=[B(U,0) for _ in range(50)]
+    inv=[[B(U+2,2*U+10,3*U+25) for j in range(4)]for i in range(4)]
+    N=B(U+6,6*U+60,10*U+110)
+    n=[-N*inv[0][a] for a in range(4)]
+    beta=[N*N*inv[0][i] for i in range(1,4)]
+    gam=[[inv[i+1][j+1]+n[i+1]*n[j+1] for j in range(3)]for i in range(3)]
+    F=full_source(fields,geometry_override=(inv,N,n,beta,gam))
+    assert len(F)==50
+    certified=graph(U)["F"]
+    for key,attr in [("n","n"),("l","l"),("h","h")]:
+        actual=max(getattr(v,attr) for v in F if getattr(v,attr) is not None)
+        assert actual+3<=certified[key],(key,actual,certified[key])
