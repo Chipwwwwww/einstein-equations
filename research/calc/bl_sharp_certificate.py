@@ -75,37 +75,10 @@ def graph(U):
     gam=[[inv[i+1][j+1]+normal[i+1]*normal[j+1] for j in range(3)]for i in range(3)]
     dt=[[-N*pi[a][b]+sum((beta[i]*phi[i][a][b] for i in range(3)),B(None))
          for b in range(4)]for a in range(4)]
-    dg=[dt]+phi
-    Gamma=[[[ (dg[b][a][c]+dg[c][a][b]-dg[a][b][c])/2
-             for c in range(4)]for b in range(4)]for a in range(4)]
-    Fpi=zeros(4)
-    for a,b in PAIRS:
-        q=B(None)
-        for c in range(4):
-            for d in range(4):
-                term=sum((gam[i][j]*phi[i][c][a]*phi[j][d][b]
-                          for i in range(3) for j in range(3)),B(None))
-                term-=pi[c][a]*pi[d][b]
-                term-=sum((inv[e][f]*Gamma[a][c][e]*Gamma[b][d][f]
-                           for e in range(4) for f in range(4)),B(None))
-                q+=inv[c][d]*term
-        nn=sum((normal[c]*normal[d]*pi[c][d]
-                for c in range(4) for d in range(4)),B(None))
-        tr=sum((normal[c]*pi[c][i+1]*gam[i][j]*phi[j][a][b]
-                for c in range(4) for i in range(3) for j in range(3)),B(None))
-        Fpi[a][b]=Fpi[b][a]=2*N*q-N*nn*pi[a][b]/2-N*tr
-    Fphi=[]
-    for i in range(3):
-        mat=zeros(4)
-        for a,b in PAIRS:
-            q=sum((normal[c]*normal[d]*phi[i][c][d]
-                   for c in range(4) for d in range(4)),B(None))
-            val=N*q*pi[a][b]/2
-            val+=N*sum((gam[j][k]*normal[c]*phi[i][j+1][c]*phi[k][a][b]
-                        for c in range(4) for j in range(3) for k in range(3)),B(None))
-            mat[a][b]=mat[b][a]=val
-        Fphi.append(mat)
-    F=pack(dt,Fpi,Fphi)
+    # Reuse EXACT production source algebra: independent duplicated tensor
+    # majorants were found to underbound some contractions by 5-7 decades.
+    from .gh_full_source import full_source
+    F=full_source(fields,geometry_override=(inv,N,normal,beta,gam))
     A=[]
     for k in range(3):
         mat=zeros(5);mat[1][1]=-beta[k]
