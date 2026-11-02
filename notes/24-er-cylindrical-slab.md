@@ -201,7 +201,7 @@ Run:
     python -m research.calc.er_slab_certificate
     python -m pytest -q tests/test_gh_slab_certificate.py tests/test_er_slab_certificate.py
 
-Baseline run on Python 3.13 / SymPy 1.14: **8 passed**.
+Baseline run on Python 3.13 / SymPy 1.14: **9 passed**.
 
 These tests certify a **nonflat nonlinear constraint propagation
 subsector** and improve the previous flat gauge-wave benchmark.
@@ -215,3 +215,5 @@ positive symmetrizer, commuted-energy inequalities, reduction
 and gauge constraints, and certified excision/incoming boundary
 fluxes. This demands genuine nonlinear PDE analysis rather
 than the exact symmetry reduction here.
+
+Independent curvature regression also evaluates R^z_{tzt} directly from the four-dimensional Christoffel symbols, separately from the closed-form Riemann expression.
