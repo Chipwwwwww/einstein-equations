@@ -24,3 +24,28 @@ Run from repository root:
 
     python -m research.calc.gh_slab_certificate
     python -m pytest tests/test_gh_slab_certificate.py -q
+
+
+## Follow-on curvature-carrying proof (same session)
+
+The initial flat-gauge test was extended to a **nonflat cylindrical vacuum**
+Einstein–Rosen metric, including nonlinear constraint reconstruction. The full
+separate proof and exact rational certificate are in
+[notes/24-er-cylindrical-slab.md](../notes/24-er-cylindrical-slab.md).
+
+On the rational annular causal diamond the radial-wave residual equals 1/50,
+the quadratic gamma-time constraint residual is <=11/2500, and exact
+characteristic/constraint bounds give psi error <=11/9800, gamma error
+<=70079/24010000, and all relevant metric-component errors <=44/4889 (<0.01).
+The independent analytic comparator has psi error <=1/1600 and gamma error
+<=21/20000. SymPy verifies the independent full 4D Ricci tensor vanishes and
+a nonzero Riemann component R^z_{tzt}=-209/1000 at a rational point. The
+symmetry reduction is not a generic GH metric, and no 4D asymptotically flat
+merger is certified.
+
+    python -m research.calc.er_slab_certificate
+    python -m pytest -q tests/test_gh_slab_certificate.py tests/test_er_slab_certificate.py
+
+**Actual combined local result:** 8 passed (Python 3.13.5 / SymPy 1.14).
+The exact rational continuum enclosures do not rely on mesh sampling.
+Full repository regression/remote CI still pending.
