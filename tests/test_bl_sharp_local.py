@@ -107,3 +107,41 @@ def test_resolved_dynamics_and_exact_evaluator_domain_guards():
         metric(t,R(1),0,0)
     with pytest.raises(ValueError,match="puncture"):
         metric(t,0,0,R(3831,10000))
+
+
+
+def test_independently_derived_all_Pi2_from_christoffel_variation():
+    """Not a call to the packaged jet formulas: compute exact d/dt Gamma
+    and the original undamped GH quadratic source on off-axis rational data.
+    """
+    p=R(13,7);q=[R(2,5),-R(3,8),R(4,11)]
+    L=-R(7,13);N=p**-2
+    gi=diag(-p**4,p**-4,p**-4,p**-4)
+    D=[zeros(4)]
+    for i in range(3):
+        D.append(diag(4*p**-5*q[i],*([4*p**3*q[i]]*3)))
+    Gamma=[[[ (D[b][a,c]+D[c][a,b]-D[a][b,c])/2
+              for c in range(4)]for b in range(4)]for a in range(4)]
+    S=sum(a*a for a in q)
+    Pi1=zeros(4)
+    Pi1[0,0]=4*S/p**12-4*L/p**11
+    for i in range(3):
+        for j in range(3):
+            Pi1[i+1,j+1]=4*(S*int(i==j)-4*q[i]*q[j])/p**4
+            Pi1[i+1,j+1]-=4*L*int(i==j)/p**3
+    # Since g_t(0)=Phi_t(0)=0, the only nonzero first variation of
+    # the connection comes from partial_t (partial_t g) = -N Pi1.
+    DG=[[[ -N*R(1,2)*(int(b==0)*Pi1[a,c]+int(c==0)*Pi1[a,b]
+                          -int(a==0)*Pi1[b,c])
+              for c in range(4)]for b in range(4)]for a in range(4)]
+    independently=zeros(4)
+    for a in range(4):
+        for b in range(a,4):
+            f=sum(gi[c,d]*gi[e,h]*
+                 (DG[a][c][e]*Gamma[b][d][h]+Gamma[a][c][e]*DG[b][d][h])
+                 for c in range(4) for d in range(4)
+                 for e in range(4) for h in range(4))
+            independently[a,b]=independently[b,a]=simplify(-2*N*f)
+    _,_,u2=initial_jets_from_p(p,q,diag(L,0,0),L)
+    assert all(simplify(independently[a,b]-
+        u2[10+PAIRS.index((a,b))])==0 for a,b in PAIRS)
