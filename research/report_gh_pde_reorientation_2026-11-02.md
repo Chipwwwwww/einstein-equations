@@ -46,6 +46,6 @@ merger is certified.
     python -m research.calc.er_slab_certificate
     python -m pytest -q tests/test_gh_slab_certificate.py tests/test_er_slab_certificate.py
 
-**Actual combined local result:** 8 passed (Python 3.13.5 / SymPy 1.14).
+**Actual combined local result:** 9 passed (Python 3.13.5 / SymPy 1.14).
 The exact rational continuum enclosures do not rely on mesh sampling.
 Full repository regression/remote CI still pending.
