@@ -29,3 +29,17 @@ def test_different_radius_and_negative_controls():
         blocks(sp.Integer(-1),[0,0,0],sp.eye(3))
     with pytest.raises(ValueError):
         blocks(sp.Integer(1),[0,0,0],sp.Matrix([[1,1,0],[0,1,0],[0,0,1]]))
+
+
+
+def test_full_50_positive_gamma2_and_cross_term_correction():
+    N,beta,ginv=schwarzschild_ks_axis()
+    S,As=blocks(N,beta,ginv,gamma2=sp.Rational(1,4),Lambda2=sp.Integer(1))
+    assert S[0,1]==-sp.Rational(1,4)
+    assert S[1,0]==-sp.Rational(1,4)
+    assert all(sp.simplify(S*A-A.T*S)==sp.zeros(50) for A in As)
+    assert S[:5,:5].eigenvals()=={
+        sp.Rational(3,4):1,sp.Rational(5,4):1,
+        sp.Rational(1,2):1,sp.Integer(1):2}
+    with pytest.raises(ValueError,match="Lambda2"):
+        blocks(N,beta,ginv,gamma2=sp.Rational(3,2),Lambda2=sp.Integer(1))
