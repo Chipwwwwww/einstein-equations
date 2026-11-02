@@ -1,5 +1,11 @@
 # SpECTRE output pilot: XCTS smoke completed; GH evolution blocked
 
+**Continuation:** the [three-time gate](gh_three_time/README.md) built the actual
+BBH executable and passed its parser, then encountered a pre-import startup
+segfault. The XCTS result below is preserved as the earlier checkpoint. The
+precise normalization of its Hamiltonian statistic is clarified
+[separately](gh_three_time/HAMILTONIAN.md).
+
 **2026-11-02. EXECUTED / NUMERICAL. No physical evolution interval, common-horizon
 formation, GH evolution residual, continuum enclosure or exact vacuum certificate.**
 

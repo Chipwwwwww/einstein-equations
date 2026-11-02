@@ -1,0 +1,9 @@
+{
+  "classification": "EXECUTED inspection of the failed-run directory",
+  "directory": "/workspace/scratch/spectre-pilot/gh-three-time",
+  "HDF5_files": [],
+  "physical_observation_times": [],
+  "GH_component_datasets": [],
+  "output_checksums": {},
+  "reason": "GlobalCache startup failure before HDF5 creation; no fabricated temporal observations."
+}

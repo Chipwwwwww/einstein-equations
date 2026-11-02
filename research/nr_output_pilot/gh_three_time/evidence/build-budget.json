@@ -1,0 +1,10 @@
+{
+  "start": "2026-11-02T06:33:07+00:00",
+  "deadline_unix": 1793602387,
+  "walltime_seconds": 1200,
+  "single_compiler_process": true,
+  "container_memory_bytes": 12884901888,
+  "minimum_free_disk_bytes": 4294967296,
+  "cpu_quota": 4,
+  "source_commit": "ec2a35874d4a5105521a563498fdc8f33d784a82"
+}

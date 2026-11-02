@@ -1,0 +1,11 @@
+[06:47:49] WARNING  The BBH pipeline is still experimental.      Inspiral.py:498
+                    Please review the generated input files.
+           INFO     Selected subfile VolumeData.vol (the only    Inspiral.py:220
+                    available one).
+           INFO     Running with executable:                     Schedule.py:448
+                    /sxscollaboration/spectre/build/bin/EvolveGh
+                    BinaryBlackHole
+           INFO     Configure run directory '/work/gh-generated' Schedule.py:552
+           INFO     Run 'EvolveGhBinaryBlackHole' in             Schedule.py:619
+                    '/work/gh-generated' on 4 cores.
+exit_code=0

@@ -1,0 +1,315 @@
+[
+  {
+    "path": "Evolution.InitialSlabSize",
+    "old": 0.1,
+    "new": 0.0001
+  },
+  {
+    "path": "Evolution.InitialTimeStep",
+    "old": 0.0002,
+    "new": 1e-05
+  },
+  {
+    "path": "Observers.VolumeFileName",
+    "old": "BbhVolume",
+    "new": "GhThreeTimeVolume"
+  },
+  {
+    "path": "Observers.ReductionFileName",
+    "old": "BbhReductions",
+    "new": "GhThreeTimeReductions"
+  },
+  {
+    "path": "Observers.SurfaceFileName",
+    "old": "BbhSurfaces",
+    "new": "GhThreeTimeSurfaces"
+  },
+  {
+    "path": "EventsAndTriggersAtSlabs",
+    "old": [
+      {
+        "Trigger": {
+          "Slabs": {
+            "EvenlySpaced": {
+              "Interval": 1,
+              "Offset": 0
+            }
+          }
+        },
+        "Events": [
+          {
+            "ObserveTimeStep": {
+              "SubfileName": "TimeSteps",
+              "PrintTimeToTerminal": true,
+              "ObservePerCore": false
+            }
+          },
+          {
+            "ObserveNorms": {
+              "SubfileName": "Norms",
+              "TensorsToObserve": [
+                {
+                  "Name": "Lapse",
+                  "NormType": "L2Norm",
+                  "Components": "Individual"
+                },
+                {
+                  "Name": "PointwiseL2Norm(GaugeConstraint)",
+                  "NormType": "L2Norm",
+                  "Components": "Sum"
+                },
+                {
+                  "Name": "PointwiseL2Norm(ThreeIndexConstraint)",
+                  "NormType": "L2Norm",
+                  "Components": "Sum"
+                }
+              ],
+              "BlocksToObserve": "All",
+              "ReductionScope": "WholeDomain"
+            }
+          }
+        ]
+      },
+      {
+        "Trigger": {
+          "Slabs": {
+            "EvenlySpaced": {
+              "Interval": 100,
+              "Offset": 0
+            }
+          }
+        },
+        "Events": [
+          {
+            "ObserveNorms": {
+              "SubfileName": "ConstraintEnergy",
+              "TensorsToObserve": [
+                {
+                  "Name": "ConstraintEnergy",
+                  "NormType": "L2Norm",
+                  "Components": "Sum"
+                },
+                {
+                  "Name": "NormalizedConstraintEnergy",
+                  "NormType": "L2Norm",
+                  "Components": "Sum"
+                }
+              ],
+              "BlocksToObserve": "All",
+              "ReductionScope": "WholeDomain"
+            }
+          },
+          {
+            "ErrorIfDataTooBig": {
+              "Threshold": 10,
+              "VariablesToCheck": [
+                "ConstraintEnergy"
+              ]
+            }
+          },
+          {
+            "ErrorIfDataTooBig": {
+              "Threshold": 100,
+              "VariablesToCheck": [
+                "SpacetimeMetric"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "Trigger": {
+          "Slabs": {
+            "EvenlySpaced": {
+              "Interval": 5,
+              "Offset": 0
+            }
+          }
+        },
+        "Events": [
+          "ObservationAhA",
+          "ObservationAhB",
+          "ObservationExcisionBoundaryA",
+          "ObservationExcisionBoundaryB"
+        ]
+      },
+      {
+        "Trigger": {
+          "Slabs": {
+            "EvenlySpaced": {
+              "Interval": 2000,
+              "Offset": 0
+            }
+          }
+        },
+        "Events": [
+          {
+            "ObserveFields": {
+              "SubfileName": "VolumeData",
+              "VariablesToObserve": [
+                "SpacetimeMetric",
+                "ConstraintEnergy",
+                "NormalizedConstraintEnergy",
+                "PointwiseL2Norm(GaugeConstraint)",
+                "PointwiseL2Norm(ThreeIndexConstraint)",
+                "Lapse",
+                "SpatialRicciScalar",
+                "Psi4Real"
+              ],
+              "InterpolateToMesh": "None",
+              "ProjectToMesh": "None",
+              "CoordinatesFloatingPointType": "Float",
+              "FloatingPointTypes": [
+                "Float"
+              ],
+              "BlocksToObserve": "All"
+            }
+          }
+        ]
+      },
+      {
+        "Trigger": {
+          "SeparationLessThan": {
+            "Value": 2.38
+          }
+        },
+        "Events": [
+          {
+            "ChangeSlabSize": {
+              "DelayChange": 0,
+              "StepChoosers": [
+                {
+                  "Constant": 0.01
+                }
+              ]
+            }
+          },
+          "BbhCheckConstraintThresholds",
+          {
+            "ObservationAhC": {
+              "SubfileName": "ForContinuation",
+              "VariablesToObserve": [
+                "SpacetimeMetric",
+                "Pi",
+                "Phi"
+              ],
+              "InterpolateToMesh": "None",
+              "ProjectToMesh": "None",
+              "CoordinatesFloatingPointType": "Double",
+              "FloatingPointTypes": [
+                "Double"
+              ],
+              "BlocksToObserve": "All"
+            }
+          }
+        ]
+      },
+      {
+        "Trigger": {
+          "TimeCompares": {
+            "Comparison": "GreaterThanOrEqualTo",
+            "Value": 0.0002
+          }
+        },
+        "Events": [
+          "Completion"
+        ]
+      },
+      {
+        "Trigger": "Always",
+        "Events": [
+          "CleanFunctionsOfTime"
+        ]
+      }
+    ],
+    "new": [
+      {
+        "Trigger": "Always",
+        "Events": [
+          {
+            "ObserveFields": {
+              "SubfileName": "Validation",
+              "VariablesToObserve": [
+                "SpacetimeMetric",
+                "Pi",
+                "Phi",
+                "GaugeH",
+                "SpacetimeDerivGaugeH",
+                "Lapse",
+                "Shift",
+                "SpatialMetric",
+                "GaugeConstraint"
+              ],
+              "InterpolateToMesh": "None",
+              "ProjectToMesh": "None",
+              "CoordinatesFloatingPointType": "Double",
+              "FloatingPointTypes": [
+                "Double"
+              ],
+              "BlocksToObserve": "All"
+            }
+          }
+        ]
+      },
+      {
+        "Trigger": "Always",
+        "Events": [
+          {
+            "ObserveNorms": {
+              "SubfileName": "Constraints",
+              "TensorsToObserve": [
+                {
+                  "Name": "Lapse",
+                  "NormType": "Min",
+                  "Components": "Individual"
+                },
+                {
+                  "Name": "PointwiseL2Norm(GaugeConstraint)",
+                  "NormType": "L2Norm",
+                  "Components": "Sum"
+                },
+                {
+                  "Name": "PointwiseL2Norm(ThreeIndexConstraint)",
+                  "NormType": "L2Norm",
+                  "Components": "Sum"
+                }
+              ],
+              "BlocksToObserve": "All",
+              "ReductionScope": "WholeDomain"
+            }
+          }
+        ]
+      },
+      {
+        "Trigger": {
+          "TimeCompares": {
+            "Comparison": "GreaterThanOrEqualTo",
+            "Value": 0.0002
+          }
+        },
+        "Events": [
+          "Completion"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "EventsAndDenseTriggers",
+    "old": [
+      {
+        "Trigger": {
+          "Times": {
+            "EvenlySpaced": {
+              "Interval": 0.1,
+              "Offset": 0.0
+            }
+          }
+        },
+        "Events": [
+          "BondiSachsInterpolation"
+        ]
+      }
+    ],
+    "new": []
+  }
+]

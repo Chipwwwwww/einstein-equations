@@ -1,0 +1,8 @@
+ec2a35874d4a5105521a563498fdc8f33d784a82
+ D containers/Dockerfile.buildenv
+low 0
+high 0
+max 0
+oom 0
+oom_kill 0
+oom_group_kill 0
