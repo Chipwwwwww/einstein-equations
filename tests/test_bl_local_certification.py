@@ -95,3 +95,19 @@ def test_BL_initial_normal_GH_gauge_constraint_direct_zero():
     dtCi=[pi[0,i]/N for i in range(1,4)]
     assert sp.factor(dtC0)==0
     assert all(sp.factor(v)==0 for v in dtCi)
+
+def test_short_time_and_unverified_faster_slab_rejected():
+    with pytest.raises(ValueError,match='rejected'):
+        certificate(time_exponent_override=10000)
+    with pytest.raises(ValueError,match='positive integer'):
+        certificate(time_exponent_override=-1)
+
+
+def test_all_fifty_field_evaluable_time_taylor():
+    from research.calc.bl_gh_taylor_evaluator import evaluate_50_field_state
+    T=sp.Rational(1,10**29045)
+    u=evaluate_50_field_state(T,sp.Rational(1,10),0,0)
+    assert len(u)==50
+    assert any(z!=0 for z in u[10:20])
+    p,dp,_=p_and_derivatives(sp.Rational(1,10),0,0)
+    assert sp.simplify(u[20]-4*p**-5*dp[0])==0
