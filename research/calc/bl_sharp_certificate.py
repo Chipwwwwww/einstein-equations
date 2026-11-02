@@ -151,7 +151,10 @@ def certificate(time_exponent_override=None):
                 graphs[s]["A"]["n"]+V1[s+1]+3)
         for s in (3,4)}
     g=graphs[3]
-    D=bmax(g["JS"]+g["F_metric_n"],g["JB"]+U[3]+3)
+    # Finite-dimensional pointwise DS,D(SA) require pointwise field values.
+    # ||u||_infty <=6||u||_H3, hence use the strictly larger U+2 graph.
+    gp=graph(U[3]+2)
+    D=bmax(gp["JS"]+g["F_metric_n"],gp["JB"]+U[3]+3)
     G=bmax(g["F"]["l"],g["A"]["l"]+U[4]+3,g["A"]["n"]+5)
     K=bmax(D+4,G+5)
     DG_u2=bmax(g["F"]["l"]+V2[3],
