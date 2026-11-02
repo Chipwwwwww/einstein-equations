@@ -249,3 +249,25 @@ Previous global-MOTS claims and the PR #7 audit override above remain intact. Th
 | GH29-01 | Variable-background H3 inverse and Lorentzian ball: q=48²BR<1, 6JR<1, 6R<sigma imply inverse norm B/(1-q) and Lipschitz 48²[B/(1-q)]² | R (standard Banach inversion proof) + exact rational tests | note29, gh_reference_neumann.py; nonconstant periodic example; not yet a punctured BH exterior |
 | GH28-07 | 32 selected local tests pass including negative controls and full Kasner Ricci/Riemann identity | software evidence, not a proof by itself | pytest commands in research/report_full_gh_nonlinear_certification_2026-11-02.md; full inherited suite and remote CI remain unverified |
 | GH28-08 | New mathematics relative to prior PDE literature, full BL merger exterior or certified positive-time BL gauge overlap | **NOT ESTABLISHED** | The theorem uses known Kato/Friedrich/Rendall/GH foundations; no black-hole exterior Sobolev/domain-of-dependence/constraint boundary certificate |
+
+
+## 2026-11-02 local BL harmonic-gauge finite-speed certificate (LGB-30)
+
+The earlier MOTS claims and GH28–GH29 audit qualifications remain intact. These entries describe a *tiny* positive-time local Einstein vacuum result, not a merger or a geometric extension of the previous CK tube.
+
+| ID | Mathematical statement | Evidentiary status and limits |
+| --- | --- | --- |
+| LGB-01 | Equal-mass BL \(d=3831/5000\) extended by explicit \(C^\infty\) positive \(p_E\) on \(\mathbb T^3\); exact agreement on \(\Omega_{\rm phys}=\{|x|<1.1,r_\pm>0.2\}\) | Analytic definition and exact flat-cutoff computation, note30 §§1–2; no vacuum claim for cutoff region |
+| LGB-02 | Exact derivative envelopes through order8 and \(H^7\) initial bound \(10^{795}\) | Rational scalar derivative recursion, Faà di Bruno/Leibniz and Fourier Sobolev inequality, bl_local_cutoff.py; extraordinarily pessimistic |
+| LGB-03 | Entire-tube full 50-field GH source \(H^3\) norm \(<10^{8871}\), Fréchet derivative \(<10^{11287}\), lower symmetrizer \(>10^{-4}\) | Reference-centered matrix Neumann/binomial functional calculus, bl_torus_majorant.py, note30 §4; \(\gamma_1=-1,\gamma_2=\gamma_0=0,H_a=0\) only |
+| LGB-04 | Smooth explicit full GH approximate trajectory \(v=u_{E,0}+tu_1+\tfrac12t^2u_2\), \(u_1=F(u_{E,0})-A^i(u_{E,0})\partial_iu_{E,0}\), \(u_2^g=-p_E^{-2}u_1^\Pi\) | Full first-order GH derivation, note30 §5; analytic physical metric evaluator and exact initial data |
+| LGB-05 | Continuum full GH \(H^3\) residual \(\rho\le10^{-8060}\), nonlinear error \(E<10^{-37098}\) on \(T=10^{-29045}M\), \(R=10^{-8050}\) | Strict Kato/first-exit \(H^3\) bootstrap and integer exponent graph, bl_torus_majorant.py; ultra-short but positive |
+| LGB-06 | Every GH/constraint coordinate characteristic speed \(<4\) in the true tube; target \(\Omega_*=\{|x|\le0.9,r_\pm\ge0.3\}\) has buffer \(\ge0.1\) | Direct conformal-reference inverse bound, note30 §7; \(4T<0.1\) |
+| LGB-07 | Physical BL initial GH gauge, reduction and Einstein constraints including \(\nabla_n C_a\) vanish exactly | Exact harmonic \(p\), \(K_{ij}=0\), \(\dot\Pi_{00}=4|\nabla p|^2/p^{12}\), \(\dot\Pi_{ij}=4(|\nabla p|^2\delta_{ij}-4p_i p_j)/p^4\), independent symbolic contraction test |
+| LGB-08 | Auxiliary GH development is vacuum on \([0,T]\times\Omega_*\) despite nonvacuum cutoff outside physical region | Symmetric hyperbolic local finite propagation plus homogeneous GH subsidiary theory of Lindblom et al. 2006/Friedrich–Rendall; no artificial incoming boundary; proven in note30 §7 |
+| LGB-09 | Metric evaluator \(g_{00}^{app}=-p^{-4}-2t^2D/p^{14}\), \(g_{ij}^{app}=p^4\delta_{ij}+t^2(8p_ip_j-2D\delta_{ij})/p^6\) with component error \(<6\,10^{-37098}\) | Explicit physical GH jets, exact evaluator rejects out-of-domain/time, H3 embedding 6; first spatial derivative error \(<12\,10^{-37098}\); curvature errors not established |
+| LGB-10 | GH source independent audit with nonzero shift/off-diagonal metric jets | All ten generic off-shell symmetric components checked against independent second-order reduced GH wave tensor; new test_gh_generic_shift_jet.py |
+| LGB-11 | 41 selected local tests passed, including accelerated-time and domain failures and python -O certificate guards | Local tests; complete inherited suite, remote CI and external mathematical review not established |
+| LGB-12 | More geometric spacetime coverage than prior BL CK; a merger slab; a new PDE theorem | **NOT ESTABLISHED**. New interval \(10^{-29045}M\) is much shorter than prior \(\sim8.683\,10^{-4}M\) in a different chart; no validated gauge overlap, common horizon coverage, exterior or radiation |
+
+Proof and report: notes/30-localized-bl-gh-positive-time.md and research/report_localized_gh_bl_continuation_2026-11-02.md. No priority or publishable novelty claimed.
