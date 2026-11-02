@@ -128,7 +128,10 @@ def auxiliary_p(x,y,z,m=9):
         if q.is_number and q<=A*A:
             terms.append(sp.Integer(0));continue
         ci=finite_step((q-sp.Rational(A*A))/sp.Rational(B*B-A*A),m)
-        terms.append(ci/sp.sqrt(q))
+        # A literal Piecewise zero is essential: 0/sqrt(0) is not a valid
+        # symbolic evaluation at the artificial-filled puncture.
+        terms.append(sp.Piecewise((0,q<=sp.Rational(A*A)),
+                                  (ci/sp.sqrt(q),True)))
     return 1+co*sum(terms)/4
 
 
