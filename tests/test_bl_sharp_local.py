@@ -1,0 +1,169 @@
+"""Independent positive/negative tests: full second GH jet, sharp C9 BL bounds.
+
+These tests do not substitute for the mathematical proof in note31.
+"""
+from fractions import Fraction as Q
+from sympy import (Rational as R, Integer, Matrix, diag, symbols, sqrt, diff,
+                   simplify, zeros, factorial, binomial)
+import sympy as sp
+import pytest
+from research.calc.bl_sharp_cutoff import (
+    cutoff_coefficients, bernstein_derivative_bounds, derivative_envelopes,
+    exact_ceil_log10, auxiliary_p)
+from research.calc.bl_sharp_certificate import certificate
+from research.calc.bl_full_second_jet import (
+    physical_jets, initial_jets_from_p, full_50_field_state, metric,
+    PAIRS, p_and_derivatives)
+
+def test_C9_finite_polynomial_cutoff_and_exact_Bernstein():
+    z=symbols("z");P=sum(sp.Rational(c.numerator,c.denominator)*z**k
+                         for k,c in cutoff_coefficients(9).items())
+    assert P.subs(z,0)==0 and P.subs(z,1)==1
+    for i in range(1,10):
+        assert diff(P,z,i).subs(z,0)==diff(P,z,i).subs(z,1)==0
+    assert diff(P,z,10).subs(z,0)!=0  # C9, not C-infinity
+    D=bernstein_derivative_bounds(cutoff_coefficients(9),8)
+    assert len(D)==9 and all(d>0 for d in D)
+    e=derivative_envelopes()
+    assert e["H3_H7_log10_bounds"]=={3:22,4:27,5:32,6:37,7:42}
+    assert e["k"]==8 and e["m"]==9
+
+def test_exact_decimal_exponent_for_both_small_and_large_numbers():
+    assert exact_ceil_log10(Q(1,1000))==-3
+    assert exact_ceil_log10(Q(1,10000)*Q(3,2))==-3
+    assert exact_ceil_log10(Q(74184649,10**9))==-1
+    assert exact_ceil_log10(Q(100001))==6
+    for k in range(-20,21):
+        v=Q(10)**k
+        assert exact_ceil_log10(v)==k
+        assert exact_ceil_log10(v*Q(101,100))==k+1
+
+def test_BL_auxiliary_exact_match_and_not_vacuum_outside():
+    x=R(1,10);a=R(3831,10000)
+    p=auxiliary_p(x,0,0)
+    assert simplify(p-(1+1/(2*sqrt(x*x+a*a))))==0
+    assert auxiliary_p(R(2),0,0)==1
+    assert auxiliary_p(0,0,a)>1  # the other hole contributes; this puncture is smooth
+    assert derivative_envelopes()["globally_vacuum"] is False
+
+def test_complete_full_50_field_second_time_jet_has_missing_components():
+    u0,u1,u2=physical_jets(R(1,10),0,0)
+    assert len(u0)==len(u1)==len(u2)==50
+    assert u1[11]==0
+    assert u2[11]!=0 and u2[24]!=0 and u2[35]!=0 and u2[46]!=0
+    assert u2[0]!=0 and u2[4]!=0
+
+def test_all_Pi2_tensor_entries_offshell_nonharmonic_p():
+    p=R(13,7);q=[R(2,5),-R(3,8),R(4,11)];L=-R(7,13)
+    Hess=diag(L,0,0)
+    u0,u1,u2=initial_jets_from_p(p,q,Hess,L)
+    D=sum(a*a for a in q)
+    for i in range(3):
+        idx=10+PAIRS.index((0,i+1))
+        assert simplify(u2[idx]-16*q[i]*(p*L+5*D)/p**13)==0
+    for a,b in PAIRS:
+        if not(a==0 and b!=0):
+            assert u2[10+PAIRS.index((a,b))]==0
+
+def test_Phi2_equals_gradient_metric2_at_nonsymmetric_point():
+    x,y,z=symbols("x y z",real=True)
+    a=R(3831,10000)
+    p=1+1/(4*sqrt(x*x+y*y+(z-a)**2))+1/(4*sqrt(x*x+y*y+(z+a)**2))
+    px,py,pz=[diff(p,v) for v in (x,y,z)]
+    D=px*px+py*py+pz*pz
+    point={x:R(1,10),y:0,z:0}
+    u0,u1,u2=physical_jets(R(1,10),0,0)
+    assert simplify(u2[20]-diff(-4*D/p**14,x).subs(point))==0
+    assert simplify(u2[24]-diff((16*px*px-4*D)/p**6,x).subs(point))==0
+
+def test_sharp_graph_certificate_and_fail_closed():
+    c=certificate()
+    assert all(c["flags"].values())
+    assert c["reference_Hs_log10"]=={3:22,4:27,5:32,6:37,7:42}
+    assert c["full_GH_source_graph_H3"]["F_l"]==547
+    assert c["full_GH_source_graph_H3"]["F_h"]==724
+    assert c["growth_K_log10"]==560
+    assert c["residual_t2_coefficient_log10"]==2856
+    assert c["time_T_over_M"]=="10^(-2876)"
+    assert c["H3_error_upper"]=="10^(-5762)"
+    with pytest.raises(ValueError,match="rejected"):
+        certificate(time_exponent_override=1000)
+    with pytest.raises(ValueError,match="positive integer"):
+        certificate(time_exponent_override=-1)
+
+def test_resolved_dynamics_and_exact_evaluator_domain_guards():
+    a=Q(1,10); rmin=Q(39,100); rmax=Q(2,5)
+    # r=sqrt(0.1^2+0.3831^2), so rmin<r<rmax exactly
+    assert rmin*rmin < a*a+Q(3831,10000)**2 < rmax*rmax
+    gxx2_lower=12*(a/(2*rmax**3))**2/(1+1/(2*rmin))**6
+    assert gxx2_lower>Q(1,20)
+    assert 10**10>480  # delta gxx>=T²/40>2*(6 E)
+    t=R(1,10**2876)
+    assert len(full_50_field_state(t,R(1,10),0,0))==50
+    assert metric(t,R(1,10),0,0,precision=12).shape==(4,4)
+    with pytest.raises(ValueError,match="time"):
+        metric(t*2,R(1,10),0,0)
+    with pytest.raises(ValueError,match="outside"):
+        metric(t,R(1),0,0)
+    with pytest.raises(ValueError,match="puncture"):
+        metric(t,0,0,R(3831,10000))
+
+
+
+def test_independently_derived_all_Pi2_from_christoffel_variation():
+    """Not a call to the packaged jet formulas: compute exact d/dt Gamma
+    and the original undamped GH quadratic source on off-axis rational data.
+    """
+    p=R(13,7);q=[R(2,5),-R(3,8),R(4,11)]
+    L=-R(7,13);N=p**-2
+    gi=diag(-p**4,p**-4,p**-4,p**-4)
+    D=[zeros(4)]
+    for i in range(3):
+        D.append(diag(4*p**-5*q[i],*([4*p**3*q[i]]*3)))
+    Gamma=[[[ (D[b][a,c]+D[c][a,b]-D[a][b,c])/2
+              for c in range(4)]for b in range(4)]for a in range(4)]
+    S=sum(a*a for a in q)
+    Pi1=zeros(4)
+    Pi1[0,0]=4*S/p**12-4*L/p**11
+    for i in range(3):
+        for j in range(3):
+            Pi1[i+1,j+1]=4*(S*int(i==j)-4*q[i]*q[j])/p**4
+            Pi1[i+1,j+1]-=4*L*int(i==j)/p**3
+    # Since g_t(0)=Phi_t(0)=0, the only nonzero first variation of
+    # the connection comes from partial_t (partial_t g) = -N Pi1.
+    DG=[[[ -N*R(1,2)*(int(b==0)*Pi1[a,c]+int(c==0)*Pi1[a,b]
+                          -int(a==0)*Pi1[b,c])
+              for c in range(4)]for b in range(4)]for a in range(4)]
+    independently=zeros(4)
+    for a in range(4):
+        for b in range(a,4):
+            f=sum(gi[c,d]*gi[e,h]*
+                 (DG[a][c][e]*Gamma[b][d][h]+Gamma[a][c][e]*DG[b][d][h])
+                 for c in range(4) for d in range(4)
+                 for e in range(4) for h in range(4))
+            independently[a,b]=independently[b,a]=simplify(-2*N*f)
+    _,_,u2=initial_jets_from_p(p,q,diag(L,0,0),L)
+    assert all(simplify(independently[a,b]-
+        u2[10+PAIRS.index((a,b))])==0 for a,b in PAIRS)
+
+
+
+def test_majorant_graph_dominates_actual_complete_50_GH_source_graph():
+    """Independent implementation comparison: B-graph is not permitted to
+    omit a source contraction present in the real 50-field GH evaluator.
+    """
+    from research.calc.bl_sharp_certificate import B,graph
+    from research.calc.gh_full_source import full_source
+    U=22
+    fields=[B(U,0) for _ in range(50)]
+    inv=[[B(U+2,2*U+10,3*U+25) for j in range(4)]for i in range(4)]
+    N=B(U+6,6*U+60,10*U+110)
+    n=[-N*inv[0][a] for a in range(4)]
+    beta=[N*N*inv[0][i] for i in range(1,4)]
+    gam=[[inv[i+1][j+1]+n[i+1]*n[j+1] for j in range(3)]for i in range(3)]
+    F=full_source(fields,geometry_override=(inv,N,n,beta,gam))
+    assert len(F)==50
+    certified=graph(U)["F"]
+    for key,attr in [("n","n"),("l","l"),("h","h")]:
+        actual=max(getattr(v,attr) for v in F if getattr(v,attr) is not None)
+        assert actual+3<=certified[key],(key,actual,certified[key])
