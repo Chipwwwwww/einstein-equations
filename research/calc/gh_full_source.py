@@ -55,7 +55,7 @@ def inverse4(M):
     return [row[4:] for row in a]
 
 
-def full_source(u,H=None,dH=None,gamma0=0):
+def full_source(u,H=None,dH=None,gamma0=0,geometry_override=None):
     """Return F in u_t + A^k(u)du/dx^k=F for gamma1=-1,gamma2=0.
 
     H_a(x) and dH[a][b]=partial_a H_b fixed known coordinate functions,
@@ -65,11 +65,16 @@ def full_source(u,H=None,dH=None,gamma0=0):
     if gamma0 != 0:
         raise NotImplementedError("Only gamma0=gamma2=0 is audited; no damping-source claim")
     g,pi,phi=unpack50(u)
-    gu=inverse4(g)
-    N=(-gu[0][0]).inverse_sqrt() if hasattr(gu[0][0], "inverse_sqrt") else 1/sp.sqrt(-gu[0][0])
-    normal=[-N*gu[0][a] for a in range(4)]
-    beta=[-gu[0][i]/gu[0][0] for i in range(1,4)]
-    gamma=[[gu[i+1][j+1]+normal[i+1]*normal[j+1] for j in range(3)] for i in range(3)]
+    if geometry_override is None:
+        gu=inverse4(g)
+        N=(-gu[0][0]).inverse_sqrt() if hasattr(gu[0][0], "inverse_sqrt") else 1/sp.sqrt(-gu[0][0])
+        normal=[-N*gu[0][a] for a in range(4)]
+        beta=[-gu[0][i]/gu[0][0] for i in range(1,4)]
+        gamma=[[gu[i+1][j+1]+normal[i+1]*normal[j+1] for j in range(3)] for i in range(3)]
+    else:
+        # Exact same algebraic source but inverse/lapse etc carry externally
+        # proven reference-centered Banach-algebra bounds.
+        gu,N,normal,beta,gamma=geometry_override
     dt=[[ -N*pi[a][b]+sum(beta[i]*phi[i][a][b] for i in range(3))
          for b in range(4)] for a in range(4)]
     dg=[dt]+phi
