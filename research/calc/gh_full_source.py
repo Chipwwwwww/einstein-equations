@@ -77,7 +77,8 @@ def full_source(u,H=None,dH=None,gamma0=0):
               for c in range(4)] for b in range(4)] for a in range(4)]
     if H is None: H=[0]*4
     if dH is None: dH=[[0]*4 for _ in range(4)]
-    assert len(H)==4 and len(dH)==4
+    if len(H)!=4 or len(dH)!=4 or any(len(row)!=4 for row in dH):
+        raise ValueError("GH gauge input must have 4 covectors and a 4x4 derivative")
     Gamma_trace=[sum(gu[c][d]*Gamma[a][c][d] for c in range(4) for d in range(4)) for a in range(4)]
     Fpi=[[0]*4 for _ in range(4)]
     for a,b in PAIRS:
