@@ -17,19 +17,19 @@
     42
   ],
   "full_GH_H3_source_log10": {
-    "F": 360,
-    "DF": 538,
-    "D2F": 714,
+    "F": 368,
+    "DF": 547,
+    "D2F": 724,
     "A": 148,
     "DA": 318,
     "D2A": 487
   },
   "full_50_time_jets": {
-    "u1_H3": 364,
-    "u1_H4": 419,
-    "u1_H5": 474,
-    "u2_H3": 906,
-    "u2_H4": 1041
+    "u1_H3": 372,
+    "u1_H4": 427,
+    "u1_H5": 482,
+    "u2_H3": 923,
+    "u2_H4": 1058
   },
   "pointwise_symmetrizer_derivative": {
     "reference_graph_U": 24,
@@ -37,16 +37,16 @@
     "JB_log10": 401
   },
   "metric_sector_D_log10": 430,
-  "lower_order_G_log10": 542,
-  "growth_K_log10": 551,
-  "second_order_residual_coefficient_log10": 2812,
-  "full_field_H3_error_bound": "<10^-5674",
-  "continuum_H3_residual_at_T": "<=10^-2852",
-  "metric_component_error_bound": "<6*10^-5674",
-  "spatial_derivative_error_bound": "<12*10^-5674",
+  "lower_order_G_log10": 551,
+  "growth_K_log10": 560,
+  "second_order_residual_coefficient_log10": 2856,
+  "full_field_H3_error_bound": "<10^-5762",
+  "continuum_H3_residual_at_T": "<=10^-2896",
+  "metric_component_error_bound": "<6*10^-5762",
+  "spatial_derivative_error_bound": "<12*10^-5762",
   "tube_radius_H3": "10^-320",
-  "time_T_over_M": "10^-2832",
-  "improvement_log10_T_vs_PR11": 26213,
+  "time_T_over_M": "10^-2876",
+  "improvement_log10_T_vs_PR11": 26169,
   "target_dynamics": {
     "point_x": "(1/10,0,0)",
     "gxx_time_second_derivative_lower": ">1/20",
@@ -83,5 +83,6 @@
     "research/calc/bl_sharp_certificate.py",
     "research/calc/bl_full_second_jet.py"
   ],
-  "test_file": "tests/test_bl_sharp_local.py"
+  "test_file": "tests/test_bl_sharp_local.py",
+  "verification_note": "Independent production-source traversal falsified preliminary duplicate-graph source bounds; superseded T=10^-2832 and E<10^-5674 are withdrawn. Final graph uses full_source."
 }
