@@ -1,18 +1,21 @@
 """Exact symbolic 50-field GH PRINCIPAL symbol; no full Einstein residual.
 
-Lindblom et al. (2006) gamma1=-1, gamma2=0. The 50 fields are ten
+Lindblom et al. (2006) gamma1=-1, gamma2 any with Lambda2>gamma2^2. The 50 fields are ten
 symmetric spacetime metric components, each with (psi,Pi,Phi_x,Phi_y,Phi_z).
 """
 import sympy as sp
 
 
-def blocks(N,beta,spatial_inverse):
+def blocks(N,beta,spatial_inverse,gamma2=sp.Integer(0),Lambda2=sp.Integer(1)):
     gamma=sp.Matrix(spatial_inverse)
     if gamma.shape!=(3,3) or gamma!=gamma.T:
         raise ValueError("symmetric spatial inverse required")
     if len(beta)!=3 or N<=0:
         raise ValueError("positive lapse and three shifts required")
-    S5=sp.diag(1,1,1,1,1)
+    if Lambda2-gamma2**2<=0:
+        raise ValueError("psi-Pi symmetrizer requires Lambda2>gamma2^2")
+    S5=sp.diag(Lambda2,1,1,1,1)
+    S5[0,1]=S5[1,0]=-gamma2
     for i in range(3):
         for j in range(3):
             S5[i+2,j+2]=gamma[i,j]
@@ -20,9 +23,11 @@ def blocks(N,beta,spatial_inverse):
     for k in range(3):
         A=sp.zeros(5)
         A[1,1]=-beta[k]
+        A[1,0]=gamma2*beta[k]
         for j in range(3):
             A[1,j+2]=N*gamma[k,j]
             A[j+2,1]=N*(1 if j==k else 0)
+            A[j+2,0]=-gamma2*N*(1 if j==k else 0)
             A[j+2,j+2]=-beta[k]
         A5.append(A)
     I10=sp.eye(10)
