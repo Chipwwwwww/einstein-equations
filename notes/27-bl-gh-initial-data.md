@@ -48,3 +48,18 @@ The initial normal derivative of the GH gauge constraint has not been separately
 See Friedrich–Rendall (2000), https://arxiv.org/abs/gr-qc/0002074; Lindblom et al. (2006), https://arxiv.org/abs/gr-qc/0512093; and existing repo notes 17, 19 and 22.
 
 **Novelty:** new-to-repository explicit initial-data handoff, not a new mathematical-relativity theorem.
+
+
+## Additional exact geometric GH bounds on a puncture-excluding region
+
+The code now also gives a continuum **geometric-only** positivity certificate on any coordinate region where both $r_\pm\ge1/4$. There,
+\[
+1\le p\le1+\frac1{2(1/4)}=3,\qquad
+N=p^{-2}\ge1/9,\qquad
+\lambda_{\min}(S_{50})\ge p^{-4}\ge1/81
+\]
+for the $\gamma_2=0$ principal symmetrizer. For a separately justified pointwise symmetric metric perturbation $\|\delta g\|_{\rm op}\le 6/1000$, the inverse reference norm is at most $81$, so the Neumann multiplier is $243/500<1$. Thus the straight metric homotopy remains Lorentzian, the perturbed spatial metric remains positive, and
+\[
+\boxed{\lambda_{\min}(S_{50})\ge\frac{500}{40503}}
+\]
+on this **assumed** pointwise tube. These are exact rational bounds over the full puncture-excluding region, not sample values. The bound is **not** claimed to arise from a valid global H^3 norm on a domain with puncture boundaries. Neither an H^3 GH residual nor positive-time Einstein existence has been certified. The negative test rejects a tube of radius $1/100$ that is too wide for the stated matrix inverse majorant.
