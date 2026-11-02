@@ -64,3 +64,22 @@ def test_full_four_d_vacuum_and_nonflatness():
     Rztzt=sp.simplify(-sp.diff(psi,t,2)+sp.diff(psi,t)*sp.diff(chi,t)+
                      sp.diff(psi,r)*sp.diff(chi,r)-sp.diff(psi,t)**2)
     assert Rztzt.subs({t:0,r:1}) == sp.Rational(-209,1000)
+
+
+def test_independently_computed_riemann_curvature():
+    t,r,z,ph=sp.symbols('t r z ph',real=True)
+    a=sp.Rational(1,10)
+    psi=a*(t**2+r**2/2)
+    gamma=a*a*(2*t*t*r*r+r**4/4)
+    chi=gamma-psi
+    coords=[t,r,z,ph]
+    g=sp.diag(-sp.exp(2*chi),sp.exp(2*chi),sp.exp(2*psi),r**2*sp.exp(-2*psi))
+    inv=sp.diag(-sp.exp(-2*chi),sp.exp(-2*chi),sp.exp(-2*psi),sp.exp(2*psi)/r**2)
+    Gamma = [[[sp.simplify(sum(inv[i,k]*(sp.diff(g[k,j],coords[l])+
+        sp.diff(g[k,l],coords[j])-sp.diff(g[j,l],coords[k]))/2
+        for k in range(4))) for l in range(4)] for j in range(4)] for i in range(4)]
+    # R^z_{t z t} computed directly from Christoffels, no curvature ansatz.
+    riem=sp.factor(sp.diff(Gamma[2][0][0],coords[2])-sp.diff(Gamma[2][2][0],coords[0])+
+        sum(Gamma[2][2][k]*Gamma[k][0][0]-Gamma[2][0][k]*Gamma[k][2][0]
+        for k in range(4)))
+    assert sp.simplify(riem.subs({t:0,r:1})+sp.Rational(209,1000))==0
