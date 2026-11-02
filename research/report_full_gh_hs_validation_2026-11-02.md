@@ -42,7 +42,7 @@ Run from repo root:
     python -m research.calc.gh_ks_geometry_tube
     python -m research.calc.bl_gh_initial_data
 
-Actual local combined outcome: **21 passed in 2.71 s** (Python 3.13.5, pytest 9.0.2, SymPy 1.14). Inherited PR #8 subset independently replayed: **9 passed**. Full repository regression and remote CI remain unverified. Tests corroborate algebra, NOT mathematical novelty or a full Einstein vacuum theorem.
+Actual local combined outcome: **22 passed in 3.25 s** (Python 3.13.5, pytest 9.0.2, SymPy 1.14). Inherited PR #8 subset independently replayed: **9 passed**. Full repository regression and remote CI remain unverified. Tests corroborate algebra, NOT mathematical novelty or a full Einstein vacuum theorem.
 
 ## Exact obstacle map
 
@@ -69,3 +69,8 @@ The next mathematically decisive gap is to compute interval-certified H^3 compos
 10. Remaining merger obstacle: complete GH nonlinear residual/Jacobian and H^3 estimates; chart/boundary/constraint proof, nonlinear time continuation, asymptotically flat exterior.
 
 **Classification: VERIFIED GENERAL HYPERBOLIC PDE THEOREM** (established-method theorem with evaluated constants; not a verified finite-slab full Einstein theorem).
+
+
+## Addendum: puncture-excluding BL initial hyperbolicity certificate
+
+In the region with both puncture radii $r_\pm\ge1/4$, the exact BL conformal factor satisfies $p\le3$. Thus lapse $N=p^{-2}\ge1/9$ and $\lambda_{\min}(S_{50})\ge1/81$ initially. Under the separately justified uniform *pointwise* metric perturbation bound $\|\delta g\|_{\rm op}\le6/1000$, the Neumann multiplier is $\le243/500$ and $\lambda_{\min}(S_{50})\ge500/40503$ for the perturbed spatial metric. All bounds are exact rational. This does not create a boundary Sobolev inequality or a positive-time GH residual certificate. The explicit no-go test rejects an overly wide radius. Re-run the combined test command above to obtain **22 passed**.
