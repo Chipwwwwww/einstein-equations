@@ -83,3 +83,7 @@ Proof: notes/30-localized-bl-gh-positive-time.md. Code: research/calc/bl_local_c
 15. Next strategy? Prove localized, background-relative H3/H4 energies and analytic functional calculus on a causal lens, avoid high-order global cutoff constants, and build validated interval/spectral BL jets; only then study merger/exterior coverage.
 
 **Classification: C — CERTIFIED POSITIVE-TIME BL VACUUM DEVELOPMENT**, but no strong-field binary-merger slab or global metric. Independent review may refine this classification; do not merge unreviewed results into main.
+
+## Stored reproducible certificate
+
+The exact power-of-ten witness is checked into `research/calc/data/gh_bl_local_certificate_2026-11-02.json`; replay `python -O -m research.calc.bl_torus_majorant` and compare output fields, ignoring the provenance-only metadata added to the stored JSON. The stored outcome is not a black-hole-merger certificate. GitHub Actions and independent mathematical review remain outstanding.
