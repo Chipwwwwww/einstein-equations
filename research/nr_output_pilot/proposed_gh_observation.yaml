@@ -1,0 +1,28 @@
+# DOCUMENTED / UNVERIFIED: event fragment, NOT a complete executable input.
+# Source-supported by EvolveGhBinaryBlackHole at ec2a35874d4a5105521a563498fdc8f33d784a82.
+# No GH executable was available to parser-test it. Do not label this EXECUTED.
+# Insert in EventsAndTriggersAtSlabs of a generated, validated evolution input.
+# This would observe every synchronized slab; restrict the window only after
+# an actual restart/window strategy and storage budget have been established.
+- Trigger:
+    Slabs:
+      EvenlySpaced:
+        Interval: 1
+        Offset: 0
+  Events:
+    - ObserveFields:
+        SubfileName: Validation
+        VariablesToObserve:
+          - SpacetimeMetric
+          - Pi
+          - Phi
+          - GaugeH
+          - SpacetimeDerivGaugeH
+          - Lapse
+          - Shift
+          - SpatialMetric
+        InterpolateToMesh: None
+        ProjectToMesh: None
+        CoordinatesFloatingPointType: Double
+        FloatingPointTypes: [Double]
+        BlocksToObserve: All

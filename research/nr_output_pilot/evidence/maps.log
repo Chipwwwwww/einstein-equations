@@ -1,0 +1,119 @@
+blocks 44 time_dependent True
+block_attributes ['has_distorted_frame', 'id', 'is_time_dependent', 'moving_mesh_distorted_to_inertial_map', 'moving_mesh_grid_to_distorted_map', 'moving_mesh_grid_to_inertial_map', 'moving_mesh_logical_to_grid_map', 'name', 'neighbors', 'stationary_map']
+global_functions [('ShapeB', [0.0, inf]), ('SizeB', [0.0, inf]), ('ShapeA', [0.0, inf]), ('SizeA', [0.0, inf])]
+[
+  {
+    "observation_value_NOT_time": 0.0,
+    "elements": 84,
+    "extents": [
+      [
+        6,
+        6,
+        6
+      ],
+      [
+        6,
+        6,
+        7
+      ],
+      [
+        6,
+        6,
+        10
+      ]
+    ],
+    "bases": [
+      "Basis.Legendre"
+    ],
+    "quadratures": [
+      "Quadrature.GaussLobatto"
+    ],
+    "functions": {
+      "SizeA": {
+        "bounds": [
+          0.0,
+          2.220446049250313e-14
+        ],
+        "max_abs_first_derivative_at_observation_value": 0.0
+      },
+      "ShapeA": {
+        "bounds": [
+          0.0,
+          2.220446049250313e-14
+        ],
+        "max_abs_first_derivative_at_observation_value": 0.0
+      },
+      "SizeB": {
+        "bounds": [
+          0.0,
+          2.220446049250313e-14
+        ],
+        "max_abs_first_derivative_at_observation_value": 0.0
+      },
+      "ShapeB": {
+        "bounds": [
+          0.0,
+          2.220446049250313e-14
+        ],
+        "max_abs_first_derivative_at_observation_value": 0.0
+      }
+    }
+  },
+  {
+    "observation_value_NOT_time": 1.0,
+    "elements": 84,
+    "extents": [
+      [
+        6,
+        6,
+        6
+      ],
+      [
+        6,
+        6,
+        7
+      ],
+      [
+        6,
+        6,
+        10
+      ]
+    ],
+    "bases": [
+      "Basis.Legendre"
+    ],
+    "quadratures": [
+      "Quadrature.GaussLobatto"
+    ],
+    "functions": {
+      "SizeA": {
+        "bounds": [
+          1.0,
+          1.0000000000000222
+        ],
+        "max_abs_first_derivative_at_observation_value": 0.0
+      },
+      "ShapeA": {
+        "bounds": [
+          1.0,
+          1.0000000000000222
+        ],
+        "max_abs_first_derivative_at_observation_value": 0.0
+      },
+      "SizeB": {
+        "bounds": [
+          1.0,
+          1.0000000000000222
+        ],
+        "max_abs_first_derivative_at_observation_value": 0.0
+      },
+      "ShapeB": {
+        "bounds": [
+          1.0,
+          1.0000000000000222
+        ],
+        "max_abs_first_derivative_at_observation_value": 0.0
+      }
+    }
+  }
+]

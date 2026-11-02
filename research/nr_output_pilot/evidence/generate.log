@@ -1,0 +1,10 @@
+[05:31:58] WARNING  The BBH pipeline is still experimental.   InitialData.py:267
+                    Please review the generated input files.
+/opt/venv/lib/python3.14/site-packages/SimulationSupport/EccentricityControl/ZeroEccParamsFromPN.py:165: ODEintWarning: Excess work done on this call (perhaps wrong Dfun type). Run with full_output = 1 to get quantitative information.
+  phiAndVVsT = odeint(dydt,[0.,omega0**(1./3.),S10[0],S10[1],S10[2],S20[0],S20[1],S20[2],0.,0.,1.],times).T
+           INFO     Running with executable:                     Schedule.py:448
+                    /sxscollaboration/spectre/build/bin/SolveXct
+                    s
+           INFO     Configure run directory '/work/id-generated' Schedule.py:552
+[05:31:59] INFO     Run 'SolveXcts' in '/work/id-generated' on 4 Schedule.py:619
+                    cores.

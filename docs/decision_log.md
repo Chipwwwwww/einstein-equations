@@ -725,3 +725,22 @@ pull requests are open to all GitHub users.
 On Windows, a checkout at a deep path can push pip's vendored files past
 MAX_PATH and break `python -m venv`. Creating the venv at a short path
 (e.g. `%TEMP%\eeq-venv`) works.
+
+
+## 2026-11-02 — SpECTRE output pilot stops at the GH executable gate
+
+Independent branch `research/nr-to-exact-merger-validation` starts from PR #12
+head `f235eff91a862afe74d369b219f7fd151771d9c4`; prior mathematics is unchanged.
+SpECTRE 2026.10.28 (`ec2a35874d4a5105521a563498fdc8f33d784a82`) parsed and
+solved a coarse equal-mass, zero-target-spin XCTS configuration at input separation
+12 in 82 seconds on four threads. Actual HDF5 output, two elliptic iteration
+observations, individual horizons, coordinate reconstruction, and numerical
+constraint/signature checks are documented in
+[the focused report](../research/nr_output_pilot/README.md). These are not two
+physical times. The subsequent GH pipeline attempt stopped because the official
+prebuilt distribution lacks `EvolveGhBinaryBlackHole`. No evolution, common
+horizon formation, sampled GH residual or continuum certificate was obtained.
+The machine has a four-core quota, 16 GiB RAM and initially about 30 GiB free disk;
+no production merger or full source build was launched. Next gate: obtain/build
+the pinned GH executable and test three physical output times plus complete
+moving-map history before attempting a merger window. Large outputs stay outside Git.
