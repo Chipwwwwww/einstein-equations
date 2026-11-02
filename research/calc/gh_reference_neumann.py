@@ -38,7 +38,8 @@ def periodic_variable_reference_example():
     a=Q(1,1000);d=2*a
     inverse_scalar_deviation=d/(1-P*d)
     B=4+2*inverse_scalar_deviation
-    assert B<5
+    if not B<5:
+        raise ValueError("reference inverse norm enclosure failed")
     return validate(B=Q(5),J=Q(2),spatial_lower=Q(999,1000),R=Q(1,10**6))
 
 def serial(x):
