@@ -59,3 +59,34 @@ def symbolic_checks():
 if __name__=="__main__":
     obj=symbolic_checks()
     print({k:v for k,v in obj.items() if isinstance(v,bool)})
+
+
+
+def initial_hyperbolicity_bounds(rpuncture=sp.Rational(1,4),
+                                 tube_H3_radius=sp.Rational(1,1000),
+                                 C0=sp.Integer(6)):
+    """Certified geometric GH tube when BOTH puncture radii >= rpuncture.
+
+    The pointwise metric error <= C0*tube_H3_radius is an INPUT CONDITION;
+    no missing Sobolev trace/domain inequality is silently assumed.
+    """
+    if rpuncture<=0 or tube_H3_radius<=0 or C0<=0:
+        raise ValueError("positive cut-off, radius and embedding required")
+    pmax=1+1/(2*rpuncture)
+    B=pmax**4
+    delta=C0*tube_H3_radius
+    z=B*delta
+    if z>=1:
+        raise ValueError("Lorentzian matrix homotopy not certified")
+    if delta>=1:
+        raise ValueError("spatial metric positive definite not certified")
+    return {
+        "psi_max":pmax,"lapse_initial_lower":1/pmax**2,
+        "GH_initial_symmetrizer_min":1/pmax**4,
+        "metric_inverse_reference_bound":B,
+        "metric_tube_pointwise_error":delta,
+        "metric_Neumann_multiplier":z,
+        "GH_symmetrizer_tube_min":1/(B+delta),
+        "pointwise_Lorentzian_tube":True,
+        "positive_time_full_GH_constraint_and_slab":False,
+    }
