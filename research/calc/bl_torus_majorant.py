@@ -106,7 +106,7 @@ def bound_graph(U):
                 N_exp=N.n,beta_exp=betaN,gamma_exp=gammaN)
 
 
-def certificate():
+def certificate(time_exponent_override=None):
     inputs=envelope_summary()
     # Explicit Fourier H7 component bounds from exact cutoff derivatives.
     # +4 covers vector/tensor sums and 50 fields.
@@ -144,6 +144,10 @@ def certificate():
     if Rexp<100:raise ValueError('BL reference-adapted cone fails')
     Texp=max(Rexp+V1+10,Rexp+W2+10,Kexp+10,
              Rexp+RhoCoeff+10,Cexp+10)
+    if time_exponent_override is not None:
+        if not isinstance(time_exponent_override,int) or time_exponent_override<=0:
+            raise ValueError("positive integer exponent required")
+        Texp=time_exponent_override
     # rho <=10**(RhoCoeff-Texp). sqrt(Lambda)/lambda <=10^6;
     # (1-KT)^-1 <2, so E <=10**(RhoCoeff-2Texp+7).
     Errexp=2*Texp-RhoCoeff-7
