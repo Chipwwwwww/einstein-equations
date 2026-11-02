@@ -77,7 +77,7 @@ In the GH energy, S(g) and S(g)A^i(g) depend **only on g**, not directly on Pi/P
 \partial_t S=DS(g)[g_t],\
 \partial_i(SA^i)=D(SA^i)(g)[\partial_i g].
 \]
-To enclose the *pointwise* finite-dimensional matrix derivatives, use the stronger pointwise reference bound U3+2=24 rather than silently identifying H3 derivative bounds with pointwise DS. The resulting pointwise graph exponents are JS<=304 and JB<=401; this gives metric-sector energy divergence D<10^430. With source/transport G<10^560, symmetrizer eigen bounds lambda>=10^-4, Lambda<=10^4, one obtains
+To enclose the *pointwise* finite-dimensional matrix derivatives, use the stronger pointwise reference bound U3+2=24 rather than silently identifying H3 derivative bounds with pointwise DS. The resulting pointwise graph exponents are JS<=304 and JB<=401; this gives metric-sector energy divergence D<10^430. With source/transport G<10^551, symmetrizer eigen bounds lambda>=10^-4, Lambda<=10^4, one obtains
 \[
 \boxed{K<10^{560}}.
 \tag{31.4}
@@ -114,7 +114,7 @@ Choose
 \[
 T=10^{-2876}M,\qquad R=10^{-320},\qquad K<10^{560}.
 \]
-The exact majorant code verifies that v2 remains in the reference tube, the GH coefficient/symmetrizer bounds are valid throughout it, KT<1/2, and all eight closure/falsification inequalities are strict. Kato's H3 local existence continues by the symmetrized energy first-exit argument. The residual at T is <=10^-2852. Writing the error energy as Y, one has
+The exact majorant code verifies that v2 remains in the reference tube, the GH coefficient/symmetrizer bounds are valid throughout it, KT<1/2, and all eight closure/falsification inequalities are strict. Kato's H3 local existence continues by the symmetrized energy first-exit argument. The residual at T is <=10^-2896. Writing the error energy as Y, one has
 \[
 Y'\le KY+\frac{\Lambda}{\sqrt\lambda}\|r_2\|_{H^3},
 \quad Y(0)=0.
@@ -125,7 +125,7 @@ The integrating-factor estimate and lambda>=10^-4, Lambda<=10^4 yield
  <10^{-5762}<R.}
 \tag{31.8}
 \]
-For metric components the pointwise error is <6*10^-5674, first spatial derivative error <12*10^-5674. No pointwise curvature error has been established.
+For metric components the pointwise error is <6*10^-5762, first spatial derivative error <12*10^-5762. No pointwise curvature error has been established.
 
 At the concrete protected point x_*=(0.1,0,0), set r=sqrt(0.1²+0.3831²). Since 0.39<r<0.4 exactly,
 \[
