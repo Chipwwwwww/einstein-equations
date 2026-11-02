@@ -80,12 +80,12 @@ def test_sharp_graph_certificate_and_fail_closed():
     c=certificate()
     assert all(c["flags"].values())
     assert c["reference_Hs_log10"]=={3:22,4:27,5:32,6:37,7:42}
-    assert c["full_GH_source_graph_H3"]["F_l"]==538
-    assert c["full_GH_source_graph_H3"]["F_h"]==714
-    assert c["growth_K_log10"]==551
-    assert c["residual_t2_coefficient_log10"]==2812
-    assert c["time_T_over_M"]=="10^(-2832)"
-    assert c["H3_error_upper"]=="10^(-5674)"
+    assert c["full_GH_source_graph_H3"]["F_l"]==547
+    assert c["full_GH_source_graph_H3"]["F_h"]==724
+    assert c["growth_K_log10"]==560
+    assert c["residual_t2_coefficient_log10"]==2856
+    assert c["time_T_over_M"]=="10^(-2876)"
+    assert c["H3_error_upper"]=="10^(-5762)"
     with pytest.raises(ValueError,match="rejected"):
         certificate(time_exponent_override=1000)
     with pytest.raises(ValueError,match="positive integer"):
@@ -98,7 +98,7 @@ def test_resolved_dynamics_and_exact_evaluator_domain_guards():
     gxx2_lower=12*(a/(2*rmax**3))**2/(1+1/(2*rmin))**6
     assert gxx2_lower>Q(1,20)
     assert 10**10>480  # delta gxx>=T²/40>2*(6 E)
-    t=R(1,10**2832)
+    t=R(1,10**2876)
     assert len(full_50_field_state(t,R(1,10),0,0))==50
     assert metric(t,R(1,10),0,0,precision=12).shape==(4,4)
     with pytest.raises(ValueError,match="time"):
