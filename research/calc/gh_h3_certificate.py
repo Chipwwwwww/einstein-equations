@@ -9,6 +9,11 @@ import json
 from .gh_h3_majorant import majorant
 
 
+def require(ok, label):
+    if not ok:
+        raise ValueError("Certificate rejected: "+str(label))
+
+
 def certificate():
     T=Q(1,1000);R=Q(1,10**8);eps=Q(1,10**7)
     m=majorant(T=T,R=R,eps=eps)
@@ -19,16 +24,16 @@ def certificate():
     Mc=[Q(66,1000),Q(66,1000),Q(58,1000)]
     JS=Q(10);JB=[Q(13)]*3
     gt=Q(33);gx=Q(65,1000)
-    assert m['lambda']>=lam and m['Lambda']<=Lam
-    assert m['source_H3_bound']<=MF
-    assert m['source_Lipschitz_H3']<=LF
+    require(m['lambda']>=lam and m['Lambda']<=Lam,'symmetrizer interval')
+    require(m['source_H3_bound']<=MF,'source H3')
+    require(m['source_Lipschitz_H3']<=LF,'source Jacobian')
     for field,key in ((MA,'A_H3_bounds'),(LA,'A_Lipschitz_H3'),(Mc,'A_deviation_H3'),(JB,'J_B')):
-        assert all(known<=upper for known,upper in zip(m[key],field)),key
-    assert m['J_S']<=JS
-    assert m['metric_dt_Linf']<=gt
-    assert m['metric_dxi_Linf']<=gx
-    assert m['Lorentzian_metric_gap']<Q(65,1000)
-    assert m['V_H3']<Q(10)
+        require(all(known<=upper for known,upper in zip(m[key],field)),key)
+    require(m['J_S']<=JS,'S derivative')
+    require(m['metric_dt_Linf']<=gt,'metric dt')
+    require(m['metric_dxi_Linf']<=gx,'metric spatial derivative')
+    require(m['Lorentzian_metric_gap']<Q(65,1000),'Lorentzian cone')
+    require(m['V_H3']<Q(10),'H3 approximation bound')
     # All constants recomputed solely from short rational enclosures.
     D=JS*gt+sum(JB)*gx
     Vi=6*eps*T*T
@@ -36,12 +41,12 @@ def certificate():
     K=D/(2*lam)+Lam*G/lam
     rho=18*eps*T+48*sum(MA)*6*eps*T*T+LF*6*eps*T*T
     E=Lam*rho*T/(lam*(1-K*T))
-    assert D < Q(333) and G < Q(553) and K < Q(750)
-    assert rho<Q(4,10**9)
-    assert K*T<Q(3,4)
-    assert E<Q(2,10**11)<R
-    assert m['residual_H3']<=rho
-    assert m['certified_H3_error']<=E
+    require(D<Q(333) and G<Q(553) and K<Q(750),'energy growth')
+    require(rho<Q(4,10**9),'continuum residual')
+    require(K*T<Q(3,4),'time recurrence')
+    require(E<Q(2,10**11)<R,'closed nonlinear bootstrap')
+    require(m['residual_H3']<=rho,'exact graph residual')
+    require(m['certified_H3_error']<=E,'exact graph error')
     return {
       'classification':'CERTIFIED_FULL_50_GH_UNDAMPED_TORUS_KASNER_SLAB',
       'time_interval':[Q(0),T], 'R':R, 'amplitude':eps,
