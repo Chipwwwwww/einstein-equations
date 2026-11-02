@@ -15,7 +15,7 @@ This mistake means the inherited approximation is **not** a complete 50-field se
 3. Initial field Hs bounds are separated by order, instead of charging H7 to every source contraction. For s=3,4,5,6,7 their conservative exponents are (22,27,32,37,42).
 4. Matrix inverse and lapse use the variable-conformal-reference H3 Neumann/binomial lemma, not a global small-Minkowski assumption.
 5. High-order full 50-field GH algebraic F and all A_i are bounded with first and second Frechet derivatives on the entire H3 ball. Pointwise DS and D(SA) use a separate U3+2=24 graph to cover H3-to-C0 embedding. Geometry-dependent energy divergence uses metric g_t and dg only.
-6. Full u2=DG(u0)u1 eliminates the linear-in-t residual. H3 remainder is bounded continuously by 10^2812 t².
+6. Full u2=DG(u0)u1 eliminates the linear-in-t residual. H3 remainder is bounded continuously by 10^2856 t².
 
 No new PDE principle relative to Kato, Kato–Ponce or the elementary Bernstein convex-hull theorem was established. The gain is a project-level rigorous certificate using a mathematically valid *different* extension and approximation.
 
@@ -24,16 +24,16 @@ No new PDE principle relative to Kato, Kato–Ponce or the elementary Bernstein 
 | Bound | PR #11 | Revised |
 | --- | ---: | ---: |
 | Initial H7 | 10^795 | **10^42** |
-| Full GH F Lipschitz H3 | 10^11287 | **10^538** |
-| Full GH second Frechet H3 | not constructed | **10^714** |
-| Energy K | 10^11302 | **10^551** |
-| Continuum GH residual | O(t) | **<=10^2812 t²** |
-| Certified T/M | 10^-29045 | **10^-2832** |
-| Certified H3 full-state error | <10^-37098 | **<10^-5674** |
+| Full GH F Lipschitz H3 | 10^11287 | **10^547** |
+| Full GH second Frechet H3 | not constructed | **10^724** |
+| Energy K | 10^11302 | **10^560** |
+| Continuum GH residual | O(t) | **<=10^2856 t²** |
+| Certified T/M | 10^-29045 | **10^-2876** |
+| Certified H3 full-state error | <10^-37098 | **<10^-5762** |
 | Dynamical metric correction resolved? | No (t² far below error) | **Yes, at one gauge-coordinate point** |
 | Extra geometric region beyond prior CK development? | No | **No** |
 
-The new time is **26213 orders of magnitude longer** in the same mass normalization. It remains vastly smaller than 10^-6 M, much smaller than merger timescales, and does not improve the earlier geometric development whose geodesic-slicing local interval is about 8.683e-4 M (different gauge, no validated positive-time overlap).
+The new time is **26169 orders of magnitude longer** in the same mass normalization. It remains vastly smaller than 10^-6 M, much smaller than merger timescales, and does not improve the earlier geometric development whose geodesic-slicing local interval is about 8.683e-4 M (different gauge, no validated positive-time overlap).
 
 ## 4. Certified full second GH time-jet and closed theorem
 
@@ -43,17 +43,17 @@ Regularity and known-reference bounds:
 - u0 in H7, norm <10^42; H3 norm <10^22.
 - u1 in H5, with H3/H4/H5 bounds 10^364,10^419,10^474.
 - u2 in H4, with H3/H4 bounds 10^906,10^1041.
-- Full GH F H3 norm <=10^360; DF <=10^538; D²F <=10^714; all A_i <=10^148, DA_i <=10^318, D²A_i <=10^487.
-- Pointwise geometry flux graph (with H3 embedding margin) JS<10^304, JB<10^401, divergence D<10^430; lower-order G<10^542, energy K<10^551.
+- Full GH F H3 norm <=10^368; DF <=10^547; D²F <=10^724; all A_i <=10^148, DA_i <=10^318, D²A_i <=10^487.
+- Pointwise geometry flux graph (with H3 embedding margin) JS<10^304, JB<10^401, divergence D<10^430; lower-order G<10^551, energy K<10^560.
 - Symmetrizer 10^-4 I <=S<=10^4 I on the entire H3 radius R=10^-320 about the known v2; full Lorentzian hyperbolicity is verified by reference-centered Neumann bounds.
 
-From Banach Taylor's theorem, r2(t)=v2_t-G(v2) has exactly the O(t²) expression written in note31 and continuum bound ||r2(t)||H3<=10^2812 t². With T=10^-2832 M, its terminal bound is <=10^-2852. The Kato-local first-exit GH energy bootstrap closes because KT<1/2, v2 remains inside the reference tube, and ||u-v2||_Linf H3 <10^-5674 <R. Existence, uniqueness and full-field error are thus established on the auxiliary torus until T under the stated exact algebra and Sobolev proofs.
+From Banach Taylor's theorem, r2(t)=v2_t-G(v2) has exactly the O(t²) expression written in note31 and continuum bound ||r2(t)||H3<=10^2856 t². With T=10^-2876 M, its terminal bound is <=10^-2896. The Kato-local first-exit GH energy bootstrap closes because KT<1/2, v2 remains inside the reference tube, and ||u-v2||_Linf H3 <10^-5762 <R. Existence, uniqueness and full-field error are thus established on the auxiliary torus until T under the stated exact algebra and Sobolev proofs.
 
 The constructed auxiliary data may fail the Einstein constraints outside the physical agreement region; NO global torus vacuum claim is made. Finite speed (<4 for true GH/subsidiary fields throughout the tube) and a Euclidean causal buffer b>=0.1 ensure that the full Einstein/Hamiltonian/momentum, GH gauge/reduction and normal subsidiary constraints propagate exactly on [0,T] times Omega_target. Thus Ric(g)=0 there. This uses the **published GH homogeneous subsidiary system** (not an independent symbolic rederivation of all subsidiary equations), and identifies the interior with the actual BL development up to local diffeomorphism.
 
 ## 5. Rigorous dynamical resolution at a concrete point
 
-At x_*=(1/10,0,0), r=sqrt((1/10)^2+(3831/10000)^2), so 39/100<r<2/5. The full GH second jet yields g2_xx=12 p_x²/p^6>1/20 from exact rational inequalities. The coordinate metric correction therefore exceeds T²/40=10^-5664/40, while the certified exact metric-component error is <6*10^-5674. The ratio exceeds 10^10/240>4e7, meeting the requested **resolved dynamical-change** inequality by several orders of magnitude.
+At x_*=(1/10,0,0), r=sqrt((1/10)^2+(3831/10000)^2), so 39/100<r<2/5. The full GH second jet yields g2_xx=12 p_x²/p^6>1/20 from exact rational inequalities. The coordinate metric correction therefore exceeds T²/40=10^-5752/40, while the certified exact metric-component error is <6*10^-5762. The ratio exceeds 10^10/240>4e7, meeting the requested **resolved dynamical-change** inequality by several orders of magnitude.
 
 This is coordinate-dependent. No pointwise curvature error, gauge-invariant observable or gravitational-wave waveform is certified.
 
@@ -83,19 +83,23 @@ Literature checked: first-order GH source and constraints in Lindblom et al. 200
 1. PR #11 proof? Its conservative O(t) residual-to-local-vacuum argument is not disproved by the missing jet; its asserted second Taylor completeness is false. Prior global overestimates still demand independent review.
 2. Full 50 second derivatives? **Not in PR11**. Now yes, including Pi2_0i and Phi2_iab; off-shell Delta p included.
 3. Why H7 and Lipschitz explosion? Flat C-infinity cutoff derivative maxima and raising one global maximum to high derivative powers, then repeating global Banach-algebra product inflation for all full-source factors.
-4. Sharper energy? Yes, a **project-level** graded H3/H4/H5 source, Hessian and geometry-only pointwise flux estimate; K<10^551. It uses established PDE methods, not a claimed new theorem.
+4. Sharper energy? Yes, a **project-level** graded H3/H4/H5 source, Hessian and geometry-only pointwise flux estimate; K<10^560. It uses established PDE methods, not a claimed new theorem.
 5. Global artificial-cutoff bottleneck avoided? **Strongly reduced but not eliminated**: still an auxiliary torus with cutoff, now C9 instead of C-infinity.
 6. Improved extension? Yes, exact C9 polynomial with Bernstein derivative envelopes and H7<10^42.
 7. Higher-order full approximation? Yes, all 50 second time jets, off-shell source checks.
-8. Continuum residual? <=10^2812 t²; at terminal time <=10^-2852.
-9. Nonlinear K? <10^551.
-10. Certified T/M? 10^-2832 (a conservative **resolved-time** witness; not mathematically optimized).
-11. Improvement? 29045-2832=26213 decimal orders of magnitude.
+8. Continuum residual? <=10^2856 t²; at terminal time <=10^-2896.
+9. Nonlinear K? <10^560.
+10. Certified T/M? 10^-2876 (a conservative **resolved-time** witness; not mathematically optimized).
+11. Improvement? 29045-2876=26169 decimal orders of magnitude.
 12. Time variation exceeds error? Yes at x_*=(0.1,0,0), ratio >10^10/240.
 13. Exact vacuum/subsidiary? Yes on protected local causal region by exact physical initial constraints, homogeneous subsidiary propagation, finite speed and closed GH bootstrap; NOT outside cutoff.
 14. Enlarged geometric region? No; no validated gauge overlap or positive-time extension of earlier geodesic CK region.
 15. Genuinely new estimate vs literature? No original PDE principle established; certified constants and full-jet/cutoff application are new to repository.
-16. Merger-scale obstruction? Despite a 26213-order gain, K~10^551 and C2~10^2812 remain enormous and prevent reaching even 10^-6 M. Curvature, high-order continuation and radiative exterior remain uncertified.
+16. Merger-scale obstruction? Despite a 26169-order gain, K~10^560 and C2~10^2856 remain enormous and prevent reaching even 10^-6 M. Curvature, high-order continuation and radiative exterior remain uncertified.
 17. Next strategy? Prove **direct localized background-relative H3/H4 tame energies** in the physical BL causal lens, with explicit Sobolev extension and commutator constants independent of the artificial cutoff; evaluate physical local p and derivatives by interval spectral models; then validated multislab GH evolution with constraint propagation. This targets the remaining global-algebra constant inflation and actual merger-scale time.
 
 **Classification: C — CERTIFIED DYNAMICALLY RESOLVED BL VACUUM EVOLUTION (extremely local/short).** Do NOT interpret this as B/A merger-scale evolution. Remains draft, pending independent audit and remote CI.
+
+## Independent source graph falsification and repair
+
+An independent traversal of the PRODUCTION full 50-field GH source using the exact analytic majorant nodes showed that the previous hand-transcribed graph was UNDER-COUNTING the H3 source value, Jacobian and Hessian exponent bounds. The independent values exceeded the hand-graph results by 5, 6 and 7 decimal exponents before the final 3-decade margin. We rejected that implementation and now call the actual source in bl_sharp_certificate.graph (geometry override only injects independently certified inverse/lapse/shift bounds). This changes (F,DF,D2F) to (10^368,10^547,10^724), K to <10^560, C2 to 10^2856, the resolved interval to 10^-2876M, and the error to <10^-5762. The earlier 10^-2832 figure is superseded. The reworked test graph independently checks the exact source and rejects an underbound. This incident is recorded explicitly rather than concealed.
