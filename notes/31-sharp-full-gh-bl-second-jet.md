@@ -132,7 +132,7 @@ At the concrete protected point x_*=(0.1,0,0), set r=sqrt(0.1²+0.3831²). Since
 (g_2)_{xx}=12p_x^2/p^6>1/20,
 \qquad g^{app}_{xx}(T,x_*)-g_{xx}(0,x_*)>T²/40.
 \]
-The metric change divided by its certified error bound therefore exceeds 10^10/240>4*10^7. A **coordinate** dynamical change is resolved, but no gauge-invariant curvature or radiation signal is certified.
+The PREDICTED metric correction divided by its certified error bound exceeds 10^10/240>4*10^7. The TRUE metric change is at least T²/40-6*10^-5762, so its ratio to the error bound exceeds 10^10/240-1>4*10^7-1; in particular the true change exceeds twice its evaluation error. A **coordinate** dynamical change is resolved, but no gauge-invariant curvature or radiation signal is certified.
 
 ## 6. Protected vacuum and the unchanged geometric obstruction
 
