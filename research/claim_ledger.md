@@ -232,3 +232,20 @@ Every claim made in notes/07–09, with its status. Categories:
 | GS-I | Critical all-mode gap>=1/16, inverse L² norm<=16 | Inherited from d124cb5, independently replayed256bits; horizon_gap_audit_2026-11-01.json |
 | GS-A | Decimal/set parameter bridges and outward geometric bin arithmetic repaired | Regression tests pass; near-M replay partial; complete M/M'/N replay pending |
 | GS-L | No global positive-time exclusion or global equal-mass merger metric established | Open; explicit remaining lemma note22 §6 and research_gaps.md |
+
+
+## 2026-11-02 full GH nonlinear H3 audit and proof checkpoints (GH28–GH29)
+
+Previous global-MOTS claims and the PR #7 audit override above remain intact. The entries below distinguish proved general-PDE arguments, exact algebraic computer checks and published subsidiary propagation; no equal-mass merger extension is claimed.
+
+| ID | Claim | Evidentiary status | Proof/code and qualification |
+| --- | --- | --- | --- |
+| GH28-01 | PR #9 H3 embedding (6,12), algebra (48), first-order commutator (144), symmetrized energy and strict first-exit continuation hold under uniform whole-tube hypotheses | R: independently derived; standard Kato/commutator arguments | notes/25 and notes/28; not valid automatically on punctured nonperiodic domains |
+| GH28-02 | Complete 50-field undamped GH RHS for gamma1=-1, gamma2=gamma0=0, H_a=0, agrees with original Lindblom et al. eqs (35)-(39) | R + independent symbolic checks | research/calc/gh_full_source.py and tests/test_gh_full_source_majorant.py; generic off-diagonal first-derivative second-order comparison; all 50 Kasner equations for arbitrary harmonic time |
+| GH28-03 | Exact rational H3 source, inverse, lapse, shift, Jacobian, principal/symmetrizer composition bounds uniformly cover the whole near-Kasner H3 ball | R (analytic Neumann/binomial/Banach proof) + exact rational certificate | notes/28, gh_h3_majorant.py, gh_h3_certificate.py; small-perturbation conditions checked; not sampled finite states |
+| GH28-04 | Geometry-adapted metric-sector energy bound D=J_S U_g+ΣJ_B X_g eliminates unnecessarily charging Pi/Phi time derivatives; closed H3 bootstrap guarantees true GH solution on a finite torus slab | R (standard structural specialization) | notes/28 §4; Kato local existence and no unknown exact norm, not claimed new in literature |
+| GH28-05 | Kasner full-50 3+1 H3 residual-to-existence on 0<=t<=1/1000: rho<=19647/5000000000000, E<=3346539/206017149996983056<2e-11, lambda>=489/500; nonzero spatial perturbations | R + exact rational certificate and 50-field symbolic comparator | notes/28 §5, tests; known Kasner comparison disclosed; this is **not** a binary-black-hole merger |
+| GH28-06 | Exact initial Kasner Hamiltonian/momentum, GH gauge and reduction/curl constraints give full vacuum Ric(g)=0 via homogeneous GH subsidiary evolution with no boundary | E (original Lindblom et al. equations 16 and 40-52) + exact initial geometry checks | notes/28 §6; subsidiary full 50-source equations not independently regenerated in code |
+| GH29-01 | Variable-background H3 inverse and Lorentzian ball: q=48²BR<1, 6JR<1, 6R<sigma imply inverse norm B/(1-q) and Lipschitz 48²[B/(1-q)]² | R (standard Banach inversion proof) + exact rational tests | note29, gh_reference_neumann.py; nonconstant periodic example; not yet a punctured BH exterior |
+| GH28-07 | 32 selected local tests pass including negative controls and full Kasner Ricci/Riemann identity | software evidence, not a proof by itself | pytest commands in research/report_full_gh_nonlinear_certification_2026-11-02.md; full inherited suite and remote CI remain unverified |
+| GH28-08 | New mathematics relative to prior PDE literature, full BL merger exterior or certified positive-time BL gauge overlap | **NOT ESTABLISHED** | The theorem uses known Kato/Friedrich/Rendall/GH foundations; no black-hole exterior Sobolev/domain-of-dependence/constraint boundary certificate |
