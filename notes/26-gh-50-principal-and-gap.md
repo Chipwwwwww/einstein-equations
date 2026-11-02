@@ -23,7 +23,7 @@ S_{50}A^k_{50}=(A^k_{50})^T S_{50},\qquad
 \]
 These identities are independently checked on 50-by-50 SymPy matrices. A negative control rejects using the unweighted identity symmetrizer, which fails on a nonflat test point. There is no arbitrary field-number restriction in the abstract theorem in note25; however, the 50-field **algebraic sources** are not generated or bounded in this code.
 
-For general $\gamma_2\neq0$, the 2006 paper's symmetrizer includes a $\psi$–$\Pi$ cross term and an additional positivity restriction. One must not use our special block unmodified for such parameters. Nor should one substitute the repo's coordinate Einstein–Bianchi system of note19; that system was found to contain a Jordan block.
+The implementation additionally checks **nonzero $\gamma_2$**: with $\gamma_1=-1$, $\gamma_3=\gamma_1\gamma_2=-\gamma_2$, add $A^k_{\Pi\psi}=\gamma_2\beta^k$ and $A^k_{\Phi_i\psi}=-\gamma_2N\delta_i{}^k$. Use the genuine $S_{\psi\psi}=\Lambda^2$, $S_{\psi\Pi}=-\gamma_2$, $S_{\Pi\Pi}=1$ block with **$\Lambda^2>\gamma_2^2$**. A 50-field exact test at $\gamma_2=1/4$, $\Lambda^2=1$ passes, and an invalid $\gamma_2=3/2$ fails. The positive cross term condition is essential; this extends the *principal* check but does not implement the constraint-damping source terms. Nor should one substitute the repo's coordinate Einstein–Bianchi system of note19; that system was found to contain a Jordan block.
 
 ## 2. Valid generalized harmonic gauge source for nonflat Schwarzschild
 
