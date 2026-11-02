@@ -48,7 +48,7 @@ def test_generic_nonzero_shift_full_second_order_GH_identity():
         d2gti.append(-ni*pi+sum((bi[j]*ph[j] for j in range(3)),sp.zeros(4)))
     christ=[[[ (derivatives[b][a,c]+derivatives[c][a,b]-derivatives[a][b,c])/2
               for c in range(4)]for b in range(4)]for a in range(4)]
-    for a,b in [(0,0),(0,1),(1,2),(2,3),(3,3)]:
+    for a,b in [(i,j) for i in range(4) for j in range(i,4)]:
         q=sum(inv[c,d]*inv[e,f]*(derivatives[e][c,a]*derivatives[f][d,b]-
                   christ[a][c][e]*christ[b][d][f])
                  for c in range(4) for d in range(4) for e in range(4) for f in range(4))
