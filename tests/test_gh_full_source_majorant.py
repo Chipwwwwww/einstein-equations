@@ -107,3 +107,67 @@ def test_compact_outward_rounded_exact_rational_certificate():
     assert c['H3_metric_field_error_upper']<Q(2,10**11)
     assert c['full_50GH_algebraic_source'].endswith('gamma1=-1 gamma2=gamma0=0 H=0')
     assert not c['binary_merger_spacetime']
+
+def test_independent_four_dimensional_kasner_ricci_and_curvature():
+    t=sp.symbols('t',real=True)
+    g=sp.diag(-sp.exp(2*t),sp.exp(sp.Rational(4,3)*t),
+              sp.exp(sp.Rational(4,3)*t),sp.exp(-sp.Rational(2,3)*t))
+    gi=sp.diag(-sp.exp(-2*t),sp.exp(-sp.Rational(4,3)*t),
+               sp.exp(-sp.Rational(4,3)*t),sp.exp(sp.Rational(2,3)*t))
+    coords=[t,*sp.symbols('x y z')]
+    Gam=[[[sp.simplify(sum(gi[a,d]*(sp.diff(g[d,b],coords[c])+
+                 sp.diff(g[d,c],coords[b])-sp.diff(g[b,c],coords[d]))/2
+                 for d in range(4))) for c in range(4)] for b in range(4)]
+                 for a in range(4)]
+    Ric=[[sp.factor(sum(sp.diff(Gam[k][a][b],coords[k])-
+             sp.diff(Gam[k][a][k],coords[b])+
+             sum(Gam[k][k][d]*Gam[d][a][b]-Gam[k][b][d]*Gam[d][a][k]
+               for d in range(4)) for k in range(4)))
+          for b in range(4)] for a in range(4)]
+    assert all(z==0 for row in Ric for z in row)
+    a,b,c,d=1,0,1,0
+    Ri=sp.factor(sp.diff(Gam[a][d][b],coords[c])-
+          sp.diff(Gam[a][c][b],coords[d])+
+          sum(Gam[a][c][k]*Gam[k][d][b]-Gam[a][d][k]*Gam[k][c][b]
+             for k in range(4)))
+    assert Ri==sp.Rational(2,9)
+    assert sp.simplify(sp.sqrt(-g.det())*gi[0,0]+1)==0
+    assert all(sp.simplify(sp.sqrt(-g.det())*gi[i,j])==0
+               for i in range(4) for j in range(4) if i!=j)
+
+
+def test_generic_spatially_coupled_source_matches_independent_second_order_GH():
+    eta=sp.diag(-1,1,1,1)
+    M=sp.Matrix([[sp.Rational(1,5),sp.Rational(-1,7),sp.Rational(1,11),0],
+                 [sp.Rational(-1,7),sp.Rational(1,3),0,sp.Rational(1,13)],
+                 [sp.Rational(1,11),0,sp.Rational(-1,17),sp.Rational(1,19)],
+                 [0,sp.Rational(1,13),sp.Rational(1,19),sp.Rational(-1,23)]])
+    Ds=[]
+    for i in range(3):
+        D=sp.Matrix(4,4,lambda a,b:sp.Rational((a+1)*(b+1)*(i+1),
+            101+11*i+2*a+2*b))
+        Ds.append(D)
+    packed=pack50(eta.tolist(),(-M).tolist(),[x.tolist() for x in Ds])
+    F=full_source(packed)
+    dt=[M.tolist()]+[x.tolist() for x in Ds]
+    Gamma=[[[sp.Rational(1,2)*(dt[b][a][c]+dt[c][a][b]-dt[a][b][c])
+              for c in range(4)] for b in range(4)]for a in range(4)]
+    reducedQ=sp.zeros(4)
+    for a,b in PAIRS:
+        q=0
+        for c in range(4):
+          for d in range(4):
+            inner=sum(Ds[i][c,a]*Ds[i][d,b] for i in range(3))
+            inner-=M[c,a]*M[d,b]
+            inner-=sum(eta[e,f]*Gamma[a][c][e]*Gamma[b][d][f]
+                       for e in range(4) for f in range(4))
+            q+=eta[c,d]*inner
+        reducedQ[a,b]=reducedQ[b,a]=sp.factor(q)
+    Fpi=sp.Matrix(sym4(F[10:20]))
+    N_t=-M[0,0]/2
+    beta_t=[M[0,i+1] for i in range(3)]
+    gtt=-Fpi+M*N_t+sum((beta_t[i]*Ds[i] for i in range(3)),sp.zeros(4))
+    assert all(sp.factor(gtt[a,b]+2*reducedQ[a,b])==0 for a,b in PAIRS)
+    changed=sp.Matrix(gtt)
+    changed[0,1]+=sp.Rational(1,100)
+    assert sp.factor(changed[0,1]+2*reducedQ[0,1])!=0
